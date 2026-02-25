@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://8o630klx0y8q"]
+
+[ext_resource type="Script" uid="uid://uok70lp88t1p" path="res://enemies/shield_enemy.gd" id="1_117e8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kwq5w"]
+size = Vector2(36, 36)
+
+[node name="shield_enemy" type="Area2D" unique_id=628113254]
+script = ExtResource("1_117e8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=256197238]
+shape = SubResource("RectangleShape2D_kwq5w")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1019596542]
+offset_right = 36.0
+offset_bottom = 36.0
+color = Color(0.25490198, 0.4117647, 0.88235295, 1)

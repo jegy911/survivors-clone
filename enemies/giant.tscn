@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cq3fwkargloek"]
+
+[ext_resource type="Script" uid="uid://cviaovvbeq0og" path="res://enemies/giant.gd" id="1_ct8lf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5o5k7"]
+size = Vector2(32, 32)
+
+[node name="giant" type="Area2D" unique_id=779874131]
+script = ExtResource("1_ct8lf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1786762282]
+shape = SubResource("RectangleShape2D_5o5k7")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1391623033]
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.54509807, 0, 0, 1)

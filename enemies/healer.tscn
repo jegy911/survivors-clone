@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dpamqtbt23m2"]
+
+[ext_resource type="Script" uid="uid://c4s13c3vauase" path="res://enemies/healer.gd" id="1_ds2si"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4lsfs"]
+size = Vector2(30, 30)
+
+[node name="healer" type="Area2D" unique_id=268825500]
+script = ExtResource("1_ds2si")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=913020785]
+shape = SubResource("RectangleShape2D_4lsfs")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1989855195]
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(0, 1, 0.49803922, 1)

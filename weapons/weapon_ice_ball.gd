@@ -1,0 +1,48 @@
+class_name WeaponIceBall
+extends WeaponBase
+
+var ice_ball_scene = preload("res://projectiles/ice_ball.tscn")
+var ball_count = 1
+
+func _ready():
+	super._ready()
+	weapon_name = "Buz Topu"
+	category = "defense"
+	damage = 15
+	cooldown = 2.5
+
+func attack():
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	if enemies.is_empty():
+		return
+	
+	enemies.sort_custom(func(a, b):
+		return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position)
+	)
+	
+	for i in min(ball_count, enemies.size()):
+		var ball = ice_ball_scene.instantiate()
+		player.get_parent().add_child(ball)
+		ball.global_position = player.global_position
+		var dir = (enemies[i].global_position - player.global_position).normalized()
+		var final_damage = player.get_total_damage(damage)
+		ball.init(dir, final_damage)
+
+func on_upgrade():
+	match level:
+		2:
+			damage = 20
+			cooldown = 2.2
+		3:
+			ball_count = 2
+			damage = 25
+		4:
+			damage = 30
+			cooldown = 2.0
+		5:
+			ball_count = 3
+			damage = 40
+			cooldown = 1.8
+
+func get_description() -> String:
+	return "Buz Topu Lv" + str(level) + " | x" + str(ball_count) + " | " + str(damage) + " hasar | yavaşlatır"

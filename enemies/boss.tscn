@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://bb6jiu6b175yy"]
+
+[ext_resource type="Script" uid="uid://ds5oi1t0ssc2l" path="res://enemies/boss.gd" id="1_0bnu1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mihky"]
+size = Vector2(80, 80)
+
+[node name="Boss" type="Area2D" unique_id=384171070 groups=["enemies"]]
+collision_layer = 2
+script = ExtResource("1_0bnu1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=760697728]
+shape = SubResource("RectangleShape2D_mihky")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1023616415]
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.7529412, 0.22352941, 0.16862746, 1)
+
+[node name="HPBarContainer" type="Node2D" parent="." unique_id=1645626510]
+
+[node name="HPBarBG" type="ColorRect" parent="HPBarContainer" unique_id=546773433]
+offset_left = -40.0
+offset_top = -55.0
+offset_right = 40.0
+offset_bottom = -47.0
+color = Color(0.5019608, 0.5019608, 0.5019608, 1)
+
+[node name="HPBarFill" type="ColorRect" parent="HPBarContainer" unique_id=5711028]
+offset_left = -40.0
+offset_top = -55.0
+offset_right = 40.0
+offset_bottom = -47.0
+color = Color(0.6117647, 0.31764707, 0.7137255, 1)
+
+[node name="HPLabel" type="Label" parent="." unique_id=1042427827]
+offset_left = -40.0
+offset_top = -70.0
+offset_bottom = -47.0

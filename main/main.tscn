@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://4o5u074yimxe"]
+
+[ext_resource type="PackedScene" uid="uid://dwc7hxun16pqu" path="res://player/player.tscn" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://bomsrt081ugnj" path="res://main/main.gd" id="1_h2yge"]
+[ext_resource type="Texture2D" uid="uid://drwujk8jettm7" path="res://assets/zemin.png" id="2_xwkvk"]
+
+[node name="main" type="Node2D" unique_id=437835688]
+script = ExtResource("1_h2yge")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1696891634]
+z_index = -1
+texture_repeat = 2
+texture = ExtResource("2_xwkvk")
+region_enabled = true
+region_rect = Rect2(-5000, -5000, 10000, 10000)
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=708652242]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=218787774]
+motion_mirroring = Vector2(1024, 1024)
+
+[node name="Player" parent="." unique_id=228795766 groups=["player"] instance=ExtResource("1_0xm2m")]
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=299549253]
+
+[node name="TimerLabel" type="Label" parent="HUD" unique_id=1328474014]
+offset_left = 580.0
+offset_top = 10.0
+offset_right = 620.0
+offset_bottom = 33.0
+text = "00:00"
+
+[node name="WaveLabel" type="Label" parent="HUD" unique_id=1539499609]
+offset_left = 580.0
+offset_top = 35.0
+offset_right = 620.0
+offset_bottom = 58.0

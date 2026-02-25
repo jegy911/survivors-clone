@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://dwc7hxun16pqu"]
+
+[ext_resource type="Script" uid="uid://brj3eip1w0pk5" path="res://player/player.gd" id="1_4flbx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
+size = Vector2(40, 40)
+
+[node name="Player" type="CharacterBody2D" unique_id=228795766]
+z_index = 1
+collision_mask = 10
+script = ExtResource("1_4flbx")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2062117397]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1307471674]
+position = Vector2(1, 2)
+shape = SubResource("RectangleShape2D_i3pqv")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2032631792]
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+color = Color(1, 0, 0, 1)
+
+[node name="WorldUI" type="Node2D" parent="." unique_id=260614110]
+
+[node name="HPBarBG" type="ColorRect" parent="WorldUI" unique_id=1514891724]
+offset_left = -24.0
+offset_top = -30.0
+offset_right = 26.0
+offset_bottom = -24.0
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="HPBarFill" type="ColorRect" parent="WorldUI" unique_id=223972483]
+offset_left = -24.0
+offset_top = -30.0
+offset_right = 26.0
+offset_bottom = -24.0
+color = Color(0.18039216, 0.8, 0.44313726, 1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1014858962]
+
+[node name="XPBar" type="ProgressBar" parent="CanvasLayer" unique_id=1114538893]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 700.0
+offset_bottom = 7.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="XPLabel" type="Label" parent="CanvasLayer" unique_id=795131029]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="KillLabel" type="Label" parent="CanvasLayer" unique_id=207521206]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="CategoryPanel" type="Panel" parent="CanvasLayer" unique_id=486935073]
+offset_left = 10.0
+offset_top = 60.0
+offset_right = 190.0
+offset_bottom = 160.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/CategoryPanel" unique_id=220641537]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AttackLabel" type="Label" parent="CanvasLayer/CategoryPanel/VBoxContainer" unique_id=1331282950]
+layout_mode = 2
+
+[node name="DefenseLabel" type="Label" parent="CanvasLayer/CategoryPanel/VBoxContainer" unique_id=73079892]
+layout_mode = 2
+
+[node name="VampireLabel" type="Label" parent="CanvasLayer/CategoryPanel/VBoxContainer" unique_id=1230724434]
+layout_mode = 2
+
+[node name="UtilityLabel" type="Label" parent="CanvasLayer/CategoryPanel/VBoxContainer" unique_id=308449934]
+layout_mode = 2

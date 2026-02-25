@@ -1,0 +1,60 @@
+class_name WeaponBullet
+extends WeaponBase
+
+var bullet_scene = preload("res://projectiles/bullet.tscn")
+var bullet_count = 1
+var max_range = 500.0
+
+func _ready():
+	super._ready()
+	weapon_name = "Mermi"
+	category = "attack"
+	damage = 10
+	cooldown = 1.2
+
+func attack():
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	if enemies.is_empty():
+		return
+	
+	var in_range = []
+	for enemy in enemies:
+		if player.global_position.distance_to(enemy.global_position) <= max_range:
+			in_range.append(enemy)
+	
+	if in_range.is_empty():
+		return
+	
+	in_range.sort_custom(func(a, b):
+		return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position)
+	)
+	
+	AudioManager.play_shoot()
+	
+	var effective_count = bullet_count + get_effective_multi_attack()
+	for i in min(effective_count, in_range.size()):
+		var bullet = bullet_scene.instantiate()
+		player.get_parent().add_child(bullet)
+		bullet.global_position = player.global_position
+		var dir = (in_range[i].global_position - player.global_position).normalized()
+		var final_damage = player.get_total_damage(damage)
+		bullet.init(dir, final_damage)
+
+func on_upgrade():
+	match level:
+		2:
+			bullet_count = 2
+			damage = 12
+		3:
+			cooldown = 1.0
+			damage = 15
+		4:
+			bullet_count = 3
+			damage = 18
+		5:
+			bullet_count = 4
+			damage = 25
+			cooldown = 0.8
+
+func get_description() -> String:
+	return "Mermi Lv" + str(level) + " | x" + str(bullet_count + get_effective_multi_attack()) + " mermi | " + str(damage) + " hasar"

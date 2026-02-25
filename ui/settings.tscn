@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bfhmjbgqwp3ws"]
+
+[ext_resource type="Script" uid="uid://d2mdchc61g6u2" path="res://ui/settings.gd" id="1_x2hje"]
+
+[node name="Settings" type="CanvasLayer" unique_id=199689765]
+script = ExtResource("1_x2hje")
+
+[node name="Background" type="ColorRect" parent="." unique_id=614343064]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1838364220]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1928839031]
+layout_mode = 2
+
+[node name="TabRow" type="HBoxContainer" parent="VBoxContainer" unique_id=1742162514]
+layout_mode = 2
+
+[node name="SesTab" type="Button" parent="VBoxContainer/TabRow" unique_id=561024240]
+layout_mode = 2
+
+[node name="GoruntuTab" type="Button" parent="VBoxContainer/TabRow" unique_id=1293643784]
+layout_mode = 2
+
+[node name="OynanisTab" type="Button" parent="VBoxContainer/TabRow" unique_id=2087812698]
+layout_mode = 2
+
+[node name="ContentArea" type="VBoxContainer" parent="VBoxContainer" unique_id=1076754020]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="VBoxContainer" unique_id=1618071372]
+layout_mode = 2

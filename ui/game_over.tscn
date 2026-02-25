@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c27tl47hub18h"]
+
+[ext_resource type="Script" uid="uid://d2ff2h8vs5j0g" path="res://ui/game_over.gd" id="1_y26ei"]
+
+[node name="GameOver" type="CanvasLayer" unique_id=1981436280]
+script = ExtResource("1_y26ei")
+
+[node name="Panel" type="Panel" parent="." unique_id=1456659416]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=621459787]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RestartButton" type="Button" parent="Panel/VBoxContainer" unique_id=2103491084]
+layout_mode = 2
+
+[node name="QuitButton" type="Button" parent="Panel/VBoxContainer" unique_id=775763356]
+layout_mode = 2

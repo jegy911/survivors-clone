@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://c0rqb8lkyc462"]
+
+[ext_resource type="Script" uid="uid://1lbkvvv310x2" path="res://enemies/dasher.gd" id="1_6m8g7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uyih0"]
+size = Vector2(28, 28)
+
+[node name="dasher" type="Area2D" unique_id=1967202652]
+script = ExtResource("1_6m8g7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=274479347]
+shape = SubResource("RectangleShape2D_uyih0")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2069218894]
+offset_right = 28.0
+offset_bottom = 28.0
+color = Color(1, 0.078431375, 0.5764706, 1)

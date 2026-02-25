@@ -1,0 +1,86 @@
+class_name WeaponShadow
+extends WeaponBase
+var orb_count = 1
+var orbit_radius = 80.0
+var orbit_speed = 2.0
+var orbs = []
+var damage_number_scene = preload("res://effects/damage_number.tscn")
+
+func _ready():
+	super._ready()
+	weapon_name = "Gölge"
+	category = "attack"
+	damage = 20
+	cooldown = 0.5
+	call_deferred("_spawn_orbs")
+
+func _spawn_orbs():
+	for orb in orbs:
+		if is_instance_valid(orb):
+			orb.queue_free()
+	orbs.clear()
+	
+	var effective_count = orb_count + get_effective_multi_attack()
+	for i in effective_count:
+		var orb = Node2D.new()
+		var visual = ColorRect.new()
+		visual.size = Vector2(14, 14)
+		visual.color = Color("#9B59B6")
+		visual.position = Vector2(-7, -7)
+		orb.add_child(visual)
+		player.get_parent().call_deferred("add_child", orb)
+		orbs.append(orb)
+
+func _process(delta):
+	super._process(delta)  # attack() buradan çağrılıyor
+	if player == null:
+		return
+	var time = Time.get_ticks_msec() / 1000.0
+	for i in orbs.size():
+		if not is_instance_valid(orbs[i]):
+			continue
+		var angle = time * orbit_speed + (TAU / orbs.size()) * i
+		var offset = Vector2(cos(angle), sin(angle)) * orbit_radius
+		orbs[i].global_position = player.global_position + offset
+
+func attack():
+	if player == null:
+		return
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	for orb in orbs:
+		if not is_instance_valid(orb):
+			continue
+		for enemy in enemies:
+			if not is_instance_valid(enemy):
+				continue
+			if orb.global_position.distance_to(enemy.global_position) < 35:
+				var final_damage = player.get_total_damage(damage)
+				enemy.take_damage(final_damage)
+				player.on_damage_dealt(final_damage, enemy.global_position)
+				var popup = damage_number_scene.instantiate()
+				player.get_parent().add_child(popup)
+				popup.global_position = enemy.global_position + Vector2(0, -40)
+				popup.show_damage(final_damage, Color("#9B59B6"))
+
+func on_upgrade():
+	match level:
+		2:
+			damage = 25
+			orb_count = 2
+			_spawn_orbs()
+		3:
+			orbit_speed = 2.5
+			damage = 30
+		4:
+			orb_count = 3
+			damage = 38
+			_spawn_orbs()
+		5:
+			orb_count = 4
+			damage = 50
+			orbit_speed = 3.0
+			orbit_radius = 90.0
+			_spawn_orbs()
+
+func get_description() -> String:
+	return "Gölge Lv" + str(level) + " | " + str(orb_count + get_effective_multi_attack()) + " orb | " + str(damage) + " hasar"

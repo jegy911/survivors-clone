@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://4dkyi5ofqw0w"]
+
+[ext_resource type="Script" uid="uid://d25mw3fwk1waa" path="res://ui/meta_upgrade.gd" id="1_ihfrv"]
+
+[node name="MetaUpgrade" type="CanvasLayer" unique_id=1954677509]
+script = ExtResource("1_ihfrv")
+
+[node name="Background" type="ColorRect" parent="." unique_id=2070878819]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1198884159]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=1399521222]
+layout_mode = 2
+
+[node name="GoldLabel" type="Label" parent="VBoxContainer" unique_id=639311253]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=2017726074]
+clip_contents = false
+layout_mode = 2
+
+[node name="UpgradeList" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=1782066838]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BackButton" type="Button" parent="VBoxContainer" unique_id=1368724059]
+layout_mode = 2

@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://dkf8pjyhbu6xj"]
+
+[ext_resource type="Script" uid="uid://btmr8cvprc5wu" path="res://core/audio_manager.gd" id="1_v0gdi"]
+[ext_resource type="AudioStream" uid="uid://djyjxk4qi8ikv" path="res://sounds/ateş sesi.mp3" id="2_7fh0q"]
+[ext_resource type="AudioStream" uid="uid://daonnhuhsujbq" path="res://sounds/hasar sesi.ogg" id="3_op7ad"]
+[ext_resource type="AudioStream" uid="uid://b30te2suilr0v" path="res://sounds/ölümsesi.mp3" id="4_wby2p"]
+[ext_resource type="AudioStream" uid="uid://flespggnpa0i" path="res://sounds/levelup.mp3" id="5_14skr"]
+[ext_resource type="AudioStream" uid="uid://bfvhx5np6e411" path="res://sounds/oyuncu hasar.mp3" id="6_k4pvn"]
+[ext_resource type="AudioStream" uid="uid://xrctr3lpmmgm" path="res://sounds/XP toplama.mp3" id="7_fckgx"]
+[ext_resource type="AudioStream" uid="uid://j04my8omix3g" path="res://sounds/boss spawn.mp3" id="8_86pii"]
+
+[node name="Node" type="Node" unique_id=1133844255]
+script = ExtResource("1_v0gdi")
+
+[node name="ShootPlayer" type="AudioStreamPlayer" parent="." unique_id=2055306057]
+stream = ExtResource("2_7fh0q")
+
+[node name="HitPlayer" type="AudioStreamPlayer" parent="." unique_id=1118695532]
+stream = ExtResource("3_op7ad")
+
+[node name="DeathPlayer" type="AudioStreamPlayer" parent="." unique_id=762432612]
+stream = ExtResource("4_wby2p")
+
+[node name="LevelUpPlayer" type="AudioStreamPlayer" parent="." unique_id=441581]
+stream = ExtResource("5_14skr")
+
+[node name="PlayerHurtPlayer" type="AudioStreamPlayer" parent="." unique_id=185460010]
+stream = ExtResource("6_k4pvn")
+
+[node name="XPPlayer" type="AudioStreamPlayer" parent="." unique_id=1525560503]
+stream = ExtResource("7_fckgx")
+
+[node name="BossPlayer" type="AudioStreamPlayer" parent="." unique_id=1525010222]
+stream = ExtResource("8_86pii")

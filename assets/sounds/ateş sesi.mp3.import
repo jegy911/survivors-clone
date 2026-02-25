@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://djyjxk4qi8ikv"
+path="res://.godot/imported/ateş sesi.mp3-bdcfcc633de74173724f44b851e74475.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/ateş sesi.mp3"
+dest_files=["res://.godot/imported/ateş sesi.mp3-bdcfcc633de74173724f44b851e74475.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

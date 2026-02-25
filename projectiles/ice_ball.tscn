@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bppxi6tbh38n7"]
+
+[ext_resource type="Script" uid="uid://nkixgivu0vfu" path="res://projectiles/ice_ball.gd" id="1_xvcnu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xvcnu"]
+size = Vector2(14, 14)
+
+[node name="IceBall" type="Area2D" unique_id=1092695693]
+script = ExtResource("1_xvcnu")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=405882028]
+offset_right = 14.0
+offset_bottom = 14.0
+color = Color(0, 0.7490196, 1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1942650935]
+shape = SubResource("RectangleShape2D_xvcnu")

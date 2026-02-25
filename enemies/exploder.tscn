@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dv8uxxb8wx6ry"]
+
+[ext_resource type="Script" uid="uid://km7umijmmlyd" path="res://enemies/exploder.gd" id="1_1s4hs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l1fpp"]
+size = Vector2(32, 32)
+
+[node name="exploder" type="Area2D" unique_id=1524953720]
+script = ExtResource("1_1s4hs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1979544878]
+shape = SubResource("RectangleShape2D_l1fpp")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=932828443]
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(1, 0.41960785, 0, 1)
