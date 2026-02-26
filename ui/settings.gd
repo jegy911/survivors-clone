@@ -129,8 +129,8 @@ func _build_goruntu_tab(parent: Node):
 		SaveManager.save_game()
 	)
 	
-	_add_toggle(vbox, "VFX Efektleri", SaveManager.settings.get("vfx_enabled", true), func(val):
-		SaveManager.settings["vfx_enabled"] = val
+	_add_toggle(vbox, "VFX Efektleri", SaveManager.settings.get("show_vfx", true), func(val):
+		SaveManager.settings["show_vfx"] = val
 		SaveManager.save_game()
 	)
 
@@ -139,8 +139,13 @@ func _build_oynanis_tab(parent: Node):
 	vbox.add_theme_constant_override("separation", 20)
 	parent.add_child(vbox)
 	
-	_add_toggle(vbox, "Hasar Sayıları", SaveManager.settings.get("damage_numbers", true), func(val):
+	_add_dropdown(vbox, "Hasar Sayıları", SaveManager.settings.get("damage_numbers", "both_on"), func(val):
 		SaveManager.settings["damage_numbers"] = val
+		SaveManager.save_game()
+	)
+	
+	_add_dropdown(vbox, "Can Barları", SaveManager.settings.get("hp_bars", "both_on"), func(val):
+		SaveManager.settings["hp_bars"] = val
 		SaveManager.save_game()
 	)
 	
@@ -148,6 +153,29 @@ func _build_oynanis_tab(parent: Node):
 		SaveManager.settings["screen_shake"] = val
 		SaveManager.save_game()
 	)
+
+func _add_dropdown(parent: Node, label_text: String, current_val: String, callback: Callable):
+	var row = HBoxContainer.new()
+	row.add_theme_constant_override("separation", 20)
+	parent.add_child(row)
+	
+	var label = Label.new()
+	label.text = label_text
+	label.custom_minimum_size = Vector2(200, 0)
+	label.add_theme_color_override("font_color", Color.WHITE)
+	label.add_theme_font_size_override("font_size", 18)
+	row.add_child(label)
+	
+	var options = ["both_on", "player_only", "enemy_only", "both_off"]
+	var option_labels = ["İkisi de Açık", "Sadece Oyuncu", "Sadece Düşman", "İkisi de Kapalı"]
+	
+	var dropdown = OptionButton.new()
+	dropdown.custom_minimum_size = Vector2(220, 40)
+	for i in options.size():
+		dropdown.add_item(option_labels[i])
+	dropdown.selected = options.find(current_val)
+	dropdown.item_selected.connect(func(idx): callback.call(options[idx]))
+	row.add_child(dropdown)
 
 func _add_slider(parent: Node, label_text: String, default_val: float, callback: Callable):
 	var row = HBoxContainer.new()

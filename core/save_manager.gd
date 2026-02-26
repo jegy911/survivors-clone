@@ -31,12 +31,10 @@ var settings = {
 	"sfx_volume": 1.0,
 	"music_volume": 1.0,
 	"fullscreen": false,
-	"vfx_enabled": true,
-	"damage_numbers": true,
+	"show_vfx": true,
 	"screen_shake": true,
-	"show_hp_bars": true,      # YENİ
-	"show_damage_numbers": true, # YENİ
-	"show_vfx": true,          # YENİ
+	"damage_numbers": "both_on",  # both_on, player_only, enemy_only, both_off
+	"hp_bars": "both_on",         # both_on, player_only, enemy_only, both_off
 }
 
 # Kilit sistemi
@@ -59,7 +57,6 @@ func save_game():
 		config.set_value("upgrades", key, meta_upgrades[key])
 	for key in settings:
 		config.set_value("settings", key, settings[key])
-	# Kilit sistemi
 	config.set_value("unlock", "total_kills", total_kills)
 	config.set_value("unlock", "max_survival_time", max_survival_time)
 	config.set_value("unlock", "killed_tank", killed_tank)
@@ -67,19 +64,23 @@ func save_game():
 	config.set_value("unlock", "unique_chars_played", unique_chars_played)
 	config.set_value("unlock", "unlocked_characters", unlocked_characters)
 	config.set_value("unlock", "purchased_characters", purchased_characters)
+	var err = config.save(SAVE_PATH)
+	if err != OK:
+		print("SaveManager: Kayıt başarısız! Hata kodu: ", err)
 	config.save(SAVE_PATH)
 
 func load_game():
 	var config = ConfigFile.new()
 	if config.load(SAVE_PATH) != OK:
+		print("SaveManager: Kayıt dosyası bulunamadı, varsayılan değerler kullanılıyor.")
 		return
 	gold = config.get_value("player", "gold", 0)
 	selected_character = config.get_value("player", "selected_character", 0)
+	selected_character = clamp(selected_character, 0, CharacterData.CHARACTERS.size() - 1)
 	for key in meta_upgrades:
 		meta_upgrades[key] = config.get_value("upgrades", key, 0)
 	for key in settings:
 		settings[key] = config.get_value("settings", key, settings[key])
-	# Kilit sistemi
 	total_kills = config.get_value("unlock", "total_kills", 0)
 	max_survival_time = config.get_value("unlock", "max_survival_time", 0.0)
 	killed_tank = config.get_value("unlock", "killed_tank", false)

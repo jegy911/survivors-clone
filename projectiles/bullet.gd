@@ -10,11 +10,13 @@ func _ready():
 	$ColorRect.color = Color("#FFD700")
 
 func _physics_process(delta):
+	if not visible:
+		return
 	position += direction * speed * delta
 	lifetime -= delta
 	
 	if lifetime <= 0:
-		queue_free()
+		ObjectPool.return_object(self)
 		return
 	
 	var areas = get_overlapping_areas()
@@ -29,10 +31,19 @@ func _physics_process(delta):
 						area.flash()
 				else:
 					area.take_damage(damage)
-				queue_free()
+				ObjectPool.return_object(self)
 				return
 
 func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false):
 	direction = dir
 	damage = dmg
 	armor_piercing = is_armor_piercing
+	lifetime = 2.0
+	show()
+
+func reset():
+	direction = Vector2.ZERO
+	damage = 10
+	lifetime = 2.0
+	armor_piercing = false
+	hide()

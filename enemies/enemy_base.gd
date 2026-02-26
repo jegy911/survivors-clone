@@ -30,7 +30,8 @@ func _ready():
 	_setup_hp_bar()
 
 func _setup_hp_bar():
-	if not SaveManager.settings.get("show_hp_bars", true):
+	var hp_setting = SaveManager.settings.get("hp_bars", "both_on")
+	if hp_setting == "both_off" or hp_setting == "player_only":
 		return
 	var bar_bg = ColorRect.new()
 	bar_bg.name = "HPBarBG"
@@ -56,7 +57,8 @@ func take_damage(amount: int):
 	hp -= amount
 	_update_hp_bar()
 	
-	if SaveManager.settings.get("show_damage_numbers", true):
+	var dmg_setting = SaveManager.settings.get("damage_numbers", "both_on")
+	if dmg_setting == "both_on" or dmg_setting == "enemy_only":
 		var popup = ObjectPool.get_object("res://effects/damage_number.tscn")
 		popup.global_position = global_position + Vector2(0, -50)
 		popup.show_damage(amount, damage_color)
@@ -94,6 +96,7 @@ func die():
 	if is_dead:
 		return
 	is_dead = true
+	EventBus.enemy_killed.emit(global_position)
 	AudioManager.play_death()
 	if SaveManager.settings.get("show_vfx", true):
 		_spawn_particles()
@@ -137,8 +140,7 @@ func _spawn_particles():
 func _on_death_complete():
 	var player_node = get_tree().get_first_node_in_group("player")
 	if player_node:
-		player_node.add_kill()
-		player_node.on_enemy_killed(global_position)
+		player_node.on_enemy_killed(global_position)  # add_kill() kaldırıldı
 	if randf() < XP_DROP_CHANCE:
 		var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
 		orb.init(XP_VALUE, global_position)

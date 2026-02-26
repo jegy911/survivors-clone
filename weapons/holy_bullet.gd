@@ -1,7 +1,6 @@
 class_name WeaponHolyBullet
 extends WeaponBase
 
-var bullet_scene = preload("res://projectiles/bullet.tscn")
 var bullet_count = 3
 
 func _ready():
@@ -16,18 +15,15 @@ func attack():
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	if enemies.is_empty():
 		return
-	
 	enemies.sort_custom(func(a, b):
 		return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position)
 	)
-	
 	for i in min(bullet_count, enemies.size()):
-		var bullet = bullet_scene.instantiate()
-		player.get_parent().add_child(bullet)
+		var bullet = ObjectPool.get_object("res://projectiles/bullet.tscn")
 		bullet.global_position = player.global_position
 		var dir = (enemies[i].global_position - player.global_position).normalized()
 		var final_damage = player.get_total_damage(damage)
-		bullet.init(dir, final_damage, true) # true = armor piercing
+		bullet.init(dir, final_damage, true)
 
 func on_upgrade():
 	match level:

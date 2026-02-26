@@ -40,6 +40,7 @@ func _ready():
 	ground.z_index = -10
 	add_child(ground)
 	move_child(ground, 0)
+	EventBus.game_started.emit()
 
 func get_curse_level() -> int:
 	return SaveManager.meta_upgrades.get("curse_level", 0)
@@ -66,6 +67,9 @@ func get_enemy_speed_multiplier() -> float:
 func _process(delta):
 	game_timer += delta
 	update_timer_label()
+	
+	if game_timer >= 900 and AudioManager.current_music == 1:
+		AudioManager.play_music(2)
 
 	# Mini boss kontrolü
 	if next_mini_boss_index < mini_boss_times.size():

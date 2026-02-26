@@ -1,10 +1,12 @@
 extends CharacterBody2D
 
-const BASE_SPEED = 130.0
+var BASE_SPEED = 130.0
 var SPEED = 130.0
 var hp = 100
 var max_hp = 100
 var bullet_damage = 10
+var shake_intensity = 0.0
+var shake_duration = 0.0
 
 var xp = 0
 var level = 1
@@ -22,7 +24,6 @@ var recovery_timer = 0.0
 
 var upgrade_ui_scene = preload("res://ui/upgrade_ui.tscn")
 var game_over_scene = preload("res://ui/game_over.tscn")
-var damage_number_scene = preload("res://effects/damage_number.tscn")
 var pause_menu_scene = preload("res://ui/pause_menu.tscn")
 var upgrade_ui = null
 var pause_menu = null
@@ -69,6 +70,7 @@ func _ready():
 	
 	update_hp_bar()
 	update_category_ui()
+	EventBus.player_damaged.connect(_on_player_damaged)
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
@@ -136,6 +138,7 @@ func _process(delta):
 		if recovery_timer >= 60.0:
 			recovery_timer = 0.0
 			heal(recovery * 3)
+	_update_screen_shake(delta)
 
 func update_hp_bar():
 	var ratio = float(hp) / float(max_hp)
@@ -348,6 +351,7 @@ func on_enemy_killed(enemy_position: Vector2):
 	if active_weapons.has("storm"):
 		active_weapons["storm"].on_enemy_killed_bonus()
 	kill_count += 1
+	EventBus.enemy_killed.emit(enemy_position)
 	$CanvasLayer/KillLabel.text = "💀 " + str(kill_count)
 
 # YENİ — tank öldürme takibi için
@@ -357,11 +361,11 @@ func on_tank_killed():
 func heal(amount: int):
 	hp = min(hp + amount, max_hp)
 	update_hp_bar()
+	EventBus.player_healed.emit(amount)
 	show_floating_text("+" + str(amount), global_position + Vector2(0, -50), Color("#2ECC71"))
 
 func show_floating_text(text: String, pos: Vector2, color: Color):
-	var popup = damage_number_scene.instantiate()
-	get_parent().add_child(popup)
+	var popup = ObjectPool.get_object("res://effects/damage_number.tscn")
 	popup.global_position = pos
 	popup.show_damage_text(text, color)
 
@@ -407,20 +411,19 @@ func get_item_description(type: String) -> String:
 		"luck_stone": return "Yeni: Şans Taşı\nKritik şansı + altın"
 	return ""
 
-func add_kill():
-	pass
-
 func gain_xp(amount: int):
 	var curse_multiplier = 1.0 + SaveManager.meta_upgrades.get("curse_level", 0) * 1.0
 	var bonus = 1.0 + SaveManager.meta_upgrades["xp_bonus"] * 0.1 + category_xp_bonus
 	xp += int(amount * bonus * curse_multiplier)
 	xp_bar.value = xp
 	AudioManager.play_xp()
+	EventBus.xp_gained.emit(amount)
 	if xp >= xp_to_next_level:
 		level_up()
 
 func level_up():
 	level += 1
+	EventBus.player_leveled_up.emit(level)
 	xp = 0
 	xp_to_next_level = int(xp_to_next_level * 1.3)
 	xp_bar.max_value = xp_to_next_level
@@ -505,15 +508,16 @@ func take_damage(amount: int):
 	hp -= final_damage
 	update_hp_bar()
 	AudioManager.play_player_hurt()
-	var popup = damage_number_scene.instantiate()
-	get_parent().add_child(popup)
-	popup.global_position = global_position + Vector2(0, -40)
-	popup.show_damage_text("-" + str(final_damage), Color("#E74C3C"))
+	EventBus.player_damaged.emit(final_damage)  # final_damage hesaplandıktan sonra
+	var dmg_setting = SaveManager.settings.get("damage_numbers", "both_on")
+	if dmg_setting == "both_on" or dmg_setting == "player_only":
+		var popup = ObjectPool.get_object("res://effects/damage_number.tscn")
+		popup.global_position = global_position + Vector2(0, -40)
+		popup.show_damage_text("-" + str(final_damage), Color("#E74C3C"))
 	if hp <= 0:
 		die()
 
 func die():
-	# Revival kontrolü
 	if not revival_used and SaveManager.meta_upgrades.get("revival", 0) >= 1:
 		revival_used = true
 		hp = int(max_hp * 0.3)
@@ -522,12 +526,10 @@ func die():
 		return
 	
 	SaveManager.add_gold(gold_earned)
-	# İstatistik güncelle ve kilit kontrolü  # YENİ
 	var char_id = CharacterData.CHARACTERS[SaveManager.selected_character]["id"]
 	var game_time = get_tree().get_first_node_in_group("main").game_timer
 	SaveManager.update_stats_after_game(char_id, kill_count, game_time, evolution_obtained, tank_killed)
-	
-	call_deferred("_deferred_die")
+	EventBus.player_died.emit()
 	call_deferred("_deferred_die")
 
 func _deferred_die():
@@ -540,4 +542,20 @@ func _deferred_die():
 
 func collect_gold(amount: int):
 	gold_earned += amount
+	EventBus.gold_collected.emit(amount)
 	show_floating_text("+" + str(amount) + "💰", global_position + Vector2(randf_range(-20, 20), -50), Color("#FFD700"))
+	
+func _on_player_damaged(amount: int):
+	if not SaveManager.settings.get("screen_shake", true):
+		return
+	shake_intensity = min(amount * 0.3, 8.0)
+	shake_duration = 0.25
+
+func _update_screen_shake(delta: float):
+	if shake_duration > 0:
+		shake_duration -= delta
+		var offset = Vector2(randf_range(-shake_intensity, shake_intensity), randf_range(-shake_intensity, shake_intensity))
+		$Camera2D.offset = offset
+		if shake_duration <= 0:
+			$Camera2D.offset = Vector2.ZERO
+			shake_intensity = 0.0

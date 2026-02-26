@@ -1,7 +1,6 @@
 extends EnemyBase
 
 const PREFERRED_DISTANCE = 250.0
-var enemy_bullet_scene = preload("res://projectiles/enemy_bullet.tscn")
 
 func _ready():
 	super._ready()
@@ -13,6 +12,7 @@ func _ready():
 	max_hp = 40
 	current_speed = BASE_SPEED
 	particle_color = Color("#E67E22")
+	body.color = Color("#E67E22")
 
 func _process(delta):
 	if is_dead or player == null:
@@ -34,8 +34,7 @@ func _process(delta):
 		damage_cooldown = 1.8
 
 func shoot():
-	var bullet = enemy_bullet_scene.instantiate()
-	get_parent().add_child(bullet)
+	var bullet = ObjectPool.get_object("res://projectiles/enemy_bullet.tscn")
 	bullet.global_position = global_position
 	var dir = (player.global_position - global_position).normalized()
 	bullet.init(dir, DAMAGE)

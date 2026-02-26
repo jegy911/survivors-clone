@@ -21,6 +21,9 @@ func _ready():
 	$VBoxContainer/GoldLabel.add_theme_color_override("font_color", Color("#F5E642"))
 	$VBoxContainer/GoldLabel.add_theme_font_size_override("font_size", 20)
 	
+	if not AudioManager.music_player.playing:
+		AudioManager.play_music(1)
+	
 	for btn in [$VBoxContainer/StartButton, $VBoxContainer/UpgradeButton, $VBoxContainer/SettingsButton, $VBoxContainer/QuitButton]:
 		btn.custom_minimum_size = Vector2(300, 60)
 		var style = StyleBoxFlat.new()

@@ -1,7 +1,6 @@
 class_name WeaponBloodBoomerang
 extends WeaponBase
 
-var boomerang_scene = preload("res://projectiles/boomerang.tscn")
 var boomerang_count = 2
 
 func _ready():
@@ -16,14 +15,11 @@ func attack():
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	if enemies.is_empty():
 		return
-	
 	enemies.sort_custom(func(a, b):
 		return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position)
 	)
-	
 	for i in min(boomerang_count, enemies.size()):
-		var b = boomerang_scene.instantiate()
-		player.get_parent().add_child(b)
+		var b = ObjectPool.get_object("res://projectiles/boomerang.tscn")
 		b.global_position = player.global_position
 		var dir = (enemies[i].global_position - player.global_position).normalized()
 		var final_damage = player.get_total_damage(damage)

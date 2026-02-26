@@ -19,6 +19,7 @@ config/features=PackedStringArray("4.6", "Forward Plus")
 SaveManager="*uid://cvcdlgqf65851"
 AudioManager="*uid://dkf8pjyhbu6xj"
 ObjectPool="*uid://dmgclbk4ofl3u"
+EventBus="*uid://b31g0p1hnvt7s"
 
 [display]
 

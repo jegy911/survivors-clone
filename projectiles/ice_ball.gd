@@ -10,27 +10,37 @@ var lifetime = 2.5
 func _ready():
 	body.color = Color("#00BFFF")
 
-func init(dir: Vector2, dmg: int):
-	direction = dir
-	damage = dmg
-
 func _physics_process(delta):
+	if not visible:
+		return
 	lifetime -= delta
 	if lifetime <= 0:
-		queue_free()
+		ObjectPool.return_object(self)
 		return
-	
 	position += direction * speed * delta
 	rotation = direction.angle()
-	
 	for area in get_overlapping_areas():
 		if area.has_method("take_damage") and not area.is_in_group("player"):
 			area.take_damage(damage)
 			if area.has_method("apply_slow"):
 				area.apply_slow(0.3, 2.0)
-			_spawn_freeze_effect()
-			queue_free()
+			if SaveManager.settings.get("show_vfx", true):
+				_spawn_freeze_effect()
+			ObjectPool.return_object(self)
 			return
+
+func init(dir: Vector2, dmg: int):
+	direction = dir
+	damage = dmg
+	lifetime = 2.5
+	rotation = 0.0
+	show()
+
+func reset():
+	direction = Vector2.ZERO
+	damage = 15
+	lifetime = 2.5
+	hide()
 
 func _spawn_freeze_effect():
 	for i in 5:

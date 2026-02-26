@@ -46,14 +46,12 @@ func _on_resume():
 func _on_settings():
 	$VBoxContainer.visible = false
 	$Background.visible = false
-	
 	var settings_panel = _build_settings_panel()
 	settings_panel.z_index = 100
 	add_child(settings_panel)
 
 func _build_settings_panel() -> Control:
 	var screen_size = get_viewport().get_visible_rect().size
-	
 	var bg = ColorRect.new()
 	bg.size = screen_size
 	bg.color = Color("#0D0D1A")
@@ -85,15 +83,29 @@ func _build_settings_panel() -> Control:
 	)
 	_add_slider_to(vbox, "Müzik", SaveManager.settings.get("music_volume", 1.0), func(val):
 		SaveManager.settings["music_volume"] = val
+		var bus = AudioServer.get_bus_index("Music")
+		if bus >= 0:
+			AudioServer.set_bus_volume_db(bus, linear_to_db(val))
 		SaveManager.save_game()
 	)
 	
-	_add_toggle_to(vbox, "Hasar Sayıları", SaveManager.settings.get("damage_numbers", true), func(val):
+	_add_toggle_to(vbox, "VFX Efektleri", SaveManager.settings.get("show_vfx", true), func(val):
+		SaveManager.settings["show_vfx"] = val
+		SaveManager.save_game()
+	)
+	
+	_add_toggle_to(vbox, "Ekran Sarsıntısı", SaveManager.settings.get("screen_shake", true), func(val):
+		SaveManager.settings["screen_shake"] = val
+		SaveManager.save_game()
+	)
+	
+	_add_dropdown_to(vbox, "Hasar Sayıları", SaveManager.settings.get("damage_numbers", "both_on"), func(val):
 		SaveManager.settings["damage_numbers"] = val
 		SaveManager.save_game()
 	)
-	_add_toggle_to(vbox, "VFX Efektleri", SaveManager.settings.get("vfx_enabled", true), func(val):
-		SaveManager.settings["vfx_enabled"] = val
+	
+	_add_dropdown_to(vbox, "Can Barları", SaveManager.settings.get("hp_bars", "both_on"), func(val):
+		SaveManager.settings["hp_bars"] = val
 		SaveManager.save_game()
 	)
 	
@@ -115,21 +127,18 @@ func _build_settings_panel() -> Control:
 		$Background.visible = true
 	)
 	vbox.add_child(back_btn)
-	
 	return bg
 
 func _add_slider_to(parent: Node, label_text: String, default_val: float, callback: Callable):
 	var row = HBoxContainer.new()
 	row.add_theme_constant_override("separation", 20)
 	parent.add_child(row)
-	
 	var label = Label.new()
 	label.text = label_text
 	label.custom_minimum_size = Vector2(200, 0)
 	label.add_theme_color_override("font_color", Color.WHITE)
 	label.add_theme_font_size_override("font_size", 18)
 	row.add_child(label)
-	
 	var slider = HSlider.new()
 	slider.min_value = 0.0
 	slider.max_value = 1.0
@@ -138,13 +147,11 @@ func _add_slider_to(parent: Node, label_text: String, default_val: float, callba
 	slider.custom_minimum_size = Vector2(300, 40)
 	slider.value_changed.connect(callback)
 	row.add_child(slider)
-	
 	var percent = Label.new()
 	percent.text = str(int(default_val * 100)) + "%"
 	percent.custom_minimum_size = Vector2(60, 0)
 	percent.add_theme_color_override("font_color", Color("#AAAAAA"))
 	row.add_child(percent)
-	
 	slider.value_changed.connect(func(val):
 		percent.text = str(int(val * 100)) + "%"
 	)
@@ -153,19 +160,38 @@ func _add_toggle_to(parent: Node, label_text: String, default_val: bool, callbac
 	var row = HBoxContainer.new()
 	row.add_theme_constant_override("separation", 20)
 	parent.add_child(row)
-	
 	var label = Label.new()
 	label.text = label_text
 	label.custom_minimum_size = Vector2(200, 0)
 	label.add_theme_color_override("font_color", Color.WHITE)
 	label.add_theme_font_size_override("font_size", 18)
 	row.add_child(label)
-	
 	var btn = CheckButton.new()
 	btn.button_pressed = default_val
 	btn.toggled.connect(callback)
 	row.add_child(btn)
 
+func _add_dropdown_to(parent: Node, label_text: String, current_val: String, callback: Callable):
+	var row = HBoxContainer.new()
+	row.add_theme_constant_override("separation", 20)
+	parent.add_child(row)
+	var label = Label.new()
+	label.text = label_text
+	label.custom_minimum_size = Vector2(200, 0)
+	label.add_theme_color_override("font_color", Color.WHITE)
+	label.add_theme_font_size_override("font_size", 18)
+	row.add_child(label)
+	var options = ["both_on", "player_only", "enemy_only", "both_off"]
+	var option_labels = ["İkisi de Açık", "Sadece Oyuncu", "Sadece Düşman", "İkisi de Kapalı"]
+	var dropdown = OptionButton.new()
+	dropdown.custom_minimum_size = Vector2(220, 40)
+	for i in options.size():
+		dropdown.add_item(option_labels[i])
+	dropdown.selected = options.find(current_val)
+	dropdown.item_selected.connect(func(idx): callback.call(options[idx]))
+	row.add_child(dropdown)
+
 func _on_main_menu():
 	get_tree().paused = false
+	queue_free()  # bunu ekle
 	get_tree().change_scene_to_file("res://ui/main_menu.tscn")

@@ -13,26 +13,22 @@ var lifesteal = false
 
 func _ready():
 	body.color = Color("#00BFFF")
-	
-
-func init(dir: Vector2, dmg: int, player: Node2D):
-	direction = dir
-	damage = dmg
-	player_ref = player
 
 func _physics_process(delta):
+	if not visible:
+		return
 	lifetime -= delta
 	if lifetime <= 0:
-		queue_free()
+		ObjectPool.return_object(self)
 		return
 	
 	if returning:
 		if player_ref == null or not is_instance_valid(player_ref):
-			queue_free()
+			ObjectPool.return_object(self)
 			return
 		direction = (player_ref.global_position - global_position).normalized()
 		if global_position.distance_to(player_ref.global_position) < 20:
-			queue_free()
+			ObjectPool.return_object(self)
 			return
 	
 	position += direction * speed * delta
@@ -50,3 +46,23 @@ func _physics_process(delta):
 				hit_enemies.append(area)
 				if lifesteal and player_ref:
 					player_ref.heal(int(damage * 0.3))
+
+func init(dir: Vector2, dmg: int, player: Node2D):
+	direction = dir
+	damage = dmg
+	player_ref = player
+	returning = false
+	hit_enemies.clear()
+	lifetime = 3.0
+	rotation = 0.0
+	show()
+
+func reset():
+	direction = Vector2.ZERO
+	damage = 18
+	player_ref = null
+	returning = false
+	hit_enemies.clear()
+	lifetime = 3.0
+	lifesteal = false
+	hide()

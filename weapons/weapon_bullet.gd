@@ -1,7 +1,6 @@
 class_name WeaponBullet
 extends WeaponBase
 
-var bullet_scene = preload("res://projectiles/bullet.tscn")
 var bullet_count = 1
 var max_range = 500.0
 
@@ -33,8 +32,7 @@ func attack():
 	
 	var effective_count = bullet_count + get_effective_multi_attack()
 	for i in min(effective_count, in_range.size()):
-		var bullet = bullet_scene.instantiate()
-		player.get_parent().add_child(bullet)
+		var bullet = ObjectPool.get_object("res://projectiles/bullet.tscn")
 		bullet.global_position = player.global_position
 		var dir = (in_range[i].global_position - player.global_position).normalized()
 		var final_damage = player.get_total_damage(damage)
