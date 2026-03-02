@@ -6,6 +6,7 @@
 size = Vector2(30, 30)
 
 [node name="healer" type="Area2D" unique_id=268825500]
+collision_layer = 2
 script = ExtResource("1_ds2si")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=913020785]
