@@ -31,13 +31,15 @@ horizontal_alignment = 1
 [node name="GoldLabel" type="Label" parent="Panel/VBoxContainer" unique_id=1750270591]
 layout_mode = 2
 
-[node name="ScrollContainer" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=1907660859]
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer" unique_id=1907660859]
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer/ScrollContainer" unique_id=1868452077]
+[node name="GridContainer" type="GridContainer" parent="Panel/VBoxContainer/ScrollContainer" unique_id=1868452077]
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 3
+columns = 5
 
 [node name="ActionRow" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=1552556534]
 layout_mode = 2

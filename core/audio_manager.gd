@@ -13,6 +13,9 @@ extends Node
 var current_music = 0
 
 func _ready():
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	music_player.process_mode = Node.PROCESS_MODE_ALWAYS
+	music_player2.process_mode = Node.PROCESS_MODE_ALWAYS
 	apply_volume_settings()
 	EventBus.game_started.connect(_on_game_started)
 

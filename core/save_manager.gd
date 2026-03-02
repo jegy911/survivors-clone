@@ -67,7 +67,6 @@ func save_game():
 	var err = config.save(SAVE_PATH)
 	if err != OK:
 		print("SaveManager: Kayıt başarısız! Hata kodu: ", err)
-	config.save(SAVE_PATH)
 
 func load_game():
 	var config = ConfigFile.new()

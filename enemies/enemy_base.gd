@@ -96,7 +96,7 @@ func die():
 	if is_dead:
 		return
 	is_dead = true
-	EventBus.enemy_killed.emit(global_position)
+	# EventBus.enemy_killed sadece player.on_enemy_killed içinde emit edilir
 	AudioManager.play_death()
 	if SaveManager.settings.get("show_vfx", true):
 		_spawn_particles()
@@ -140,7 +140,7 @@ func _spawn_particles():
 func _on_death_complete():
 	var player_node = get_tree().get_first_node_in_group("player")
 	if player_node:
-		player_node.on_enemy_killed(global_position)  # add_kill() kaldırıldı
+		player_node.on_enemy_killed(global_position)
 	if randf() < XP_DROP_CHANCE:
 		var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
 		orb.init(XP_VALUE, global_position)

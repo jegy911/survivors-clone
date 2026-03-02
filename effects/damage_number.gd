@@ -3,10 +3,10 @@ extends Node2D
 func show_damage(amount: int, color: Color = Color.WHITE):
 	show_damage_text("-" + str(amount), color)
 
-func show_damage_text(text: String, color: Color = Color.WHITE):
+func show_damage_text(text: String, color: Color = Color.WHITE, font_size: int = 16):
 	$Label.text = text
 	$Label.modulate = color
-	$Label.add_theme_font_size_override("font_size", 16)
+	$Label.add_theme_font_size_override("font_size", font_size)
 	show()
 	
 	var tween = create_tween()

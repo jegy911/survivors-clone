@@ -19,3 +19,7 @@ signal game_resumed
 # XP / Gold sinyalleri
 signal xp_gained(amount: int)
 signal gold_collected(amount: int)
+
+# Oyun hissi (juice)
+signal hit_stop_requested(frames: int)
+signal boss_spawned

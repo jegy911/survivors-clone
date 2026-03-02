@@ -58,7 +58,6 @@ func die():
 func _on_death_complete():
 	var player_node = get_tree().get_first_node_in_group("player")
 	if player_node:
-		player_node.add_kill()
 		player_node.on_enemy_killed(global_position)
 	if randf() < XP_DROP_CHANCE:
 		for i in 5:

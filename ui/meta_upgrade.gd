@@ -53,6 +53,8 @@ func _ready():
 	$VBoxContainer/BackButton.pressed.connect(_on_back)
 
 	$VBoxContainer/ScrollContainer.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	$VBoxContainer/ScrollContainer.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	$VBoxContainer/ScrollContainer/UpgradeList.add_theme_constant_override("separation", 12)
 	build_upgrade_list()
 
 func build_upgrade_list():
@@ -60,15 +62,37 @@ func build_upgrade_list():
 	for child in list.get_children():
 		child.queue_free()
 
+	var grid = GridContainer.new()
+	grid.columns = 3
+	grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	grid.add_theme_constant_override("h_separation", 16)
+	grid.add_theme_constant_override("v_separation", 16)
+	list.add_child(grid)
+
 	for upgrade in upgrade_defs:
 		var level = SaveManager.meta_upgrades.get(upgrade["id"], 0)
 		var max_level = upgrade["max_level"]
 		var cost = SaveManager.get_upgrade_cost(upgrade["id"], level)
 		var is_maxed = level >= max_level
 
+		var card = PanelContainer.new()
+		card.custom_minimum_size = Vector2(280, 100)
+		var card_style = StyleBoxFlat.new()
+		card_style.bg_color = Color("#1A1A2E")
+		card_style.corner_radius_top_left = 10
+		card_style.corner_radius_top_right = 10
+		card_style.corner_radius_bottom_left = 10
+		card_style.corner_radius_bottom_right = 10
+		card_style.border_width_left = 1
+		card_style.border_width_right = 1
+		card_style.border_width_top = 1
+		card_style.border_width_bottom = 1
+		card_style.border_color = Color("#3498DB") if is_maxed else Color("#333355")
+		card.add_theme_stylebox_override("panel", card_style)
+
 		var row = HBoxContainer.new()
 		row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		row.add_theme_constant_override("separation", 16)
+		row.add_theme_constant_override("separation", 12)
 
 		var info = VBoxContainer.new()
 		info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -108,13 +132,10 @@ func build_upgrade_list():
 
 		row.add_child(info)
 		row.add_child(btn)
-		list.add_child(row)
+		card.add_child(row)
+		grid.add_child(card)
 
 	# Reset butonu — listenin en altında
-	var separator = HSeparator.new()
-	separator.add_theme_constant_override("separation", 20)
-	list.add_child(separator)
-
 	var reset_btn = Button.new()
 	if pending_reset:
 		reset_btn.text = "⚠ Emin misin? Tekrar bas!"

@@ -3,6 +3,13 @@ extends CanvasLayer
 var selected_index = -1
 
 func _ready():
+	var vp = get_viewport().get_visible_rect().size
+	$Panel/VBoxContainer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	$Panel/VBoxContainer.add_theme_constant_override("separation", 16)
+	$Panel/VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 32)
+	$Panel/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
+	$Panel/VBoxContainer/ScrollContainer/GridContainer.add_theme_constant_override("h_separation", 16)
+	$Panel/VBoxContainer/ScrollContainer/GridContainer.add_theme_constant_override("v_separation", 16)
 	build_characters()
 	_update_gold_label()
 	$Panel/VBoxContainer/ActionRow/BackButton.pressed.connect(_on_back)
@@ -14,7 +21,7 @@ func _update_gold_label():
 		$Panel/VBoxContainer/GoldLabel.text = "💰 " + str(SaveManager.gold)
 
 func build_characters():
-	var container = $Panel/VBoxContainer/ScrollContainer/HBoxContainer
+	var container = $Panel/VBoxContainer/ScrollContainer/GridContainer
 	for child in container.get_children():
 		child.queue_free()
 
@@ -32,9 +39,49 @@ func _get_state(char_id: String) -> String:
 	else:
 		return "locked"
 
+func _get_weapon_name(weapon_id: String) -> String:
+	var names = {
+		"bullet": "Mermi", "aura": "Aura", "chain": "Zincir", "boomerang": "Bumerang",
+		"lightning": "Yıldırım", "ice_ball": "Buz Topu", "shadow": "Gölge", "laser": "Lazer",
+		"holy_bullet": "Kutsal Mermi", "blood_boomerang": "Kan Bumerangı", "death_laser": "Ölüm Lazeri"
+	}
+	return names.get(weapon_id, weapon_id)
+
+func _get_item_name(item_id: String) -> String:
+	var names = {"lifesteal": "Can Çalma", "armor": "Zırh", "crit": "Kritik", "shield": "Kalkan"}
+	return names.get(item_id, item_id)
+
+func _build_rich_description(char_data: Dictionary, state: String) -> String:
+	if state == "locked" or char_data["secret"]:
+		return char_data.get("unlock_hint", "")
+	var parts: Array = []
+	if char_data["start_weapon"] != "":
+		parts.append("⚔ Başlangıç: " + _get_weapon_name(char_data["start_weapon"]))
+	if char_data["start_item"] != "":
+		parts.append("🛡 Item: " + _get_item_name(char_data["start_item"]))
+	if char_data["bonus_damage"] > 0:
+		parts.append("🗡 +" + str(char_data["bonus_damage"]) + " hasar")
+	if char_data["bonus_hp"] > 0:
+		parts.append("💗 +" + str(char_data["bonus_hp"]) + " max can")
+	if char_data["bonus_speed"] > 0:
+		parts.append("👟 +" + str(char_data["bonus_speed"]) + " hız")
+	if char_data["bonus_armor"] > 0:
+		parts.append("🛡 +" + str(char_data["bonus_armor"]) + " zırh")
+	if char_data["special"] != "":
+		var s = char_data["special"]
+		if s == "lifesteal_15": parts.append("🩸 +%15 can çalma")
+		elif s == "cooldown_10": parts.append("⚡ Cooldown -%10")
+		elif s == "slow_double": parts.append("❄ Yavaşlatma 2x")
+		elif s == "area_15": parts.append("💥 Alan +%15")
+		elif s == "xp_20": parts.append("⭐ XP +%20")
+		else: parts.append("✨ " + s)
+	if parts.is_empty():
+		return char_data["description"]
+	return "\n".join(parts)
+
 func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer:
 	var card = PanelContainer.new()
-	card.custom_minimum_size = Vector2(200, 310)
+	card.custom_minimum_size = Vector2(180, 340)
 	card.set_meta("index", i)
 
 	var card_style = StyleBoxFlat.new()
@@ -81,8 +128,8 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			char_visual.color = Color(char_data["color"])
 			name_label.text = char_data["name"]
 			name_label.add_theme_color_override("font_color", Color(char_data["color"]))
-			desc_label.text = char_data["description"]
-			desc_label.add_theme_color_override("font_color", Color("#AAAAAA"))
+			desc_label.text = _build_rich_description(char_data, state)
+			desc_label.add_theme_color_override("font_color", Color("#B0B0B0"))
 
 			var btn = _make_button("Seç", Color("#3498DB"))
 			var idx = i
@@ -96,7 +143,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			char_visual.color = Color(0.3, 0.3, 0.3, 1.0)
 			name_label.text = char_data["name"] if not char_data["secret"] else "???"
 			name_label.add_theme_color_override("font_color", Color("#888888"))
-			desc_label.text = char_data["description"] if not char_data["secret"] else "???"
+			desc_label.text = _build_rich_description(char_data, state) if not char_data["secret"] else "???"
 			desc_label.add_theme_color_override("font_color", Color("#666666"))
 
 			var cost = char_data["cost"]
@@ -153,7 +200,7 @@ func _on_select(index: int):
 	$Panel/VBoxContainer/ActionRow/PlayButton.disabled = false
 
 func _update_selection_borders():
-	var container = $Panel/VBoxContainer/ScrollContainer/HBoxContainer
+	var container = $Panel/VBoxContainer/ScrollContainer/GridContainer
 	for i in container.get_child_count():
 		var card = container.get_child(i)
 		var style = card.get_theme_stylebox("panel").duplicate()

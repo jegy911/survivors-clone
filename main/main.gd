@@ -27,6 +27,8 @@ const MAX_ENEMIES = 80
 const ELITE_CHANCE = 0.15
 const GOLD_DROP_CHANCE = 0.12
 
+var hit_stop_frames = 0
+
 @onready var timer_label = $HUD/TimerLabel
 @onready var wave_label = $HUD/WaveLabel
 
@@ -41,6 +43,10 @@ func _ready():
 	add_child(ground)
 	move_child(ground, 0)
 	EventBus.game_started.emit()
+	EventBus.hit_stop_requested.connect(_on_hit_stop_requested)
+
+func _on_hit_stop_requested(frames: int):
+	hit_stop_frames = max(hit_stop_frames, frames)
 
 func get_curse_level() -> int:
 	return SaveManager.meta_upgrades.get("curse_level", 0)
@@ -65,6 +71,13 @@ func get_enemy_speed_multiplier() -> float:
 	return 1.0 + minutes * 0.02
 
 func _process(delta):
+	if hit_stop_frames > 0:
+		Engine.time_scale = 0.0
+		hit_stop_frames -= 1
+		return
+	else:
+		Engine.time_scale = 1.0
+	
 	game_timer += delta
 	update_timer_label()
 	
@@ -301,6 +314,7 @@ func _pick_enemy_for_time() -> Node:
 	return enemy_scene.instantiate()
 
 func spawn_mini_boss():
+	EventBus.boss_spawned.emit()
 	var boss = boss_scene.instantiate()
 	add_child(boss)
 	boss.global_position = get_spawn_outside_screen()
@@ -312,7 +326,7 @@ func spawn_mini_boss():
 		boss.DAMAGE = int(boss.DAMAGE * (1.0 + next_mini_boss_index * 0.2))
 
 func spawn_final_boss():
-	# Final boss 3x güçlü mini boss
+	EventBus.boss_spawned.emit()
 	var boss = boss_scene.instantiate()
 	add_child(boss)
 	boss.global_position = get_spawn_outside_screen()

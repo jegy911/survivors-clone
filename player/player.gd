@@ -22,6 +22,9 @@ var evolution_obtained = false # YENİ
 # Pasif iyileşme sayacı
 var recovery_timer = 0.0
 
+# Combo / kill streak
+var recent_kill_times: Array = []
+
 var upgrade_ui_scene = preload("res://ui/upgrade_ui.tscn")
 var game_over_scene = preload("res://ui/game_over.tscn")
 var pause_menu_scene = preload("res://ui/pause_menu.tscn")
@@ -54,6 +57,8 @@ var category_hp_bonus = 0
 @onready var defense_label = $CanvasLayer/CategoryPanel/VBoxContainer/DefenseLabel
 @onready var vampire_label = $CanvasLayer/CategoryPanel/VBoxContainer/VampireLabel
 @onready var utility_label = $CanvasLayer/CategoryPanel/VBoxContainer/UtilityLabel
+var _body_base_color = Color.WHITE
+
 @onready var body = $ColorRect
 
 func _ready():
@@ -61,7 +66,8 @@ func _ready():
 	hp = 100
 	apply_meta_bonuses()
 	apply_character_bonuses()
-	$CanvasLayer/KillLabel.text = "💀 0"
+	$CanvasLayer/StatsRow/KillLabel.text = "💀 0"
+	$CanvasLayer/StatsRow/GoldLabel.text = "💰 0"
 	
 	xp_bar.max_value = xp_to_next_level
 	xp_bar.min_value = 0
@@ -71,6 +77,7 @@ func _ready():
 	update_hp_bar()
 	update_category_ui()
 	EventBus.player_damaged.connect(_on_player_damaged)
+	EventBus.boss_spawned.connect(_on_boss_spawned)
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
@@ -87,7 +94,8 @@ func _input(event):
 
 func apply_character_bonuses():
 	var char_data = CharacterData.CHARACTERS[SaveManager.selected_character]
-	body.color = Color(char_data["color"])
+	_body_base_color = Color(char_data["color"])
+	body.color = _body_base_color
 	bullet_damage += char_data["bonus_damage"]
 	max_hp += char_data["bonus_hp"]
 	hp = max_hp
@@ -157,12 +165,7 @@ func update_category_ui():
 		"vampire": vampire_label,
 		"utility": utility_label,
 	}
-	var names = {
-		"attack": "⚔ Saldırı",
-		"defense": "🛡 Savunma",
-		"vampire": "🩸 Vampir",
-		"utility": "⚡ Fayda",
-	}
+	var names = {"attack": "⚔", "defense": "🛡", "vampire": "🩸", "utility": "⚡"}
 	var colors = {
 		"attack": Color("#E74C3C"),
 		"defense": Color("#3498DB"),
@@ -177,12 +180,8 @@ func update_category_ui():
 		else:
 			label.visible = true
 			label.add_theme_color_override("font_color", colors[cat])
-			if count >= 6:
-				label.text = names[cat] + " [" + str(count) + "] ★★"
-			elif count >= 3:
-				label.text = names[cat] + " [" + str(count) + "] ★"
-			else:
-				label.text = names[cat] + " [" + str(count) + "]"
+			var stars = " ★★" if count >= 6 else (" ★" if count >= 3 else "")
+			label.text = names[cat] + " " + str(count) + stars
 
 func get_luck() -> float:
 	return SaveManager.meta_upgrades["luck_bonus"] * 0.1
@@ -253,8 +252,9 @@ func evolve_weapon(evo_id: String):
 		if active_weapons.has(w):
 			active_weapons[w].queue_free()
 			active_weapons.erase(w)
+	EventBus.hit_stop_requested.emit(4)
 	add_weapon(evo_id)
-	evolution_obtained = true  # YENİ
+	evolution_obtained = true
 	show_floating_text("⚡ EVRİM: " + evo["name"] + "!", global_position + Vector2(0, -80), Color("#FFD700"))
 
 func add_item(type: String):
@@ -332,7 +332,8 @@ func get_total_damage(base_damage: int) -> int:
 		# Kritik çarpanı: 2.0 + crit_damage_bonus * 0.25
 		var crit_multiplier = 2.0 + SaveManager.meta_upgrades.get("crit_damage_bonus", 0) * 0.25
 		dmg = int(dmg * crit_multiplier)
-		show_floating_text("KRİTİK!", global_position + Vector2(0, -60), Color("#FFD700"))
+		EventBus.hit_stop_requested.emit(2)
+		show_floating_text("KRİTİK!", global_position + Vector2(0, -70), Color("#FFD700"), 28)
 	return dmg
 
 func on_damage_dealt(damage: int, _enemy_position: Vector2):
@@ -351,8 +352,15 @@ func on_enemy_killed(enemy_position: Vector2):
 	if active_weapons.has("storm"):
 		active_weapons["storm"].on_enemy_killed_bonus()
 	kill_count += 1
+	var now = Time.get_ticks_msec() / 1000.0
+	recent_kill_times.append(now)
+	while recent_kill_times.size() > 0 and now - recent_kill_times[0] > 1.2:
+		recent_kill_times.remove_at(0)
+	if recent_kill_times.size() >= 3:
+		var combo = recent_kill_times.size()
+		show_floating_text("COMBO x" + str(combo) + "!", enemy_position + Vector2(randf_range(-30, 30), -80), Color("#FF6B35"))
 	EventBus.enemy_killed.emit(enemy_position)
-	$CanvasLayer/KillLabel.text = "💀 " + str(kill_count)
+	$CanvasLayer/StatsRow/KillLabel.text = "💀 " + str(kill_count)
 
 # YENİ — tank öldürme takibi için
 func on_tank_killed():
@@ -364,10 +372,10 @@ func heal(amount: int):
 	EventBus.player_healed.emit(amount)
 	show_floating_text("+" + str(amount), global_position + Vector2(0, -50), Color("#2ECC71"))
 
-func show_floating_text(text: String, pos: Vector2, color: Color):
+func show_floating_text(text: String, pos: Vector2, color: Color, font_size: int = 16):
 	var popup = ObjectPool.get_object("res://effects/damage_number.tscn")
 	popup.global_position = pos
-	popup.show_damage_text(text, color)
+	popup.show_damage_text(text, color, font_size)
 
 func get_magnet_bonus() -> float:
 	var bonus = SaveManager.meta_upgrades.get("magnet_bonus", 0) * 15.0
@@ -429,8 +437,10 @@ func level_up():
 	xp_bar.max_value = xp_to_next_level
 	xp_bar.value = 0
 	gold_earned += 3
+	$CanvasLayer/StatsRow/GoldLabel.text = "💰 " + str(gold_earned)
 	AudioManager.play_levelup()
 	_spawn_levelup_effect()
+	_spawn_levelup_screen_flash()
 	get_tree().paused = true
 	upgrade_ui = upgrade_ui_scene.instantiate()
 	upgrade_ui.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -439,21 +449,39 @@ func level_up():
 	upgrade_ui.show_upgrades(self)
 
 func _spawn_levelup_effect():
-	for i in 3:
+	for i in 5:
 		var ring = ColorRect.new()
-		ring.size = Vector2(20, 20)
+		ring.size = Vector2(30, 30)
 		ring.color = Color("#FFD700")
-		ring.position = global_position - Vector2(10, 10)
+		ring.position = global_position - Vector2(15, 15)
 		get_parent().add_child(ring)
 		var tween = ring.create_tween()
-		var target_size = Vector2(120 + i * 40, 120 + i * 40)
+		var target_size = Vector2(180 + i * 80, 180 + i * 80)
 		var target_pos = global_position - target_size / 2
 		tween.set_parallel(true)
-		tween.tween_property(ring, "size", target_size, 0.4 + i * 0.1)
-		tween.tween_property(ring, "position", target_pos, 0.4 + i * 0.1)
-		tween.tween_property(ring, "modulate:a", 0.0, 0.4 + i * 0.1)
+		tween.tween_property(ring, "size", target_size, 0.35 + i * 0.08)
+		tween.tween_property(ring, "position", target_pos, 0.35 + i * 0.08)
+		tween.tween_property(ring, "modulate:a", 0.0, 0.35 + i * 0.08)
 		tween.set_parallel(false)
 		tween.tween_callback(ring.queue_free)
+
+func _spawn_levelup_screen_flash():
+	var flash = ColorRect.new()
+	flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	flash.color = Color.WHITE
+	flash.modulate = Color(1, 1, 1, 0)
+	flash.z_index = 100
+	var vp_size = get_viewport().get_visible_rect().size
+	flash.size = vp_size * 2
+	flash.position = -vp_size / 2
+	var layer = CanvasLayer.new()
+	layer.layer = 100
+	layer.add_child(flash)
+	get_tree().root.add_child(layer)
+	var tween = flash.create_tween()
+	tween.tween_property(flash, "modulate", Color(1, 1, 1, 0.7), 0.06)
+	tween.tween_property(flash, "modulate", Color(1, 1, 1, 0), 0.4)
+	tween.tween_callback(layer.queue_free)
 
 func _on_upgrade_chosen(upgrade_id: String):
 	if upgrade_id == "skip":
@@ -508,7 +536,8 @@ func take_damage(amount: int):
 	hp -= final_damage
 	update_hp_bar()
 	AudioManager.play_player_hurt()
-	EventBus.player_damaged.emit(final_damage)  # final_damage hesaplandıktan sonra
+	_flash_damage()
+	EventBus.player_damaged.emit(final_damage)
 	var dmg_setting = SaveManager.settings.get("damage_numbers", "both_on")
 	if dmg_setting == "both_on" or dmg_setting == "player_only":
 		var popup = ObjectPool.get_object("res://effects/damage_number.tscn")
@@ -542,14 +571,26 @@ func _deferred_die():
 
 func collect_gold(amount: int):
 	gold_earned += amount
+	$CanvasLayer/StatsRow/GoldLabel.text = "💰 " + str(gold_earned)
 	EventBus.gold_collected.emit(amount)
 	show_floating_text("+" + str(amount) + "💰", global_position + Vector2(randf_range(-20, 20), -50), Color("#FFD700"))
 	
+func _flash_damage():
+	var tween = body.create_tween()
+	tween.tween_property(body, "color", Color.WHITE, 0.04)
+	tween.tween_property(body, "color", _body_base_color, 0.12)
+
 func _on_player_damaged(amount: int):
 	if not SaveManager.settings.get("screen_shake", true):
 		return
 	shake_intensity = min(amount * 0.3, 8.0)
 	shake_duration = 0.25
+
+func _on_boss_spawned():
+	if not SaveManager.settings.get("screen_shake", true):
+		return
+	shake_intensity = 14.0
+	shake_duration = 0.7
 
 func _update_screen_shake(delta: float):
 	if shake_duration > 0:
