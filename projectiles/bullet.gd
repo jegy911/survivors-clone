@@ -5,6 +5,7 @@ var direction = Vector2.ZERO
 var damage = 10
 var lifetime = 2.0
 var armor_piercing = false
+var player = null
 
 func _ready():
 	$ColorRect.color = Color("#FFD700")
@@ -34,10 +35,11 @@ func _physics_process(delta):
 				ObjectPool.return_object(self)
 				return
 
-func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false):
+func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter = null):
 	direction = dir
 	damage = dmg
 	armor_piercing = is_armor_piercing
+	player = shooter
 	lifetime = 2.0
 	show()
 
