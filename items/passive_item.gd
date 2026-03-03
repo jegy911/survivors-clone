@@ -11,7 +11,11 @@ var player = null
 
 func _ready():
 	player = get_parent()
+	if player and player.has_method("category_counts"):
+		player.category_counts[category] = player.category_counts.get(category, 0) + 1
 	apply()
+	if player and player.has_method("recalculate_category_bonuses"):
+		player.recalculate_category_bonuses()
 
 func apply():
 	pass
@@ -21,6 +25,8 @@ func upgrade():
 		return false
 	level += 1
 	apply()
+	if player and player.has_method("recalculate_category_bonuses"):
+		player.recalculate_category_bonuses()
 	return true
 
 func get_description() -> String:
