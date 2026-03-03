@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4lsfs"]
 size = Vector2(30, 30)
 
-[node name="healer" type="Area2D" unique_id=268825500]
+[node name="healer" type="Area2D" unique_id=268825500] groups=["enemies"]]
 collision_layer = 2
 script = ExtResource("1_ds2si")
 
