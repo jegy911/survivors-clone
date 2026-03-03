@@ -11,7 +11,7 @@ var player = null
 
 func _ready():
 	player = get_parent()
-	if player and player.has_method("category_counts"):
+	if player and "category_counts" in player:
 		player.category_counts[category] = player.category_counts.get(category, 0) + 1
 	apply()
 	if player and player.has_method("recalculate_category_bonuses"):
