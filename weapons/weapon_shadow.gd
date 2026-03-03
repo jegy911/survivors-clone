@@ -4,7 +4,6 @@ var orb_count = 1
 var orbit_radius = 80.0
 var orbit_speed = 2.0
 var orbs = []
-var damage_number_scene = preload("res://effects/damage_number.tscn")
 
 func _ready():
 	super._ready()
