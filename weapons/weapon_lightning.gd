@@ -3,7 +3,6 @@ extends WeaponBase
 
 var chain_count = 3
 var chain_range = 200.0
-var damage_number_scene = preload("res://effects/damage_number.tscn")
 
 func _ready():
 	super._ready()
@@ -34,10 +33,6 @@ func attack():
 		
 		_spawn_lightning(current.global_position)
 		
-		var popup = damage_number_scene.instantiate()
-		player.get_parent().add_child(popup)
-		popup.global_position = current.global_position + Vector2(0, -40)
-		popup.show_damage(final_damage, Color("#FFD700"))
 		
 		var next = null
 		var nearest_dist = effective_range
