@@ -3,7 +3,6 @@ extends WeaponBase
 
 var radius = 80.0
 var slow_factor = 0.5
-var damage_number_scene = preload("res://effects/damage_number.tscn")
 
 func _ready():
 	super._ready()
@@ -24,10 +23,6 @@ func attack():
 			if enemy.has_method("apply_slow"):
 				enemy.apply_slow(slow_factor, 1.5)
 			
-			var popup = damage_number_scene.instantiate()
-			player.get_parent().add_child(popup)
-			popup.global_position = enemy.global_position + Vector2(0, -40)
-			popup.show_damage(final_damage, Color("#F5A623"))
 
 func on_upgrade():
 	match level:
