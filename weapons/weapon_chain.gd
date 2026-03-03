@@ -4,7 +4,6 @@ extends WeaponBase
 var chain_count = 3
 var chain_range = 150.0
 var bounce_multiplier = 1.2
-var damage_number_scene = preload("res://effects/damage_number.tscn")
 
 func _ready():
 	super._ready()
@@ -50,10 +49,6 @@ func attack():
 		var green_intensity = 0.4 + (float(i) / float(effective_chain)) * 0.6
 		var color = Color(0.0, green_intensity, 0.0)
 		
-		var popup = damage_number_scene.instantiate()
-		player.get_parent().add_child(popup)
-		popup.global_position = nearest.global_position + Vector2(0, -40)
-		popup.show_damage(final_damage, color)
 		
 		current_damage *= bounce_multiplier
 
