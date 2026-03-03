@@ -600,3 +600,26 @@ func _update_screen_shake(delta: float):
 		if shake_duration <= 0:
 			$Camera2D.offset = Vector2.ZERO
 			shake_intensity = 0.0
+
+func recalculate_category_bonuses():
+	var base_hp = 100
+	base_hp += SaveManager.meta_upgrades["max_hp_bonus"] * 25
+	base_hp += CharacterData.CHARACTERS[SaveManager.selected_character]["bonus_hp"]
+	
+	category_hp_bonus = 0
+	category_damage_bonus = 0
+	category_crit_bonus = 0.0
+	category_speed_bonus = 0
+	category_xp_bonus = 0.0
+	
+	for cat in category_counts:
+		var bonus = CategoryBonus.get_bonus(cat, category_counts[cat])
+		category_hp_bonus += bonus["hp"]
+		category_damage_bonus += bonus["damage"]
+		category_crit_bonus += bonus["crit"]
+		category_speed_bonus += bonus["speed"]
+		category_xp_bonus += bonus["xp"]
+	
+	max_hp = base_hp + category_hp_bonus
+	hp = min(hp, max_hp)
+	update_hp_bar()
