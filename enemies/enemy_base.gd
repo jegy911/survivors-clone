@@ -101,10 +101,21 @@ func die():
 	if SaveManager.settings.get("show_vfx", true):
 		_spawn_particles()
 	_try_drop_gold()
+	_try_drop_chest()
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(death_scale, death_scale), 0.08)
 	tween.tween_property(self, "scale", Vector2(0.0, 0.0), 0.12)
 	tween.tween_callback(_on_death_complete)
+
+func _try_drop_chest():
+	var chest_chance = 0.04
+	if get_meta("is_elite", false):
+		chest_chance = 0.20
+	if randf() > chest_chance:
+		return
+	var chest = load("res://effects/chest.tscn").instantiate()
+	get_parent().add_child(chest)
+	chest.init(global_position)
 
 func _try_drop_gold():
 	var drop_chance = 0.12
