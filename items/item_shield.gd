@@ -29,8 +29,10 @@ func absorb_damage(amount: int) -> int:
 	if shield_active:
 		shield_active = false
 		shield_timer = 0.0
-		player.show_floating_text("BLOK!", player.global_position + Vector2(0, -70), Color("#3498DB"))
-		return 0
+		var absorbed = min(amount, shield_amount)
+		var remaining = amount - absorbed
+		player.show_floating_text("BLOK! -" + str(absorbed), player.global_position + Vector2(0, -70), Color("#3498DB"))
+		return remaining
 	return amount
 
 func get_description() -> String:
