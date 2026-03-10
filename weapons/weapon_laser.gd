@@ -44,7 +44,7 @@ func attack():
 			if dot > 0.92:
 				var final_damage = player.get_total_damage(damage)
 				enemy.take_damage(final_damage)
-				player.on_damage_dealt(final_damage, enemy.global_position)
+				EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 				
 				
 
