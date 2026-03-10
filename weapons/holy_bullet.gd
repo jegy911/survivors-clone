@@ -23,7 +23,7 @@ func attack():
 		bullet.global_position = player.global_position
 		var dir = (enemies[i].global_position - player.global_position).normalized()
 		var final_damage = player.get_total_damage(damage)
-		bullet.init(dir, final_damage, true)
+		bullet.init(dir, final_damage, true, player)
 
 func on_upgrade():
 	match level:
