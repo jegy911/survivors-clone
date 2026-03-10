@@ -13,6 +13,9 @@ var level = 1
 var xp_to_next_level = 30
 var kill_count = 0
 var gold_earned = 0
+var boss_kill_count = 0
+var total_damage_dealt = 0
+var chests_opened = 0
 
 # Revival
 var revival_used = false
@@ -563,7 +566,7 @@ func die():
 	SaveManager.add_gold(gold_earned)
 	var char_id = CharacterData.CHARACTERS[SaveManager.selected_character]["id"]
 	var game_time = get_tree().get_first_node_in_group("main").game_timer
-	SaveManager.update_stats_after_game(char_id, kill_count, game_time, evolution_obtained, tank_killed)
+	SaveManager.update_stats_after_game(char_id, kill_count, game_time, evolution_obtained, tank_killed, gold_earned, level - 1, boss_kill_count, total_damage_dealt, chests_opened, active_items.size())
 	EventBus.player_died.emit()
 	call_deferred("_deferred_die")
 
