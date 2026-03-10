@@ -104,6 +104,12 @@ func apply_character_bonuses():
 		add_weapon(char_data["start_weapon"])
 	if char_data["start_item"] != "":
 		add_item(char_data["start_item"])
+	var special = char_data.get("special", "")
+	if special == "all_weapons_1hp":
+		max_hp = 1
+		hp = 1
+	elif special == "damage_double":
+		bullet_damage *= 2
 
 func apply_meta_bonuses():
 	var meta = SaveManager.meta_upgrades
