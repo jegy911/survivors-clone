@@ -230,7 +230,7 @@ const CHARACTERS = [
 		"color": "#2C2C2C",
 		"start_weapon": "bullet",
 		"bonus_damage": 0,
-		"bonus_hp": -999,
+		"bonus_hp": 0,
 		"bonus_speed": 0,
 		"bonus_armor": 0,
 		"start_item": "",
