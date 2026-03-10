@@ -280,7 +280,41 @@ func _build_profil_tab(parent: Node):
 		val.text = stat[1]
 		val.add_theme_color_override("font_color", Color("#FFFFFF"))
 		row.add_child(val)
+
+	# Achievement listesi
+	var ach_title = Label.new()
+	ach_title.text = "🏅 BAŞARIMLAR"
+	ach_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ach_title.add_theme_font_size_override("font_size", 16)
+	ach_title.add_theme_color_override("font_color", Color("#FFD700"))
+	vbox.add_child(ach_title)
 	
+	var unlocked_count = 0
+	for ach in AchievementData.ACHIEVEMENTS:
+		var is_done = SaveManager.unlocked_achievements.has(ach["id"])
+		if is_done:
+			unlocked_count += 1
+		var row = HBoxContainer.new()
+		vbox.add_child(row)
+		var icon_lbl = Label.new()
+		icon_lbl.text = ach["icon"] if is_done else "🔒"
+		row.add_child(icon_lbl)
+		var name_lbl = Label.new()
+		name_lbl.text = ach["name"]
+		name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		name_lbl.add_theme_color_override("font_color", Color("#FFFFFF") if is_done else Color("#555555"))
+		row.add_child(name_lbl)
+		var reward_lbl = Label.new()
+		reward_lbl.text = "+" + str(ach["reward_gold"]) + "💰" if is_done else "???"
+		reward_lbl.add_theme_color_override("font_color", Color("#FFD700") if is_done else Color("#444444"))
+		row.add_child(reward_lbl)
+	
+	var progress_lbl = Label.new()
+	progress_lbl.text = "%d / %d tamamlandı" % [unlocked_count, AchievementData.ACHIEVEMENTS.size()]
+	progress_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	progress_lbl.add_theme_color_override("font_color", Color("#9B59B6"))
+	vbox.add_child(progress_lbl)
+
 	# Ayırıcı
 	var sep = HSeparator.new()
 	vbox.add_child(sep)
