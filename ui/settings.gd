@@ -32,6 +32,7 @@ func _build_ui():
 	$VBoxContainer/TabRow/SesTab.pressed.connect(func(): _switch_tab("ses"))
 	$VBoxContainer/TabRow/GoruntuTab.pressed.connect(func(): _switch_tab("goruntu"))
 	$VBoxContainer/TabRow/OynanisTab.pressed.connect(func(): _switch_tab("oynanis"))
+	$VBoxContainer/TabRow/ProfilTab.pressed.connect(func(): _switch_tab("profil"))
 	
 	# Geri butonu
 	_style_back_button($VBoxContainer/BackButton)
