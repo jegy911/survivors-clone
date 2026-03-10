@@ -54,6 +54,7 @@ var total_deaths: int = 0
 var killed_tank: bool = false
 var evolution_obtained: bool = false
 var unique_chars_played: Array = []
+var unlocked_achievements: Array = []
 var unlocked_characters: Array = ["warrior", "mage", "vampire"]
 var purchased_characters: Array = ["warrior", "mage", "vampire"]
 
@@ -85,6 +86,7 @@ func save_game():
 	config.set_value("unlock", "evolution_obtained", evolution_obtained)
 	config.set_value("unlock", "unique_chars_played", unique_chars_played)
 	config.set_value("unlock", "unlocked_characters", unlocked_characters)
+	config.set_value("unlock", "unlocked_achievements", unlocked_achievements)
 	config.set_value("unlock", "purchased_characters", purchased_characters)
 	var err = config.save(SAVE_PATH)
 	if err != OK:
@@ -119,6 +121,7 @@ func load_game():
 	evolution_obtained = config.get_value("unlock", "evolution_obtained", false)
 	unique_chars_played = config.get_value("unlock", "unique_chars_played", [])
 	unlocked_characters = config.get_value("unlock", "unlocked_characters", ["warrior", "mage", "vampire"])
+	unlocked_achievements = config.get_value("unlock", "unlocked_achievements", [])
 	purchased_characters = config.get_value("unlock", "purchased_characters", ["warrior", "mage", "vampire"])
 
 func add_gold(amount: int):
