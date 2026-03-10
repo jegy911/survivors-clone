@@ -358,11 +358,6 @@ func get_total_damage(base_damage: int) -> int:
 		show_floating_text("KRİTİK!", global_position + Vector2(0, -70), Color("#FFD700"), 28)
 	return dmg
 
-func on_damage_dealt(damage: int, _enemy_position: Vector2):
-	if active_items.has("lifesteal"):
-		active_items["lifesteal"].on_damage_dealt(damage)
-	if active_items.has("poison"):
-		active_items["poison"].on_damage_dealt(damage)
 
 func on_enemy_killed(enemy_position: Vector2):
 	if active_items.has("explosion"):
