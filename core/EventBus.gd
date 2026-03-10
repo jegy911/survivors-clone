@@ -23,3 +23,4 @@ signal gold_collected(amount: int)
 # Oyun hissi (juice)
 signal hit_stop_requested(frames: int)
 signal boss_spawned
+signal on_damage_dealt(player: Node, enemy: Node, damage: int)
