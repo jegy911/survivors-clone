@@ -28,7 +28,7 @@ func attack():
 		
 		var final_damage = player.get_total_damage(damage)
 		current.take_damage(final_damage)
-		player.on_damage_dealt(final_damage, current.global_position)
+		EventBus.on_damage_dealt.emit(player, current, final_damage)
 		hit_enemies.append(current)
 		
 		_spawn_lightning(current.global_position)
