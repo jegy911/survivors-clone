@@ -44,8 +44,8 @@ func _physics_process(delta):
 			if not area in hit_enemies:
 				area.take_damage(damage)
 				hit_enemies.append(area)
-				if lifesteal and player_ref:
-					player_ref.heal(int(damage * 0.3))
+				if player_ref:
+    				EventBus.on_damage_dealt.emit(player_ref, area, damage)
 
 func init(dir: Vector2, dmg: int, player: Node2D):
 	direction = dir
