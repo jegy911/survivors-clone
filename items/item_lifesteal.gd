@@ -13,7 +13,7 @@ func _ready():
 func apply():
 	steal_percent = 0.05 * level
 
-func on_damage_dealt(damage: int):
+func on_damage_dealt(_player: Node, _enemy: Node, damage: int):
 	var heal_amount = int(damage * steal_percent)
 	if heal_amount > 0 and player:
 		player.heal(heal_amount)
