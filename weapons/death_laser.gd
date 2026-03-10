@@ -32,6 +32,7 @@ func attack():
 		if dot > 0.90:
 			var final_damage = player.get_total_damage(damage) * 2 # her zaman kritik
 			enemy.take_damage(final_damage)
+			EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 	
 	_spawn_laser_beam(dir)
 
