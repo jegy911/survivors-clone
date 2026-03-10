@@ -16,6 +16,8 @@ var spawn_interval = 3.5
 var enemies_per_wave = 3
 var wave_timer = 0.0
 var wave_interval = 60.0
+var wave_count = 0
+var reward_active = false
 var game_timer = 0.0
 
 # Boss takibi
@@ -99,8 +101,10 @@ func _process(delta):
 	wave_timer += delta
 	if wave_timer >= wave_interval:
 		wave_timer = 0.0
+		wave_count += 1
 		enemies_per_wave += 1
 		spawn_interval = max(0.8, spawn_interval - 0.15)
+		_show_wave_reward()
 
 	# Spawn
 	spawn_timer -= delta
@@ -362,3 +366,120 @@ func get_spawn_outside_screen() -> Vector2:
 		2: pos = Vector2(-half_w, randf_range(-half_h, half_h))
 		3: pos = Vector2(half_w, randf_range(-half_h, half_h))
 	return player.global_position + pos
+
+func _show_wave_reward():
+	reward_active = true
+	Engine.time_scale = 0.0
+	
+	var overlay = CanvasLayer.new()
+	overlay.name = "WaveRewardOverlay"
+	add_child(overlay)
+	
+	var bg = ColorRect.new()
+	bg.color = Color(0, 0, 0, 0.75)
+	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.add_child(bg)
+	
+	var panel = PanelContainer.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	panel.custom_minimum_size = Vector2(480, 320)
+	panel.position -= Vector2(240, 160)
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color("#0D0D1A")
+	style.border_color = Color("#9B59B6")
+	style.border_width_left = 2
+	style.border_width_right = 2
+	style.border_width_top = 2
+	style.border_width_bottom = 2
+	style.corner_radius_top_left = 12
+	style.corner_radius_top_right = 12
+	style.corner_radius_bottom_left = 12
+	style.corner_radius_bottom_right = 12
+	panel.add_theme_stylebox_override("panel", style)
+	overlay.add_child(panel)
+	
+	var vbox = VBoxContainer.new()
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	vbox.add_theme_constant_override("separation", 16)
+	panel.add_child(vbox)
+	
+	var title = Label.new()
+	title.text = "⚡ DALGA %d TAMAMLANDI!" % wave_count
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 24)
+	title.add_theme_color_override("font_color", Color("#9B59B6"))
+	vbox.add_child(title)
+	
+	var sub = Label.new()
+	sub.text = "Bir ödül seç:"
+	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	sub.add_theme_color_override("font_color", Color("#AAAAAA"))
+	vbox.add_child(sub)
+	
+	var hbox = HBoxContainer.new()
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	hbox.add_theme_constant_override("separation", 12)
+	vbox.add_child(hbox)
+	
+	var choices = _generate_reward_choices()
+	for choice in choices:
+		var btn = _make_reward_button(choice)
+		btn.pressed.connect(func(): _on_reward_chosen(choice, overlay))
+		hbox.add_child(btn)
+
+func _generate_reward_choices() -> Array:
+	var player = get_tree().get_first_node_in_group("player")
+	var pool = [
+		{"type": "gold", "amount": 30 + wave_count * 10, "label": "💰 Altın", "desc": "+%d Gold" % (30 + wave_count * 10), "color": "#FFD700"},
+		{"type": "heal", "label": "💗 İyileşme", "desc": "Max HP'nin\n%25'ini yenile", "color": "#27AE60"},
+		{"type": "item", "label": "🛡 Pasif Item", "desc": "Rastgele\npasif item", "color": "#3498DB"},
+		{"type": "xp", "label": "⭐ Deneyim", "desc": "Anında\n+2 Level", "color": "#F39C12"},
+	]
+	if player and player.get("bullet_damage") != null:
+		pool.append({"type": "damage", "label": "⚔ Güç", "desc": "+10 Hasar", "color": "#E74C3C"})
+	pool.shuffle()
+	return pool.slice(0, 3)
+
+func _make_reward_button(choice: Dictionary) -> Button:
+	var btn = Button.new()
+	btn.custom_minimum_size = Vector2(130, 90)
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color(choice["color"]).darkened(0.6)
+	style.border_color = Color(choice["color"])
+	style.border_width_left = 2
+	style.border_width_right = 2
+	style.border_width_top = 2
+	style.border_width_bottom = 2
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_left = 8
+	style.corner_radius_bottom_right = 8
+	btn.add_theme_stylebox_override("normal", style)
+	btn.add_theme_color_override("font_color", Color.WHITE)
+	btn.text = choice["label"] + "\n" + choice["desc"]
+	return btn
+
+func _on_reward_chosen(choice: Dictionary, overlay: Node):
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		match choice["type"]:
+			"gold":
+				player.gold_earned += choice["amount"]
+				SaveManager.gold += choice["amount"]
+				SaveManager.save_game()
+			"heal":
+				var heal = int(player.max_hp * 0.25)
+				player.hp = min(player.hp + heal, player.max_hp)
+				EventBus.player_hp_changed.emit(player.hp, player.max_hp)
+			"item":
+				var items = ["lifesteal", "armor", "crit", "shield"]
+				items.shuffle()
+				player.add_item(items[0])
+			"xp":
+				for i in 2:
+					player.level_up()
+			"damage":
+				player.bullet_damage += 10
+	overlay.queue_free()
+	Engine.time_scale = 1.0
+	reward_active = false
