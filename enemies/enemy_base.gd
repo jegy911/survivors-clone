@@ -108,7 +108,7 @@ func die():
 	tween.tween_callback(_on_death_complete)
 
 func _try_drop_chest():
-	var chest_chance = 0.04
+	var chest_chance = 0.01
 	if get_meta("is_elite", false):
 		chest_chance = 0.20
 	if randf() > chest_chance:
