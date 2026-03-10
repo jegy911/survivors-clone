@@ -3,6 +3,7 @@ extends CanvasLayer
 var current_tab = "ses"
 var _confirm_reset_full = false
 var _confirm_reset_stats = false
+var _dev_gold_amount = 1000
 
 func _ready():
 	var screen_size = get_viewport().get_visible_rect().size
@@ -28,6 +29,8 @@ func _build_ui():
 	_style_tab_button($VBoxContainer/TabRow/GoruntuTab, "🖥 Görüntü")
 	_style_tab_button($VBoxContainer/TabRow/OynanisTab, "🎮 Oynanış")
 	_style_tab_button($VBoxContainer/TabRow/ProfilTab, "👤 Profil")
+	_style_tab_button($VBoxContainer/TabRow/DevToolsTab, "🛠 Dev")
+	$VBoxContainer/TabRow/DevToolsTab.pressed.connect(func(): _switch_tab("devtools"))
 	
 	$VBoxContainer/TabRow/SesTab.pressed.connect(func(): _switch_tab("ses"))
 	$VBoxContainer/TabRow/GoruntuTab.pressed.connect(func(): _switch_tab("goruntu"))
@@ -77,12 +80,14 @@ func _switch_tab(tab: String):
 		"goruntu": _build_goruntu_tab(content)
 		"oynanis": _build_oynanis_tab(content)
 		"profil": _build_profil_tab(content)
+		"devtools": _build_devtools_tab(content)
 	
 	var tabs = {
 		"ses": $VBoxContainer/TabRow/SesTab,
 		"goruntu": $VBoxContainer/TabRow/GoruntuTab,
 		"oynanis": $VBoxContainer/TabRow/OynanisTab,
 		"profil": $VBoxContainer/TabRow/ProfilTab,
+		"devtools": $VBoxContainer/TabRow/DevToolsTab,
 	}
 	for t in tabs:
 		var style = StyleBoxFlat.new()
@@ -340,3 +345,68 @@ func _on_reset_full():
 	SaveManager.save_game()
 	_confirm_reset_full = false
 	_switch_tab("profil")
+
+func _build_devtools_tab(parent: Node):
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 12)
+	parent.add_child(vbox)
+	
+	var title = Label.new()
+	title.text = "⚠ DEV TOOLS - Sadece Test İçin"
+	title.add_theme_color_override("font_color", Color("#E74C3C"))
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(title)
+	
+	var sep = HSeparator.new()
+	vbox.add_child(sep)
+	
+	# Gold ekle
+	_add_dev_button(vbox, "💰 +1000 Gold Ekle", func():
+		SaveManager.gold += 1000
+		SaveManager.save_game()
+		_switch_tab("devtools")
+	)
+	
+	# Tüm meta upgrade maxla
+	_add_dev_button(vbox, "⬆ Tüm Upgradeleri Maxla", func():
+		for key in SaveManager.meta_upgrades:
+			SaveManager.meta_upgrades[key] = 10
+		SaveManager.save_game()
+		_switch_tab("devtools")
+	)
+	
+	# Tüm karakterleri aç
+	_add_dev_button(vbox, "🔓 Tüm Karakterleri Aç", func():
+		for char_data in CharacterData.CHARACTERS:
+			var cid = char_data["id"]
+			if not SaveManager.unlocked_characters.has(cid):
+				SaveManager.unlocked_characters.append(cid)
+			if not SaveManager.purchased_characters.has(cid):
+				SaveManager.purchased_characters.append(cid)
+		SaveManager.save_game()
+		_switch_tab("devtools")
+	)
+	
+	# Karakterleri kilitle (sıfırla)
+	_add_dev_button(vbox, "🔒 Karakterleri Sıfırla", func():
+		SaveManager.unlocked_characters = ["warrior", "mage", "vampire"]
+		SaveManager.purchased_characters = ["warrior", "mage", "vampire"]
+		SaveManager.save_game()
+		_switch_tab("devtools")
+	)
+	
+	var sep2 = HSeparator.new()
+	vbox.add_child(sep2)
+	
+	var lbl = Label.new()
+	lbl.text = "Mevcut Gold: " + str(SaveManager.gold)
+	lbl.add_theme_color_override("font_color", Color("#FFD700"))
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(lbl)
+
+func _add_dev_button(parent: Node, text: String, callback: Callable):
+	var btn = Button.new()
+	btn.text = text
+	btn.custom_minimum_size = Vector2(0, 45)
+	btn.pressed.connect(callback)
+	parent.add_child(btn)
