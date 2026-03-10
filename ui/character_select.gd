@@ -52,7 +52,7 @@ func _get_item_name(item_id: String) -> String:
 	return names.get(item_id, item_id)
 
 func _build_rich_description(char_data: Dictionary, state: String) -> String:
-	if state == "locked" or char_data["secret"]:
+	if state == "locked" or (char_data["secret"] and state != "unlocked"):
 		return char_data.get("unlock_hint", "")
 	var parts: Array = []
 	if char_data["start_weapon"] != "":
