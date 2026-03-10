@@ -23,6 +23,8 @@ func _process(_delta):
 
 func _collect():
 	collected = true
+	if player:
+		player.chests_opened += 1
 	_give_reward()
 	queue_free()
 
