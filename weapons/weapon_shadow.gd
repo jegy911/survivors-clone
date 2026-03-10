@@ -55,11 +55,8 @@ func attack():
 			if orb.global_position.distance_to(enemy.global_position) < 35:
 				var final_damage = player.get_total_damage(damage)
 				enemy.take_damage(final_damage)
-				player.on_damage_dealt(final_damage, enemy.global_position)
-				var popup = damage_number_scene.instantiate()
-				player.get_parent().add_child(popup)
-				popup.global_position = enemy.global_position + Vector2(0, -40)
-				popup.show_damage(final_damage, Color("#9B59B6"))
+				EventBus.on_damage_dealt.emit(player, enemy, final_damage)
+				
 
 func on_upgrade():
 	match level:
