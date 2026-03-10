@@ -34,7 +34,7 @@ func _give_reward():
 		# %50 — rastgele passive item ver
 		var all_items = ["armor", "speed_charm", "magnet", "lifesteal", "poison", "shield", "crit", "luck_stone"]
 		var item_id = all_items[randi() % all_items.size()]
-		player.try_add_or_upgrade_item(item_id)
+		player.add_item(item_id)
 	elif roll < 0.80:
 		# %30 — gold
 		player.collect_gold(5 + randi() % 6)
