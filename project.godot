@@ -24,6 +24,7 @@ SaveManager="*uid://cvcdlgqf65851"
 AudioManager="*uid://dkf8pjyhbu6xj"
 ObjectPool="*uid://dmgclbk4ofl3u"
 EventBus="*uid://b31g0p1hnvt7s"
+AchievementManager="*uid://dv022g7ecjml0"
 
 [display]
 
