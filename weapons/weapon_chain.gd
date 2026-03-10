@@ -42,7 +42,7 @@ func attack():
 		
 		var final_damage = player.get_total_damage(int(current_damage))
 		nearest.take_damage(final_damage)
-		player.on_damage_dealt(final_damage, nearest.global_position)
+		EventBus.on_damage_dealt.emit(player, nearest, final_damage)
 		hit_enemies.append(nearest)
 		current_pos = nearest.global_position
 		
