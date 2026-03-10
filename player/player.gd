@@ -361,6 +361,7 @@ func on_enemy_killed(enemy_position: Vector2):
 	if active_weapons.has("storm"):
 		active_weapons["storm"].on_enemy_killed_bonus()
 	kill_count += 1
+	# Boss öldürme kontrolü enemy_base üzerinden gelmiyor, EventBus ile yapacağız
 	var now = Time.get_ticks_msec() / 1000.0
 	recent_kill_times.append(now)
 	while recent_kill_times.size() > 0 and now - recent_kill_times[0] > 1.2:
