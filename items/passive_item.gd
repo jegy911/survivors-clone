@@ -17,7 +17,7 @@ func _ready():
 	if player and player.has_method("recalculate_category_bonuses"):
 		player.recalculate_category_bonuses()
 	if has_method("on_damage_dealt"):
-		EventBus.on_damage_dealt.connect(Callable(self, "on_damage_dealt"))
+		EventBus.on_damage_dealt.connect(on_damage_dealt)
 
 func apply():
 	pass
