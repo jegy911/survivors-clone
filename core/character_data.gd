@@ -225,8 +225,8 @@ const CHARACTERS = [
 	},
 	{
 		"id": "omega",
-		"name": "???",
-		"description": "???",
+		"name": "Omega",
+		"description": "Tüm silahlar aktif.\n1 HP ile oyna. Ölmeden bitir.",
 		"color": "#2C2C2C",
 		"start_weapon": "bullet",
 		"bonus_damage": 0,
