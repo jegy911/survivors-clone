@@ -76,7 +76,9 @@ func _build_rich_description(char_data: Dictionary, state: String) -> String:
 		elif s == "slow_double": parts.append("❄ Yavaşlatma 2x")
 		elif s == "area_15": parts.append("💥 Alan +%15")
 		elif s == "xp_20": parts.append("⭐ XP +%20")
-		else: parts.append("✨ " + s)
+		elif s == "all_weapons_1hp": parts.append("☠ 1 HP ile oyna, tüm silahlar aktif")
+		elif s == "damage_double": parts.append("⚔ Hasar 2x")
+		elif s == "random_weapons": parts.append("🎲 Rastgele silahlarla başla")
 	if parts.is_empty():
 		return char_data["description"]
 	return "\n".join(parts)
