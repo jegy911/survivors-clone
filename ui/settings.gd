@@ -249,9 +249,14 @@ func _on_back():
 
 
 func _build_profil_tab(parent: Node):
+	var scroll = ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	parent.add_child(scroll)
 	var vbox = VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", 14)
-	parent.add_child(vbox)
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(vbox)
 	
 	var stats = [
 		["⚔ Toplam Öldürme", str(SaveManager.total_kills)],
