@@ -576,6 +576,7 @@ func die():
 	var char_id = CharacterData.CHARACTERS[SaveManager.selected_character]["id"]
 	var game_time = get_tree().get_first_node_in_group("main").game_timer
 	SaveManager.update_stats_after_game(char_id, kill_count, game_time, evolution_obtained, tank_killed, gold_earned, level - 1, boss_kill_count, total_damage_dealt, chests_opened, active_items.size())
+	AchievementManager.check_after_game(kill_count, game_time)
 	EventBus.player_died.emit()
 	call_deferred("_deferred_die")
 
