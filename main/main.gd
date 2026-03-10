@@ -369,7 +369,7 @@ func get_spawn_outside_screen() -> Vector2:
 
 func _show_wave_reward():
 	reward_active = true
-	Engine.time_scale = 0.0
+	get_tree().paused = true
 	
 	var overlay = CanvasLayer.new()
 	overlay.name = "WaveRewardOverlay"
@@ -378,6 +378,7 @@ func _show_wave_reward():
 	var bg = ColorRect.new()
 	bg.color = Color(0, 0, 0, 0.75)
 	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.process_mode = Node.PROCESS_MODE_ALWAYS
 	overlay.add_child(bg)
 	
 	var panel = PanelContainer.new()
@@ -481,5 +482,5 @@ func _on_reward_chosen(choice: Dictionary, overlay: Node):
 			"damage":
 				player.bullet_damage += 10
 	overlay.queue_free()
-	Engine.time_scale = 1.0
+	get_tree().paused = false
 	reward_active = false
