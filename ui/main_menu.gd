@@ -68,8 +68,8 @@ func _on_settings():
 
 func _on_quit():
 	get_tree().quit()
-	var _easter_buffer = ""
 
+var _easter_buffer = ""
 func _input(event):
 	if event is InputEventKey and event.pressed:
 		var ch = OS.get_keycode_string(event.keycode).to_upper()
