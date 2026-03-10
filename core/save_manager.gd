@@ -40,6 +40,17 @@ var settings = {
 # Kilit sistemi
 var total_kills: int = 0
 var max_survival_time: float = 0.0
+var total_gold_earned: int = 0
+var total_xp_earned: int = 0
+var total_levels_gained: int = 0
+var total_bosses_killed: int = 0
+var total_runs: int = 0
+var total_wins: int = 0
+var best_kill_run: int = 0
+var total_damage_dealt: int = 0
+var total_chests_opened: int = 0
+var total_items_collected: int = 0
+var total_deaths: int = 0
 var killed_tank: bool = false
 var evolution_obtained: bool = false
 var unique_chars_played: Array = []
