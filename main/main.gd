@@ -477,8 +477,7 @@ func _on_reward_chosen(choice: Dictionary, overlay: Node):
 				items.shuffle()
 				player.add_item(items[0])
 			"xp":
-				for i in 2:
-					player.level_up()
+				player.gain_xp(player.xp_to_next_level * 2)
 			"damage":
 				player.bullet_damage += 10
 	overlay.queue_free()
