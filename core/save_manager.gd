@@ -154,8 +154,21 @@ func get_upgrade_cost(key: String, current_rank: int) -> int:
 		_: base_cost = 100
 	return base_cost + current_rank * 60
 
-func update_stats_after_game(char_id: String, kills: int, survival_time: float, got_evolution: bool, got_tank_kill: bool):
+func update_stats_after_game(char_id: String, kills: int, survival_time: float, got_evolution: bool, got_tank_kill: bool, gold: int = 0, xp_levels: int = 0, bosses: int = 0, damage: int = 0, chests: int = 0, items: int = 0, won: bool = false):
 	total_kills += kills
+	total_runs += 1
+	total_deaths += 1
+	total_gold_earned += gold
+	total_levels_gained += xp_levels
+	total_bosses_killed += bosses
+	total_damage_dealt += damage
+	total_chests_opened += chests
+	total_items_collected += items
+	if won:
+		total_wins += 1
+		total_deaths -= 1
+	if kills > best_kill_run:
+		best_kill_run = kills
 	if survival_time > max_survival_time:
 		max_survival_time = survival_time
 	if got_evolution:
