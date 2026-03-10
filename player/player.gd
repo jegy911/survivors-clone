@@ -17,6 +17,13 @@ var boss_kill_count = 0
 var total_damage_dealt = 0
 var chests_opened = 0
 
+func _ready_damage_tracking():
+	EventBus.on_damage_dealt.connect(_on_damage_tracked)
+
+func _on_damage_tracked(p: Node, _enemy: Node, damage: int):
+	if p == self:
+		total_damage_dealt += damage
+
 # Revival
 var revival_used = false
 var tank_killed = false        # YENİ
@@ -81,6 +88,7 @@ func _ready():
 	update_category_ui()
 	EventBus.player_damaged.connect(_on_player_damaged)
 	EventBus.boss_spawned.connect(_on_boss_spawned)
+	_ready_damage_tracking()
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
