@@ -68,3 +68,31 @@ func _on_settings():
 
 func _on_quit():
 	get_tree().quit()
+	var _easter_buffer = ""
+
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		var ch = OS.get_keycode_string(event.keycode).to_upper()
+		if ch.length() == 1:
+			_easter_buffer += ch
+			if _easter_buffer.length() > 5:
+				_easter_buffer = _easter_buffer.right(5)
+			if _easter_buffer == "OMEGA":
+				_try_unlock_omega()
+				_easter_buffer = ""
+
+func _try_unlock_omega():
+	if SaveManager.unlocked_characters.has("omega"):
+		return
+	SaveManager.unlocked_characters.append("omega")
+	SaveManager.save_game()
+	var label = Label.new()
+	label.text = "????? UNLOCKED"
+	label.add_theme_color_override("font_color", Color("#FF0000"))
+	label.add_theme_font_size_override("font_size", 28)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	$VBoxContainer.add_child(label)
+	var tween = create_tween()
+	tween.tween_property(label, "modulate:a", 0.0, 2.5)
+	tween.tween_callback(label.queue_free)
