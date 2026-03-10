@@ -121,6 +121,11 @@ func apply_character_bonuses():
 		hp = 1
 	elif special == "damage_double":
 		bullet_damage *= 2
+	elif special == "random_weapons":
+		var all_weapons = ["bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser"]
+		all_weapons.shuffle()
+		for w in all_weapons.slice(0, 3):
+			add_weapon(w)
 
 func apply_meta_bonuses():
 	var meta = SaveManager.meta_upgrades
