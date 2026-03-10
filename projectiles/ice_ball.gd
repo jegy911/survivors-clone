@@ -24,7 +24,7 @@ func _physics_process(delta):
 		if area.has_method("take_damage") and not area.is_in_group("player"):
 			area.take_damage(damage)
 			if player:
-    			EventBus.on_damage_dealt.emit(player, area, damage)
+				EventBus.on_damage_dealt.emit(player, area, damage)
 			if area.has_method("apply_slow"):
 				area.apply_slow(0.3, 2.0)
 			if SaveManager.settings.get("show_vfx", true):

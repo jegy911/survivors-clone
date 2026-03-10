@@ -1,5 +1,5 @@
 class_name ItemLifesteal
-extends PassiveItem
+extends "res://items/passive_item.gd"
 
 var steal_percent = 0.05
 

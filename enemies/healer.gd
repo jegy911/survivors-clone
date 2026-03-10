@@ -37,9 +37,9 @@ func _heal_nearby_enemies():
 			continue
 		if global_position.distance_to(enemy.global_position) < HEAL_RADIUS:
 			if enemy.has_method("take_damage"):
-    			enemy.hp = min(enemy.hp + HEAL_AMOUNT, enemy.max_hp)
-    			if enemy.has_method("update_hp_bar"):
-        			enemy.update_hp_bar()
+				enemy.hp = min(enemy.hp + HEAL_AMOUNT, enemy.max_hp)
+				if enemy.has_method("update_hp_bar"):
+					enemy.update_hp_bar()
 				if SaveManager.settings.get("show_vfx", true):
 					var fx = ColorRect.new()
 					fx.size = Vector2(10, 10)

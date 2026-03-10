@@ -23,12 +23,12 @@ func _physics_process(delta):
 	var areas = get_overlapping_areas()
 	for area in areas:
 		if area.has_method("take_damage"):
-    		if not area.is_in_group("player"):
-        		area.take_damage(damage)
-        		if player:
-            		EventBus.on_damage_dealt.emit(player, area, damage)
-        		ObjectPool.return_object(self)
-        		return
+			if not area.is_in_group("player"):
+				area.take_damage(damage)
+				if player:
+					EventBus.on_damage_dealt.emit(player, area, damage)
+				ObjectPool.return_object(self)
+				return
 
 func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter = null):
 	direction = dir

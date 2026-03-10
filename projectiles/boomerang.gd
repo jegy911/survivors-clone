@@ -45,7 +45,7 @@ func _physics_process(delta):
 				area.take_damage(damage)
 				hit_enemies.append(area)
 				if player_ref:
-    				EventBus.on_damage_dealt.emit(player_ref, area, damage)
+					EventBus.on_damage_dealt.emit(player_ref, area, damage)
 
 func init(dir: Vector2, dmg: int, player: Node2D):
 	direction = dir
