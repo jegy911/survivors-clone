@@ -18,7 +18,7 @@ func attack():
 		if player.global_position.distance_to(enemy.global_position) <= effective_radius:
 			var final_damage = player.get_total_damage(damage)
 			enemy.take_damage(final_damage)
-			player.on_damage_dealt(final_damage, enemy.global_position)
+			EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 			
 			if enemy.has_method("apply_slow"):
 				enemy.apply_slow(slow_factor, 1.5)
