@@ -1,6 +1,8 @@
 extends CanvasLayer
 
 var current_tab = "ses"
+var _confirm_reset_full = false
+var _confirm_reset_stats = false
 
 func _ready():
 	var screen_size = get_viewport().get_visible_rect().size
@@ -25,6 +27,7 @@ func _build_ui():
 	_style_tab_button($VBoxContainer/TabRow/SesTab, "🔊 Ses")
 	_style_tab_button($VBoxContainer/TabRow/GoruntuTab, "🖥 Görüntü")
 	_style_tab_button($VBoxContainer/TabRow/OynanisTab, "🎮 Oynanış")
+	_style_tab_button($VBoxContainer/TabRow/ProfilTab, "👤 Profil")
 	
 	$VBoxContainer/TabRow/SesTab.pressed.connect(func(): _switch_tab("ses"))
 	$VBoxContainer/TabRow/GoruntuTab.pressed.connect(func(): _switch_tab("goruntu"))
@@ -72,12 +75,13 @@ func _switch_tab(tab: String):
 		"ses": _build_ses_tab(content)
 		"goruntu": _build_goruntu_tab(content)
 		"oynanis": _build_oynanis_tab(content)
+		"profil": _build_profil_tab(content)
 	
-	# Aktif tab rengi
 	var tabs = {
 		"ses": $VBoxContainer/TabRow/SesTab,
 		"goruntu": $VBoxContainer/TabRow/GoruntuTab,
 		"oynanis": $VBoxContainer/TabRow/OynanisTab,
+		"profil": $VBoxContainer/TabRow/ProfilTab,
 	}
 	for t in tabs:
 		var style = StyleBoxFlat.new()
@@ -235,3 +239,103 @@ func _on_back():
 		queue_free()
 	else:
 		get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+
+
+
+func _build_profil_tab(parent: Node):
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 14)
+	parent.add_child(vbox)
+	
+	var stats = [
+		["⚔ Toplam Öldürme", str(SaveManager.total_kills)],
+		["💀 En İyi Koşu (Kill)", str(SaveManager.best_kill_run)],
+		["🏆 Boss Öldürme", str(SaveManager.total_bosses_killed)],
+		["🎮 Toplam Koşu", str(SaveManager.total_runs)],
+		["🏅 Kazanılan Koşu", str(SaveManager.total_wins)],
+		["💀 Toplam Ölüm", str(SaveManager.total_deaths)],
+		["💰 Toplam Altın", str(SaveManager.total_gold_earned)],
+		["⬆ Toplam Level", str(SaveManager.total_levels_gained)],
+		["🗡 Toplam Hasar", str(SaveManager.total_damage_dealt)],
+		["📦 Açılan Sandık", str(SaveManager.total_chests_opened)],
+		["🛡 Toplanan Item", str(SaveManager.total_items_collected)],
+		["⏱ En Uzun Hayatta Kalma", "%d:%02d" % [int(SaveManager.max_survival_time / 60), int(SaveManager.max_survival_time) % 60]],
+	]
+	
+	for stat in stats:
+		var row = HBoxContainer.new()
+		vbox.add_child(row)
+		var lbl = Label.new()
+		lbl.text = stat[0]
+		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		lbl.add_theme_color_override("font_color", Color("#AAAAAA"))
+		row.add_child(lbl)
+		var val = Label.new()
+		val.text = stat[1]
+		val.add_theme_color_override("font_color", Color("#FFFFFF"))
+		row.add_child(val)
+	
+	# Ayırıcı
+	var sep = HSeparator.new()
+	vbox.add_child(sep)
+	
+	# Sıfırlama butonları
+	var btn_stats = Button.new()
+	btn_stats.text = "📊 İstatistikleri Sıfırla" if not _confirm_reset_stats else "⚠ Emin misin? Tekrar bas!"
+	btn_stats.add_theme_color_override("font_color", Color("#E67E22"))
+	btn_stats.pressed.connect(_on_reset_stats)
+	vbox.add_child(btn_stats)
+	
+	var btn_full = Button.new()
+	btn_full.text = "🗑 Tüm İlerlemeyi Sıfırla" if not _confirm_reset_full else "⚠ Emin misin? Tekrar bas!"
+	btn_full.add_theme_color_override("font_color", Color("#E74C3C"))
+	btn_full.pressed.connect(_on_reset_full)
+	vbox.add_child(btn_full)
+
+func _on_reset_stats():
+	if not _confirm_reset_stats:
+		_confirm_reset_stats = true
+		_switch_tab("profil")
+		return
+	SaveManager.total_kills = 0
+	SaveManager.best_kill_run = 0
+	SaveManager.total_bosses_killed = 0
+	SaveManager.total_runs = 0
+	SaveManager.total_wins = 0
+	SaveManager.total_deaths = 0
+	SaveManager.total_gold_earned = 0
+	SaveManager.total_levels_gained = 0
+	SaveManager.total_damage_dealt = 0
+	SaveManager.total_chests_opened = 0
+	SaveManager.total_items_collected = 0
+	SaveManager.max_survival_time = 0.0
+	SaveManager.save_game()
+	_confirm_reset_stats = false
+	_switch_tab("profil")
+
+func _on_reset_full():
+	if not _confirm_reset_full:
+		_confirm_reset_full = true
+		_switch_tab("profil")
+		return
+	SaveManager.gold = 0
+	SaveManager.selected_character = 0
+	for key in SaveManager.meta_upgrades:
+		SaveManager.meta_upgrades[key] = 0
+	SaveManager.total_kills = 0
+	SaveManager.best_kill_run = 0
+	SaveManager.total_bosses_killed = 0
+	SaveManager.total_runs = 0
+	SaveManager.total_wins = 0
+	SaveManager.total_deaths = 0
+	SaveManager.total_gold_earned = 0
+	SaveManager.total_levels_gained = 0
+	SaveManager.total_damage_dealt = 0
+	SaveManager.total_chests_opened = 0
+	SaveManager.total_items_collected = 0
+	SaveManager.max_survival_time = 0.0
+	SaveManager.unlocked_characters = ["warrior", "mage", "vampire"]
+	SaveManager.purchased_characters = ["warrior", "mage", "vampire"]
+	SaveManager.save_game()
+	_confirm_reset_full = false
+	_switch_tab("profil")
