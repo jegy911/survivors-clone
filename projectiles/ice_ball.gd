@@ -1,5 +1,6 @@
 extends Area2D
 
+var player = null
 var speed = 280.0
 var direction = Vector2.ZERO
 var damage = 15
@@ -22,6 +23,8 @@ func _physics_process(delta):
 	for area in get_overlapping_areas():
 		if area.has_method("take_damage") and not area.is_in_group("player"):
 			area.take_damage(damage)
+			if player:
+    			EventBus.on_damage_dealt.emit(player, area, damage)
 			if area.has_method("apply_slow"):
 				area.apply_slow(0.3, 2.0)
 			if SaveManager.settings.get("show_vfx", true):
@@ -29,7 +32,8 @@ func _physics_process(delta):
 			ObjectPool.return_object(self)
 			return
 
-func init(dir: Vector2, dmg: int):
+func init(dir: Vector2, dmg: int, shooter = null):
+	player = shooter
 	direction = dir
 	damage = dmg
 	lifetime = 2.5
