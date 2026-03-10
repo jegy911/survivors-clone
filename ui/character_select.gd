@@ -144,10 +144,10 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			vbox.add_child(btn)
 
 		"unlocked":
-			char_visual.color = Color(0.3, 0.3, 0.3, 1.0)
-			name_label.text = char_data["name"] if not char_data["secret"] else "???"
-			name_label.add_theme_color_override("font_color", Color("#888888"))
-			desc_label.text = _build_rich_description(char_data, state) if not char_data["secret"] else "???"
+			char_visual.color = Color(char_data["color"])
+			name_label.text = char_data["name"]
+			name_label.add_theme_color_override("font_color", Color(char_data["color"]))
+			desc_label.text = _build_rich_description(char_data, state)
 			desc_label.add_theme_color_override("font_color", Color("#666666"))
 
 			var cost = char_data["cost"]
@@ -168,7 +168,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			name_label.add_theme_color_override("font_color", Color("#444466"))
 			desc_label.text = ""
 
-			bottom.text = char_data["unlock_hint"] if not char_data["secret"] else "???"
+			bottom.text = "🔒 " + char_data.get("unlock_hint", "???")
 			bottom.add_theme_color_override("font_color", Color("#555577"))
 			vbox.add_child(char_visual)
 			vbox.add_child(name_label)
