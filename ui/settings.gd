@@ -250,8 +250,10 @@ func _on_back():
 
 func _build_profil_tab(parent: Node):
 	var scroll = ScrollContainer.new()
+	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.custom_minimum_size = Vector2(0, 400)
 	parent.add_child(scroll)
 	var vbox = VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", 14)
