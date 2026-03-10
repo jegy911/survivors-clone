@@ -14,6 +14,10 @@ config/name="survivors_clone"
 run/main_scene="uid://dly1r8qbxxu0s"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
+[audio]
+
+buses/default_bus_layout="uid://dqkybanx2ua7f"
+
 [autoload]
 
 SaveManager="*uid://cvcdlgqf65851"
