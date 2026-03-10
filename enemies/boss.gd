@@ -24,6 +24,12 @@ func _process(delta):
 		player.take_damage(DAMAGE)
 		damage_cooldown = 1.0
 
+func die():
+	var p = get_tree().get_first_node_in_group("player")
+	if p:
+		p.boss_kill_count += 1
+	super.die()
+
 func _try_drop_gold():
 	var orb = ObjectPool.get_object("res://effects/gold_orb.tscn")
 	var value = gold_value
