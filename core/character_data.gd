@@ -189,8 +189,8 @@ const CHARACTERS = [
 	# --- SECRET KARAKTERLER (3) ---
 	{
 		"id": "death_knight",
-		"name": "???",
-		"description": "???",
+		"name": "Ölüm Şövalyesi",
+		"description": "Ölüm Lazeri ile başlar.\n+30 hasar, -50 HP, hasar 2x.",
 		"color": "#2C2C2C",
 		"start_weapon": "death_laser",
 		"bonus_damage": 30,
@@ -202,13 +202,13 @@ const CHARACTERS = [
 		"locked": true,
 		"secret": true,
 		"cost": 0,
-		"unlock_hint": "???",
+		"unlock_hint": "Tek bir koşuda 1000 düşman öldür.",
 		"unlock_condition": {"type": "single_run_kills", "amount": 1000},
 	},
 	{
 		"id": "chaos",
-		"name": "???",
-		"description": "???",
+		"name": "Kaos",
+		"description": "Rastgele silahlarla başlar.\nHer şey mümkün.",
 		"color": "#2C2C2C",
 		"start_weapon": "",
 		"bonus_damage": 0,
@@ -220,7 +220,7 @@ const CHARACTERS = [
 		"locked": true,
 		"secret": true,
 		"cost": 0,
-		"unlock_hint": "???",
+		"unlock_hint": "5 farklı karakterle oyna.",
 		"unlock_condition": {"type": "unique_chars_played", "amount": 5},
 	},
 	{
@@ -238,7 +238,7 @@ const CHARACTERS = [
 		"locked": true,
 		"secret": true,
 		"cost": 0,
-		"unlock_hint": "???",
+		"unlock_hint": "Gizli bir kod var...",
 		"unlock_condition": {"type": "easter_egg"},
 	},
 ]
