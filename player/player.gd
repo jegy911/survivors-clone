@@ -99,6 +99,21 @@ func _ready():
 	
 	update_hp_bar()
 	update_category_ui()
+	
+	# Stats butonu HUD'a ekle
+	var stats_btn = Button.new()
+	stats_btn.text = "📊"
+	stats_btn.custom_minimum_size = Vector2(40, 40)
+	stats_btn.position = Vector2(10, 10)
+	var btn_style = StyleBoxFlat.new()
+	btn_style.bg_color = Color("#1A1A2EAA")
+	btn_style.corner_radius_top_left = 6
+	btn_style.corner_radius_top_right = 6
+	btn_style.corner_radius_bottom_left = 6
+	btn_style.corner_radius_bottom_right = 6
+	stats_btn.add_theme_stylebox_override("normal", btn_style)
+	stats_btn.pressed.connect(_toggle_stat_panel)
+	$CanvasLayer.add_child(stats_btn)
 	EventBus.player_damaged.connect(_on_player_damaged)
 	EventBus.boss_spawned.connect(_on_boss_spawned)
 	_ready_damage_tracking()
@@ -115,8 +130,6 @@ func _input(event):
 			pause_menu = pause_menu_scene.instantiate()
 			pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS
 			get_tree().root.add_child(pause_menu)
-	if event.is_action_pressed("ui_accept") and not get_tree().paused and upgrade_ui == null:
-		_toggle_stat_panel()
 
 func apply_character_bonuses():
 	var char_data = CharacterData.CHARACTERS[SaveManager.selected_character]
