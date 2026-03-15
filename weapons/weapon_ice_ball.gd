@@ -6,6 +6,7 @@ var ball_count = 1
 func _ready():
 	super._ready()
 	weapon_name = "Buz Topu"
+	tag = "buyu"
 	category = "defense"
 	damage = 15
 	cooldown = 2.5
