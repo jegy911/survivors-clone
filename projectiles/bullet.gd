@@ -20,20 +20,19 @@ func _physics_process(delta):
 		ObjectPool.return_object(self)
 		return
 	
-	var bodies = get_overlapping_bodies()
-	for body in bodies:
-		if body.has_method("take_damage"):
-			if not body.is_in_group("player"):
-				body.take_damage(damage)
+	var areas = get_overlapping_areas()
+	for area in areas:
+		if area.has_method("take_damage"):
+			if not area.is_in_group("player"):
+				area.take_damage(damage)
 				if player:
-					EventBus.on_damage_dealt.emit(player, body, damage)
-				# Bounce kontrolü
+					EventBus.on_damage_dealt.emit(player, area, damage)
 				if player and player.get("bounce_timer") != null and player.bounce_timer > 0:
 					var enemies = get_tree().get_nodes_in_group("enemies")
 					var next = null
 					var best_dist = 999999.0
 					for e in enemies:
-						if e == body:
+						if e == area:
 							continue
 						var d = global_position.distance_to(e.global_position)
 						if d < best_dist:
