@@ -7,6 +7,7 @@ var chain_range = 250.0
 func _ready():
 	super._ready()
 	weapon_name = "Toxic Chain"
+	tag = "patlayici"
 	category = "attack"
 	damage = 20
 	cooldown = 1.5
