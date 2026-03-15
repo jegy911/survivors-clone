@@ -275,6 +275,7 @@ func _add_toggle(parent: Node, label_text: String, default_val: bool, callback: 
 	row.add_child(btn)
 
 func _on_back():
+	AudioManager.apply_volume_settings()
 	var from_game = get_meta("from_game", false)
 	if from_game:
 		get_tree().paused = true
