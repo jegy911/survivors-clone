@@ -20,6 +20,9 @@ var max_hp = 30
 var is_dead = false
 var current_speed = BASE_SPEED
 var slow_timer = 0.0
+var _poison_damage = 0
+var _poison_timer = 0.0
+var _poison_tick_interval = 1.0
 
 
 @onready var body = $ColorRect
@@ -85,10 +88,6 @@ func apply_slow(factor: float, duration: float):
 	slow_timer = duration
 	if body:
 		body.color = Color("#3498DB")
-
-	var _poison_damage = 0
-	var _poison_timer = 0.0
-	var _poison_tick_interval = 1.0
 
 func apply_poison(damage_per_tick: int, duration: float):
 	_poison_damage = damage_per_tick
