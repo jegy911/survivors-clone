@@ -257,53 +257,51 @@ func spawn_random_enemy():
 func _pick_enemy_for_time() -> Node:
 	var t = game_timer
 	var roll = randf()
-	
-	# İlk 2 dakika: sadece basic ve fast (level-1)
+
 	# 0-1 dakika: sadece weak mode
 	if t < 60:
 		var e = enemy_scene.instantiate()
 		e.set_meta("weak_mode", true)
 		return e
-	# 1-2 dakika: sadece normal basic enemy
+
+	# 1-2 dakika: sadece normal basic
 	if t < 120:
 		return enemy_scene.instantiate()
-	# 2-3 dakika: basic dominant, fast az
+
+	# 2-3 dakika: basic dominant, az fast
 	if t < 180:
-		if roll < 0.70:
+		if roll < 0.75:
 			return enemy_scene.instantiate()
 		else:
 			return fast_enemy_scene.instantiate()
-	
-	# 2+ dakika: her zaman %30 level-1 düşman
-	if roll < 0.30:
-		if randf() > 0.5:
-			return fast_enemy_scene.instantiate()
-		else:
-			return enemy_scene.instantiate()
-	
+
+	# 3+ dakika: her zaman %20 level-1 karışımı
+	if roll < 0.20:
+		return enemy_scene.instantiate() if randf() > 0.5 else fast_enemy_scene.instantiate()
+
 	var r = randf()
-	
-	# 2:00 - 4:00
-	if t < 240:
-		if r < 0.5: return fast_enemy_scene.instantiate()
+
+	# 3:00 - 5:00
+	if t < 300:
+		if r < 0.6: return fast_enemy_scene.instantiate()
 		else: return dasher_scene.instantiate()
-	# 4:00 - 6:00
-	elif t < 360:
+	# 5:00 - 7:00
+	elif t < 420:
 		if r < 0.35: return fast_enemy_scene.instantiate()
 		elif r < 0.65: return dasher_scene.instantiate()
 		else: return tank_enemy_scene.instantiate()
-	# 6:00 - 8:00 (hâlâ exploder yok)
-	elif t < 480:
+	# 7:00 - 9:00 (hâlâ exploder yok)
+	elif t < 540:
 		if r < 0.30: return dasher_scene.instantiate()
 		elif r < 0.60: return tank_enemy_scene.instantiate()
 		else: return healer_scene.instantiate()
-	# 8:00 - 10:00 → exploder giriyor
-	elif t < 600:
+	# 9:00 - 11:00 → exploder giriyor
+	elif t < 660:
 		if r < 0.25: return exploder_scene.instantiate()
 		elif r < 0.50: return tank_enemy_scene.instantiate()
 		elif r < 0.75: return dasher_scene.instantiate()
 		else: return healer_scene.instantiate()
-	# 10:00 - 15:00
+	# 11:00 - 15:00
 	elif t < 900:
 		if r < 0.20: return exploder_scene.instantiate()
 		elif r < 0.40: return tank_enemy_scene.instantiate()
@@ -325,6 +323,7 @@ func _pick_enemy_for_time() -> Node:
 			2: return exploder_scene.instantiate()
 			3: return healer_scene.instantiate()
 			_: return tank_enemy_scene.instantiate()
+
 	return enemy_scene.instantiate()
 
 func spawn_mini_boss():
