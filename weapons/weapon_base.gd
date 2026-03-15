@@ -9,6 +9,7 @@ var level = 1
 var max_level = 5
 var weapon_name = "Silah"
 var category = "attack"
+var tag = "none"
 
 func _ready():
 	player = get_parent()
