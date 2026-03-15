@@ -86,13 +86,14 @@ func apply_slow(factor: float, duration: float):
 	if body:
 		body.color = Color("#3498DB")
 
+	var _poison_damage = 0
+	var _poison_timer = 0.0
+	var _poison_tick_interval = 1.0
+
 func apply_poison(damage_per_tick: int, duration: float):
-	var ticks = int(duration)
-	for i in ticks:
-		await get_tree().create_timer(float(i + 1)).timeout
-		if is_dead or not is_instance_valid(self):
-			return
-		take_damage(damage_per_tick)
+	_poison_damage = damage_per_tick
+	_poison_timer = duration
+	_poison_tick_interval = 1.0
 
 func flash():
 	pass
@@ -197,3 +198,13 @@ func _on_death_complete():
 		if orb.get_node_or_null("ColorRect"):
 			orb.get_node("ColorRect").color = orb_color
 	queue_free()
+
+
+func _physics_process(delta):
+	if _poison_timer > 0:
+		_poison_timer -= delta
+		_poison_tick_interval -= delta
+		if _poison_tick_interval <= 0:
+			_poison_tick_interval = 1.0
+			if not is_dead:
+				take_damage(_poison_damage)
