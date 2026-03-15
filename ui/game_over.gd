@@ -116,5 +116,6 @@ func _on_restart():
 
 func _on_menu():
 	get_tree().paused = false
+	ObjectPool.reset_all()
 	queue_free()
 	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
