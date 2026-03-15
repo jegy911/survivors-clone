@@ -4,7 +4,7 @@ signal upgrade_chosen(upgrade_id)
 
 var weapon_upgrades = ["bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser"]
 var item_upgrades = ["lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone"]
-var stat_upgrades = ["speed", "max_hp", "heal"]
+var stat_upgrades = []
 
 var stat_texts = {
 	"speed": "Hareket Hızı +20\nHareket hızını artırır",
