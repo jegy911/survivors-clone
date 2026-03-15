@@ -20,13 +20,13 @@ func _physics_process(delta):
 		ObjectPool.return_object(self)
 		return
 	
-	var areas = get_overlapping_areas()
-	for area in areas:
-		if area.has_method("take_damage"):
-			if not area.is_in_group("player"):
-				area.take_damage(damage)
+	var bodies = get_overlapping_bodies()
+	for body in bodies:
+		if body.has_method("take_damage"):
+			if not body.is_in_group("player"):
+				body.take_damage(damage)
 				if player:
-					EventBus.on_damage_dealt.emit(player, area, damage)
+					EventBus.on_damage_dealt.emit(player, body, damage)
 				ObjectPool.return_object(self)
 				return
 
