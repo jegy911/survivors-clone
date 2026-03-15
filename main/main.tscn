@@ -12,7 +12,7 @@ z_index = -1
 texture_repeat = 2
 texture = ExtResource("2_xwkvk")
 region_enabled = true
-region_rect = Rect2(-5000, -5000, 10000, 10000)
+region_rect = Rect2(-50000, -50000, 100000, 100000)
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=708652242]
 
