@@ -7,7 +7,7 @@ var slow_factor = 0.5
 func _ready():
 	super._ready()
 	weapon_name = "Aura"
-	tag = "kesici"
+	tag = "patlayici"
 	category = "attack"
 	damage = 15
 	cooldown = 1.0
