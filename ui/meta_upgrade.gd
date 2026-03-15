@@ -21,6 +21,9 @@ var upgrade_defs = [
 	{"id": "growth_bonus", "name": "📦 Growth", "desc": "Kazanılan altın +%15 per rank", "max_level": 5},
 	{"id": "curse_level", "name": "💀 Curse", "desc": "Düşman hızı/sayısı +%10 ama XP 2x per rank", "max_level": 5},
 	{"id": "revival", "name": "✨ Revival", "desc": "Ölünce 1 kere %30 HP ile canlan", "max_level": 1},
+	{"id": "adrenaline", "name": "🔥 Adrenalin", "desc": "Can azaldıkça hasar artar (+20 per %HP per rank)", "max_level": 5},
+	{"id": "momentum", "name": "💨 Momentum", "desc": "Hareket ettikçe hasar bonusu (+1/sn per rank, max 10x)", "max_level": 5},
+	{"id": "overheal", "name": "🛡 Overheal Kalkan", "desc": "Can doluyken iyileşme geçici kalkan verir", "max_level": 5},
 ]
 
 var pending_reset = false
