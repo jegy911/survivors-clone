@@ -1,4 +1,5 @@
 extends EnemyBase
+const DISABLED = true
 
 const PREFERRED_DISTANCE = 250.0
 
