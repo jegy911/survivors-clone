@@ -25,6 +25,9 @@ var meta_upgrades = {
 	"growth_bonus": 0,
 	"curse_level": 0,
 	"revival": 0,
+	"adrenaline": 0,
+	"momentum": 0,
+	"overheal": 0,
 }
 var settings = {
 	"master_volume": 1.0,
