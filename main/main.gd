@@ -256,8 +256,17 @@ func _pick_enemy_for_time() -> Node:
 	var roll = randf()
 	
 	# İlk 2 dakika: sadece basic ve fast (level-1)
+	# 0-1 dakika: sadece weak mode
+	if t < 60:
+		var e = enemy_scene.instantiate()
+		e.set_meta("weak_mode", true)
+		return e
+	# 1-2 dakika: sadece normal basic enemy
 	if t < 120:
-		if roll < 0.55:
+		return enemy_scene.instantiate()
+	# 2-3 dakika: basic dominant, fast az
+	if t < 180:
+		if roll < 0.70:
 			return enemy_scene.instantiate()
 		else:
 			return fast_enemy_scene.instantiate()
