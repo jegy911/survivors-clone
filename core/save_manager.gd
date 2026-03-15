@@ -145,7 +145,7 @@ func get_max_rank(key: String) -> int:
 			return 3
 		"revival":
 			return 1
-		_:
+		"adrenaline", "momentum", "overheal":
 			return 5
 
 func get_upgrade_cost(key: String, current_rank: int) -> int:
