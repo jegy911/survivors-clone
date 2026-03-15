@@ -139,14 +139,6 @@ func _build_goruntu_tab(parent: Node):
 		SaveManager.save_game()
 	)
 
-func _on_resolution_selected(idx: int, resolutions: Array):
-	var r = resolutions[idx]
-	DisplayServer.window_set_size(r)
-	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-	SaveManager.settings["fullscreen"] = false
-	SaveManager.settings["resolution_x"] = r.x
-	SaveManager.settings["resolution_y"] = r.y
-	SaveManager.save_game()
 	
 	# Çözünürlük seçimi
 	var res_row = HBoxContainer.new()
@@ -183,9 +175,8 @@ func _on_resolution_selected(idx: int, resolutions: Array):
 		SaveManager.settings["resolution_x"] = res.x
 		SaveManager.settings["resolution_y"] = res.y
 		SaveManager.save_game()
-	
-	res_row.add_child(res_dropdown)
 	)
+	res_row.add_child(res_dropdown)
 	
 	_add_toggle(vbox, "VFX Efektleri", SaveManager.settings.get("show_vfx", true), func(val):
 		SaveManager.settings["show_vfx"] = val
