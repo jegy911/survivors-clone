@@ -32,6 +32,18 @@ const EVOLUTIONS = {
 		"name": "Storm",
 		"description": "Yıldırım + Hız Tılsımı → Fırtına\nHer öldürmede ekstra yıldırım"
 	},
+	"shadow_storm": {
+		"requires_weapons": ["shadow", "lightning"],
+		"requires_items": ["speed_charm"],
+		"name": "Gölge Fırtınası",
+		"description": "Gölge + Yıldırım + Hız → Gölge Fırtınası\nHer gölge vuruşu yıldırım zinciri tetikler"
+	},
+	"frost_nova": {
+		"requires_weapons": ["ice_ball"],
+		"requires_items": ["armor", "shield"],
+		"name": "Buz Novas",
+		"description": "Buz Topu + Zırh + Kalkan → Buz Novas\nVuruşta alan dondurma + hasar yansıtma"
+	},
 }
 
 static func get_available_evolutions(player) -> Array:
