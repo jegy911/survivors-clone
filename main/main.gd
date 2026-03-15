@@ -464,18 +464,19 @@ func _spawn_vacuum_orb():
 	pulse.tween_property(body, "modulate:a", 1.0, 0.4)
 	
 	var collected = false
-	area.body_entered.connect(func(b):
-		if collected:
-			return
-		if b.is_in_group("player"):
-			collected = true
-			var xp_orbs = get_tree().get_nodes_in_group("xp_orbs")
-			for xo in xp_orbs:
-				if xo.has_method("vacuum_attract"):
-					xo.vacuum_attract()
-			b.show_floating_text("🌀 VAKUM!", orb_node.global_position + Vector2(0, -40), Color("#00FFFF"), 20)
-			orb_node.queue_free()
-	)
+	area.body_entered.connect(_on_vacuum_collected.bind(orb_node, area))
+
+func _on_vacuum_collected(body: Node, orb_node: Node, _area: Node):
+	if not is_instance_valid(orb_node):
+		return
+	if not body.is_in_group("player"):
+		return
+	var xp_orbs = get_tree().get_nodes_in_group("xp_orbs")
+	for xo in xp_orbs:
+		if xo.has_method("vacuum_attract"):
+			xo.vacuum_attract()
+	body.show_floating_text("🌀 VAKUM!", orb_node.global_position + Vector2(0, -40), Color("#00FFFF"), 20)
+	orb_node.queue_free()
 	
 	await get_tree().create_timer(15.0).timeout
 	if is_instance_valid(orb_node) and not collected:
