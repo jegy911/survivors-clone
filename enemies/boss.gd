@@ -50,4 +50,65 @@ func _on_death_complete():
 	for i in 20:
 		var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
 		orb.init(XP_VALUE / 20, global_position + Vector2(randf_range(-60, 60), randf_range(-60, 60)))
+	_spawn_boss_chest()
 	queue_free()
+
+func _spawn_boss_chest():
+	var chest_node = Node2D.new()
+	get_parent().add_child(chest_node)
+	chest_node.global_position = global_position
+	
+	var body_rect = ColorRect.new()
+	body_rect.size = Vector2(28, 28)
+	body_rect.position = Vector2(-14, -14)
+	body_rect.color = Color("#8B4513")
+	chest_node.add_child(body_rect)
+	
+	# Titreme + ışık efekti
+	var tween = chest_node.create_tween()
+	tween.set_loops(6)
+	tween.tween_property(body_rect, "color", Color("#FFD700"), 0.15)
+	tween.tween_property(body_rect, "color", Color("#8B4513"), 0.15)
+	tween.set_loops(0)
+	
+	var shake_tween = chest_node.create_tween()
+	shake_tween.set_loops(12)
+	shake_tween.tween_property(chest_node, "position", chest_node.position + Vector2(4, 0), 0.06)
+	shake_tween.tween_property(chest_node, "position", chest_node.position + Vector2(-4, 0), 0.06)
+	shake_tween.set_loops(0)
+	
+	# Işın efektleri
+	for i in 8:
+		var ray = ColorRect.new()
+		ray.size = Vector2(4, 40)
+		ray.color = Color("#FFD700")
+		ray.modulate.a = 0.8
+		ray.pivot_offset = Vector2(2, 40)
+		ray.rotation = (float(i) / 8.0) * TAU
+		ray.position = Vector2(-2, -14)
+		chest_node.add_child(ray)
+		var ray_tween = ray.create_tween()
+		ray_tween.set_loops()
+		ray_tween.tween_property(ray, "modulate:a", 0.1, 0.4)
+		ray_tween.tween_property(ray, "modulate:a", 0.8, 0.4)
+	
+	# 2.5 sn sonra aç
+	await get_tree().create_timer(2.5).timeout
+	if not is_instance_valid(chest_node):
+		return
+	
+	var player_node = get_tree().get_first_node_in_group("player")
+	if player_node:
+		# 3-5 arası rastgele ödül
+		var reward_count = randi_range(3, 5)
+		player_node.show_floating_text("📦 BOSS SANDIĞI x" + str(reward_count) + "!", chest_node.global_position + Vector2(0, -60), Color("#FFD700"), 22)
+		var items = ["lifesteal", "armor", "crit", "shield", "explosion", "magnet", "poison", "speed_charm"]
+		items.shuffle()
+		for i in min(reward_count, items.size()):
+			player_node.add_item(items[i])
+	
+	# Patlama efekti
+	var burst = chest_node.create_tween()
+	burst.tween_property(chest_node, "scale", Vector2(2.0, 2.0), 0.1)
+	burst.tween_property(chest_node, "modulate:a", 0.0, 0.2)
+	burst.tween_callback(chest_node.queue_free)
