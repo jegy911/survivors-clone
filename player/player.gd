@@ -677,7 +677,8 @@ func die():
 	SaveManager.add_gold(gold_earned)
 	var char_id = CharacterData.CHARACTERS[SaveManager.selected_character]["id"]
 	var game_time = get_tree().get_first_node_in_group("main").game_timer
-	SaveManager.update_stats_after_game(char_id, kill_count, game_time, evolution_obtained, tank_killed, gold_earned, level - 1, boss_kill_count, total_damage_dealt, chests_opened, active_items.size())
+	var won = game_time >= 1800.0
+	SaveManager.update_stats_after_game(char_id, kill_count, game_time, evolution_obtained, tank_killed, gold_earned, level - 1, boss_kill_count, total_damage_dealt, chests_opened, active_items.size(), won)
 	AchievementManager.check_after_game(kill_count, game_time)
 	EventBus.player_died.emit()
 	call_deferred("_deferred_die")
@@ -688,7 +689,8 @@ func _deferred_die():
 	var go = game_over_scene.instantiate()
 	go.process_mode = Node.PROCESS_MODE_ALWAYS
 	get_tree().root.add_child(go)
-	go.show_stats(game_time, level, kill_count, gold_earned)
+	var won = game_time >= 1800.0
+	go.show_stats(game_time, level, kill_count, gold_earned, won)
 
 func collect_gold(amount: int):
 	var final_amount = amount * (3 if shrine_active else 1)
