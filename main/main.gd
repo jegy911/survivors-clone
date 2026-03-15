@@ -19,6 +19,13 @@ var wave_interval = 60.0
 var wave_count = 0
 var reward_active = false
 var vacuum_spawn_timer = 120.0
+var reaper_mode = false
+var reaper_count = 0
+var siege_timer = 0.0
+var siege_active = false
+var siege_cooldown_timer = 0.0
+const SIEGE_DURATION = 120.0
+const SIEGE_COOLDOWN = 60.0
 var game_timer = 0.0
 
 # Boss takibi
@@ -94,9 +101,31 @@ func _process(delta):
 			next_mini_boss_index += 1
 
 	# Final boss 30. dakikada
-	if game_timer >= 1800 and not final_boss_spawned:
-		spawn_final_boss()
-		final_boss_spawned = true
+	# 30. dakikada Reaper modu
+	if game_timer >= 1800 and not reaper_mode:
+		_start_reaper_mode()
+	
+	# Reaper modunda sürekli spawn
+	if reaper_mode:
+		spawn_timer -= delta
+		if spawn_timer <= 0:
+			spawn_timer = 8.0
+			_spawn_reaper()
+		return
+	
+	# 15. dakikadan sonra siege sistemi (sadece 15-30 dk arası)
+	if game_timer >= 900 and game_timer < 1800:
+		if siege_active:
+			siege_timer -= delta
+			if siege_timer <= 0:
+				siege_active = false
+				siege_cooldown_timer = SIEGE_COOLDOWN
+		else:
+			siege_cooldown_timer -= delta
+			if siege_cooldown_timer <= 0:
+				siege_active = true
+				siege_timer = SIEGE_DURATION
+				_start_siege_wave()
 
 	# Her dakika spawn artışı
 	wave_timer += delta
@@ -107,13 +136,15 @@ func _process(delta):
 		spawn_interval = max(0.2, spawn_interval - 0.08)
 		_show_wave_reward()
 
-	# Spawn
+	# Spawn (reaper modunda yukarıda return edildi)
 	spawn_timer -= delta
 	if spawn_timer <= 0:
 		var to_spawn = get_effective_enemies_per_wave()
+		if siege_active:
+			to_spawn = get_effective_enemies_per_wave() * 3
 		for i in to_spawn:
 			spawn_random_enemy()
-		spawn_timer = get_effective_spawn_interval()
+		spawn_timer = get_effective_spawn_interval() * (0.3 if siege_active else 1.0)
 	
 	# Vacuum orb spawn
 	vacuum_spawn_timer -= delta
@@ -483,3 +514,51 @@ func _on_vacuum_collected(body: Node, orb_node: Node, _area: Node):
 		var fade = body.create_tween()
 		fade.tween_property(body, "modulate:a", 0.0, 1.0)
 		fade.tween_callback(orb_node.queue_free)
+
+func _start_reaper_mode():
+	reaper_mode = true
+	# Tüm normal düşmanları temizle
+	for enemy in get_tree().get_nodes_in_group("enemies"):
+		if not enemy.is_in_group("boss"):
+			enemy.queue_free()
+	# Ekrana uyarı
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		player.show_floating_text("☠ ÖLÜM GELİYOR...", player.global_position + Vector2(0, -100), Color("#8B0000"), 28)
+	await get_tree().create_timer(3.0).timeout
+	_spawn_reaper()
+
+func _spawn_reaper():
+	var reaper = boss_scene.instantiate()
+	add_child(reaper)
+	reaper.global_position = get_spawn_outside_screen()
+	reaper_count += 1
+	# Her Reaper öncekinden %50 daha güçlü
+	var mult = 1.0 + reaper_count * 0.5
+	if reaper.get("hp") != null:
+		reaper.hp = int(500 * mult * 3)
+		reaper.max_hp = reaper.hp
+	if reaper.get("DAMAGE") != null:
+		reaper.DAMAGE = int(80 * mult)
+	if reaper.get("BASE_SPEED") != null:
+		reaper.BASE_SPEED = 90.0 + reaper_count * 5.0
+		reaper.current_speed = reaper.BASE_SPEED
+	# Kırmızı-siyah renk
+	if reaper.get_node_or_null("ColorRect"):
+		reaper.get_node("ColorRect").color = Color("#1A0000")
+	# Ölünce yenisi gelsin
+	reaper.tree_exited.connect(func():
+		if reaper_mode:
+			await get_tree().create_timer(2.0).timeout
+			if reaper_mode:
+				_spawn_reaper()
+	)
+	# Label
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		player.show_floating_text("☠ REAPER #" + str(reaper_count), reaper.global_position + Vector2(0, -60), Color("#8B0000"), 20)
+
+func _start_siege_wave():
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		player.show_floating_text("⚠ KUŞATMA!", player.global_position + Vector2(0, -80), Color("#FF6600"), 22)
