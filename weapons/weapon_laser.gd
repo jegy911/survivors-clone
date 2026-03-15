@@ -6,6 +6,7 @@ var laser_range = 600.0
 func _ready():
 	super._ready()
 	weapon_name = "Lazer"
+	tag = "teknolojik"
 	category = "attack"
 	damage = 30
 	cooldown = 1.5
