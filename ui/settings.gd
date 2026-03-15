@@ -427,7 +427,14 @@ func _build_devtools_tab(parent: Node):
 		SaveManager.save_game()
 		_switch_tab("devtools")
 	)
-	
+
+	# Gold sıfırla
+	_add_dev_button(vbox, "💸 Gold Sıfırla", func():
+		SaveManager.gold = 0
+		SaveManager.save_game()
+		_switch_tab("devtools")
+	)
+
 	# Karakterleri kilitle (sıfırla)
 	_add_dev_button(vbox, "🔒 Karakterleri Sıfırla", func():
 		SaveManager.unlocked_characters = ["warrior", "mage", "vampire"]
