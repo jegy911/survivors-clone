@@ -24,6 +24,10 @@ var bounce_timer = 0.0
 var shrine_active = false
 var shrine_timer = 0.0
 var trail_timer = 0.0
+var _origin_area_bonus = 0.0
+var _origin_cooldown_bonus = 0.0
+var _origin_armor_bonus = 0
+var _origin_xp_bonus = 0.0
 var collection_regen_timer = 0.0
 
 func _ready_damage_tracking():
@@ -796,10 +800,7 @@ func get_tag_crit_bonus() -> float:
 			bonus += 0.10
 	return bonus
 
-var _origin_area_bonus = 0.0
-var _origin_cooldown_bonus = 0.0
-var _origin_armor_bonus = 0
-var _origin_xp_bonus = 0.0
+
 var _stat_panel = null
 
 func _toggle_stat_panel():
