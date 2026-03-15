@@ -19,6 +19,9 @@ var wave_interval = 60.0
 var wave_count = 0
 var reward_active = false
 var vacuum_spawn_timer = 120.0
+var trap_spawn_timer = 30.0
+var shrine_spawn_timer = 90.0
+var crate_spawn_timer = 45.0
 var reaper_mode = false
 var reaper_count = 0
 var siege_timer = 0.0
@@ -150,6 +153,24 @@ func _process(delta):
 	if vacuum_spawn_timer <= 0:
 		vacuum_spawn_timer = randf_range(90.0, 150.0)
 		_spawn_vacuum_orb()
+
+	# Tuzak spawn
+	trap_spawn_timer -= delta
+	if trap_spawn_timer <= 0:
+		trap_spawn_timer = randf_range(20.0, 40.0)
+		_spawn_trap()
+	
+	# Sunak spawn
+	shrine_spawn_timer -= delta
+	if shrine_spawn_timer <= 0:
+		shrine_spawn_timer = randf_range(60.0, 120.0)
+		_spawn_shrine()
+	
+	# Sandık spawn
+	crate_spawn_timer -= delta
+	if crate_spawn_timer <= 0:
+		crate_spawn_timer = randf_range(30.0, 60.0)
+		_spawn_crate()
 
 func update_timer_label():
 	if game_timer <= 1800.0:
@@ -564,3 +585,41 @@ func _on_reaper_died():
 	await get_tree().create_timer(2.0).timeout
 	if reaper_mode:
 		_spawn_reaper()
+
+func _spawn_trap():
+	var player = get_tree().get_first_node_in_group("player")
+	if player == null:
+		return
+	var trap
+	if randf() > 0.5:
+		trap = load("res://effects/freeze_barrel.gd").new()
+	else:
+		trap = load("res://effects/poison_trap.gd").new()
+	add_child(trap)
+	var angle = randf() * TAU
+	trap.global_position = player.global_position + Vector2(cos(angle), sin(angle)) * randf_range(150.0, 350.0)
+	# 30 sn sonra yok ol
+	await get_tree().create_timer(30.0).timeout
+	if is_instance_valid(trap):
+		trap.queue_free()
+
+func _spawn_shrine():
+	var player = get_tree().get_first_node_in_group("player")
+	if player == null:
+		return
+	var shrine = load("res://effects/shrine_of_risk.gd").new()
+	add_child(shrine)
+	var angle = randf() * TAU
+	shrine.global_position = player.global_position + Vector2(cos(angle), sin(angle)) * randf_range(200.0, 400.0)
+	await get_tree().create_timer(45.0).timeout
+	if is_instance_valid(shrine):
+		shrine.queue_free()
+
+func _spawn_crate():
+	var player = get_tree().get_first_node_in_group("player")
+	if player == null:
+		return
+	var crate = load("res://effects/destructible_crate.gd").new()
+	add_child(crate)
+	var angle = randf() * TAU
+	crate.global_position = player.global_position + Vector2(cos(angle), sin(angle)) * randf_range(100.0, 300.0)
