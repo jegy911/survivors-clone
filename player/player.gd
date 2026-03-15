@@ -20,6 +20,9 @@ var momentum_timer = 0.0
 var momentum_bonus = 0
 var last_position = Vector2.ZERO
 var overheal_shield = 0
+var bounce_timer = 0.0
+var shrine_active = false
+var shrine_timer = 0.0
 
 func _ready_damage_tracking():
 	EventBus.on_damage_dealt.connect(_on_damage_tracked)
@@ -183,7 +186,16 @@ func _process(delta):
 			momentum_timer = max(0.0, momentum_timer - delta * 2)
 			momentum_bonus = min(int(momentum_timer) * momentum_rank, momentum_rank * 10)
 		last_position = global_position
+	# Bounce timer
+	if bounce_timer > 0:
+		bounce_timer -= delta
 	
+	# Shrine timer
+	if shrine_active:
+		shrine_timer -= delta
+		if shrine_timer <= 0:
+			shrine_active = false
+			show_floating_text("🕯 Sunak bitti", global_position + Vector2(0, -60), Color("#AAAAAA"))
 	_update_screen_shake(delta)
 
 func update_hp_bar():
@@ -468,6 +480,8 @@ func get_item_description(type: String) -> String:
 func gain_xp(amount: int):
 	var curse_multiplier = 1.0 + SaveManager.meta_upgrades.get("curse_level", 0) * 1.0
 	var bonus = 1.0 + SaveManager.meta_upgrades["xp_bonus"] * 0.1 + category_xp_bonus
+	if shrine_active:
+		bonus *= 3.0
 	xp += int(amount * bonus * curse_multiplier)
 	xp_bar.value = xp
 	AudioManager.play_xp()
@@ -623,7 +637,9 @@ func _deferred_die():
 	go.show_stats(game_time, level, kill_count, gold_earned)
 
 func collect_gold(amount: int):
-	gold_earned += amount
+	var final_amount = amount * (3 if shrine_active else 1)
+	gold_earned += final_amount
+	amount = final_amount
 	$CanvasLayer/StatsRow/GoldLabel.text = "💰 " + str(gold_earned)
 	EventBus.gold_collected.emit(amount)
 	show_floating_text("+" + str(amount) + "💰", global_position + Vector2(randf_range(-20, 20), -50), Color("#FFD700"))
