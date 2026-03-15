@@ -107,6 +107,7 @@ func _make_button(text: String, bg_color: Color) -> Button:
 
 func _on_restart():
 	get_tree().paused = false
+	ObjectPool.reset_all()
 	queue_free()
 	get_tree().change_scene_to_file("res://ui/character_select.tscn")
 
