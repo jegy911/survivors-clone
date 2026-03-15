@@ -6,6 +6,7 @@ var boomerang_count = 1
 func _ready():
 	super._ready()
 	weapon_name = "Bumerang"
+	tag = "kesici"
 	category = "attack"
 	damage = 18
 	cooldown = 2.0
