@@ -568,7 +568,6 @@ func _spawn_reaper():
 		reaper.get_node("ColorRect").color = Color("#1A0000")
 	# Ölünce yenisi gelsin
 	reaper.tree_exited.connect(_on_reaper_died)
-	)
 	# Label
 	var player = get_tree().get_first_node_in_group("player")
 	if player:
