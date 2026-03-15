@@ -114,15 +114,15 @@ func die():
 					continue
 				if enemy.global_position.distance_to(global_position) < explosion_range:
 					enemy.take_damage(int(player_node.get_total_damage(20)))
-			var flash = ColorRect.new()
-			flash.size = Vector2(200, 200)
-			flash.color = Color("#FF4500")
-			flash.modulate.a = 0.5
-			flash.position = global_position - Vector2(100, 100)
-			get_parent().add_child(flash)
-			var tween = flash.create_tween()
-			tween.tween_property(flash, "modulate:a", 0.0, 0.3)
-			tween.tween_callback(flash.queue_free)
+			var fire_flash = ColorRect.new()
+			fire_flash.size = Vector2(200, 200)
+			fire_flash.color = Color("#FF4500")
+			fire_flash.modulate.a = 0.5
+			fire_flash.position = global_position - Vector2(100, 100)
+			get_parent().add_child(fire_flash)
+			var fire_tween = fire_flash.create_tween()
+			fire_tween.tween_property(fire_flash, "modulate:a", 0.0, 0.3)
+			fire_tween.tween_callback(fire_flash.queue_free)
 	if SaveManager.settings.get("show_vfx", true):
 		_spawn_particles()
 	_try_drop_gold()
