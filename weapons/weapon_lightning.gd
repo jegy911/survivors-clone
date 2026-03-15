@@ -7,6 +7,7 @@ var chain_range = 200.0
 func _ready():
 	super._ready()
 	weapon_name = "Yıldırım"
+	tag = "patlayici"
 	category = "attack"
 	damage = 25
 	cooldown = 2.0
