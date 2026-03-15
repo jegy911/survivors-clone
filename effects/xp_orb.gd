@@ -32,10 +32,17 @@ func init(value: int, pos: Vector2):
 	move_speed = 0.0
 	player = null
 	global_position = pos
+	add_to_group("xp_orbs")
 	show()
+
+func vacuum_attract():
+	move_speed = 900.0
+	base_attract_radius = 99999.0
 
 func reset():
 	xp_value = 10
 	move_speed = 0.0
+	base_attract_radius = 100.0
 	player = null
+	remove_from_group("xp_orbs")
 	hide()
