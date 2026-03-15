@@ -156,11 +156,11 @@ func get_upgrade_text(id: String) -> String:
 	
 	match id:
 		"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser":
-			return player_ref.get_weapon_description(id)
+			return "⚔ SİLAH\n" + player_ref.get_weapon_description(id)
 		"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone":
-			return player_ref.get_item_description(id)
+			return "🛡 EŞYA\n" + player_ref.get_item_description(id)
 		_:
-			return stat_texts.get(id, id)
+			return "🛡 EŞYA\n" + stat_texts.get(id, id)
 
 func refresh_buttons():
 	var buttons = [$Panel/VBoxContainer/HBoxContainer/Option1,
