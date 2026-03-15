@@ -99,7 +99,6 @@ func _spawn_boss_chest():
 	
 	var player_node = get_tree().get_first_node_in_group("player")
 	if player_node:
-		# 3-5 arası rastgele ödül
 		var reward_count = randi_range(3, 5)
 		player_node.show_floating_text("📦 BOSS SANDIĞI x" + str(reward_count) + "!", chest_node.global_position + Vector2(0, -60), Color("#FFD700"), 22)
 		var items = ["lifesteal", "armor", "crit", "shield", "explosion", "magnet", "poison", "speed_charm"]
@@ -107,7 +106,9 @@ func _spawn_boss_chest():
 		for i in min(reward_count, items.size()):
 			player_node.add_item(items[i])
 	
-	# Patlama efekti
+	# Patlama efekti — chest_node hâlâ valid mi kontrol et
+	if not is_instance_valid(chest_node):
+		return
 	var burst = chest_node.create_tween()
 	burst.tween_property(chest_node, "scale", Vector2(2.0, 2.0), 0.1)
 	burst.tween_property(chest_node, "modulate:a", 0.0, 0.2)
