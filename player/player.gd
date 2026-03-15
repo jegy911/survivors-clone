@@ -341,7 +341,11 @@ func add_weapon(type: String):
 			weapon = WeaponBloodBoomerang.new()
 		"storm":
 			weapon = WeaponStorm.new()
-	
+		"shadow_storm":
+			weapon = WeaponShadowStorm.new()
+		"frost_nova":
+			weapon = WeaponFrostNova.new()
+
 	if weapon:
 		add_child(weapon)
 		active_weapons[type] = weapon
