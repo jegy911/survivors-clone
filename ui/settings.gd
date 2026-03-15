@@ -139,6 +139,44 @@ func _build_goruntu_tab(parent: Node):
 		SaveManager.save_game()
 	)
 	
+	# Çözünürlük seçimi
+	var res_row = HBoxContainer.new()
+	res_row.add_theme_constant_override("separation", 20)
+	vbox.add_child(res_row)
+	var res_label = Label.new()
+	res_label.text = "Çözünürlük"
+	res_label.custom_minimum_size = Vector2(200, 0)
+	res_label.add_theme_color_override("font_color", Color.WHITE)
+	res_label.add_theme_font_size_override("font_size", 18)
+	res_row.add_child(res_label)
+	var resolutions = [
+		Vector2i(1920, 1080),
+		Vector2i(1600, 900),
+		Vector2i(1366, 768),
+		Vector2i(1280, 720),
+		Vector2i(1024, 768),
+		Vector2i(800, 600),
+	]
+	var res_dropdown = OptionButton.new()
+	res_dropdown.custom_minimum_size = Vector2(220, 40)
+	var current_size = DisplayServer.window_get_size()
+	for i in resolutions.size():
+		var r = resolutions[i]
+		res_dropdown.add_item("%d x %d" % [r.x, r.y])
+		if current_size == r:
+			res_dropdown.selected = i
+	res_dropdown.item_selected.connect(func(idx):
+		var r = resolutions[idx]
+		DisplayServer.window_set_size(r)
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		SaveManager.settings["fullscreen"] = false
+		SaveManager.settings["resolution_x"] = r.x
+		SaveManager.settings["resolution_y"] = r.y
+		SaveManager.save_game()
+	)
+	res_row.add_child(res_dropdown)
+	)
+	
 	_add_toggle(vbox, "VFX Efektleri", SaveManager.settings.get("show_vfx", true), func(val):
 		SaveManager.settings["show_vfx"] = val
 		SaveManager.save_game()
