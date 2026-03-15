@@ -7,7 +7,8 @@ func _ensure_pool(scene_path: String):
 		return
 	pools[scene_path] = []
 	var scene = load(scene_path)
-	for i in 20:
+	var pool_size = 40 if scene_path.contains("xp_orb") or scene_path.contains("gold_orb") else 20
+	for i in pool_size:
 		var obj = scene.instantiate()
 		obj.set_meta("pool_path", scene_path)
 		obj.set_meta("in_pool", true)
