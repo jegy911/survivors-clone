@@ -5,9 +5,9 @@ extends Area2D
 var BASE_SPEED = 50.0
 var DAMAGE = 10
 var XP_VALUE = 5
-var XP_DROP_CHANCE = 0.65
+var XP_DROP_CHANCE = 0.35
 var gold_value = 1
-var elite_gold_value = 3
+var elite_gold_value = 2
 var death_scale = 1.4
 var particle_color = Color("#E74C3C")
 var damage_color = Color.WHITE
@@ -186,11 +186,11 @@ func _on_death_complete():
 		var roll = randf()
 		var xp_val = XP_VALUE
 		var orb_color = Color("#4A90E2") # mavi
-		if roll < 0.05: # %5 kırmızı
-			xp_val = XP_VALUE * 10
+		iif roll < 0.02: # %2 kırmızı
+			xp_val = XP_VALUE * 8
 			orb_color = Color("#E74C3C")
-		elif roll < 0.20: # %15 yeşil
-			xp_val = XP_VALUE * 5
+		elif roll < 0.10: # %8 yeşil
+			xp_val = XP_VALUE * 3
 			orb_color = Color("#2ECC71")
 		var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
 		orb.init(xp_val, global_position)
