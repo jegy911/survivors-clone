@@ -20,6 +20,7 @@ const CHARACTERS = [
 		"cost": 0,
 		"unlock_hint": "",
 		"unlock_condition": {},
+		"origin_bonus": {"type": "damage_flat", "amount": 15, "penalty": "none"},
 	},
 	{
 		"id": "mage",
@@ -38,6 +39,7 @@ const CHARACTERS = [
 		"cost": 0,
 		"unlock_hint": "",
 		"unlock_condition": {},
+		"origin_bonus": {"type": "area_pct", "amount": 0.30, "penalty": "speed_pct", "penalty_amount": -0.15},
 	},
 	{
 		"id": "vampire",
@@ -56,6 +58,7 @@ const CHARACTERS = [
 		"cost": 0,
 		"unlock_hint": "",
 		"unlock_condition": {},
+		"origin_bonus": {"type": "lifesteal_pct", "amount": 0.10, "penalty": "none"},
 	},
 
 	# --- KİLİTLİ BASE KARAKTERLER (7) ---
@@ -76,6 +79,7 @@ const CHARACTERS = [
 		"cost": 200,
 		"unlock_hint": "100 düşman öldür",
 		"unlock_condition": {"type": "total_kills", "amount": 100},
+		"origin_bonus": {"type": "projectile_count", "amount": 1, "penalty": "none"},
 	},
 	{
 		"id": "stormer",
@@ -94,6 +98,7 @@ const CHARACTERS = [
 		"cost": 300,
 		"unlock_hint": "5 dakika hayatta kal",
 		"unlock_condition": {"type": "max_survival", "amount": 300},
+		"origin_bonus": {"type": "cooldown_pct", "amount": -0.20, "penalty": "hp_pct", "penalty_amount": -0.20},
 	},
 	{
 		"id": "frost",
@@ -112,6 +117,7 @@ const CHARACTERS = [
 		"cost": 250,
 		"unlock_hint": "Bir tank düşmanı öldür",
 		"unlock_condition": {"type": "killed_tank", "amount": 1},
+		"origin_bonus": {"type": "slow_double", "amount": 1, "penalty": "damage_pct", "penalty_amount": -0.15},
 	},
 	{
 		"id": "shadow_walker",
@@ -130,6 +136,7 @@ const CHARACTERS = [
 		"cost": 400,
 		"unlock_hint": "Toplam 300 düşman öldür",
 		"unlock_condition": {"type": "total_kills", "amount": 300},
+		"origin_bonus": {"type": "speed_pct", "amount": 0.25, "penalty": "hp_pct", "penalty_amount": -0.20},
 	},
 	{
 		"id": "engineer",
@@ -148,6 +155,7 @@ const CHARACTERS = [
 		"cost": 500,
 		"unlock_hint": "8 dakika hayatta kal",
 		"unlock_condition": {"type": "max_survival", "amount": 480},
+		"origin_bonus": {"type": "single_weapon", "amount": 1, "penalty": "cooldown_pct", "penalty_amount": -0.70},
 	},
 	{
 		"id": "paladin",
@@ -166,6 +174,7 @@ const CHARACTERS = [
 		"cost": 600,
 		"unlock_hint": "Bir evrim silahı elde et",
 		"unlock_condition": {"type": "evolution_obtained", "amount": 1},
+		"origin_bonus": {"type": "armor_flat", "amount": 6, "penalty": "speed_pct", "penalty_amount": -0.15},
 	},
 	{
 		"id": "blood_prince",
@@ -184,6 +193,7 @@ const CHARACTERS = [
 		"cost": 400,
 		"unlock_hint": "Vampir ile 5 dakika hayatta kal",
 		"unlock_condition": {"type": "survive_as", "character": "vampire", "amount": 300},
+		"origin_bonus": {"type": "xp_pct", "amount": 0.30, "penalty": "hp_pct", "penalty_amount": -0.15},
 	},
 
 	# --- SECRET KARAKTERLER (3) ---
@@ -204,6 +214,7 @@ const CHARACTERS = [
 		"cost": 0,
 		"unlock_hint": "Tek bir koşuda 1000 düşman öldür.",
 		"unlock_condition": {"type": "single_run_kills", "amount": 1000},
+		"origin_bonus": {},
 	},
 	{
 		"id": "chaos",
@@ -222,6 +233,7 @@ const CHARACTERS = [
 		"cost": 0,
 		"unlock_hint": "5 farklı karakterle oyna.",
 		"unlock_condition": {"type": "unique_chars_played", "amount": 5},
+		"origin_bonus": {},
 	},
 	{
 		"id": "omega",
@@ -240,5 +252,6 @@ const CHARACTERS = [
 		"cost": 0,
 		"unlock_hint": "Gizli bir kod var...",
 		"unlock_condition": {"type": "easter_egg"},
+		"origin_bonus": {},
 	},
 ]
