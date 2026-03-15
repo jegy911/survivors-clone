@@ -111,7 +111,7 @@ func _input(event):
 			pause_menu = pause_menu_scene.instantiate()
 			pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS
 			get_tree().root.add_child(pause_menu)
-	if event.is_action_pressed("ui_accept") and not get_tree().paused:
+	if event.is_action_pressed("ui_accept") and not get_tree().paused and upgrade_ui == null:
 		_toggle_stat_panel()
 
 func apply_character_bonuses():
