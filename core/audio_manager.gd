@@ -1,5 +1,9 @@
 extends Node
 
+var xp_note_index = 0
+var xp_note_timer = 0.0
+var xp_notes = [0, 2, 4, 5, 7, 9, 11, 12] # Do Re Mi Fa Sol La Si Do
+
 @onready var shoot_player = $ShootPlayer
 @onready var hit_player = $HitPlayer
 @onready var death_player = $DeathPlayer
@@ -58,6 +62,16 @@ func play_levelup():
 func play_player_hurt():
 	player_hurt_player.play()
 func play_xp():
+	xp_note_timer = 0.3
+	var semitone = xp_notes[xp_note_index % xp_notes.size()]
+	xp_player.pitch_scale = pow(2.0, semitone / 12.0)
 	xp_player.play()
+	xp_note_index += 1
+
+func _process(delta):
+	if xp_note_timer > 0:
+		xp_note_timer -= delta
+	else:
+		xp_note_index = 0
 func play_boss():
 	boss_player.play()
