@@ -138,6 +138,15 @@ func _build_goruntu_tab(parent: Node):
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		SaveManager.save_game()
 	)
+
+func _on_resolution_selected(idx: int, resolutions: Array):
+	var r = resolutions[idx]
+	DisplayServer.window_set_size(r)
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	SaveManager.settings["fullscreen"] = false
+	SaveManager.settings["resolution_x"] = r.x
+	SaveManager.settings["resolution_y"] = r.y
+	SaveManager.save_game()
 	
 	# Çözünürlük seçimi
 	var res_row = HBoxContainer.new()
@@ -165,15 +174,7 @@ func _build_goruntu_tab(parent: Node):
 		res_dropdown.add_item("%d x %d" % [r.x, r.y])
 		if current_size == r:
 			res_dropdown.selected = i
-	res_dropdown.item_selected.connect(func(idx):
-		var r = resolutions[idx]
-		DisplayServer.window_set_size(r)
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		SaveManager.settings["fullscreen"] = false
-		SaveManager.settings["resolution_x"] = r.x
-		SaveManager.settings["resolution_y"] = r.y
-		SaveManager.save_game()
-	)
+	res_dropdown.item_selected.connect(_on_resolution_selected.bind(resolutions))
 	res_row.add_child(res_dropdown)
 	)
 	
