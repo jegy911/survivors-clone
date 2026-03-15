@@ -233,7 +233,7 @@ func _on_play():
 		return
 	SaveManager.selected_character = selected_index
 	SaveManager.save_game()
-	get_tree().change_scene_to_file("res://main/main.tscn")
+	get_tree().change_scene_to_file("res://ui/game_mode_select.tscn")
 
 func _on_back():
 	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
