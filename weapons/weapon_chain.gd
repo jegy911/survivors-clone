@@ -8,6 +8,7 @@ var bounce_multiplier = 1.2
 func _ready():
 	super._ready()
 	weapon_name = "Zincir"
+	tag = "kesici"
 	category = "attack"
 	damage = 20
 	cooldown = 1.5
