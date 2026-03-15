@@ -98,6 +98,31 @@ func die():
 	is_dead = true
 	# EventBus.enemy_killed sadece player.on_enemy_killed içinde emit edilir
 	AudioManager.play_death()
+# Ateş sinerjisi — evrimi olan silahlar varsa %10 patlama
+	var player_node = get_tree().get_first_node_in_group("player")
+	if player_node:
+		var evolved = ["holy_bullet", "toxic_chain", "death_laser", "blood_boomerang", "storm"]
+		var evolved_count = 0
+		for e in evolved:
+			if player_node.active_weapons.has(e):
+				evolved_count += 1
+		if evolved_count >= 2 and randf() < 0.10:
+			var explosion_range = 100.0
+			var enemies = get_tree().get_nodes_in_group("enemies")
+			for enemy in enemies:
+				if enemy == self:
+					continue
+				if enemy.global_position.distance_to(global_position) < explosion_range:
+					enemy.take_damage(int(player_node.get_total_damage(20)))
+			var flash = ColorRect.new()
+			flash.size = Vector2(200, 200)
+			flash.color = Color("#FF4500")
+			flash.modulate.a = 0.5
+			flash.position = global_position - Vector2(100, 100)
+			get_parent().add_child(flash)
+			var tween = flash.create_tween()
+			tween.tween_property(flash, "modulate:a", 0.0, 0.3)
+			tween.tween_callback(flash.queue_free)
 	if SaveManager.settings.get("show_vfx", true):
 		_spawn_particles()
 	_try_drop_gold()
