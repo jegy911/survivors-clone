@@ -36,8 +36,11 @@ var settings = {
 	"fullscreen": false,
 	"show_vfx": true,
 	"screen_shake": true,
-	"damage_numbers": "both_on",  # both_on, player_only, enemy_only, both_off
-	"hp_bars": "both_on",         # both_on, player_only, enemy_only, both_off
+	"damage_numbers": "both_on",
+	"hp_bars": "both_on",
+	"resolution_x": 1280,
+	"resolution_y": 720,
+}
 }
 
 # Kilit sistemi
@@ -126,6 +129,10 @@ func load_game():
 	unlocked_characters = config.get_value("unlock", "unlocked_characters", ["warrior", "mage", "vampire"])
 	unlocked_achievements = config.get_value("unlock", "unlocked_achievements", [])
 	purchased_characters = config.get_value("unlock", "purchased_characters", ["warrior", "mage", "vampire"])
+	var res_x = settings.get("resolution_x", 1280)
+	var res_y = settings.get("resolution_y", 720)
+	if not settings.get("fullscreen", false):
+		DisplayServer.window_set_size(Vector2i(res_x, res_y))
 
 func add_gold(amount: int):
 	var bonus = 1.0 + meta_upgrades["growth_bonus"] * 0.15
