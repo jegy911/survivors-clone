@@ -16,6 +16,8 @@ func _ready():
 	body.color = Color("#E67E22")
 
 func _process(delta):
+	if DISABLED:
+		return
 	if is_dead or player == null:
 		return
 	if slow_timer > 0:
