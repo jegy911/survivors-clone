@@ -23,6 +23,8 @@ var overheal_shield = 0
 var bounce_timer = 0.0
 var shrine_active = false
 var shrine_timer = 0.0
+var trail_timer = 0.0
+var collection_regen_timer = 0.0
 
 func _ready_damage_tracking():
 	EventBus.on_damage_dealt.connect(_on_damage_tracked)
@@ -197,6 +199,21 @@ func _process(delta):
 			shrine_active = false
 			show_floating_text("🕯 Sunak bitti", global_position + Vector2(0, -60), Color("#AAAAAA"))
 	_update_screen_shake(delta)
+
+	# Hız Sinerjisi — trail
+	if _check_speed_synergy():
+		trail_timer -= delta
+		if trail_timer <= 0:
+			trail_timer = 0.3
+			_spawn_trail()
+	
+	# Koleksiyon Bonusu — 6 item = %1 HP/sn
+	if active_items.size() >= 6:
+		collection_regen_timer += delta
+		if collection_regen_timer >= 1.0:
+			collection_regen_timer = 0.0
+			var regen = max(1, int(max_hp * 0.01))
+			heal(regen)
 
 func update_hp_bar():
 	var ratio = float(hp) / float(max_hp)
@@ -382,7 +399,7 @@ func get_total_damage(base_damage: int) -> int:
 		var missing_hp_pct = 1.0 - (float(hp) / float(max_hp))
 		adrenaline_bonus = int(missing_hp_pct * adrenaline_rank * 20)
 	var dmg = base_damage + category_damage_bonus + momentum_bonus + adrenaline_bonus
-	var crit_chance = category_crit_bonus
+	var crit_chance = category_crit_bonus + get_tag_crit_bonus()
 	if active_items.has("crit"):
 		crit_chance += active_items["crit"].crit_chance
 	if randf() < crit_chance:
@@ -699,3 +716,43 @@ func _calc_xp_for_level(lvl: int) -> int:
 		return base + lvl * 10
 	else:
 		return int(base * pow(1.2, lvl))
+
+func _check_speed_synergy() -> bool:
+	# MoveSpeed ve speed_charm ikisi de max level mi?
+	var has_speed_charm_max = active_items.has("speed_charm") and active_items["speed_charm"].level >= active_items["speed_charm"].max_level
+	var speed_bonus = SaveManager.meta_upgrades.get("speed_bonus", 0)
+	return has_speed_charm_max and speed_bonus >= 5
+
+func _spawn_trail():
+	var trail = ColorRect.new()
+	trail.size = Vector2(10, 10)
+	trail.color = Color("#00FFFF")
+	trail.modulate.a = 0.6
+	trail.global_position = global_position - Vector2(5, 5)
+	get_parent().add_child(trail)
+	var tween = trail.create_tween()
+	tween.tween_property(trail, "modulate:a", 0.0, 0.4)
+	tween.tween_callback(trail.queue_free)
+	# Trail hasar
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	for enemy in enemies:
+		if enemy.global_position.distance_to(global_position) < 30:
+			enemy.take_damage(int(bullet_damage * 0.3))
+
+func get_weapon_tag_counts() -> Dictionary:
+	var counts = {"kesici": 0, "patlayici": 0, "buyu": 0, "teknolojik": 0}
+	for w in active_weapons.values():
+		if counts.has(w.tag):
+			counts[w.tag] += 1
+	return counts
+
+func get_tag_crit_bonus() -> float:
+	var counts = get_weapon_tag_counts()
+	var bonus = 0.0
+	for tag_id in counts:
+		var c = counts[tag_id]
+		if c >= 6:
+			bonus += 0.30
+		elif c >= 3:
+			bonus += 0.10
+	return bonus
