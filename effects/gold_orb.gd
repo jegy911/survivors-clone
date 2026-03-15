@@ -42,14 +42,20 @@ func init(gold_value: int, pos: Vector2):
 	attract_speed = 0.0
 	player = null
 	global_position = pos
+	add_to_group("gold_orbs")
 	
 	var tween = create_tween()
 	tween.tween_property(self, "global_position", pos + Vector2(randf_range(-15, 15), randf_range(-15, 15)), 0.25)
 	show()
+
+func vacuum_attract():
+	attracted = true
+	attract_speed = 900.0
 
 func reset():
 	value = 1
 	attracted = false
 	attract_speed = 0.0
 	player = null
+	remove_from_group("gold_orbs")
 	hide()
