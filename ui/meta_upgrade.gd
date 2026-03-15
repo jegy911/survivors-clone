@@ -57,7 +57,11 @@ func _ready():
 
 	$VBoxContainer/ScrollContainer.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	$VBoxContainer/ScrollContainer.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	var scroll_style = StyleBoxFlat.new()
+	scroll_style.bg_color = Color("#0D0D1A")
+	$VBoxContainer/ScrollContainer.add_theme_stylebox_override("panel", scroll_style)
 	$VBoxContainer/ScrollContainer/UpgradeList.add_theme_constant_override("separation", 12)
+	$VBoxContainer/ScrollContainer/UpgradeList.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	build_upgrade_list()
 
 func build_upgrade_list():
