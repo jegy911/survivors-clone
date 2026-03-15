@@ -35,6 +35,7 @@ func _do_explosion(position: Vector2):
 		if enemy.global_position.distance_to(position) <= effective_radius:
 			if enemy.has_method("take_explosion_damage"):
 				enemy.take_explosion_damage(explosion_damage)
+	EventBus.hit_stop_requested.emit(2)
 
 func get_description() -> String:
 	return "Patlama Lv" + str(level) + "\nÖlünce " + str(int(explosion_radius * player.get_area_multiplier())) + " alanda " + str(explosion_damage) + " hasar"
