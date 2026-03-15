@@ -6,6 +6,7 @@ var bullet_count = 3
 func _ready():
 	super._ready()
 	weapon_name = "Holy Bullet"
+	tag = "buyu"
 	category = "attack"
 	damage = 35
 	cooldown = 0.8
