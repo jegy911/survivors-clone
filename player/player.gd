@@ -124,6 +124,37 @@ func apply_character_bonuses():
 		add_weapon(char_data["start_weapon"])
 	if char_data["start_item"] != "":
 		add_item(char_data["start_item"])
+	var origin = char_data.get("origin_bonus", {})
+	if not origin.is_empty():
+		match origin.get("type", ""):
+			"damage_flat":
+				bullet_damage += origin["amount"]
+			"area_pct":
+				pass # get_area_multiplier override edilecek
+			"speed_pct":
+				SPEED = int(SPEED * (1.0 + origin["amount"]))
+			"cooldown_pct":
+				pass # get_cooldown_multiplier override edilecek
+			"armor_flat":
+				pass # take_damage'de okunacak
+			"xp_pct":
+				pass # gain_xp'de okunacak
+			"hp_pct":
+				max_hp = int(max_hp * (1.0 + origin["amount"]))
+				hp = max_hp
+			"single_weapon":
+				max_weapons = 1
+		# Penalty uygula
+		var penalty = origin.get("penalty", "none")
+		var penalty_amount = origin.get("penalty_amount", 0.0)
+		match penalty:
+			"speed_pct":
+				SPEED = int(SPEED * (1.0 + penalty_amount))
+			"hp_pct":
+				max_hp = int(max_hp * (1.0 + penalty_amount))
+				hp = max_hp
+			"damage_pct":
+				bullet_damage = int(bullet_damage * (1.0 + penalty_amount))
 	var special = char_data.get("special", "")
 	if special == "all_weapons_1hp":
 		max_hp = 1
