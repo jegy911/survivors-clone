@@ -153,6 +153,17 @@ func _on_death_complete():
 	if player_node:
 		player_node.on_enemy_killed(global_position)
 	if randf() < XP_DROP_CHANCE:
+		var roll = randf()
+		var xp_val = XP_VALUE
+		var orb_color = Color("#4A90E2") # mavi
+		if roll < 0.05: # %5 kırmızı
+			xp_val = XP_VALUE * 10
+			orb_color = Color("#E74C3C")
+		elif roll < 0.20: # %15 yeşil
+			xp_val = XP_VALUE * 5
+			orb_color = Color("#2ECC71")
 		var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
-		orb.init(XP_VALUE, global_position)
+		orb.init(xp_val, global_position)
+		if orb.get_node_or_null("ColorRect"):
+			orb.get_node("ColorRect").color = orb_color
 	queue_free()
