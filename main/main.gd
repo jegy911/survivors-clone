@@ -12,8 +12,8 @@ var shield_enemy_scene = preload("res://enemies/shield_enemy.tscn")
 var giant_scene = preload("res://enemies/giant.tscn")
 
 var spawn_timer = 0.0
-var spawn_interval = 0.8
-var enemies_per_wave = 5
+var spawn_interval = 3.0
+var enemies_per_wave = 2
 var wave_timer = 0.0
 var wave_interval = 60.0
 var wave_count = 0
@@ -36,7 +36,7 @@ var mini_boss_times = [300, 600, 900, 1200, 1500]
 var next_mini_boss_index = 0
 var final_boss_spawned = false
 
-const MAX_ENEMIES = 80
+const MAX_ENEMIES = 150
 const ELITE_CHANCE = 0.15
 const GOLD_DROP_CHANCE = 0.12
 
@@ -141,11 +141,14 @@ func _process(delta):
 	# Spawn (reaper modunda yukarıda return edildi)
 	spawn_timer -= delta
 	if spawn_timer <= 0:
-		var to_spawn = get_effective_enemies_per_wave()
-		if siege_active:
-			to_spawn = get_effective_enemies_per_wave() * 3
-		for i in to_spawn:
-			spawn_random_enemy()
+		var current_count = get_tree().get_nodes_in_group("enemies").size()
+		if current_count < MAX_ENEMIES:
+			var to_spawn = get_effective_enemies_per_wave()
+			if siege_active:
+				to_spawn = get_effective_enemies_per_wave() * 3
+			var can_spawn = min(to_spawn, MAX_ENEMIES - current_count)
+			for i in can_spawn:
+				spawn_random_enemy()
 		spawn_timer = get_effective_spawn_interval() * (0.3 if siege_active else 1.0)
 	
 	# Vacuum orb spawn
