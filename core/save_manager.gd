@@ -3,6 +3,8 @@ extends Node
 const SAVE_PATH = "user://save.cfg"
 
 var gold = 0
+var selected_mode = "vs"
+var selected_map = "vs_map"
 var selected_character = 0
 var meta_upgrades = {
 	"max_hp_bonus": 0,
