@@ -16,6 +16,10 @@ var gold_earned = 0
 var boss_kill_count = 0
 var total_damage_dealt = 0
 var chests_opened = 0
+var momentum_timer = 0.0
+var momentum_bonus = 0
+var last_position = Vector2.ZERO
+var overheal_shield = 0
 
 func _ready_damage_tracking():
 	EventBus.on_damage_dealt.connect(_on_damage_tracked)
@@ -161,13 +165,25 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _process(delta):
-	# Pasif can yenileme — her dakika recovery_bonus * 3 HP
+	# Pasif can yenileme
 	var recovery = SaveManager.meta_upgrades.get("recovery_bonus", 0)
 	if recovery > 0:
 		recovery_timer += delta
 		if recovery_timer >= 60.0:
 			recovery_timer = 0.0
 			heal(recovery * 3)
+	
+	# Momentum — hareket edince hasar bonusu
+	var momentum_rank = SaveManager.meta_upgrades.get("momentum", 0)
+	if momentum_rank > 0:
+		if global_position.distance_to(last_position) > 2.0:
+			momentum_timer += delta
+			momentum_bonus = min(int(momentum_timer) * momentum_rank, momentum_rank * 10)
+		else:
+			momentum_timer = max(0.0, momentum_timer - delta * 2)
+			momentum_bonus = min(int(momentum_timer) * momentum_rank, momentum_rank * 10)
+		last_position = global_position
+	
 	_update_screen_shake(delta)
 
 func update_hp_bar():
@@ -347,7 +363,13 @@ func recalculate_category_bonus():
 	update_category_ui()
 
 func get_total_damage(base_damage: int) -> int:
-	var dmg = base_damage + category_damage_bonus
+	# Adrenalin: can azaldıkça ateş hızı değil, hasar artar
+	var adrenaline_rank = SaveManager.meta_upgrades.get("adrenaline", 0)
+	var adrenaline_bonus = 0
+	if adrenaline_rank > 0:
+		var missing_hp_pct = 1.0 - (float(hp) / float(max_hp))
+		adrenaline_bonus = int(missing_hp_pct * adrenaline_rank * 20)
+	var dmg = base_damage + category_damage_bonus + momentum_bonus + adrenaline_bonus
 	var crit_chance = category_crit_bonus
 	if active_items.has("crit"):
 		crit_chance += active_items["crit"].crit_chance
@@ -386,6 +408,11 @@ func on_tank_killed():
 	tank_killed = true
 
 func heal(amount: int):
+	var overheal_rank = SaveManager.meta_upgrades.get("overheal", 0)
+	if overheal_rank > 0 and hp >= max_hp:
+		overheal_shield = min(overheal_shield + amount, max_hp * overheal_rank / 5)
+		show_floating_text("🛡+" + str(amount), global_position + Vector2(0, -50), Color("#00FFFF"))
+		return
 	hp = min(hp + amount, max_hp)
 	update_hp_bar()
 	EventBus.player_healed.emit(amount)
@@ -548,6 +575,12 @@ func take_damage(amount: int):
 	if active_items.has("armor"):
 		armor += active_items["armor"].armor_value
 	var final_damage = max(1, amount - armor)
+	if overheal_shield > 0:
+		var absorbed = min(overheal_shield, final_damage)
+		overheal_shield -= absorbed
+		final_damage -= absorbed
+		if final_damage <= 0:
+			return
 	if active_items.has("shield"):
 		final_damage = active_items["shield"].absorb_damage(final_damage)
 	if final_damage <= 0:
