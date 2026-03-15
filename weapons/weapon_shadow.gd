@@ -8,6 +8,7 @@ var orbs = []
 func _ready():
 	super._ready()
 	weapon_name = "Gölge"
+	tag = "kesici"
 	category = "attack"
 	damage = 20
 	cooldown = 0.5
