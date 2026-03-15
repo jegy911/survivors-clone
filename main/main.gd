@@ -479,7 +479,7 @@ func _on_vacuum_collected(body: Node, orb_node: Node, _area: Node):
 	orb_node.queue_free()
 	
 	await get_tree().create_timer(15.0).timeout
-	if is_instance_valid(orb_node) and not collected:
+	if is_instance_valid(orb_node):
 		var fade = body.create_tween()
 		fade.tween_property(body, "modulate:a", 0.0, 1.0)
 		fade.tween_callback(orb_node.queue_free)
