@@ -29,6 +29,8 @@ func _on_game_started():
 	play_music(1)
 
 func play_music(track: int):
+	if current_music == track:
+		return
 	music_player.stop()
 	music_player2.stop()
 	current_music = track
