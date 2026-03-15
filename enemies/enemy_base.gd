@@ -33,23 +33,28 @@ func _setup_hp_bar():
 	var hp_setting = SaveManager.settings.get("hp_bars", "both_on")
 	if hp_setting == "both_off" or hp_setting == "player_only":
 		return
+	var body_size = body.size if body else Vector2(32, 32)
+	var bar_x = -body_size.x / 2
+	var bar_y = -body_size.y / 2 - 8
+	var bar_width = body_size.x
 	var bar_bg = ColorRect.new()
 	bar_bg.name = "HPBarBG"
-	bar_bg.size = Vector2(32, 4)
-	bar_bg.position = Vector2(-16, -24)
+	bar_bg.size = Vector2(bar_width, 4)
+	bar_bg.position = Vector2(bar_x, bar_y)
 	bar_bg.color = Color("#333333")
 	add_child(bar_bg)
 	var bar_fill = ColorRect.new()
 	bar_fill.name = "HPBarFill"
-	bar_fill.size = Vector2(32, 4)
-	bar_fill.position = Vector2(-16, -24)
+	bar_fill.size = Vector2(bar_width, 4)
+	bar_fill.position = Vector2(bar_x, bar_y)
 	bar_fill.color = Color("#E74C3C")
 	add_child(bar_fill)
 
 func _update_hp_bar():
 	var fill = get_node_or_null("HPBarFill")
 	if fill:
-		fill.size.x = 32.0 * (float(hp) / float(max_hp))
+		var full_width = body.size.x if body else 32.0
+		fill.size.x = full_width * (float(hp) / float(max_hp))
 
 func take_damage(amount: int):
 	if is_dead:
