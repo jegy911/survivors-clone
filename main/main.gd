@@ -119,7 +119,7 @@ func _process(delta):
 	vacuum_spawn_timer -= delta
 	if vacuum_spawn_timer <= 0:
 		vacuum_spawn_timer = randf_range(90.0, 150.0)
-		_spawn_vacuum_orb())
+		_spawn_vacuum_orb()
 
 func update_timer_label():
 	if game_timer <= 1800.0:
