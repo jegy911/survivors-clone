@@ -81,3 +81,9 @@ func on_upgrade():
 
 func get_description() -> String:
 	return "Gölge Lv" + str(level) + " | " + str(orb_count + get_effective_multi_attack()) + " orb | " + str(damage) + " hasar"
+
+func _exit_tree():
+	for orb in orbs:
+		if is_instance_valid(orb):
+			orb.queue_free()
+	orbs.clear()
