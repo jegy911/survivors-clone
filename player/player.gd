@@ -122,7 +122,7 @@ func apply_character_bonuses():
 	max_hp += char_data["bonus_hp"]
 	hp = max_hp
 	SPEED += char_data["bonus_speed"]
-	if not active_weapons.has(char_data["start_weapon"]):
+	if char_data["start_weapon"] != "" and not active_weapons.has(char_data["start_weapon"]):
 		add_weapon(char_data["start_weapon"])
 	if char_data["start_item"] != "":
 		add_item(char_data["start_item"])
