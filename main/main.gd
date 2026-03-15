@@ -48,13 +48,6 @@ var hit_stop_frames = 0
 func _ready():
 	randomize()
 	add_to_group("main")
-	var ground = ColorRect.new()
-	ground.color = Color("#2D5A1B")
-	ground.size = Vector2(99999, 99999)
-	ground.position = Vector2(-50000, -50000)
-	ground.z_index = -10
-	add_child(ground)
-	move_child(ground, 0)
 	EventBus.game_started.emit()
 	EventBus.hit_stop_requested.connect(_on_hit_stop_requested)
 
