@@ -43,7 +43,6 @@ var settings = {
 	"resolution_x": 1280,
 	"resolution_y": 720,
 }
-}
 
 # Kilit sistemi
 var total_kills: int = 0
