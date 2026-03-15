@@ -97,9 +97,9 @@ func _ready():
 	xp_bar.value = 0
 	xp_bar.show_percentage = false
 	# XP bar boyutunu ekrana göre ayarla
-	var vp_size = get_viewport().get_visible_rect().size
-	xp_bar.size.x = vp_size.x
-	xp_bar.position.x = 0
+	xp_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+	xp_bar.custom_minimum_size.x = 0
+	xp_bar.size.y = 18
 	
 	update_hp_bar()
 	update_category_ui()
