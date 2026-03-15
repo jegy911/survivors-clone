@@ -537,6 +537,10 @@ func _on_vacuum_collected(body: Node, orb_node: Node, _area: Node):
 	for xo in xp_orbs:
 		if xo.has_method("vacuum_attract"):
 			xo.vacuum_attract()
+	var gold_orbs = get_tree().get_nodes_in_group("gold_orbs")
+	for go in gold_orbs:
+		if go.has_method("vacuum_attract"):
+			go.vacuum_attract()
 	body.show_floating_text("🌀 VAKUM!", orb_node.global_position + Vector2(0, -40), Color("#00FFFF"), 20)
 	orb_node.queue_free()
 	
