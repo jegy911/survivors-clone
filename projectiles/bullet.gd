@@ -27,6 +27,22 @@ func _physics_process(delta):
 				body.take_damage(damage)
 				if player:
 					EventBus.on_damage_dealt.emit(player, body, damage)
+				# Bounce kontrolü
+				if player and player.get("bounce_timer") != null and player.bounce_timer > 0:
+					var enemies = get_tree().get_nodes_in_group("enemies")
+					var next = null
+					var best_dist = 999999.0
+					for e in enemies:
+						if e == body:
+							continue
+						var d = global_position.distance_to(e.global_position)
+						if d < best_dist:
+							best_dist = d
+							next = e
+					if next and best_dist < 300:
+						direction = (next.global_position - global_position).normalized()
+						lifetime = 0.8
+						return
 				ObjectPool.return_object(self)
 				return
 
@@ -36,6 +52,7 @@ func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter 
 	armor_piercing = is_armor_piercing
 	player = shooter
 	lifetime = 2.0
+	add_to_group("player_bullets")
 	show()
 
 func reset():
@@ -43,4 +60,5 @@ func reset():
 	damage = 10
 	lifetime = 2.0
 	armor_piercing = false
+	remove_from_group("player_bullets")
 	hide()
