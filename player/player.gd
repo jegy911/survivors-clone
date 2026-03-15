@@ -101,6 +101,8 @@ func _ready():
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
+	if event.is_action_pressed("ui_accept") and not get_tree().paused:
+		_toggle_stat_panel()
 		if get_tree().paused:
 			if pause_menu:
 				pause_menu.queue_free()
@@ -787,3 +789,95 @@ func get_tag_crit_bonus() -> float:
 		elif c >= 3:
 			bonus += 0.10
 	return bonus
+
+
+var _stat_panel = null
+
+func _toggle_stat_panel():
+	if _stat_panel and is_instance_valid(_stat_panel):
+		_stat_panel.queue_free()
+		_stat_panel = null
+		return
+	
+	var layer = CanvasLayer.new()
+	layer.layer = 50
+	get_tree().root.add_child(layer)
+	_stat_panel = layer
+	
+	var panel = PanelContainer.new()
+	panel.custom_minimum_size = Vector2(220, 0)
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color("#0D0D1AEE")
+	style.border_color = Color("#9B59B6")
+	style.border_width_left = 2
+	style.border_width_right = 2
+	style.border_width_top = 2
+	style.border_width_bottom = 2
+	style.corner_radius_top_left = 10
+	style.corner_radius_top_right = 10
+	style.corner_radius_bottom_left = 10
+	style.corner_radius_bottom_right = 10
+	panel.add_theme_stylebox_override("panel", style)
+	panel.position = Vector2(10, 50)
+	layer.add_child(panel)
+	
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 6)
+	panel.add_child(vbox)
+	
+	var title = Label.new()
+	title.text = "📊 STATS"
+	title.add_theme_color_override("font_color", Color("#9B59B6"))
+	title.add_theme_font_size_override("font_size", 16)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(title)
+	
+	var tag_counts = get_weapon_tag_counts()
+	var tag_crit = get_tag_crit_bonus()
+	var lifesteal_pct = 0.0
+	if active_items.has("lifesteal"):
+		lifesteal_pct = active_items["lifesteal"].steal_percent
+	var crit_item = 0.0
+	if active_items.has("crit"):
+		crit_item = active_items["crit"].crit_chance
+	var armor_val = SaveManager.meta_upgrades.get("armor_bonus", 0) * 2
+	if active_items.has("armor"):
+		armor_val += active_items["armor"].armor_value
+	
+	var stats_list = [
+		["⚔ Hasar", str(bullet_damage + category_damage_bonus + momentum_bonus)],
+		["💗 Can", str(hp) + "/" + str(max_hp)],
+		["🛡 Zırh", str(armor_val)],
+		["🩸 Can Çalma", "%d%%" % int(lifesteal_pct * 100)],
+		["🎯 Kritik Şans", "%d%%" % int((category_crit_bonus + crit_item + tag_crit) * 100)],
+		["⚡ Cooldown", "%d%%" % int((1.0 - get_cooldown_multiplier()) * 100)],
+		["💥 Alan", "%d%%" % int((get_area_multiplier() - 1.0) * 100)],
+		["👟 Hız", str(int(SPEED))],
+		["🧲 Mıknatıs", str(int(get_magnet_bonus()))],
+		["✂ Kesici x%d" % tag_counts.get("kesici",0), ""],
+		["💣 Patlayıcı x%d" % tag_counts.get("patlayici",0), ""],
+		["🔮 Büyü x%d" % tag_counts.get("buyu",0), ""],
+		["⚙ Teknolojik x%d" % tag_counts.get("teknolojik",0), ""],
+	]
+	if overheal_shield > 0:
+		stats_list.append(["🛡 Overheal", str(overheal_shield)])
+	if bounce_timer > 0:
+		stats_list.append(["⚡ Bounce", "%.1fsn" % bounce_timer])
+	if shrine_active:
+		stats_list.append(["🕯 Sunak", "%.0fsn" % shrine_timer])
+	
+	for stat in stats_list:
+		var row = HBoxContainer.new()
+		var lbl = Label.new()
+		lbl.text = stat[0]
+		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		lbl.add_theme_color_override("font_color", Color("#AAAAAA"))
+		lbl.add_theme_font_size_override("font_size", 12)
+		row.add_child(lbl)
+		if stat[1] != "":
+			var val = Label.new()
+			val.text = stat[1]
+			val.add_theme_color_override("font_color", Color("#FFFFFF"))
+			val.add_theme_font_size_override("font_size", 12)
+			row.add_child(val)
+		vbox.add_child(row)
