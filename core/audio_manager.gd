@@ -22,6 +22,8 @@ func _ready():
 	music_player2.process_mode = Node.PROCESS_MODE_ALWAYS
 	apply_volume_settings()
 	EventBus.game_started.connect(_on_game_started)
+	music_player.finished.connect(func(): if current_music == 1: music_player.play())
+	music_player2.finished.connect(func(): if current_music == 2: music_player2.play())
 
 func _on_game_started():
 	play_music(1)
