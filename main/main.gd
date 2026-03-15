@@ -12,16 +12,17 @@ var shield_enemy_scene = preload("res://enemies/shield_enemy.tscn")
 var giant_scene = preload("res://enemies/giant.tscn")
 
 var spawn_timer = 0.0
-var spawn_interval = 3.5
-var enemies_per_wave = 3
+var spawn_interval = 0.8
+var enemies_per_wave = 5
 var wave_timer = 0.0
 var wave_interval = 60.0
 var wave_count = 0
 var reward_active = false
+var vacuum_spawn_timer = 120.0
 var game_timer = 0.0
 
 # Boss takibi
-var mini_boss_times = [180, 360, 600, 900, 1140, 1380, 1620]  # saniye cinsinden
+var mini_boss_times = [300, 600, 900, 1200, 1500]
 var next_mini_boss_index = 0
 var final_boss_spawned = false
 
@@ -55,7 +56,7 @@ func get_curse_level() -> int:
 
 func get_effective_spawn_interval() -> float:
 	var curse = get_curse_level()
-	return max(0.8, spawn_interval * (1.0 - curse * 0.10))
+	return max(0.2, spawn_interval * (1.0 - curse * 0.10))
 
 func get_effective_enemies_per_wave() -> int:
 	return enemies_per_wave + get_curse_level()
@@ -102,25 +103,40 @@ func _process(delta):
 	if wave_timer >= wave_interval:
 		wave_timer = 0.0
 		wave_count += 1
-		enemies_per_wave += 1
-		spawn_interval = max(0.8, spawn_interval - 0.15)
+		enemies_per_wave += 2
+		spawn_interval = max(0.2, spawn_interval - 0.08)
 		_show_wave_reward()
 
 	# Spawn
 	spawn_timer -= delta
 	if spawn_timer <= 0:
-		var current_count = get_tree().get_nodes_in_group("enemies").size()
-		if current_count < MAX_ENEMIES:
-			var to_spawn = min(get_effective_enemies_per_wave(), MAX_ENEMIES - current_count)
-			for i in to_spawn:
-				spawn_random_enemy()
+		var to_spawn = get_effective_enemies_per_wave()
+		for i in to_spawn:
+			spawn_random_enemy()
 		spawn_timer = get_effective_spawn_interval()
+	
+	# Vacuum orb spawn
+	vacuum_spawn_timer -= delta
+	if vacuum_spawn_timer <= 0:
+		vacuum_spawn_timer = randf_range(90.0, 150.0)
+		_spawn_vacuum_orb())
 
 func update_timer_label():
-	var minutes = int(game_timer) / 60
-	var seconds = int(game_timer) % 60
-	timer_label.text = "%02d:%02d" % [minutes, seconds]
-	wave_label.text = "Dalga: " + str(enemies_per_wave)
+	if game_timer <= 1800.0:
+		var remaining = 1800.0 - game_timer
+		var minutes = int(remaining) / 60
+		var seconds = int(remaining) % 60
+		timer_label.text = "%02d:%02d" % [minutes, seconds]
+		timer_label.add_theme_color_override("font_color", Color("#FFFFFF"))
+		timer_label.add_theme_font_size_override("font_size", 18)
+	else:
+		var over = game_timer - 1800.0
+		var minutes = int(over) / 60
+		var seconds = int(over) % 60
+		timer_label.text = "%02d:%02d" % [minutes, seconds]
+		timer_label.add_theme_color_override("font_color", Color("#8B0000"))
+		timer_label.add_theme_font_size_override("font_size", 24)
+	wave_label.text = "Dalga: " + str(wave_count)
 
 func _apply_scaling(enemy: Node):
 	var hp_mult = get_enemy_hp_multiplier()
@@ -187,134 +203,65 @@ func spawn_random_enemy():
 func _pick_enemy_for_time() -> Node:
 	var t = game_timer
 	var roll = randf()
-
-	# 0:00 - 1:00 → sadece zayıf temel
-	if t < 60:
-		var e = enemy_scene.instantiate()
-		e.set_meta("weak_mode", true)
-		return e
-
-	# 1:00 - 2:00 → temel + ilk fast enemy girişi
-	elif t < 120:
-		if roll < 0.7:
-			var e = enemy_scene.instantiate()
-			if roll < 0.3:
-				e.set_meta("weak_mode", true)
-			return e
-		else:
-			return fast_enemy_scene.instantiate()
-
-	# 2:00 - 3:00 → fast dominant + exploder girişi
-	elif t < 180:
-		if roll < 0.15:
+	
+	# İlk 2 dakika: sadece basic ve fast (level-1)
+	if t < 120:
+		if roll < 0.55:
 			return enemy_scene.instantiate()
-		elif roll < 0.65:
+		else:
+			return fast_enemy_scene.instantiate()
+	
+	# 2+ dakika: her zaman %30 level-1 düşman
+	if roll < 0.30:
+		if randf() > 0.5:
 			return fast_enemy_scene.instantiate()
 		else:
-			return exploder_scene.instantiate()
-
-	# 3:00 - 4:00 → fast + exploder + dasher girişi
-	elif t < 240:
-		if roll < 0.10:
 			return enemy_scene.instantiate()
-		elif roll < 0.40:
-			return fast_enemy_scene.instantiate()
-		elif roll < 0.65:
-			return exploder_scene.instantiate()
-		else:
-			return dasher_scene.instantiate()
-
-	# 4:00 - 6:00 → dasher dominant + tank girişi
+	
+	var r = randf()
+	
+	# 2:00 - 4:00
+	if t < 240:
+		if r < 0.5: return fast_enemy_scene.instantiate()
+		else: return dasher_scene.instantiate()
+	# 4:00 - 6:00
 	elif t < 360:
-		if roll < 0.10:
-			return fast_enemy_scene.instantiate()
-		elif roll < 0.20:
-			return exploder_scene.instantiate()
-		elif roll < 0.60:
-			return dasher_scene.instantiate()
-		else:
-			return tank_enemy_scene.instantiate()
-
-	# 6:00 - 8:00 → tank + fast + ranged girişi
+		if r < 0.35: return fast_enemy_scene.instantiate()
+		elif r < 0.65: return dasher_scene.instantiate()
+		else: return tank_enemy_scene.instantiate()
+	# 6:00 - 8:00 (hâlâ exploder yok)
 	elif t < 480:
-		if roll < 0.15:
-			return fast_enemy_scene.instantiate()
-		elif roll < 0.40:
-			return tank_enemy_scene.instantiate()
-		elif roll < 0.65:
-			return dasher_scene.instantiate()
-		else:
-			return ranged_enemy_scene.instantiate()
-
-	# 8:00 - 10:00 → ranged dominant + healer girişi
+		if r < 0.30: return dasher_scene.instantiate()
+		elif r < 0.60: return tank_enemy_scene.instantiate()
+		else: return healer_scene.instantiate()
+	# 8:00 - 10:00 → exploder giriyor
 	elif t < 600:
-		if roll < 0.10:
-			return tank_enemy_scene.instantiate()
-		elif roll < 0.20:
-			return dasher_scene.instantiate()
-		elif roll < 0.60:
-			return ranged_enemy_scene.instantiate()
-		else:
-			return healer_scene.instantiate()
-
-	# 10:00 - 13:00 → healer + tank + shield girişi
-	elif t < 780:
-		if roll < 0.15:
-			return ranged_enemy_scene.instantiate()
-		elif roll < 0.35:
-			return tank_enemy_scene.instantiate()
-		elif roll < 0.60:
-			return healer_scene.instantiate()
-		else:
-			return shield_enemy_scene.instantiate()
-
-	# 13:00 - 16:00 → shield + ranged + giant girişi
-	elif t < 960:
-		if roll < 0.10:
-			return tank_enemy_scene.instantiate()
-		elif roll < 0.25:
-			return healer_scene.instantiate()
-		elif roll < 0.55:
-			return shield_enemy_scene.instantiate()
-		elif roll < 0.80:
-			return ranged_enemy_scene.instantiate()
-		else:
-			return giant_scene.instantiate()
-
-	# 16:00 - 20:00 → giant + dasher ağır karışım
+		if r < 0.25: return exploder_scene.instantiate()
+		elif r < 0.50: return tank_enemy_scene.instantiate()
+		elif r < 0.75: return dasher_scene.instantiate()
+		else: return healer_scene.instantiate()
+	# 10:00 - 15:00
+	elif t < 900:
+		if r < 0.20: return exploder_scene.instantiate()
+		elif r < 0.40: return tank_enemy_scene.instantiate()
+		elif r < 0.60: return healer_scene.instantiate()
+		elif r < 0.80: return shield_enemy_scene.instantiate()
+		else: return dasher_scene.instantiate()
+	# 15:00 - 20:00
 	elif t < 1200:
-		if roll < 0.15:
-			return shield_enemy_scene.instantiate()
-		elif roll < 0.30:
-			return healer_scene.instantiate()
-		elif roll < 0.50:
-			return giant_scene.instantiate()
-		elif roll < 0.70:
-			return dasher_scene.instantiate()
-		else:
-			return ranged_enemy_scene.instantiate()
-
-	# 20:00 - 25:00 → tam kaos karışım
-	elif t < 1500:
-		match randi() % 7:
-			0: return fast_enemy_scene.instantiate()
-			1: return tank_enemy_scene.instantiate()
-			2: return ranged_enemy_scene.instantiate()
-			3: return dasher_scene.instantiate()
-			4: return healer_scene.instantiate()
-			5: return shield_enemy_scene.instantiate()
-			6: return giant_scene.instantiate()
-
-	# 25:00 - 30:00 → elite ağırlıklı tam kaos
+		if r < 0.20: return giant_scene.instantiate()
+		elif r < 0.40: return shield_enemy_scene.instantiate()
+		elif r < 0.60: return healer_scene.instantiate()
+		elif r < 0.80: return exploder_scene.instantiate()
+		else: return tank_enemy_scene.instantiate()
+	# 20:00+
 	else:
-		match randi() % 6:
-			0: return tank_enemy_scene.instantiate()
-			1: return ranged_enemy_scene.instantiate()
-			2: return giant_scene.instantiate()
-			3: return shield_enemy_scene.instantiate()
-			4: return healer_scene.instantiate()
-			5: return dasher_scene.instantiate()
-
+		match randi() % 5:
+			0: return giant_scene.instantiate()
+			1: return shield_enemy_scene.instantiate()
+			2: return exploder_scene.instantiate()
+			3: return healer_scene.instantiate()
+			_: return tank_enemy_scene.instantiate()
 	return enemy_scene.instantiate()
 
 func spawn_mini_boss():
@@ -483,3 +430,55 @@ func _on_reward_chosen(choice: Dictionary, overlay: Node):
 	overlay.queue_free()
 	get_tree().paused = false
 	reward_active = false
+
+func _spawn_vacuum_orb():
+	var player = get_tree().get_first_node_in_group("player")
+	if player == null:
+		return
+	
+	var orb_node = Node2D.new()
+	var body = ColorRect.new()
+	body.size = Vector2(20, 20)
+	body.position = Vector2(-10, -10)
+	body.color = Color("#00FFFF")
+	orb_node.add_child(body)
+	
+	var area = Area2D.new()
+	area.collision_layer = 0
+	area.collision_mask = 1
+	var shape = CollisionShape2D.new()
+	var circle = CircleShape2D.new()
+	circle.radius = 18.0
+	shape.shape = circle
+	area.add_child(shape)
+	orb_node.add_child(area)
+	
+	add_child(orb_node)
+	
+	var angle = randf() * TAU
+	orb_node.global_position = player.global_position + Vector2(cos(angle), sin(angle)) * randf_range(100.0, 250.0)
+	
+	var pulse = body.create_tween()
+	pulse.set_loops()
+	pulse.tween_property(body, "modulate:a", 0.3, 0.4)
+	pulse.tween_property(body, "modulate:a", 1.0, 0.4)
+	
+	var collected = false
+	area.body_entered.connect(func(b):
+		if collected:
+			return
+		if b.is_in_group("player"):
+			collected = true
+			var xp_orbs = get_tree().get_nodes_in_group("xp_orbs")
+			for xo in xp_orbs:
+				if xo.has_method("vacuum_attract"):
+					xo.vacuum_attract()
+			b.show_floating_text("🌀 VAKUM!", orb_node.global_position + Vector2(0, -40), Color("#00FFFF"), 20)
+			orb_node.queue_free()
+	)
+	
+	await get_tree().create_timer(15.0).timeout
+	if is_instance_valid(orb_node) and not collected:
+		var fade = body.create_tween()
+		fade.tween_property(body, "modulate:a", 0.0, 1.0)
+		fade.tween_callback(orb_node.queue_free)
