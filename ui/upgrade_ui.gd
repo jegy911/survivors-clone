@@ -97,19 +97,18 @@ func build_pool() -> Array:
 		if player_ref.active_weapons.has(id):
 			var w = player_ref.active_weapons[id]
 			if w.level < w.max_level:
-				pool.append({"id": id, "weight": 0.1 + luck * 0.2, "is_evolution": false})
+				pool.append({"id": id, "weight": 2.0 + luck * 0.5, "is_evolution": false})
 		else:
 			if player_ref.can_add_weapon():
-				pool.append({"id": id, "weight": 0.4 + luck * 0.3, "is_evolution": false})
-	
+				pool.append({"id": id, "weight": 0.3 + luck * 0.2, "is_evolution": false})
 	for id in item_upgrades:
 		if player_ref.active_items.has(id):
 			var i = player_ref.active_items[id]
 			if i.level < i.max_level:
-				pool.append({"id": id, "weight": 0.15 + luck * 0.2, "is_evolution": false})
+				pool.append({"id": id, "weight": 2.0 + luck * 0.5, "is_evolution": false})
 		else:
 			if player_ref.can_add_item():
-				pool.append({"id": id, "weight": 0.5 + luck * 0.3, "is_evolution": false})
+				pool.append({"id": id, "weight": 0.3 + luck * 0.2, "is_evolution": false})
 	
 	return pool
 
