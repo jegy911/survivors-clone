@@ -174,7 +174,16 @@ func _on_resolution_selected(idx: int, resolutions: Array):
 		res_dropdown.add_item("%d x %d" % [r.x, r.y])
 		if current_size == r:
 			res_dropdown.selected = i
-	res_dropdown.item_selected.connect(_on_resolution_selected.bind(resolutions))
+	var res_list = resolutions
+	res_dropdown.item_selected.connect(func(idx):
+		var res = res_list[idx]
+		DisplayServer.window_set_size(res)
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		SaveManager.settings["fullscreen"] = false
+		SaveManager.settings["resolution_x"] = res.x
+		SaveManager.settings["resolution_y"] = res.y
+		SaveManager.save_game()
+	
 	res_row.add_child(res_dropdown)
 	)
 	
