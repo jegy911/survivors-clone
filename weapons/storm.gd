@@ -8,6 +8,7 @@ var kill_lightning_count = 0
 func _ready():
 	super._ready()
 	weapon_name = "Storm"
+	tag = "patlayici"
 	category = "attack"
 	damage = 40
 	cooldown = 1.2
