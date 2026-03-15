@@ -7,6 +7,7 @@ var max_range = 500.0
 func _ready():
 	super._ready()
 	weapon_name = "Mermi"
+	tag = "kesici"
 	category = "attack"
 	damage = 10
 	cooldown = 1.2
