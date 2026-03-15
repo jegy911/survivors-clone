@@ -35,3 +35,10 @@ func return_object(obj: Node):
 	obj.set_meta("in_pool", true)
 	if obj.has_method("reset"):
 		obj.reset()
+
+func reset_all():
+	for scene_path in pools:
+		for obj in pools[scene_path]:
+			if is_instance_valid(obj):
+				obj.queue_free()
+	pools.clear()
