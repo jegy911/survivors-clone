@@ -209,7 +209,8 @@ func get_luck() -> float:
 	return SaveManager.meta_upgrades["luck_bonus"] * 0.1
 
 func get_cooldown_multiplier() -> float:
-	return 1.0 - SaveManager.meta_upgrades.get("cooldown_bonus", 0) * 0.08
+	var reduction = SaveManager.meta_upgrades.get("cooldown_bonus", 0) * 0.08
+	return max(0.10, 1.0 - reduction)
 
 func get_area_multiplier() -> float:
 	return 1.0 + SaveManager.meta_upgrades.get("area_bonus", 0) * 0.10
