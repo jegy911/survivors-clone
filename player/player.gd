@@ -142,7 +142,7 @@ func apply_meta_bonuses():
 	# Başlangıç seviyesi
 	for i in meta["start_level_bonus"]:
 		level += 1
-		xp_to_next_level = int(xp_to_next_level * 1.3)
+		xp_to_next_level = _calc_xp_for_level(level)
 	
 	# Revival — oyun başında sıfırla
 	revival_used = false
@@ -642,3 +642,10 @@ func recalculate_category_bonuses():
 	max_hp = base_hp + category_hp_bonus
 	hp = min(hp, max_hp)
 	update_hp_bar()
+
+func _calc_xp_for_level(lvl: int) -> int:
+	var base = 30
+	if lvl <= 20:
+		return base + lvl * 10
+	else:
+		return int(base * pow(1.2, lvl))
