@@ -132,15 +132,15 @@ func apply_character_bonuses():
 			"damage_flat":
 				bullet_damage += origin["amount"]
 			"area_pct":
-				pass # get_area_multiplier override edilecek
+				_origin_area_bonus = origin["amount"]
 			"speed_pct":
 				SPEED = int(SPEED * (1.0 + origin["amount"]))
 			"cooldown_pct":
-				pass # get_cooldown_multiplier override edilecek
+				_origin_cooldown_bonus = origin["amount"]
 			"armor_flat":
-				pass # take_damage'de okunacak
+				_origin_armor_bonus = origin["amount"]
 			"xp_pct":
-				pass # gain_xp'de okunacak
+				_origin_xp_bonus = origin["amount"]
 			"hp_pct":
 				max_hp = int(max_hp * (1.0 + origin["amount"]))
 				hp = max_hp
@@ -288,10 +288,10 @@ func get_luck() -> float:
 
 func get_cooldown_multiplier() -> float:
 	var reduction = SaveManager.meta_upgrades.get("cooldown_bonus", 0) * 0.08
-	return max(0.10, 1.0 - reduction)
+	return max(0.10, 1.0 - reduction + _origin_cooldown_bonus)
 
 func get_area_multiplier() -> float:
-	return 1.0 + SaveManager.meta_upgrades.get("area_bonus", 0) * 0.10
+	return 1.0 + SaveManager.meta_upgrades.get("area_bonus", 0) * 0.10 + _origin_area_bonus
 
 func get_duration_multiplier() -> float:
 	return 1.0 + SaveManager.meta_upgrades.get("duration_bonus", 0) * 0.15
@@ -529,7 +529,7 @@ func get_item_description(type: String) -> String:
 
 func gain_xp(amount: int):
 	var curse_multiplier = 1.0 + SaveManager.meta_upgrades.get("curse_level", 0) * 1.0
-	var bonus = 1.0 + SaveManager.meta_upgrades["xp_bonus"] * 0.1 + category_xp_bonus
+	var bonus = 1.0 + SaveManager.meta_upgrades["xp_bonus"] * 0.1 + category_xp_bonus + _origin_xp_bonus
 	if shrine_active:
 		bonus *= 3.0
 	xp += int(amount * bonus * curse_multiplier)
@@ -635,7 +635,7 @@ func get_nearest_enemy():
 	return nearest
 
 func take_damage(amount: int):
-	var armor = SaveManager.meta_upgrades.get("armor_bonus", 0) * 2
+	var armor = SaveManager.meta_upgrades.get("armor_bonus", 0) * 2 + _origin_armor_bonus
 	if active_items.has("armor"):
 		armor += active_items["armor"].armor_value
 	var final_damage = max(1, amount - armor)
@@ -790,7 +790,10 @@ func get_tag_crit_bonus() -> float:
 			bonus += 0.10
 	return bonus
 
-
+var _origin_area_bonus = 0.0
+var _origin_cooldown_bonus = 0.0
+var _origin_armor_bonus = 0
+var _origin_xp_bonus = 0.0
 var _stat_panel = null
 
 func _toggle_stat_panel():
