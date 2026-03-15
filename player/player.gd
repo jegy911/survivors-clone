@@ -543,7 +543,7 @@ func level_up():
 	level += 1
 	EventBus.player_leveled_up.emit(level)
 	xp = 0
-	xp_to_next_level = int(xp_to_next_level * 1.3)
+	xp_to_next_level = _calc_xp_for_level(level)
 	xp_bar.max_value = xp_to_next_level
 	xp_bar.value = 0
 	gold_earned += 3
