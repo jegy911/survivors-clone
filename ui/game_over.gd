@@ -22,7 +22,7 @@ func _ready():
 	$Panel/VBoxContainer.alignment = BoxContainer.ALIGNMENT_CENTER
 	$Panel/VBoxContainer.add_theme_constant_override("separation", 10)
 
-func show_stats(time: float, level: int, kills: int, gold: int):
+func show_stats(time: float, level: int, kills: int, gold: int, won: bool = false):
 	var screen_size = get_viewport().get_visible_rect().size
 	$Panel.size = Vector2(600, 580)
 	$Panel.position = screen_size / 2 - $Panel.size / 2
@@ -38,7 +38,10 @@ func show_stats(time: float, level: int, kills: int, gold: int):
 		child.queue_free()
 	
 	# Başlık
-	_add_label(vbox, "☠ ÖLDÜN", 36, Color("#E74C3C"), true)
+	if won:
+		_add_label(vbox, "🏆 KAZANDIN!", 36, Color("#FFD700"), true)
+	else:
+		_add_label(vbox, "☠ ÖLDÜN", 36, Color("#E74C3C"), true)
 	_add_separator(vbox)
 	
 	# Süre
