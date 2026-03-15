@@ -691,7 +691,7 @@ func collect_gold(amount: int):
 	gold_earned += final_amount
 	amount = final_amount
 	$CanvasLayer/StatsRow/GoldLabel.text = "💰 " + str(gold_earned)
-	EventBus.gold_collected.emit(amount)
+	EventBus.gold_collected.emit(final_amount)
 	show_floating_text("+" + str(amount) + "💰", global_position + Vector2(randf_range(-20, 20), -50), Color("#FFD700"))
 	
 func _flash_damage():
