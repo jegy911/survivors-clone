@@ -64,6 +64,7 @@ func build_upgrade_list():
 	var list = $VBoxContainer/ScrollContainer/UpgradeList
 	for child in list.get_children():
 		child.queue_free()
+	list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 
 	var grid = GridContainer.new()
 	grid.columns = 3
