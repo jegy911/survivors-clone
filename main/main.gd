@@ -100,7 +100,6 @@ func _process(delta):
 			spawn_mini_boss()
 			next_mini_boss_index += 1
 
-	# Final boss 30. dakikada
 	# 30. dakikada Reaper modu
 	if game_timer >= 1800 and not reaper_mode:
 		_start_reaper_mode()
@@ -547,11 +546,7 @@ func _spawn_reaper():
 	if reaper.get_node_or_null("ColorRect"):
 		reaper.get_node("ColorRect").color = Color("#1A0000")
 	# Ölünce yenisi gelsin
-	reaper.tree_exited.connect(func():
-		if reaper_mode:
-			await get_tree().create_timer(2.0).timeout
-			if reaper_mode:
-				_spawn_reaper()
+	reaper.tree_exited.connect(_on_reaper_died)
 	)
 	# Label
 	var player = get_tree().get_first_node_in_group("player")
@@ -562,3 +557,10 @@ func _start_siege_wave():
 	var player = get_tree().get_first_node_in_group("player")
 	if player:
 		player.show_floating_text("⚠ KUŞATMA!", player.global_position + Vector2(0, -80), Color("#FF6600"), 22)
+
+func _on_reaper_died():
+	if not reaper_mode:
+		return
+	await get_tree().create_timer(2.0).timeout
+	if reaper_mode:
+		_spawn_reaper()
