@@ -92,7 +92,7 @@ func build_pool() -> Array:
 		pool.append({"id": evo_id, "weight": 10.0, "is_evolution": true})
 	
 	for id in stat_upgrades:
-		pool.append({"id": id, "weight": 1.0, "is_evolution": false})
+		pool.append({"id": id, "weight": 1.5, "is_evolution": false})
 	
 	for id in weapon_upgrades:
 		if player_ref.active_weapons.has(id):
