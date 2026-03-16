@@ -3,38 +3,85 @@ extends CanvasLayer
 func _ready():
 	var screen_size = get_viewport().get_visible_rect().size
 	
+	# Arka plan — gradient efekti
 	$Background.size = screen_size
 	$Background.color = Color("#0A0A14")
 	
+	# Yıldız parçacıkları
+	for i in 40:
+		var star = ColorRect.new()
+		star.size = Vector2(randf_range(1, 3), randf_range(1, 3))
+		star.color = Color(1, 1, 1, randf_range(0.2, 0.8))
+		star.position = Vector2(randf_range(0, screen_size.x), randf_range(0, screen_size.y))
+		$Background.add_child(star)
+		var st = star.create_tween()
+		st.set_loops()
+		st.tween_property(star, "modulate:a", 0.1, randf_range(1.0, 3.0))
+		st.tween_property(star, "modulate:a", 1.0, randf_range(1.0, 3.0))
+	
 	$VBoxContainer.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	$VBoxContainer.alignment = BoxContainer.ALIGNMENT_CENTER
-	$VBoxContainer.size = Vector2(420, 560)
+	$VBoxContainer.size = Vector2(420, 580)
 	$VBoxContainer.position = screen_size / 2 - $VBoxContainer.size / 2
-	$VBoxContainer.add_theme_constant_override("separation", 18)
+	$VBoxContainer.add_theme_constant_override("separation", 14)
 	
-	$VBoxContainer/TitleLabel.text = "SURVIVORS"
+	# Başlık
+	$VBoxContainer/TitleLabel.text = "⚔ SURVIVORS ⚔"
 	$VBoxContainer/TitleLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	$VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 52)
+	$VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 48)
 	$VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
 	
+	# Başlık animasyonu — renk geçişi
 	var tween = create_tween()
 	tween.set_loops()
-	tween.tween_property($VBoxContainer/TitleLabel, "modulate:a", 1.0, 1.2)
-	tween.tween_property($VBoxContainer/TitleLabel, "modulate:a", 0.75, 1.2)
+	tween.tween_property($VBoxContainer/TitleLabel, "modulate", Color(1.0, 0.8, 1.0, 1.0), 1.5)
+	tween.tween_property($VBoxContainer/TitleLabel, "modulate", Color(0.7, 0.5, 1.0, 0.8), 1.5)
 	
-	$VBoxContainer/GoldLabel.text = "💰 " + str(SaveManager.gold)
+	# Alt başlık
+	var subtitle = Label.new()
+	subtitle.text = "Hayatta Kal. Güçlen. Kazan."
+	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	subtitle.add_theme_color_override("font_color", Color("#666688"))
+	subtitle.add_theme_font_size_override("font_size", 14)
+	$VBoxContainer.add_child(subtitle)
+	$VBoxContainer.move_child(subtitle, 1)
+	
+	# İstatistik özeti
+	var stats_label = Label.new()
+	var wins = SaveManager.total_wins
+	var runs = SaveManager.total_runs
+	var kills = SaveManager.total_kills
+	stats_label.text = "🎮 %d Koşu  |  💀 %d Öldürme  |  🏆 %d Kazanma" % [runs, kills, wins]
+	stats_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	stats_label.add_theme_color_override("font_color", Color("#555577"))
+	stats_label.add_theme_font_size_override("font_size", 12)
+	$VBoxContainer.add_child(stats_label)
+	$VBoxContainer.move_child(stats_label, 2)
+	
+	# Gold label
+	$VBoxContainer/GoldLabel.text = "💰 " + str(SaveManager.gold) + " Altın"
 	$VBoxContainer/GoldLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	$VBoxContainer/GoldLabel.add_theme_color_override("font_color", Color("#FFD700"))
-	$VBoxContainer/GoldLabel.add_theme_font_size_override("font_size", 22)
+	$VBoxContainer/GoldLabel.add_theme_font_size_override("font_size", 20)
 	
 	if not AudioManager.music_player.playing:
 		AudioManager.play_music(1)
 	
-	for btn in [$VBoxContainer/StartButton, $VBoxContainer/UpgradeButton, $VBoxContainer/SettingsButton, $VBoxContainer/QuitButton]:
-		btn.custom_minimum_size = Vector2(320, 56)
+	# Buton stilleri
+	var button_configs = [
+		[$VBoxContainer/StartButton, "▶  OYNA", Color("#27AE60"), Color("#1E8449")],
+		[$VBoxContainer/UpgradeButton, "⬆  META UPGRADES", Color("#8E44AD"), Color("#6C3483")],
+		[$VBoxContainer/SettingsButton, "⚙  AYARLAR", Color("#2471A3"), Color("#1A5276")],
+		[$VBoxContainer/QuitButton, "✕  ÇIKIŞ", Color("#922B21"), Color("#7B241C")],
+	]
+	
+	for config in button_configs:
+		var btn = config[0]
+		btn.text = config[1]
+		btn.custom_minimum_size = Vector2(340, 60)
 		var style = StyleBoxFlat.new()
-		style.bg_color = Color("#15152A")
-		style.border_color = Color("#333355")
+		style.bg_color = config[3]
+		style.border_color = config[2]
 		style.border_width_left = 2
 		style.border_width_right = 2
 		style.border_width_top = 2
@@ -46,11 +93,10 @@ func _ready():
 		btn.add_theme_stylebox_override("normal", style)
 		btn.add_theme_color_override("font_color", Color.WHITE)
 		btn.add_theme_font_size_override("font_size", 20)
-	
-	$VBoxContainer/StartButton.text = "▶  OYNA"
-	$VBoxContainer/UpgradeButton.text = "⬆  UPGRADES"
-	$VBoxContainer/SettingsButton.text = "⚙  AYARLAR"
-	$VBoxContainer/QuitButton.text = "✕  ÇIKIŞ"
+		# Hover efekti
+		var hover_style = style.duplicate()
+		hover_style.bg_color = config[2]
+		btn.add_theme_stylebox_override("hover", hover_style)
 	
 	$VBoxContainer/StartButton.pressed.connect(_on_start)
 	$VBoxContainer/UpgradeButton.pressed.connect(_on_upgrades)
