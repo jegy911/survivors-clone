@@ -69,6 +69,7 @@ func apply_volume_settings():
 		AudioServer.set_bus_send(music_bus, "Master")
 
 func play_shoot():
+	print("shoot bus: ", shoot_player.bus)
 	shoot_player.play()
 func play_hit():
 	hit_player.play()
