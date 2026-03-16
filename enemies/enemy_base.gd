@@ -62,6 +62,10 @@ func _update_hp_bar():
 func take_damage(amount: int):
 	if is_dead:
 		return
+	# Bağışıklık kontrolü
+	var immunity = get_meta("immunity", "")
+	if immunity != "":
+		amount = int(amount * 0.5)
 	hp -= amount
 	_update_hp_bar()
 	
