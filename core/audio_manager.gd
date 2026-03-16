@@ -58,6 +58,10 @@ func apply_volume_settings():
 		AudioServer.set_bus_send(music_bus, "Master")
 
 func play_shoot():
+	var sfx_bus = AudioServer.get_bus_index("SFX")
+	print("SFX bus index: ", sfx_bus)
+	print("SFX bus volume: ", AudioServer.get_bus_volume_db(sfx_bus))
+	print("shoot_player bus: ", shoot_player.bus)
 	shoot_player.play()
 func play_hit():
 	hit_player.play()
