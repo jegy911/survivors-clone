@@ -9,6 +9,7 @@ var player = null
 
 func _ready():
 	body.color = Color("#FFD700")
+	body.name = "Body"
 	body.size = Vector2(12, 12)
 	body.position = Vector2(-6, -6)
 	z_index = 10
