@@ -4,6 +4,7 @@ extends PassiveItem
 var pool_damage = 8
 var pool_radius = 60.0
 var pool_duration = 3.0
+var trigger_chance = 0.40
 var damage_number_scene = preload("res://effects/damage_number.tscn")
 
 func _ready():
@@ -17,9 +18,11 @@ func apply():
 	pool_damage = 8 + (level - 1) * 4
 	pool_radius = 60.0 + (level - 1) * 15
 	pool_duration = 3.0 + (level - 1) * 0.5
+	trigger_chance = 0.40 + (level - 1) * 0.12
 
 func on_enemy_killed(position: Vector2):
-	_spawn_pool(position)
+	if randf() < trigger_chance:
+		_spawn_pool(position)
 
 func _spawn_pool(pos: Vector2):
 	var effective_radius = pool_radius * player.get_area_multiplier()
