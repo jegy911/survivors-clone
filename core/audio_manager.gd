@@ -24,6 +24,16 @@ func _ready():
 	EventBus.game_started.connect(_on_game_started)
 	music_player.finished.connect(func(): if current_music == 1: music_player.play())
 	music_player2.finished.connect(func(): if current_music == 2: music_player2.play())
+	# Bus'ları zorla ata
+	shoot_player.bus = "SFX"
+	hit_player.bus = "SFX"
+	death_player.bus = "SFX"
+	levelup_player.bus = "SFX"
+	player_hurt_player.bus = "SFX"
+	xp_player.bus = "SFX"
+	boss_player.bus = "SFX"
+	music_player.bus = "Music"
+	music_player2.bus = "Music"
 
 func _on_game_started():
 	play_music(1)
