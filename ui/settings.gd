@@ -112,8 +112,10 @@ func _build_ses_tab(parent: Node):
 	_add_slider(vbox, "Efekt Sesi", settings.get("sfx_volume", 1.0), func(val):
 		SaveManager.settings["sfx_volume"] = val
 		var bus = AudioServer.get_bus_index("SFX")
+		print("SFX slider changed: val=", val, " bus=", bus, " volume=", linear_to_db(val))
 		if bus >= 0:
 			AudioServer.set_bus_volume_db(bus, linear_to_db(val))
+			print("SFX bus volume after set: ", AudioServer.get_bus_volume_db(bus))
 		SaveManager.save_game()
 	)
 	
