@@ -103,6 +103,7 @@ func _ready():
 	
 	update_hp_bar()
 	update_category_ui()
+	_setup_player_visuals()
 	
 	# Stats butonu HUD'a ekle
 	var stats_btn = Button.new()
@@ -907,3 +908,9 @@ func _toggle_stat_panel():
 			val.add_theme_font_size_override("font_size", 12)
 			row.add_child(val)
 		vbox.add_child(row)
+
+
+func _setup_player_visuals():
+	# Gelecekte Sprite2D animasyonları buradan yönetilecek
+	if body:
+		body.name = "Body"
