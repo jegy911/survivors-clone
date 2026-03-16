@@ -1,8 +1,8 @@
 class_name WeaponStorm
 extends WeaponBase
 
-var chain_count = 5
-var chain_range = 300.0
+var chain_count = 3
+var chain_range = 200.0
 var kill_lightning_count = 0
 
 func _ready():
@@ -42,16 +42,6 @@ func attack():
 		hit.append(next)
 		current = next
 
-func on_enemy_killed_bonus():
-	# Her öldürmede ekstra yıldırım
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	if enemies.is_empty():
-		return
-	var random_enemy = enemies[randi() % enemies.size()]
-	random_enemy.take_damage(player.get_total_damage(damage))
-	EventBus.on_damage_dealt.emit(player, random_enemy, player.get_total_damage(damage))
-	
-	_spawn_flash(random_enemy.global_position)
 
 func _find_next(current: Node, hit: Array):
 	var enemies = get_tree().get_nodes_in_group("enemies")
@@ -79,19 +69,10 @@ func _spawn_flash(pos: Vector2):
 
 func on_upgrade():
 	match level:
-		2:
-			damage = 50
-			chain_count = 6
-		3:
-			damage = 62
-			chain_range = 350.0
-		4:
-			damage = 76
-			chain_count = 8
-		5:
-			damage = 95
-			chain_count = 10
-			chain_range = 400.0
+		2: damage = 48; chain_count = 4
+		3: damage = 58; chain_range = 250.0
+		4: damage = 70; chain_count = 5
+		5: damage = 85; chain_count = 6; chain_range = 300.0
 
 func get_description() -> String:
 	return "Storm Lv" + str(level) + " | x" + str(chain_count) + " zincir | " + str(damage) + " hasar"
