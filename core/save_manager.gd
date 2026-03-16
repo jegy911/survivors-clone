@@ -161,14 +161,19 @@ func get_max_rank(key: String) -> int:
 func get_upgrade_cost(key: String, current_rank: int) -> int:
 	var base_cost = 100
 	match key:
-		"revival": base_cost = 400
-		"curse_level": base_cost = 60
-		"start_level_bonus": base_cost = 300
-		"multi_attack_bonus": base_cost = 250
-		"cooldown_bonus": base_cost = 180
-		"area_bonus": base_cost = 180
-		_: base_cost = 100
-	return base_cost + current_rank * 60
+		"revival": base_cost = 600
+		"curse_level": base_cost = 80
+		"start_level_bonus": base_cost = 500
+		"multi_attack_bonus": base_cost = 400
+		"cooldown_bonus": base_cost = 300
+		"area_bonus": base_cost = 280
+		"damage_bonus": base_cost = 250
+		"crit_damage_bonus": base_cost = 350
+		"adrenaline": base_cost = 300
+		"momentum": base_cost = 300
+		"overheal": base_cost = 250
+		_: base_cost = 150
+	return base_cost + current_rank * 100
 
 func update_stats_after_game(char_id: String, kills: int, survival_time: float, got_evolution: bool, got_tank_kill: bool, gold: int = 0, xp_levels: int = 0, bosses: int = 0, damage: int = 0, chests: int = 0, items: int = 0, won: bool = false):
 	total_kills += kills
