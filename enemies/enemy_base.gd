@@ -32,6 +32,7 @@ func _ready():
 	player = get_tree().get_first_node_in_group("player")
 	add_to_group("enemies")
 	_setup_hp_bar()
+	_setup_visuals()
 
 func _setup_hp_bar():
 	var hp_setting = SaveManager.settings.get("hp_bars", "both_on")
@@ -223,3 +224,9 @@ func _physics_process(delta):
 			_poison_tick_interval = 1.0
 			if not is_dead:
 				take_damage(_poison_damage)
+
+func _setup_visuals():
+	# Gelecekte bu fonksiyon Sprite2D ile override edilecek
+	# Şu an ColorRect kullanıyor, sprite eklenince burası değişecek
+	if body:
+		body.name = "Body"
