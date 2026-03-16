@@ -428,6 +428,7 @@ func _on_reset_full():
 	SaveManager.save_game()
 	_confirm_reset_full = false
 	_switch_tab("profil")
+	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
 
 func _build_devtools_tab(parent: Node):
 	var vbox = VBoxContainer.new()
