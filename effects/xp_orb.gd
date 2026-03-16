@@ -32,6 +32,9 @@ func init(value: int, pos: Vector2):
 	move_speed = 0.0
 	player = null
 	global_position = pos
+	# Görsel hazırlık — ileride Sprite2D ile değiştirilecek
+	if get_node_or_null("ColorRect"):
+		get_node("ColorRect").name = "Body"
 	add_to_group("xp_orbs")
 	show()
 
