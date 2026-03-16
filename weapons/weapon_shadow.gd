@@ -4,6 +4,8 @@ var orb_count = 1
 var orbit_radius = 80.0
 var orbit_speed = 2.0
 var orbs = []
+var hit_cooldowns = {}
+const HIT_INTERVAL = 0.5
 
 func _ready():
 	super._ready()
@@ -36,16 +38,13 @@ func _process(delta):
 	if player == null:
 		return
 	var time = Time.get_ticks_msec() / 1000.0
-	for i in orbs.size():
-		if not is_instance_valid(orbs[i]):
-			continue
-		var angle = time * orbit_speed + (TAU / orbs.size()) * i
-		var offset = Vector2(cos(angle), sin(angle)) * orbit_radius
-		orbs[i].global_position = player.global_position + offset
-
-func attack():
-	if player == null:
-		return
+	# Hit cooldown'ları güncelle
+	for key in hit_cooldowns.keys():
+		hit_cooldowns[key] -= delta
+		if hit_cooldowns[key] <= 0:
+			hit_cooldowns.erase(key)
+	
+	# Her frame düşman kontrolü
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	for orb in orbs:
 		if not is_instance_valid(orb):
@@ -53,10 +52,21 @@ func attack():
 		for enemy in enemies:
 			if not is_instance_valid(enemy):
 				continue
+			var enemy_id = enemy.get_instance_id()
+			if hit_cooldowns.has(enemy_id):
+				continue
 			if orb.global_position.distance_to(enemy.global_position) < 35:
 				var final_damage = player.get_total_damage(damage)
 				enemy.take_damage(final_damage)
 				EventBus.on_damage_dealt.emit(player, enemy, final_damage)
+				hit_cooldowns[enemy_id] = HIT_INTERVAL
+	for i in orbs.size():
+		if not is_instance_valid(orbs[i]):
+			continue
+		var angle = time * orbit_speed + (TAU / orbs.size()) * i
+		var offset = Vector2(cos(angle), sin(angle)) * orbit_radius
+		orbs[i].global_position = player.global_position + offset
+
 				
 
 func on_upgrade():
