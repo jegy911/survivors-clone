@@ -79,6 +79,9 @@ func _build_settings_panel() -> Control:
 	)
 	_add_slider_to(vbox, "Efekt Sesi", SaveManager.settings.get("sfx_volume", 1.0), func(val):
 		SaveManager.settings["sfx_volume"] = val
+		var bus = AudioServer.get_bus_index("SFX")
+		if bus >= 0:
+			AudioServer.set_bus_volume_db(bus, linear_to_db(val))
 		SaveManager.save_game()
 	)
 	_add_slider_to(vbox, "Müzik", SaveManager.settings.get("music_volume", 1.0), func(val):
