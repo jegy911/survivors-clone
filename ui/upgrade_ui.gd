@@ -26,6 +26,11 @@ func _ready():
 	
 	var style = StyleBoxFlat.new()
 	style.bg_color = Color("#0D0D1A")
+	style.border_color = Color("#FFD700")
+	style.border_width_left = 2
+	style.border_width_right = 2
+	style.border_width_top = 2
+	style.border_width_bottom = 2
 	style.corner_radius_top_left = 12
 	style.corner_radius_top_right = 12
 	style.corner_radius_bottom_left = 12
@@ -213,7 +218,8 @@ func show_upgrades(player):
 	current_pool = build_pool()
 	chosen_upgrades = weighted_pick(current_pool, 3)
 	
-	$Panel/VBoxContainer/TitleLabel.text = "— LEVEL UP —"
+	$Panel/VBoxContainer/TitleLabel.text = "⭐ LEVEL %d — SEÇİMİNİ YAP ⭐" % player_ref.level
+	$Panel/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#FFD700"))
 	refresh_buttons()
 	visible = true
 
