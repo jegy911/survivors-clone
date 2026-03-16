@@ -541,7 +541,7 @@ func get_weapon_description(type: String) -> String:
 		var w = active_weapons[type]
 		if w.level >= w.max_level:
 			return w.get_description() + " (MAX)"
-		return w.get_description() + " → Lv" + str(w.level + 1)
+		return "⬆ " + w.get_description() + " → Lv" + str(w.level + 1)
 	match type:
 		"bullet": return "Yeni Silah: Mermi"
 		"aura": return "Yeni Silah: Aura"
@@ -558,7 +558,7 @@ func get_item_description(type: String) -> String:
 		var i = active_items[type]
 		if i.level >= i.max_level:
 			return i.get_description() + " (MAX)"
-		return i.get_description() + " → Lv" + str(i.level + 1)
+		return "⬆ " + i.get_description() + " → Lv" + str(i.level + 1)
 	match type:
 		"lifesteal": return "Yeni: Can Çalma\nHer vuruşta hasar → HP"
 		"armor": return "Yeni: Zırh\nAlınan hasarı azaltır"
