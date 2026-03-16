@@ -34,6 +34,7 @@ func _ready():
 	boss_player.bus = "SFX"
 	music_player.bus = "Music"
 	music_player2.bus = "Music"
+	print("SFX bus at start: ", AudioServer.get_bus_volume_db(AudioServer.get_bus_index("SFX")))
 
 func _on_game_started():
 	play_music(1)
