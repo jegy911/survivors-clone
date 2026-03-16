@@ -223,6 +223,29 @@ func _physics_process(delta):
 		direction.y -= 1
 	velocity = direction.normalized() * SPEED
 	move_and_slide()
+	_update_animation(direction)
+
+func _update_animation(direction: Vector2):
+	var sprite = get_node_or_null("AnimatedSprite2D")
+	if sprite == null:
+		return
+	if direction == Vector2.ZERO:
+		# Duruyorsa idle
+		var current = sprite.animation
+		if current.begins_with("walk"):
+			sprite.play(current.replace("walk", "idle"))
+	else:
+		# Hareket yönüne göre animasyon
+		if abs(direction.x) > abs(direction.y):
+			if direction.x > 0:
+				sprite.play("walk_right")
+			else:
+				sprite.play("walk_left")
+		else:
+			if direction.y > 0:
+				sprite.play("walk_down")
+			else:
+				sprite.play("walk_up")
 
 func _process(delta):
 	# Pasif can yenileme
