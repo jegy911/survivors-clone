@@ -31,7 +31,7 @@ func attack():
 			continue
 		var dot = dir.dot(to_enemy.normalized())
 		if dot > 0.90:
-			var final_damage = player.get_total_damage(damage) * 2 # her zaman kritik
+			var final_damage = player.get_total_damage(int(damage * 1.5)) # %50 kritik bonus
 			enemy.take_damage(final_damage)
 			EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 	
@@ -51,19 +51,10 @@ func _spawn_laser_beam(dir: Vector2):
 
 func on_upgrade():
 	match level:
-		2:
-			damage = 75
-			cooldown = 0.9
-		3:
-			damage = 90
-			laser_range = 1400.0
-		4:
-			damage = 110
-			cooldown = 0.8
-		5:
-			damage = 140
-			laser_range = 1600.0
-			cooldown = 0.6
+		2: damage = 70; cooldown = 1.0
+		3: damage = 85; laser_range = 1300.0
+		4: damage = 100; cooldown = 0.9
+		5: damage = 120; laser_range = 1500.0; cooldown = 0.8
 
 func get_description() -> String:
 	return "Death Laser Lv" + str(level) + " | " + str(damage) + " hasar (KRİTİK)"
