@@ -29,6 +29,10 @@ var siege_active = false
 var siege_cooldown_timer = 0.0
 const SIEGE_DURATION = 120.0
 const SIEGE_COOLDOWN = 60.0
+var immunity_timer = 0.0
+var current_immunity = ""
+const IMMUNITY_INTERVAL = 180.0
+const IMMUNITY_TYPES = ["fire", "ice", "lightning"]
 var game_timer = 0.0
 
 # Boss takibi
@@ -89,6 +93,19 @@ func _process(delta):
 	
 	if game_timer >= 900 and AudioManager.current_music == 1:
 		AudioManager.play_music(2)
+	# 15:00'dan sonra bağışıklık rotasyonu
+	if game_timer <= 900:
+		immunity_timer = 0.0
+		current_immunity = ""
+	else:
+		immunity_timer += delta
+		if immunity_timer >= IMMUNITY_INTERVAL:
+			immunity_timer = 0.0
+			current_immunity = IMMUNITY_TYPES[randi() % IMMUNITY_TYPES.size()]
+			_apply_immunity_to_existing_enemies()
+			var player = get_tree().get_first_node_in_group("player")
+			if player:
+				player.show_floating_text("⚠ BAĞIŞIKLIK: " + current_immunity.to_upper(), player.global_position + Vector2(0, -80), Color("#FF6600"), 18)
 
 	# Mini boss kontrolü
 	if next_mini_boss_index < mini_boss_times.size():
@@ -246,6 +263,8 @@ func spawn_random_enemy():
 	_apply_scaling(enemy)
 	_apply_curse(enemy)
 	_make_elite(enemy)
+	if current_immunity != "" and randf() < 0.30:
+		_apply_immunity(enemy, current_immunity)
 
 func _pick_enemy_for_time() -> Node:
 	var t = game_timer
@@ -628,3 +647,22 @@ func _spawn_crate():
 	add_child(crate)
 	var angle = randf() * TAU
 	crate.global_position = player.global_position + Vector2(cos(angle), sin(angle)) * randf_range(100.0, 300.0)
+
+func _apply_immunity(enemy: Node, immunity_type: String):
+	enemy.set_meta("immunity", immunity_type)
+	# Görsel gösterge
+	var indicator = ColorRect.new()
+	indicator.name = "ImmunityIndicator"
+	var color = Color("#FF4500") if immunity_type == "fire" else (Color("#00BFFF") if immunity_type == "ice" else Color("#FFD700"))
+	indicator.color = color
+	indicator.modulate.a = 0.4
+	indicator.size = Vector2(enemy.body.size.x + 8, enemy.body.size.y + 8) if enemy.get_node_or_null("ColorRect") else Vector2(24, 24)
+	indicator.position = Vector2(-4, -4)
+	indicator.z_index = -1
+	enemy.add_child(indicator)
+
+func _apply_immunity_to_existing_enemies():
+	var enemies = get_tree().get_nodes_in_group("enemies")
+	for enemy in enemies:
+		if randf() < 0.30:
+			_apply_immunity(enemy, current_immunity)
