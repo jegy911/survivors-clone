@@ -3,6 +3,7 @@ extends PassiveItem
 
 var explosion_radius = 0.0
 var explosion_damage = 0
+var trigger_chance = 0.50
 var exploded_positions = []
 var damage_number_scene = preload("res://effects/damage_number.tscn")
 
@@ -16,8 +17,11 @@ func _ready():
 func apply():
 	explosion_radius = 60.0 + (20.0 * level)
 	explosion_damage = 10 * level
+	trigger_chance = 0.50 + (level - 1) * 0.10
 
 func on_enemy_killed(position: Vector2):
+	if randf() >= trigger_chance:
+		return
 	for pos in exploded_positions:
 		if pos.distance_to(position) < 10:
 			return
