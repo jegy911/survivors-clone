@@ -70,7 +70,8 @@ func take_damage(amount: int):
 		amount = int(amount * 0.5)
 	hp -= amount
 	# Öfke modu — HP %30'a düşünce
-	if not rage_triggered and float(hp) / float(max_hp) <= 0.30:
+	var main = get_tree().get_first_node_in_group("main")
+	if not rage_triggered and float(hp) / float(max_hp) <= 0.30 and main and main.game_timer >= 900:
 		rage_triggered = true
 		BASE_SPEED *= 1.5
 		current_speed = BASE_SPEED
