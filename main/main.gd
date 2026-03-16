@@ -317,7 +317,6 @@ func _pick_enemy_for_time() -> Node:
 			3: return healer_scene.instantiate()
 			_: return tank_enemy_scene.instantiate()
 
-	return enemy_scene.instantiate()
 
 func spawn_mini_boss():
 	EventBus.boss_spawned.emit()
@@ -518,7 +517,6 @@ func _spawn_vacuum_orb():
 	pulse.tween_property(body, "modulate:a", 0.3, 0.4)
 	pulse.tween_property(body, "modulate:a", 1.0, 0.4)
 	
-	var collected = false
 	area.body_entered.connect(_on_vacuum_collected.bind(orb_node, area))
 
 func _on_vacuum_collected(body: Node, orb_node: Node, _area: Node):
