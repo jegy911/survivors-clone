@@ -26,6 +26,7 @@ func attack():
 	var first = enemies[0]
 	var final_damage = player.get_total_damage(damage)
 	first.take_damage(final_damage)
+	EventBus.on_damage_dealt.emit(player, first, final_damage)
 	_spawn_flash(first.global_position)
 	
 	var hit = [first]
@@ -36,6 +37,7 @@ func attack():
 		if next == null:
 			break
 		next.take_damage(final_damage)
+		EventBus.on_damage_dealt.emit(player, next, final_damage)
 		_spawn_flash(next.global_position)
 		hit.append(next)
 		current = next
@@ -47,6 +49,8 @@ func on_enemy_killed_bonus():
 		return
 	var random_enemy = enemies[randi() % enemies.size()]
 	random_enemy.take_damage(player.get_total_damage(damage))
+	EventBus.on_damage_dealt.emit(player, random_enemy, player.get_total_damage(damage))
+	
 	_spawn_flash(random_enemy.global_position)
 
 func _find_next(current: Node, hit: Array):
