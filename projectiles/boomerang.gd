@@ -46,6 +46,9 @@ func _physics_process(delta):
 				hit_enemies.append(area)
 				if player_ref:
 					EventBus.on_damage_dealt.emit(player_ref, area, damage)
+					if lifesteal and player_ref.has_method("heal"):
+						var heal_amount = max(1, int(damage * 0.15))
+						player_ref.heal(heal_amount)
 
 func init(dir: Vector2, dmg: int, player: Node2D):
 	direction = dir
