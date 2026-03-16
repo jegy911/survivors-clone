@@ -186,18 +186,13 @@ func _process(delta):
 		_spawn_crate()
 
 func update_timer_label():
-	if game_timer <= 1800.0:
-		var remaining = 1800.0 - game_timer
-		var minutes = int(remaining) / 60
-		var seconds = int(remaining) % 60
-		timer_label.text = "%02d:%02d" % [minutes, seconds]
+	var minutes = int(game_timer) / 60
+	var seconds = int(game_timer) % 60
+	timer_label.text = "%02d:%02d" % [minutes, seconds]
+	if game_timer < 1800.0:
 		timer_label.add_theme_color_override("font_color", Color("#FFFFFF"))
 		timer_label.add_theme_font_size_override("font_size", 18)
 	else:
-		var over = game_timer - 1800.0
-		var minutes = int(over) / 60
-		var seconds = int(over) % 60
-		timer_label.text = "%02d:%02d" % [minutes, seconds]
 		timer_label.add_theme_color_override("font_color", Color("#8B0000"))
 		timer_label.add_theme_font_size_override("font_size", 24)
 	wave_label.text = "Dalga: " + str(wave_count)
