@@ -402,6 +402,7 @@ func _on_reset_stats():
 	SaveManager.total_chests_opened = 0
 	SaveManager.total_items_collected = 0
 	SaveManager.max_survival_time = 0.0
+	SaveManager.unlocked_achievements = []
 	SaveManager.save_game()
 	_confirm_reset_stats = false
 	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
@@ -429,6 +430,7 @@ func _on_reset_full():
 	SaveManager.max_survival_time = 0.0
 	SaveManager.unlocked_characters = ["warrior", "mage", "vampire"]
 	SaveManager.purchased_characters = ["warrior", "mage", "vampire"]
+	SaveManager.unlocked_achievements = []
 	SaveManager.save_game()
 	_confirm_reset_full = false
 	_switch_tab("profil")
