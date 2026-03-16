@@ -3,6 +3,7 @@ extends Node
 # Player sinyalleri
 signal player_damaged(amount: int)
 signal player_healed(amount: int)
+signal player_hp_changed(hp: int, max_hp: int)
 signal player_died
 signal player_leveled_up(level: int)
 
