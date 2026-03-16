@@ -112,10 +112,8 @@ func _build_ses_tab(parent: Node):
 	_add_slider(vbox, "Efekt Sesi", settings.get("sfx_volume", 1.0), func(val):
 		SaveManager.settings["sfx_volume"] = val
 		var bus = AudioServer.get_bus_index("SFX")
-		print("SFX slider changed: val=", val, " bus=", bus, " volume=", linear_to_db(val))
 		if bus >= 0:
 			AudioServer.set_bus_volume_db(bus, linear_to_db(val))
-			print("SFX bus volume after set: ", AudioServer.get_bus_volume_db(bus))
 		SaveManager.save_game()
 	)
 	
@@ -301,7 +299,13 @@ func _build_profil_tab(parent: Node):
 	vbox.add_theme_constant_override("separation", 14)
 	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(vbox)
-	
+	var stats_title = Label.new()
+	stats_title.text = "📊 İSTATİSTİKLER"
+	stats_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	stats_title.add_theme_font_size_override("font_size", 16)
+	stats_title.add_theme_color_override("font_color", Color("#FFD700"))
+	vbox.add_child(stats_title)
+
 	var stats = [
 		["⚔ Toplam Öldürme", str(SaveManager.total_kills)],
 		["💀 En İyi Koşu (Kill)", str(SaveManager.best_kill_run)],
@@ -400,7 +404,7 @@ func _on_reset_stats():
 	SaveManager.max_survival_time = 0.0
 	SaveManager.save_game()
 	_confirm_reset_stats = false
-	_switch_tab("profil")
+	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
 
 func _on_reset_full():
 	if not _confirm_reset_full:
