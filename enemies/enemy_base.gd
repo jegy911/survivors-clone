@@ -20,6 +20,7 @@ var max_hp = 30
 var is_dead = false
 var current_speed = BASE_SPEED
 var slow_timer = 0.0
+var rage_triggered = false
 var _poison_damage = 0
 var _poison_timer = 0.0
 var _poison_tick_interval = 1.0
@@ -67,6 +68,17 @@ func take_damage(amount: int):
 	if immunity != "":
 		amount = int(amount * 0.5)
 	hp -= amount
+	# Öfke modu — HP %30'a düşünce
+	if not rage_triggered and float(hp) / float(max_hp) <= 0.30:
+		rage_triggered = true
+		BASE_SPEED *= 1.5
+		current_speed = BASE_SPEED
+		damage_color = Color("#FF6600")
+		if body:
+			var rage_tween = body.create_tween()
+			rage_tween.set_loops(3)
+			rage_tween.tween_property(body, "modulate:a", 0.3, 0.1)
+			rage_tween.tween_property(body, "modulate:a", 1.0, 0.1)
 	_update_hp_bar()
 	
 	var dmg_setting = SaveManager.settings.get("damage_numbers", "both_on")
