@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drwujk8jettm7"
-path="res://.godot/imported/zemin.png-88fbcb36e5573eda8151f30a3d926ec5.ctex"
+uid="uid://cocovqp5l4xqw"
+path="res://.godot/imported/StandIn_Swordsman_v01.png-d53e81bef1671da1cad1083e80756ed9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/zemin.png"
-dest_files=["res://.godot/imported/zemin.png-88fbcb36e5573eda8151f30a3d926ec5.ctex"]
+source_file="res://assets/warrior assetleri/StandIn_Swordsman_v01.png"
+dest_files=["res://.godot/imported/StandIn_Swordsman_v01.png-d53e81bef1671da1cad1083e80756ed9.ctex"]
 
 [params]
 
