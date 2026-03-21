@@ -227,7 +227,17 @@ func _physics_process(delta):
 				take_damage(_poison_damage)
 
 func _setup_visuals():
-	# Gelecekte bu fonksiyon Sprite2D ile override edilecek
-	# Şu an ColorRect kullanıyor, sprite eklenince burası değişecek
 	if body:
 		body.name = "Body"
+	var sprite = get_node_or_null("AnimatedSprite2D")
+	if sprite:
+		sprite.play("walk_left")
+
+func _update_enemy_direction():
+	var sprite = get_node_or_null("AnimatedSprite2D")
+	if sprite == null or player == null:
+		return
+	if player.global_position.x > global_position.x:
+		sprite.flip_h = true
+	else:
+		sprite.flip_h = false

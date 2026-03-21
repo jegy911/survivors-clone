@@ -230,22 +230,19 @@ func _update_animation(direction: Vector2):
 	if sprite == null:
 		return
 	if direction == Vector2.ZERO:
-		# Duruyorsa idle
-		var current = sprite.animation
-		if current.begins_with("walk"):
-			sprite.play(current.replace("walk", "idle"))
+		if sprite.animation == "walk_left":
+			sprite.play("idle_left")
+			sprite.flip_h = false
+		elif sprite.animation == "walk_right":
+			sprite.play("idle_right")
+			sprite.flip_h = false
 	else:
-		# Hareket yönüne göre animasyon
-		if abs(direction.x) > abs(direction.y):
-			if direction.x > 0:
-				sprite.play("walk_right")
-			else:
-				sprite.play("walk_left")
+		if direction.x >= 0:
+			sprite.play("walk_right")
+			sprite.flip_h = false
 		else:
-			if direction.y > 0:
-				sprite.play("walk_down")
-			else:
-				sprite.play("walk_up")
+			sprite.play("walk_left")
+			sprite.flip_h = false
 
 func _process(delta):
 	# Pasif can yenileme

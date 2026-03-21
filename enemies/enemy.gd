@@ -23,6 +23,7 @@ func _process(delta):
 			body.color = Color("#E74C3C")
 	var direction = (player.global_position - global_position).normalized()
 	global_position += direction * current_speed * delta
+	_update_enemy_direction()
 	damage_cooldown -= delta
 	if global_position.distance_to(player.global_position) < 45 and damage_cooldown <= 0:
 		player.take_damage(DAMAGE)
