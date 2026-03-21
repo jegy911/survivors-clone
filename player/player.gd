@@ -448,26 +448,6 @@ func recalculate_category_bonus():
 	for i in active_items.values():
 		if category_counts.has(i.category):
 			category_counts[i.category] += i.level
-	category_damage_bonus = 0
-	category_crit_bonus = 0.0
-	category_xp_bonus = 0.0
-	category_speed_bonus = 0
-	category_hp_bonus = 0
-	for cat in category_counts:
-		var bonus = CategoryBonus.get_bonus(cat, category_counts[cat])
-		category_damage_bonus += bonus["damage"]
-		category_crit_bonus += bonus["crit"]
-		category_xp_bonus += bonus["xp"]
-		category_speed_bonus += bonus["speed"]
-		category_hp_bonus += bonus["hp"]
-	if category_hp_bonus > 0:
-		var base_hp = 100
-		base_hp += SaveManager.meta_upgrades["max_hp_bonus"] * 25
-		base_hp += CharacterData.CHARACTERS[SaveManager.selected_character]["bonus_hp"]
-		max_hp = base_hp + category_hp_bonus
-		hp = min(hp, max_hp)
-	update_hp_bar()
-	update_category_ui()
 	
 	category_damage_bonus = 0
 	category_crit_bonus = 0.0
