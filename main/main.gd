@@ -52,8 +52,22 @@ var hit_stop_frames = 0
 func _ready():
 	randomize()
 	add_to_group("main")
+	_load_player()
 	EventBus.game_started.emit()
 	EventBus.hit_stop_requested.connect(_on_hit_stop_requested)
+
+func _load_player():
+	var char_id = CharacterData.CHARACTERS[SaveManager.selected_character]["id"]
+	var scene_path = "res://player/player.tscn"
+	match char_id:
+		"warrior": scene_path = "res://player/player.tscn"
+		"mage": scene_path = "res://player/mage.tscn"
+		"vampire": scene_path = "res://player/vampire.tscn"
+		_: scene_path = "res://player/player.tscn"
+	var player_scene = load(scene_path)
+	var player = player_scene.instantiate()
+	player.add_to_group("player")
+	add_child(player)
 
 func _on_hit_stop_requested(frames: int):
 	hit_stop_frames = max(hit_stop_frames, frames)

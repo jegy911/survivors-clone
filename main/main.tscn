@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://4o5u074yimxe"]
 
-[ext_resource type="PackedScene" uid="uid://dwc7hxun16pqu" path="res://player/player.tscn" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://bomsrt081ugnj" path="res://main/main.gd" id="1_h2yge"]
 [ext_resource type="Texture2D" uid="uid://drwujk8jettm7" path="res://assets/zemin/zemin.png" id="2_xwkvk"]
 
@@ -18,8 +17,6 @@ region_rect = Rect2(-50000, -50000, 100000, 100000)
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=218787774]
 motion_mirroring = Vector2(1024, 1024)
-
-[node name="Player" parent="." unique_id=228795766 groups=["player"] instance=ExtResource("1_0xm2m")]
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=299549253]
 
