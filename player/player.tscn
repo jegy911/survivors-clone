@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dwc7hxun16pqu"]
 
 [ext_resource type="Script" uid="uid://brj3eip1w0pk5" path="res://player/player.gd" id="1_4flbx"]
-[ext_resource type="Texture2D" uid="uid://b1ko1c8wyuynp" path="res://assets/warrior assetleri/StandIn_Swordsman_v01.png" id="2_rkbax"]
+[ext_resource type="Texture2D" uid="uid://cocovqp5l4xqw" path="res://assets/warrior assetleri/StandIn_Swordsman_v01.png" id="2_rkbax"]
 [ext_resource type="Texture2D" uid="uid://dpjregoit52dv" path="res://assets/warrior assetleri/spritesheet (7).png" id="3_g1dw6"]
 [ext_resource type="Texture2D" uid="uid://m8nnstmo1eru" path="res://assets/warrior assetleri/spritesheet (8).png" id="3_yw30f"]
 [ext_resource type="Texture2D" uid="uid://cw8s1apf7siwv" path="res://assets/warrior assetleri/ezgif-17718ef381f1640c.png" id="4_qjkh3"]
@@ -888,8 +888,7 @@ color = Color(1, 0, 0, 1)
 position = Vector2(0.9999981, 1.9999981)
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_qjt2w")
-animation = &"walk_right"
-frame_progress = 0.95469433
+animation = &"idle_left"
 
 [node name="WorldUI" type="Node2D" parent="." unique_id=260614110]
 
