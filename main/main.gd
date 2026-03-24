@@ -58,12 +58,12 @@ func _ready():
 
 func _load_player():
 	var char_id = CharacterData.CHARACTERS[SaveManager.selected_character]["id"]
-	var scene_path = "res://player/player.tscn"
+	var scene_path = "res://characters/warrior/warrior.tscn"
 	match char_id:
-		"warrior": scene_path = "res://player/player.tscn"
-		"mage": scene_path = "res://player/mage.tscn"
-		"vampire": scene_path = "res://player/vampire.tscn"
-		_: scene_path = "res://player/player.tscn"
+		"warrior": scene_path = "res://characters/warrior/warrior.tscn"
+		"mage": scene_path = "res://characters/mage/mage.tscn"
+		"vampire": scene_path = "res://characters/vampire/vampire.tscn"
+		_: scene_path = "res://characters/warrior/warrior.tscn"
 	var player_scene = load(scene_path)
 	var player = player_scene.instantiate()
 	player.add_to_group("player")
