@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://5eqkumcvwe0t"]
 
 [ext_resource type="Script" uid="uid://c4fbw344c8cg8" path="res://projectiles/bullet.gd" id="1_v7oki"]
+[ext_resource type="Texture2D" uid="uid://b8na6sr6t1gni" path="res://assets/projectiles/bullet/indir.png" id="2_4ambd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v8qja"]
 radius = 8.0
@@ -14,7 +15,12 @@ script = ExtResource("1_v7oki")
 shape = SubResource("CircleShape2D_v8qja")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1458052275]
+visible = false
 offset_left = -7.0
 offset_top = -4.0
 offset_right = 8.0
 offset_bottom = 4.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2029172758]
+scale = Vector2(0.04, 0.04)
+texture = ExtResource("2_4ambd")

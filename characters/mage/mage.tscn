@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://4ojpydb8g2qa" path="res://assets/büyücü/dsadasda.png" id="3_n2u01"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
-size = Vector2(34, 63)
+size = Vector2(47, 91)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_smkso"]
 atlas = ExtResource("2_4pos4")
@@ -852,6 +852,7 @@ script = ExtResource("1_n2u01")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2062117397]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1307471674]
+position = Vector2(2.5, 9.5)
 shape = SubResource("RectangleShape2D_i3pqv")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=2032631792]
@@ -863,9 +864,9 @@ offset_bottom = 16.0
 color = Color(1, 0, 0, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=658400564]
-scale = Vector2(0.32, 0.32)
+scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_qjt2w")
-animation = &"idle_right"
+animation = &"walk_left"
 
 [node name="WorldUI" type="Node2D" parent="." unique_id=260614110]
 

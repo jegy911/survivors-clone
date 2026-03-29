@@ -63,6 +63,16 @@ func _load_player():
 		"warrior": scene_path = "res://characters/warrior/warrior.tscn"
 		"mage": scene_path = "res://characters/mage/mage.tscn"
 		"vampire": scene_path = "res://characters/vampire/vampire.tscn"
+		"hunter": scene_path = "res://characters/hunter/hunter.tscn"
+		"stormer": scene_path = "res://characters/stormer/stormer.tscn"
+		"frost": scene_path = "res://characters/frost/frost.tscn"
+		"shadow_walker": scene_path = "res://characters/shadow_walker/shadow_walker.tscn"
+		"engineer": scene_path = "res://characters/engineer/engineer.tscn"
+		"paladin": scene_path = "res://characters/paladin/paladin.tscn"
+		"blood_prince": scene_path = "res://characters/blood_prince/blood_prince.tscn"
+		"death_knight": scene_path = "res://characters/death_knight/death_knight.tscn"
+		"chaos": scene_path = "res://characters/chaos/chaos.tscn"
+		"omega": scene_path = "res://characters/omega/omega.tscn"
 		_: scene_path = "res://characters/warrior/warrior.tscn"
 	var player_scene = load(scene_path)
 	var player = player_scene.instantiate()

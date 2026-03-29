@@ -9,6 +9,8 @@ var player = null
 
 func _ready():
 	$ColorRect.color = Color("#FFD700")
+	if get_node_or_null("Sprite2D"):
+		$ColorRect.visible = false
 
 func _physics_process(delta):
 	if not visible:
@@ -52,6 +54,9 @@ func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter 
 	player = shooter
 	lifetime = 2.0
 	add_to_group("player_bullets")
+	# Sprite yönünü ayarla
+	if get_node_or_null("Sprite2D"):
+		$Sprite2D.rotation = direction.angle()
 	show()
 
 func reset():

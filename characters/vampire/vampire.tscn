@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://fxw3xq132jib" path="res://assets/vampir/ezgif-4da061fecsağdb89290.png" id="3_f5crl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
-size = Vector2(34, 63)
+size = Vector2(39, 68)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gk0ev"]
 atlas = ExtResource("2_acaww")
@@ -628,7 +628,7 @@ script = ExtResource("1_f5crl")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2062117397]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1307471674]
-position = Vector2(1, 7.5)
+position = Vector2(0.5, 8)
 shape = SubResource("RectangleShape2D_i3pqv")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=2032631792]
@@ -640,10 +640,9 @@ offset_bottom = 16.0
 color = Color(1, 0, 0, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1444666872]
-scale = Vector2(0.35, 0.35)
+scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_jkx3h")
-animation = &"idle_left"
-frame_progress = 0.1191326
+animation = &"walk_right"
 
 [node name="WorldUI" type="Node2D" parent="." unique_id=260614110]
 
