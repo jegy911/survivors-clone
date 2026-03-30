@@ -6,6 +6,8 @@ var gold = 0
 var selected_mode = "vs"
 var selected_map = "vs_map"
 var selected_character = 0
+var game_mode: String = "solo"  # "solo", "local_coop", "online_coop"
+var selected_character_p2: int = 1
 var meta_upgrades = {
 	"max_hp_bonus": 0,
 	"damage_bonus": 0,

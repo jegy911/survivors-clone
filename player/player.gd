@@ -105,6 +105,9 @@ func _ready():
 	update_hp_bar()
 	update_category_ui()
 	_setup_player_visuals()
+	# Co-op modunda CanvasLayer'ı gizle
+	if SaveManager.game_mode == "local_coop":
+		$CanvasLayer.visible = false
 	
 	# Stats butonu HUD'a ekle
 	var stats_btn = Button.new()

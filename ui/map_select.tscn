@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c11md4ob652ie"]
+
+[ext_resource type="Script" uid="uid://ckxsp567mbyop" path="res://ui/map_select.gd" id="1_5cki3"]
+
+[node name="MapSelect" type="CanvasLayer" unique_id=946977597]
+script = ExtResource("1_5cki3")

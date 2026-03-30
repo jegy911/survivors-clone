@@ -32,37 +32,42 @@ func _ready():
 	env_manager.initialize(self)
 	_load_player()
 	_setup_camera()
+	_setup_coop_hud()
 	EventBus.game_started.emit()
 	EventBus.hit_stop_requested.connect(_on_hit_stop_requested)
 
 func _load_player():
-	_spawn_player(0, Vector2(-50, 0))
-	_spawn_player(1, Vector2(50, 0))
+	_spawn_player(0, Vector2(0, 0))
+	if SaveManager.game_mode == "local_coop":
+		_spawn_player(1, Vector2(60, 0))
 
 func _spawn_player(id: int, offset: Vector2):
-	var char_id = CharacterData.CHARACTERS[SaveManager.selected_character]["id"]
-	var scene_path = "res://characters/warrior/warrior.tscn"
-	match char_id:
-		"warrior": scene_path = "res://characters/warrior/warrior.tscn"
-		"mage": scene_path = "res://characters/mage/mage.tscn"
-		"vampire": scene_path = "res://characters/vampire/vampire.tscn"
-		"hunter": scene_path = "res://characters/hunter/hunter.tscn"
-		"stormer": scene_path = "res://characters/stormer/stormer.tscn"
-		"frost": scene_path = "res://characters/frost/frost.tscn"
-		"shadow_walker": scene_path = "res://characters/shadow_walker/shadow_walker.tscn"
-		"engineer": scene_path = "res://characters/engineer/engineer.tscn"
-		"paladin": scene_path = "res://characters/paladin/paladin.tscn"
-		"blood_prince": scene_path = "res://characters/blood_prince/blood_prince.tscn"
-		"death_knight": scene_path = "res://characters/death_knight/death_knight.tscn"
-		"chaos": scene_path = "res://characters/chaos/chaos.tscn"
-		"omega": scene_path = "res://characters/omega/omega.tscn"
-		_: scene_path = "res://characters/warrior/warrior.tscn"
+	var char_index = SaveManager.selected_character if id == 0 else SaveManager.selected_character_p2
+	var char_id = CharacterData.CHARACTERS[char_index]["id"]
+	var scene_path = _get_character_scene(char_id)
 	var player_scene = load(scene_path)
 	var player = player_scene.instantiate()
 	player.add_to_group("player")
 	player.set_player_id(id)
 	player.position = offset
 	add_child(player)
+
+func _get_character_scene(char_id: String) -> String:
+	match char_id:
+		"warrior": return "res://characters/warrior/warrior.tscn"
+		"mage": return "res://characters/mage/mage.tscn"
+		"vampire": return "res://characters/vampire/vampire.tscn"
+		"hunter": return "res://characters/hunter/hunter.tscn"
+		"stormer": return "res://characters/stormer/stormer.tscn"
+		"frost": return "res://characters/frost/frost.tscn"
+		"shadow_walker": return "res://characters/shadow_walker/shadow_walker.tscn"
+		"engineer": return "res://characters/engineer/engineer.tscn"
+		"paladin": return "res://characters/paladin/paladin.tscn"
+		"blood_prince": return "res://characters/blood_prince/blood_prince.tscn"
+		"death_knight": return "res://characters/death_knight/death_knight.tscn"
+		"chaos": return "res://characters/chaos/chaos.tscn"
+		"omega": return "res://characters/omega/omega.tscn"
+		_: return "res://characters/warrior/warrior.tscn"
 
 func _on_hit_stop_requested(frames: int):
 	hit_stop_frames = max(hit_stop_frames, frames)
@@ -87,6 +92,7 @@ func _process(delta):
 
 	game_timer += delta
 	_update_camera(delta)
+	_update_coop_hud()
 	update_timer_label()
 
 	if game_timer >= 900 and AudioManager.current_music == 1:
@@ -161,6 +167,140 @@ func _setup_camera():
 	main_camera.position_smoothing_enabled = true
 	main_camera.position_smoothing_speed = CAMERA_SPEED
 	add_child(main_camera)
+	
+	var coop_hud: CanvasLayer = null
+
+func _setup_coop_hud():
+	if SaveManager.game_mode != "local_coop":
+		return
+	coop_hud = CanvasLayer.new()
+	coop_hud.layer = 10
+	add_child(coop_hud)
+
+	var screen_size = get_viewport().get_visible_rect().size
+
+	# P1 HUD — sol üst
+	var p1_panel = _make_hud_panel(Vector2(10, 10), Color("#27AE60"), "P1")
+	coop_hud.add_child(p1_panel)
+
+	# P2 HUD — sağ üst
+	var p2_panel = _make_hud_panel(Vector2(screen_size.x - 210, 10), Color("#2471A3"), "P2")
+	coop_hud.add_child(p2_panel)
+
+func _make_hud_panel(pos: Vector2, color: Color, label: String) -> PanelContainer:
+	var panel = PanelContainer.new()
+	panel.custom_minimum_size = Vector2(200, 100)
+	panel.position = pos
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color("#0D0D1ACC")
+	style.border_color = color
+	style.border_width_left = 2
+	style.border_width_right = 2
+	style.border_width_top = 2
+	style.border_width_bottom = 2
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_left = 8
+	style.corner_radius_bottom_right = 8
+	panel.add_theme_stylebox_override("panel", style)
+	panel.name = label + "_panel"
+
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 6)
+	panel.add_child(vbox)
+
+	# Oyuncu etiketi
+	var player_label = Label.new()
+	player_label.text = label
+	player_label.add_theme_color_override("font_color", color)
+	player_label.add_theme_font_size_override("font_size", 14)
+	vbox.add_child(player_label)
+
+	# HP bar arka plan
+	var hp_bg = ColorRect.new()
+	hp_bg.name = "HPBarBG"
+	hp_bg.custom_minimum_size = Vector2(180, 12)
+	hp_bg.color = Color("#333333")
+	vbox.add_child(hp_bg)
+
+	# HP bar dolu
+	var hp_fill = ColorRect.new()
+	hp_fill.name = "HPBarFill"
+	hp_fill.size = Vector2(180, 12)
+	hp_fill.position = hp_bg.position
+	hp_fill.color = Color("#2ECC71")
+	hp_bg.add_child(hp_fill)
+
+	# Level ve kill
+	var stats_row = HBoxContainer.new()
+	stats_row.add_theme_constant_override("separation", 10)
+	vbox.add_child(stats_row)
+
+	var level_label = Label.new()
+	level_label.name = "LevelLabel"
+	level_label.text = "Lv 1"
+	level_label.add_theme_color_override("font_color", Color("#FFD700"))
+	level_label.add_theme_font_size_override("font_size", 12)
+	stats_row.add_child(level_label)
+
+	var kill_label = Label.new()
+	kill_label.name = "KillLabel"
+	kill_label.text = "💀 0"
+	kill_label.add_theme_color_override("font_color", Color("#AAAAAA"))
+	kill_label.add_theme_font_size_override("font_size", 12)
+	stats_row.add_child(kill_label)
+
+	# XP bar
+	var xp_bar = ProgressBar.new()
+	xp_bar.name = "XPBar"
+	xp_bar.custom_minimum_size = Vector2(180, 6)
+	xp_bar.show_percentage = false
+	xp_bar.max_value = 30
+	xp_bar.value = 0
+	var xp_style = StyleBoxFlat.new()
+	xp_style.bg_color = Color("#4A90E2")
+	xp_bar.add_theme_stylebox_override("fill", xp_style)
+	vbox.add_child(xp_bar)
+
+	return panel
+
+func _update_coop_hud():
+	if SaveManager.game_mode != "local_coop" or coop_hud == null:
+		return
+	var players = get_tree().get_nodes_in_group("player")
+	for p in players:
+		var panel_name = "P1_panel" if p.player_id == 0 else "P2_panel"
+		var panel = coop_hud.get_node_or_null(panel_name)
+		if panel == null:
+			continue
+		var vbox = panel.get_child(0)
+		# HP bar
+		var hp_bg = vbox.get_node_or_null("HPBarBG")
+		if hp_bg:
+			var hp_fill = hp_bg.get_node_or_null("HPBarFill")
+			if hp_fill:
+				var ratio = float(p.hp) / float(p.max_hp)
+				hp_fill.size.x = 180 * ratio
+				if ratio > 0.5:
+					hp_fill.color = Color("#2ECC71")
+				elif ratio > 0.25:
+					hp_fill.color = Color("#F39C12")
+				else:
+					hp_fill.color = Color("#E74C3C")
+		# Level
+		var stats_row = vbox.get_node_or_null("HBoxContainer")
+		if stats_row:
+			var level_label = stats_row.get_node_or_null("LevelLabel")
+			if level_label:
+				level_label.text = "Lv " + str(p.level)
+			var kill_label = stats_row.get_node_or_null("KillLabel")
+			if kill_label:
+				kill_label.text = "💀 " + str(p.kill_count)
+		# XP bar
+		var xp_bar = vbox.get_node_or_null("XPBar")
+		if xp_bar:
+			xp_bar.max_value = p.xp_to_next_level
+			xp_bar.value = p.xp
 
 func _update_camera(delta: float):
 	var players = get_tree().get_nodes_in_group("player")

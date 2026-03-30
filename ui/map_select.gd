@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+var selected_map = "vs_map"
+
 func _ready():
 	var screen_size = get_viewport().get_visible_rect().size
 	var bg = ColorRect.new()
@@ -37,11 +39,31 @@ func _ready():
 	panel.add_child(vbox)
 
 	var title = Label.new()
-	title.text = "NASIL OYNAMAK İSTİYORSUN?"
+	title.text = "HARİTA SEÇ"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 28)
 	title.add_theme_color_override("font_color", Color("#9B59B6"))
 	vbox.add_child(title)
+
+	vbox.add_child(HSeparator.new())
+
+	var map_row = HBoxContainer.new()
+	map_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	map_row.add_theme_constant_override("separation", 20)
+	vbox.add_child(map_row)
+
+	var map1_btn = _make_btn("🏰 DÜŞMÜŞ KRALLIK\n\nAçık alan\nOrtaçağ kalıntıları\n30 dakika hayatta kal!", Color("#27AE60"))
+	var map2_btn = _make_btn("⬡ HARİTA 2\n\nYakında...", Color("#6C3483"))
+	var map3_btn = _make_btn("⬡ HARİTA 3\n\nYakında...", Color("#6C3483"))
+	map2_btn.disabled = true
+	map2_btn.modulate.a = 0.4
+	map3_btn.disabled = true
+	map3_btn.modulate.a = 0.4
+
+	map1_btn.pressed.connect(func(): _on_map("vs_map"))
+	map_row.add_child(map1_btn)
+	map_row.add_child(map2_btn)
+	map_row.add_child(map3_btn)
 
 	vbox.add_child(HSeparator.new())
 
@@ -50,30 +72,12 @@ func _ready():
 	btn_row.add_theme_constant_override("separation", 20)
 	vbox.add_child(btn_row)
 
-	var solo_btn = _make_btn(
-		"👤 SOLO\n\nTek oyuncu\nKlasik mod",
-		Color("#27AE60"))
-	var local_btn = _make_btn(
-		"👥 LOCAL CO-OP\n\nAynı klavye\n2 oyuncu",
-		Color("#2471A3"))
-	var online_btn = _make_btn(
-		"🌐 ONLINE CO-OP\n\nP2P Steam\nYakında...",
-		Color("#6C3483"))
-	online_btn.disabled = true
-	online_btn.modulate.a = 0.4
-
-	solo_btn.pressed.connect(func(): _on_mode("solo"))
-	local_btn.pressed.connect(func(): _on_mode("local_coop"))
-
-	btn_row.add_child(solo_btn)
-	btn_row.add_child(local_btn)
-	btn_row.add_child(online_btn)
-
-	vbox.add_child(HSeparator.new())
-
 	var back_btn = _make_action_btn("← GERİ", Color("#922B21"))
+	var play_btn = _make_action_btn("▶ BAŞLAT!", Color("#1E8449"))
 	back_btn.pressed.connect(_on_back)
-	vbox.add_child(back_btn)
+	play_btn.pressed.connect(_on_play)
+	btn_row.add_child(back_btn)
+	btn_row.add_child(play_btn)
 
 func _make_btn(text: String, color: Color) -> Button:
 	var btn = Button.new()
@@ -96,7 +100,7 @@ func _make_btn(text: String, color: Color) -> Button:
 	hover.bg_color = color.darkened(0.2)
 	btn.add_theme_stylebox_override("hover", hover)
 	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.add_theme_font_size_override("font_size", 15)
+	btn.add_theme_font_size_override("font_size", 14)
 	return btn
 
 func _make_action_btn(text: String, color: Color) -> Button:
@@ -114,9 +118,16 @@ func _make_action_btn(text: String, color: Color) -> Button:
 	btn.add_theme_font_size_override("font_size", 16)
 	return btn
 
-func _on_mode(mode: String):
-	SaveManager.game_mode = mode
-	get_tree().change_scene_to_file("res://ui/character_select.tscn")
+func _on_map(map_id: String):
+	selected_map = map_id
 
 func _on_back():
-	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+	if SaveManager.game_mode == "local_coop":
+		get_tree().change_scene_to_file("res://ui/character_select_p2.tscn")
+	else:
+		get_tree().change_scene_to_file("res://ui/character_select.tscn")
+
+func _on_play():
+	SaveManager.selected_map = selected_map
+	SaveManager.save_game()
+	get_tree().change_scene_to_file("res://main/main.tscn")

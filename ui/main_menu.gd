@@ -104,7 +104,7 @@ func _ready():
 	$VBoxContainer/QuitButton.pressed.connect(_on_quit)
 
 func _on_start():
-	get_tree().change_scene_to_file("res://ui/character_select.tscn")
+	get_tree().change_scene_to_file("res://ui/game_mode_select.tscn")
 
 func _on_upgrades():
 	get_tree().change_scene_to_file("res://ui/meta_upgrade.tscn")

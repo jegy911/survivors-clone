@@ -233,7 +233,10 @@ func _on_play():
 		return
 	SaveManager.selected_character = selected_index
 	SaveManager.save_game()
-	get_tree().change_scene_to_file("res://ui/game_mode_select.tscn")
+	if SaveManager.game_mode == "local_coop":
+		get_tree().change_scene_to_file("res://ui/character_select_p2.tscn")
+	else:
+		get_tree().change_scene_to_file("res://ui/map_select.tscn")
 
 func _on_back():
 	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
