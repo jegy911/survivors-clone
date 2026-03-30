@@ -9,9 +9,12 @@ var collect_radius = 20.0
 func _process(delta):
 	if not visible:
 		return
-	if player == null:
-		player = get_tree().get_first_node_in_group("player")
+	
+	# En yakın oyuncuyu bul ve ona çekil
+	var nearest = _get_nearest_player()
+	if nearest == null:
 		return
+	player = nearest
 	
 	var attract_radius = base_attract_radius + player.get_magnet_bonus()
 	var dist = global_position.distance_to(player.global_position)
@@ -23,9 +26,30 @@ func _process(delta):
 	else:
 		move_speed = 0.0
 	
-	if dist < collect_radius:
-		player.gain_xp(xp_value)
-		ObjectPool.return_object(self)
+	# Herhangi bir oyuncu collect_radius'a girerse toplar
+	var all_players = get_tree().get_nodes_in_group("player")
+	for p in all_players:
+		if global_position.distance_to(p.global_position) < collect_radius:
+			p.gain_xp(xp_value)
+			# Diğer oyuncular %50 alır
+			for other in all_players:
+				if other != p:
+					other.gain_xp(int(xp_value * 0.5))
+			ObjectPool.return_object(self)
+			return
+
+func _get_nearest_player() -> Node:
+	var players = get_tree().get_nodes_in_group("player")
+	if players.is_empty():
+		return null
+	var nearest = players[0]
+	var nearest_dist = global_position.distance_to(nearest.global_position)
+	for p in players:
+		var dist = global_position.distance_to(p.global_position)
+		if dist < nearest_dist:
+			nearest_dist = dist
+			nearest = p
+	return nearest
 
 func init(value: int, pos: Vector2):
 	xp_value = max(1, value)

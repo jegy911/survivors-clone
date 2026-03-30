@@ -29,7 +29,6 @@ var _poison_tick_interval = 1.0
 @onready var body = $ColorRect
 
 func _ready():
-	player = get_tree().get_first_node_in_group("player")
 	add_to_group("enemies")
 	_setup_hp_bar()
 	_setup_visuals()
@@ -68,6 +67,7 @@ func take_damage(amount: int):
 	var immunity = get_meta("immunity", "")
 	if immunity != "":
 		amount = int(amount * 0.5)
+		player = _get_nearest_player()
 	hp -= amount
 	# Öfke modu — HP %30'a düşünce
 	var main = get_tree().get_first_node_in_group("main")
@@ -241,3 +241,16 @@ func _update_enemy_direction():
 		sprite.flip_h = true
 	else:
 		sprite.flip_h = false
+		
+func _get_nearest_player() -> Node2D:
+	var players = get_tree().get_nodes_in_group("player")
+	if players.is_empty():
+		return null
+	var nearest = players[0]
+	var nearest_dist = global_position.distance_to(nearest.global_position)
+	for p in players:
+		var dist = global_position.distance_to(p.global_position)
+		if dist < nearest_dist:
+			nearest_dist = dist
+			nearest = p
+	return nearest

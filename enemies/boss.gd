@@ -15,6 +15,7 @@ func _ready():
 	AudioManager.play_boss()
 
 func _process(delta):
+	player = _get_nearest_player()
 	if is_dead or player == null:
 		return
 	var direction = (player.global_position - global_position).normalized()

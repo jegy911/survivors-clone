@@ -16,6 +16,7 @@ func _ready():
 	body.color = Color("#FF6B00")
 
 func _process(delta):
+	player = _get_nearest_player()
 	if is_dead or player == null:
 		return
 	var dist = global_position.distance_to(player.global_position)

@@ -1059,8 +1059,6 @@ z_index = 1
 collision_mask = 10
 script = ExtResource("1_dlbv1")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=2062117397]
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1307471674]
 position = Vector2(1, 7.5)
 shape = SubResource("RectangleShape2D_i3pqv")

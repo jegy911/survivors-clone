@@ -15,6 +15,7 @@ func _ready():
 	scale = Vector2(2.5, 2.5)
 
 func _process(delta):
+	player = _get_nearest_player()
 	if is_dead or player == null:
 		return
 	damage_cooldown -= delta

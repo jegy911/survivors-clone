@@ -14,6 +14,7 @@ func _ready():
 	current_speed = BASE_SPEED
 
 func _process(delta):
+	player = _get_nearest_player()
 	if is_dead or player == null:
 		return
 	if slow_timer > 0:

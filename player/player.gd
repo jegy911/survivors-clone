@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+var player_id: int = 0
 var BASE_SPEED = 130.0
 var SPEED = 130.0
 var hp = 100
@@ -119,6 +120,8 @@ func _ready():
 	stats_btn.add_theme_stylebox_override("normal", btn_style)
 	stats_btn.pressed.connect(_toggle_stat_panel)
 	$CanvasLayer.add_child(stats_btn)
+	# Co-op: player_id'ye göre input ayarla
+	_setup_input()
 	EventBus.player_damaged.connect(_on_player_damaged)
 	EventBus.boss_spawned.connect(_on_boss_spawned)
 	_ready_damage_tracking()
@@ -212,18 +215,25 @@ func apply_meta_bonuses():
 	revival_used = false
 
 func _physics_process(delta):
-	var direction = Vector2.ZERO
-	if Input.is_action_pressed("ui_right"):
-		direction.x += 1
-	if Input.is_action_pressed("ui_left"):
-		direction.x -= 1
-	if Input.is_action_pressed("ui_down"):
-		direction.y += 1
-	if Input.is_action_pressed("ui_up"):
-		direction.y -= 1
+	var direction = _get_input_direction()
 	velocity = direction.normalized() * SPEED
 	move_and_slide()
 	_update_animation(direction)
+
+func _get_input_direction() -> Vector2:
+	var direction = Vector2.ZERO
+	match player_id:
+		0: # P1 — klavye
+			if Input.is_action_pressed("ui_right"): direction.x += 1
+			if Input.is_action_pressed("ui_left"): direction.x -= 1
+			if Input.is_action_pressed("ui_down"): direction.y += 1
+			if Input.is_action_pressed("ui_up"): direction.y -= 1
+		1: # P2 — gamepad veya WASD
+			if Input.is_action_pressed("p2_right"): direction.x += 1
+			if Input.is_action_pressed("p2_left"): direction.x -= 1
+			if Input.is_action_pressed("p2_down"): direction.y += 1
+			if Input.is_action_pressed("p2_up"): direction.y -= 1
+	return direction
 
 func _update_animation(direction: Vector2):
 	var sprite = get_node_or_null("AnimatedSprite2D")
@@ -716,7 +726,8 @@ func die():
 		show_floating_text("✨ REVIVAL!", global_position + Vector2(0, -80), Color("#FFD700"))
 		return
 	
-	SaveManager.add_gold(gold_earned)
+	var player_count = get_tree().get_nodes_in_group("player").size()
+	SaveManager.add_gold(int(gold_earned / max(1, player_count)))
 	var char_id = CharacterData.CHARACTERS[SaveManager.selected_character]["id"]
 	var game_time = get_tree().get_first_node_in_group("main").game_timer
 	var won = game_time >= 1800.0
@@ -762,11 +773,13 @@ func _on_boss_spawned():
 func _update_screen_shake(delta: float):
 	if shake_duration > 0:
 		shake_duration -= delta
-		var offset = Vector2(randf_range(-shake_intensity, shake_intensity), randf_range(-shake_intensity, shake_intensity))
-		$Camera2D.offset = offset
-		if shake_duration <= 0:
-			$Camera2D.offset = Vector2.ZERO
-			shake_intensity = 0.0
+		var main = get_tree().get_first_node_in_group("main")
+		if main and main.main_camera:
+			var offset = Vector2(randf_range(-shake_intensity, shake_intensity), randf_range(-shake_intensity, shake_intensity))
+			main.main_camera.offset = offset
+			if shake_duration <= 0:
+				main.main_camera.offset = Vector2.ZERO
+				shake_intensity = 0.0
 
 
 
@@ -914,3 +927,10 @@ func _setup_player_visuals():
 	# Gelecekte Sprite2D animasyonları buradan yönetilecek
 	if body:
 		body.name = "Body"
+
+func _setup_input():
+	# Şimdilik tek oyuncu — ileride player_id'ye göre input mapping yapılacak
+	pass
+
+func set_player_id(id: int):
+	player_id = id

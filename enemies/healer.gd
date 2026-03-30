@@ -17,6 +17,7 @@ func _ready():
 	body.color = Color("#00FF7F")
 
 func _process(delta):
+	player = _get_nearest_player()
 	if is_dead or player == null:
 		return
 	damage_cooldown -= delta

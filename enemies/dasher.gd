@@ -19,6 +19,7 @@ func _ready():
 	body.color = Color("#FF1493")
 
 func _process(delta):
+	player = _get_nearest_player()
 	if is_dead or player == null:
 		return
 	dash_cooldown -= delta

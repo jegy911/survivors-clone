@@ -12,6 +12,7 @@ func _ready():
 	particle_color = Color("#F1C40F")
 
 func _process(delta):
+	player = _get_nearest_player()
 	if is_dead or player == null:
 		return
 	if slow_timer > 0:
