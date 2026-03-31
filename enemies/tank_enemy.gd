@@ -31,13 +31,13 @@ func _process(delta):
 		player.take_damage(DAMAGE)
 		damage_cooldown = 1.5
 
-func die():
+func die(killer: Node = null):
 	if is_dead:
 		return
-	var player_node = get_tree().get_first_node_in_group("player")
-	if player_node:
-		player_node.on_tank_killed()
-	super.die()
+	var players = get_tree().get_nodes_in_group("player")
+	for p in players:
+		p.on_tank_killed()
+	super.die(killer)
 
 func flash():
 	var tween = create_tween()
