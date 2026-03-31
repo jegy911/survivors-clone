@@ -218,7 +218,13 @@ func show_upgrades(player):
 	current_pool = build_pool()
 	chosen_upgrades = weighted_pick(current_pool, 3)
 	
-	$Panel/VBoxContainer/TitleLabel.text = "⭐ LEVEL %d — SEÇİMİNİ YAP ⭐" % player_ref.level
+	var char_index = SaveManager.selected_character if player_ref.player_id == 0 else SaveManager.selected_character_p2
+	var char_name = CharacterData.CHARACTERS[char_index]["name"]
+	var player_label = "P1" if player_ref.player_id == 0 else "P2"
+	if SaveManager.game_mode == "local_coop":
+		$Panel/VBoxContainer/TitleLabel.text = "⭐ %s (%s) — LEVEL %d ⭐" % [char_name, player_label, player_ref.level]
+	else:
+		$Panel/VBoxContainer/TitleLabel.text = "⭐ LEVEL %d — SEÇİMİNİ YAP ⭐" % player_ref.level
 	$Panel/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#FFD700"))
 	refresh_buttons()
 	visible = true

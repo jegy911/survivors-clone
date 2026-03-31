@@ -1,6 +1,8 @@
 extends CanvasLayer
 
+var selected_mode = "vs"
 var selected_map = "vs_map"
+var map_row: HBoxContainer = null
 
 func _ready():
 	var screen_size = get_viewport().get_visible_rect().size
@@ -16,9 +18,9 @@ func _ready():
 		bg.add_child(star)
 
 	var panel = PanelContainer.new()
-	panel.custom_minimum_size = Vector2(600, 400)
+	panel.custom_minimum_size = Vector2(680, 500)
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.position -= Vector2(300, 200)
+	panel.position -= Vector2(340, 250)
 	var style = StyleBoxFlat.new()
 	style.bg_color = Color("#0D0D1A")
 	style.border_color = Color("#9B59B6")
@@ -34,12 +36,13 @@ func _ready():
 	add_child(panel)
 
 	var vbox = VBoxContainer.new()
+	vbox.name = "VBox"
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	vbox.add_theme_constant_override("separation", 24)
+	vbox.add_theme_constant_override("separation", 20)
 	panel.add_child(vbox)
 
 	var title = Label.new()
-	title.text = "HARİTA SEÇ"
+	title.text = "MOD & HARİTA SEÇ"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 28)
 	title.add_theme_color_override("font_color", Color("#9B59B6"))
@@ -47,23 +50,45 @@ func _ready():
 
 	vbox.add_child(HSeparator.new())
 
-	var map_row = HBoxContainer.new()
+	# Oyun modu seçimi
+	var mode_label = Label.new()
+	mode_label.text = "🎮 OYUN MODU"
+	mode_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	mode_label.add_theme_color_override("font_color", Color("#9B59B6"))
+	mode_label.add_theme_font_size_override("font_size", 16)
+	vbox.add_child(mode_label)
+
+	var mode_row = HBoxContainer.new()
+	mode_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	mode_row.add_theme_constant_override("separation", 16)
+	vbox.add_child(mode_row)
+
+	var vs_btn = _make_btn("🗺 HİKAYE MODU\n\nAçık harita\n30 dakika hayatta kal!", Color("#27AE60"), true)
+	var arena_btn = _make_btn("⬡ SURVIVAL/ARENA\n\nDalga savunma\n🔒 Yakında...", Color("#6C3483"), false)
+	arena_btn.disabled = true
+	arena_btn.modulate.a = 0.4
+	vs_btn.pressed.connect(func(): _on_mode_selected("vs", vs_btn, arena_btn))
+	arena_btn.pressed.connect(func(): _on_mode_selected("arena", arena_btn, vs_btn))
+	mode_row.add_child(vs_btn)
+	mode_row.add_child(arena_btn)
+
+	vbox.add_child(HSeparator.new())
+
+	# Harita başlığı
+	var map_label = Label.new()
+	map_label.text = "🗺 HARİTA"
+	map_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	map_label.add_theme_color_override("font_color", Color("#9B59B6"))
+	map_label.add_theme_font_size_override("font_size", 16)
+	vbox.add_child(map_label)
+
+	# Harita satırı
+	map_row = HBoxContainer.new()
+	map_row.name = "MapRow"
 	map_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	map_row.add_theme_constant_override("separation", 20)
+	map_row.add_theme_constant_override("separation", 16)
 	vbox.add_child(map_row)
-
-	var map1_btn = _make_btn("🏰 DÜŞMÜŞ KRALLIK\n\nAçık alan\nOrtaçağ kalıntıları\n30 dakika hayatta kal!", Color("#27AE60"))
-	var map2_btn = _make_btn("⬡ HARİTA 2\n\nYakında...", Color("#6C3483"))
-	var map3_btn = _make_btn("⬡ HARİTA 3\n\nYakında...", Color("#6C3483"))
-	map2_btn.disabled = true
-	map2_btn.modulate.a = 0.4
-	map3_btn.disabled = true
-	map3_btn.modulate.a = 0.4
-
-	map1_btn.pressed.connect(func(): _on_map("vs_map"))
-	map_row.add_child(map1_btn)
-	map_row.add_child(map2_btn)
-	map_row.add_child(map3_btn)
+	_build_maps("vs")
 
 	vbox.add_child(HSeparator.new())
 
@@ -79,13 +104,43 @@ func _ready():
 	btn_row.add_child(back_btn)
 	btn_row.add_child(play_btn)
 
-func _make_btn(text: String, color: Color) -> Button:
+func _build_maps(mode: String):
+	for child in map_row.get_children():
+		child.queue_free()
+	if mode == "vs":
+		var map1 = _make_btn("🏰 DÜŞMÜŞ KRALLIK\n\nAçık alan\nOrtaçağ kalıntıları\n30 dakika hayatta kal!", Color("#27AE60"), true)
+		var map2 = _make_btn("⬡ HARİTA 2\n\nYakında...", Color("#6C3483"), false)
+		var map3 = _make_btn("⬡ HARİTA 3\n\nYakında...", Color("#6C3483"), false)
+		map2.disabled = true
+		map2.modulate.a = 0.4
+		map3.disabled = true
+		map3.modulate.a = 0.4
+		map1.pressed.connect(func(): _on_map("vs_map"))
+		selected_map = "vs_map"
+		map_row.add_child(map1)
+		map_row.add_child(map2)
+		map_row.add_child(map3)
+	else:
+		var arena1 = _make_btn("⬡ ARENA 1\n\nYakında...", Color("#6C3483"), false)
+		arena1.disabled = true
+		arena1.modulate.a = 0.4
+		map_row.add_child(arena1)
+
+func _on_mode_selected(mode: String, selected_btn: Button, other_btn: Button):
+	selected_mode = mode
+	# Seçili buton görselini güncelle
+	var sel_style = selected_btn.get_theme_stylebox("normal").duplicate()
+	sel_style.bg_color = Color("#27AE60").darkened(0.2) if mode == "vs" else Color("#6C3483").darkened(0.2)
+	selected_btn.add_theme_stylebox_override("normal", sel_style)
+	_build_maps(mode)
+
+func _make_btn(text: String, color: Color, selected: bool = false) -> Button:
 	var btn = Button.new()
 	btn.text = text
 	btn.custom_minimum_size = Vector2(160, 130)
 	btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	var style = StyleBoxFlat.new()
-	style.bg_color = color.darkened(0.5)
+	style.bg_color = color.darkened(0.2) if selected else color.darkened(0.5)
 	style.border_color = color
 	style.border_width_left = 2
 	style.border_width_right = 2
@@ -128,6 +183,7 @@ func _on_back():
 		get_tree().change_scene_to_file("res://ui/character_select.tscn")
 
 func _on_play():
+	SaveManager.selected_mode = selected_mode
 	SaveManager.selected_map = selected_map
 	SaveManager.save_game()
 	get_tree().change_scene_to_file("res://main/main.tscn")

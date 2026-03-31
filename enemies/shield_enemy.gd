@@ -26,9 +26,11 @@ func _process(delta):
 		player.take_damage(DAMAGE)
 		damage_cooldown = 1.2
 
-func take_damage(amount: int):
+func take_damage(amount: int, shooter: Node = null):
 	if is_dead:
 		return
+	if shooter != null:
+		set_meta("killer", shooter)
 	if not shield_broken:
 		shield_hp -= amount
 		if SaveManager.settings.get("show_damage_numbers", true):
@@ -39,7 +41,7 @@ func take_damage(amount: int):
 		if shield_hp <= 0:
 			_break_shield()
 		return
-	super.take_damage(amount)
+	super.take_damage(amount, shooter)
 
 func _break_shield():
 	shield_broken = true

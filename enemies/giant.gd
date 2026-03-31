@@ -30,7 +30,7 @@ func flash():
 	body.color = Color.WHITE
 	tween.tween_property(body, "color", Color("#8B0000"), 0.15)
 
-func die():
+func die(killer: Node = null):
 	if is_dead:
 		return
 	is_dead = true
@@ -57,9 +57,13 @@ func die():
 	tween2.tween_callback(_on_death_complete)
 
 func _on_death_complete():
-	var player_node = get_tree().get_first_node_in_group("player")
-	if player_node:
-		player_node.on_enemy_killed(global_position)
+	var killer = null
+	if has_meta("killer"):
+		killer = get_meta("killer")
+	if killer == null:
+		killer = _get_nearest_player()
+	if killer:
+		killer.on_enemy_killed(global_position)
 	if randf() < XP_DROP_CHANCE:
 		for i in 5:
 			var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")

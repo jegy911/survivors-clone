@@ -52,10 +52,10 @@ func explode():
 	_on_death_complete()
 
 func take_damage(amount: int, shooter: Node = null):
-	if shooter != null:
-		set_meta("killer", shooter)
 	if is_dead:
 		return
+	if shooter != null:
+		set_meta("killer", shooter)
 	if SaveManager.settings.get("show_damage_numbers", true):
 		var popup = ObjectPool.get_object("res://effects/damage_number.tscn")
 		popup.global_position = global_position + Vector2(0, -50)

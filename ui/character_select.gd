@@ -8,6 +8,8 @@ func _ready():
 	$Panel/VBoxContainer.add_theme_constant_override("separation", 16)
 	$Panel/VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 32)
 	$Panel/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
+	if SaveManager.game_mode == "local_coop":
+		$Panel/VBoxContainer/TitleLabel.text = "👤 P1 KARAKTERİNİ SEÇ"
 	$Panel/VBoxContainer/ScrollContainer/GridContainer.add_theme_constant_override("h_separation", 16)
 	$Panel/VBoxContainer/ScrollContainer/GridContainer.add_theme_constant_override("v_separation", 16)
 	build_characters()
@@ -202,6 +204,10 @@ func _on_select(index: int):
 	selected_index = index
 	_update_selection_borders()
 	$Panel/VBoxContainer/ActionRow/PlayButton.disabled = false
+	if SaveManager.game_mode == "local_coop":
+		SaveManager.selected_character = selected_index
+		SaveManager.save_game()
+		get_tree().change_scene_to_file("res://ui/character_select_p2.tscn")
 
 func _update_selection_borders():
 	var container = $Panel/VBoxContainer/ScrollContainer/GridContainer

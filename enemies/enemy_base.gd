@@ -200,7 +200,9 @@ func _spawn_particles():
 
 func _on_death_complete():
 	# Co-op: en yakın oyuncu kill alır
-	var killer = get_meta("killer", null)
+	var killer = null
+	if has_meta("killer"):
+		killer = get_meta("killer")
 	if killer == null:
 		killer = _get_nearest_player()
 	if killer:

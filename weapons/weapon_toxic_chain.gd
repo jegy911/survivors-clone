@@ -17,25 +17,19 @@ func attack():
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	if enemies.is_empty():
 		return
-	
-	enemies.sort_custom(func(a, b):
-		return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position)
-	)
-	
+	enemies.sort_custom(func(a, b): return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position))
 	var first_enemy = enemies[0]
 	var final_damage = player.get_total_damage(damage)
-	enemy.take_damage(final_damage, player)
+	first_enemy.take_damage(final_damage, player)
 	first_enemy.apply_poison(8, 4.0)
 	_spawn_lightning(first_enemy.global_position)
-	
 	var hit_enemies = [first_enemy]
 	var current = first_enemy
-	
 	for i in chain_count - 1:
 		var next = _find_next(current, hit_enemies)
 		if next == null:
 			break
-				next.take_damage(final_damage, player)
+		next.take_damage(final_damage, player)
 		next.apply_poison(8, 4.0)
 		_spawn_lightning(next.global_position)
 		hit_enemies.append(next)
