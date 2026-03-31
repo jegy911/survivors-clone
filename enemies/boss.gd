@@ -26,11 +26,9 @@ func _process(delta):
 		damage_cooldown = 1.0
 
 func die(killer: Node = null):
-	if is_dead:
-		return
 	var players = get_tree().get_nodes_in_group("player")
 	for p in players:
-		p.on_tank_killed()
+		p.boss_kill_count += 1
 	super.die(killer)
 
 func _try_drop_gold():

@@ -51,7 +51,9 @@ func explode():
 			tween.tween_callback(particle.queue_free)
 	_on_death_complete()
 
-func take_damage(amount: int):
+func take_damage(amount: int, shooter: Node = null):
+	if shooter != null:
+		set_meta("killer", shooter)
 	if is_dead:
 		return
 	if SaveManager.settings.get("show_damage_numbers", true):
