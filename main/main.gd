@@ -169,7 +169,6 @@ func _setup_camera():
 	main_camera.position_smoothing_speed = CAMERA_SPEED
 	add_child(main_camera)
 	
-	var coop_hud: CanvasLayer = null
 
 func _setup_coop_hud():
 	if SaveManager.game_mode != "local_coop":
