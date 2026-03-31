@@ -26,6 +26,8 @@ func _process(delta):
 		player.take_damage(DAMAGE)
 		damage_cooldown = 1.2
 
+	_update_enemy_direction()
+
 func take_damage(amount: int, shooter: Node = null):
 	if is_dead:
 		return

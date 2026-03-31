@@ -113,11 +113,12 @@ func _pick_enemy_for_time(t: float) -> Node:
 		elif r < 0.75: return dasher_scene.instantiate()
 		else: return healer_scene.instantiate()
 	elif t < 900:
-		if r < 0.20: return exploder_scene.instantiate()
-		elif r < 0.40: return tank_enemy_scene.instantiate()
-		elif r < 0.60: return healer_scene.instantiate()
-		elif r < 0.80: return shield_enemy_scene.instantiate()
-		else: return dasher_scene.instantiate()
+		if r < 0.25: return exploder_scene.instantiate()
+		elif r < 0.40: return dasher_scene.instantiate()
+		elif r < 0.55: return shield_enemy_scene.instantiate()
+		elif r < 0.70: return tank_enemy_scene.instantiate()
+		elif r < 0.85: return healer_scene.instantiate()
+		else: return fast_enemy_scene.instantiate()
 	elif t < 1200:
 		if r < 0.20: return giant_scene.instantiate()
 		elif r < 0.40: return shield_enemy_scene.instantiate()

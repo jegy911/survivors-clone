@@ -95,6 +95,10 @@ func take_damage(amount: int, shooter: Node = null):
 	flash()
 	if hp <= 0:
 		die()
+	# Vuruş geri tepme efekti
+	if player != null:
+		var knockback_dir = (global_position - player.global_position).normalized()
+		global_position += knockback_dir * 2.0
 
 func take_explosion_damage(amount: int):
 	if is_dead:
@@ -115,7 +119,18 @@ func apply_poison(damage_per_tick: int, duration: float):
 	_poison_tick_interval = 1.0
 
 func flash():
-	pass
+	var sprite = get_node_or_null("AnimatedSprite2D")
+	if sprite:
+		var tween = sprite.create_tween()
+		tween.tween_property(sprite, "modulate", Color(1.5, 1.5, 1.5, 1.0), 0.04)
+		tween.tween_property(sprite, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.08)
+	elif body:
+		var tween = body.create_tween()
+		tween.tween_property(body, "color", Color.WHITE, 0.04)
+		tween.tween_property(body, "color", _get_original_color(), 0.08)
+
+func _get_original_color() -> Color:
+	return body.color if body else Color.WHITE
 
 func die(killer: Node = null):
 	if is_dead:
@@ -239,6 +254,19 @@ func _setup_visuals():
 	var sprite = get_node_or_null("AnimatedSprite2D")
 	if sprite:
 		sprite.play("walk_left")
+
+func _update_animation(is_moving: bool):
+	var sprite = get_node_or_null("AnimatedSprite2D")
+	if sprite == null:
+		return
+	if is_moving:
+		if sprite.sprite_frames.has_animation("walk_left"):
+			sprite.play("walk_left")
+	else:
+		if sprite.sprite_frames.has_animation("idle_left"):
+			sprite.play("idle_left")
+		elif sprite.sprite_frames.has_animation("walk_left"):
+			sprite.play("walk_left")
 
 func _update_enemy_direction():
 	var sprite = get_node_or_null("AnimatedSprite2D")

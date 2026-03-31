@@ -25,6 +25,8 @@ func _process(delta):
 		player.take_damage(DAMAGE)
 		damage_cooldown = 1.0
 
+	_update_enemy_direction()
+
 func die(killer: Node = null):
 	var players = get_tree().get_nodes_in_group("player")
 	for p in players:

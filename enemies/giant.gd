@@ -25,6 +25,8 @@ func _process(delta):
 		player.take_damage(DAMAGE)
 		damage_cooldown = 2.0
 
+	_update_enemy_direction()
+
 func flash():
 	var tween = create_tween()
 	body.color = Color.WHITE

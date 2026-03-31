@@ -26,6 +26,8 @@ func _process(delta):
 	var direction = (player.global_position - global_position).normalized()
 	global_position += direction * BASE_SPEED * delta
 
+	_update_enemy_direction()
+
 func explode():
 	is_exploding = true
 	is_dead = true

@@ -40,6 +40,8 @@ func _process(delta):
 		player.take_damage(DAMAGE)
 		damage_cooldown = 1.2
 
+	_update_enemy_direction()
+
 func _start_dash():
 	is_dashing = true
 	dash_timer = 0.2

@@ -32,10 +32,15 @@ func _process(delta):
 		global_position += -direction * current_speed * delta
 	elif dist > PREFERRED_DISTANCE + 50:
 		global_position += direction * current_speed * delta
+		# Preferred distance'ta durup ateş ediyor — idle animasyonu
+	var is_moving = dist < PREFERRED_DISTANCE - 50 or dist > PREFERRED_DISTANCE + 50
+	_update_animation(is_moving)
 	damage_cooldown -= delta
 	if damage_cooldown <= 0 and dist < 400:
 		shoot()
 		damage_cooldown = 1.8
+
+	_update_enemy_direction()
 
 func shoot():
 	var bullet = ObjectPool.get_object("res://projectiles/enemy_bullet.tscn")
