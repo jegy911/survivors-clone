@@ -9,6 +9,8 @@ const IMMUNITY_INTERVAL = 180.0
 const IMMUNITY_TYPES = ["fire", "ice", "lightning"]
 var game_timer = 0.0
 var hit_stop_frames = 0
+var upgrade_queue: Array = []
+var upgrade_processing: bool = false
 
 @onready var timer_label = $HUD/TimerLabel
 @onready var wave_label = $HUD/WaveLabel
@@ -340,3 +342,31 @@ func _update_camera(delta: float):
 		MAX_ZOOM
 	)
 	main_camera.zoom = lerp(main_camera.zoom, Vector2(target_zoom, target_zoom), delta * ZOOM_SPEED)
+
+func queue_upgrade(player: Node):
+	if SaveManager.game_mode != "local_coop":
+		return
+	upgrade_queue.append(player)
+	if not upgrade_processing:
+		_process_next_upgrade()
+
+func _process_next_upgrade():
+	if upgrade_queue.is_empty():
+		upgrade_processing = false
+		get_tree().paused = false
+		return
+	upgrade_processing = true
+	get_tree().paused = true
+	var player = upgrade_queue.pop_front()
+	if not is_instance_valid(player):
+		_process_next_upgrade()
+		return
+	var upgrade_ui = load("res://ui/upgrade_ui.tscn").instantiate()
+	upgrade_ui.process_mode = Node.PROCESS_MODE_ALWAYS
+	get_tree().root.add_child(upgrade_ui)
+	upgrade_ui.upgrade_chosen.connect(func(id):
+		player._on_upgrade_chosen(id)
+		upgrade_ui.queue_free()
+		_process_next_upgrade()
+	)
+	upgrade_ui.show_upgrades(player)

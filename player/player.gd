@@ -31,6 +31,7 @@ var _origin_armor_bonus = 0
 var _origin_xp_bonus = 0.0
 var collection_regen_timer = 0.0
 
+
 func _ready_damage_tracking():
 	EventBus.on_damage_dealt.connect(_on_damage_tracked)
 
@@ -40,6 +41,7 @@ func _on_damage_tracked(p: Node, _enemy: Node, damage: int):
 
 # Revival
 var revival_used = false
+var is_downed: bool = false
 var tank_killed = false        # YENİ
 var evolution_obtained = false # YENİ
 
@@ -614,12 +616,17 @@ func level_up():
 	AudioManager.play_levelup()
 	_spawn_levelup_effect()
 	_spawn_levelup_screen_flash()
-	get_tree().paused = true
-	upgrade_ui = upgrade_ui_scene.instantiate()
-	upgrade_ui.process_mode = Node.PROCESS_MODE_ALWAYS
-	get_tree().root.add_child(upgrade_ui)
-	upgrade_ui.upgrade_chosen.connect(_on_upgrade_chosen)
-	upgrade_ui.show_upgrades(self)
+	if SaveManager.game_mode == "local_coop":
+		var main = get_tree().get_first_node_in_group("main")
+		if main:
+			main.queue_upgrade(self)
+	else:
+		get_tree().paused = true
+		upgrade_ui = upgrade_ui_scene.instantiate()
+		upgrade_ui.process_mode = Node.PROCESS_MODE_ALWAYS
+		get_tree().root.add_child(upgrade_ui)
+		upgrade_ui.upgrade_chosen.connect(_on_upgrade_chosen)
+		upgrade_ui.show_upgrades(self)
 
 func _spawn_levelup_effect():
 	for i in 5:
@@ -732,6 +739,82 @@ func die():
 		update_hp_bar()
 		show_floating_text("✨ REVIVAL!", global_position + Vector2(0, -80), Color("#FFD700"))
 		return
+
+	# Co-op ölüm sistemi
+	if SaveManager.game_mode == "local_coop":
+		_enter_downed_state()
+		return
+
+	# Solo ölüm
+	_solo_die()
+
+func _enter_downed_state():
+	is_downed = true
+	hp = 0
+	update_hp_bar()
+	# Hareketi durdur
+	set_physics_process(false)
+	# Görsel — transparan yap
+	if body:
+		var tween = body.create_tween()
+		tween.tween_property(body, "modulate:a", 0.3, 0.5)
+	show_floating_text("💀 KNO DOWN!", global_position + Vector2(0, -60), Color("#FF0000"), 20)
+	# Canlandırma alanı oluştur
+	_setup_revive_area()
+	# Tüm oyuncular düştü mü kontrol et
+	await get_tree().create_timer(0.5).timeout
+	_check_all_downed()
+
+func _setup_revive_area():
+	var area = Area2D.new()
+	area.name = "ReviveArea"
+	var shape = CollisionShape2D.new()
+	var circle = CircleShape2D.new()
+	circle.radius = 60.0
+	shape.shape = circle
+	area.add_child(shape)
+	add_child(area)
+	area.body_entered.connect(_on_reviver_entered)
+
+func _on_reviver_entered(body: Node):
+	if not is_downed:
+		return
+	if body.is_in_group("player") and body != self:
+		revive()
+
+func revive():
+	is_downed = false
+	hp = int(max_hp * 0.3)
+	set_physics_process(true)
+	if body:
+		var tween = body.create_tween()
+		tween.tween_property(body, "modulate:a", 1.0, 0.3)
+	update_hp_bar()
+	var revive_area = get_node_or_null("ReviveArea")
+	if revive_area:
+		revive_area.queue_free()
+	show_floating_text("✨ CANLANDIRILD!", global_position + Vector2(0, -60), Color("#00FF00"), 20)
+
+func _check_all_downed():
+	var players = get_tree().get_nodes_in_group("player")
+	var all_downed = true
+	for p in players:
+		if not p.is_downed:
+			all_downed = false
+			break
+	if all_downed:
+		_solo_die()
+
+func _solo_die():
+	var player_count = get_tree().get_nodes_in_group("player").size()
+	SaveManager.add_gold(int(gold_earned / max(1, player_count)))
+	var char_id = CharacterData.CHARACTERS[SaveManager.selected_character]["id"]
+	var game_time = get_tree().get_first_node_in_group("main").game_timer
+	var won = game_time >= 1800.0
+	SaveManager.update_stats_after_game(char_id, kill_count, game_time, evolution_obtained, tank_killed, gold_earned, level - 1, boss_kill_count, total_damage_dealt, chests_opened, active_items.size(), won)
+	AchievementManager.check_after_game(kill_count, game_time)
+	EventBus.player_died.emit()
+	call_deferred("_deferred_die")
 	
 	var player_count = get_tree().get_nodes_in_group("player").size()
 	SaveManager.add_gold(int(gold_earned / max(1, player_count)))
