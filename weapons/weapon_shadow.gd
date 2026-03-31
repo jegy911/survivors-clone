@@ -57,7 +57,7 @@ func _process(delta):
 				continue
 			if orb.global_position.distance_to(enemy.global_position) < 35:
 				var final_damage = player.get_total_damage(damage)
-				enemy.take_damage(final_damage)
+				enemy.take_damage(final_damage, player)
 				EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 				hit_cooldowns[enemy_id] = HIT_INTERVAL
 	for i in orbs.size():

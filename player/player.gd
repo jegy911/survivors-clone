@@ -143,7 +143,8 @@ func _input(event):
 			get_tree().root.add_child(pause_menu)
 
 func apply_character_bonuses():
-	var char_data = CharacterData.CHARACTERS[SaveManager.selected_character]
+	var char_index = SaveManager.selected_character if player_id == 0 else SaveManager.selected_character_p2
+	var char_data = CharacterData.CHARACTERS[char_index]
 	_body_base_color = Color(char_data["color"])
 	body.color = _body_base_color
 	bullet_damage += char_data["bonus_damage"]
@@ -226,16 +227,16 @@ func _physics_process(delta):
 func _get_input_direction() -> Vector2:
 	var direction = Vector2.ZERO
 	match player_id:
-		0: # P1 — klavye
-			if Input.is_action_pressed("ui_right"): direction.x += 1
-			if Input.is_action_pressed("ui_left"): direction.x -= 1
-			if Input.is_action_pressed("ui_down"): direction.y += 1
-			if Input.is_action_pressed("ui_up"): direction.y -= 1
-		1: # P2 — gamepad veya WASD
+		0: # P1 — WASD
 			if Input.is_action_pressed("p2_right"): direction.x += 1
 			if Input.is_action_pressed("p2_left"): direction.x -= 1
 			if Input.is_action_pressed("p2_down"): direction.y += 1
 			if Input.is_action_pressed("p2_up"): direction.y -= 1
+		1: # P2 — yön tuşları
+			if Input.is_action_pressed("ui_right"): direction.x += 1
+			if Input.is_action_pressed("ui_left"): direction.x -= 1
+			if Input.is_action_pressed("ui_down"): direction.y += 1
+			if Input.is_action_pressed("ui_up"): direction.y -= 1
 	return direction
 
 func _update_animation(direction: Vector2):
@@ -522,7 +523,8 @@ func on_enemy_killed(enemy_position: Vector2):
 		var combo = recent_kill_times.size()
 		show_floating_text("COMBO x" + str(combo) + "!", enemy_position + Vector2(randf_range(-30, 30), -80), Color("#FF6B35"))
 	EventBus.enemy_killed.emit(enemy_position)
-	$CanvasLayer/StatsRow/KillLabel.text = "💀 " + str(kill_count)
+	if SaveManager.game_mode != "local_coop":
+		$CanvasLayer/StatsRow/KillLabel.text = "💀 " + str(kill_count)
 
 # YENİ — tank öldürme takibi için
 func on_tank_killed():
@@ -592,7 +594,8 @@ func gain_xp(amount: int):
 	if shrine_active:
 		bonus *= 3.0
 	xp += int(amount * bonus * curse_multiplier)
-	xp_bar.value = xp
+	if SaveManager.game_mode != "local_coop":
+		xp_bar.value = xp
 	AudioManager.play_xp()
 	EventBus.xp_gained.emit(amount)
 	if xp >= xp_to_next_level:
@@ -606,7 +609,8 @@ func level_up():
 	xp_bar.max_value = xp_to_next_level
 	xp_bar.value = 0
 	gold_earned += 3
-	$CanvasLayer/StatsRow/GoldLabel.text = "💰 " + str(gold_earned)
+	if SaveManager.game_mode != "local_coop":
+		$CanvasLayer/StatsRow/GoldLabel.text = "💰 " + str(gold_earned)
 	AudioManager.play_levelup()
 	_spawn_levelup_effect()
 	_spawn_levelup_screen_flash()
@@ -752,7 +756,8 @@ func collect_gold(amount: int):
 	var final_amount = amount * (3 if shrine_active else 1)
 	gold_earned += final_amount
 	amount = final_amount
-	$CanvasLayer/StatsRow/GoldLabel.text = "💰 " + str(gold_earned)
+	if SaveManager.game_mode != "local_coop":
+		$CanvasLayer/StatsRow/GoldLabel.text = "💰 " + str(gold_earned)
 	EventBus.gold_collected.emit(final_amount)
 	show_floating_text("+" + str(amount) + "💰", global_position + Vector2(randf_range(-20, 20), -50), Color("#FFD700"))
 	

@@ -26,7 +26,7 @@ func _physics_process(delta):
 	for area in areas:
 		if area.has_method("take_damage"):
 			if not area.is_in_group("player"):
-				area.take_damage(damage)
+				area.take_damage(damage, player)
 				if player:
 					EventBus.on_damage_dealt.emit(player, area, damage)
 				if player and player.get("bounce_timer") != null and player.bounce_timer > 0:

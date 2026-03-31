@@ -24,7 +24,7 @@ func attack():
 	
 	var first_enemy = enemies[0]
 	var final_damage = player.get_total_damage(damage)
-	first_enemy.take_damage(final_damage)
+	enemy.take_damage(final_damage, player)
 	first_enemy.apply_poison(8, 4.0)
 	_spawn_lightning(first_enemy.global_position)
 	
@@ -35,7 +35,7 @@ func attack():
 		var next = _find_next(current, hit_enemies)
 		if next == null:
 			break
-		next.take_damage(final_damage)
+				next.take_damage(final_damage, player)
 		next.apply_poison(8, 4.0)
 		_spawn_lightning(next.global_position)
 		hit_enemies.append(next)

@@ -22,7 +22,7 @@ func attack():
 	for enemy in enemies:
 		if enemy.global_position.distance_to(orbit_pos) < 40:
 			var final_damage = player.get_total_damage(damage)
-			enemy.take_damage(final_damage)
+			enemy.take_damage(final_damage, player)
 			EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 			# Yıldırım zinciri tetikle
 			_chain_lightning(enemy)

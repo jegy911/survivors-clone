@@ -60,7 +60,9 @@ func _update_hp_bar():
 		var full_width = body.size.x if body else 32.0
 		fill.size.x = full_width * (float(hp) / float(max_hp))
 
-func take_damage(amount: int):
+func take_damage(amount: int, shooter: Node = null):
+	if shooter != null:
+		set_meta("killer", shooter)
 	if is_dead:
 		return
 	# Bağışıklık kontrolü
@@ -115,7 +117,7 @@ func apply_poison(damage_per_tick: int, duration: float):
 func flash():
 	pass
 
-func die():
+func die(killer: Node = null):
 	if is_dead:
 		return
 	is_dead = true
@@ -197,9 +199,12 @@ func _spawn_particles():
 		tween.tween_callback(particle.queue_free)
 
 func _on_death_complete():
-	var player_node = get_tree().get_first_node_in_group("player")
-	if player_node:
-		player_node.on_enemy_killed(global_position)
+	# Co-op: en yakın oyuncu kill alır
+	var killer = get_meta("killer", null)
+	if killer == null:
+		killer = _get_nearest_player()
+	if killer:
+		killer.on_enemy_killed(global_position)
 	if randf() < XP_DROP_CHANCE:
 		var roll = randf()
 		var xp_val = XP_VALUE

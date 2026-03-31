@@ -156,6 +156,7 @@ func update_timer_label():
 	wave_label.text = "Dalga: " + str(wave_manager.wave_count)
 	
 var main_camera: Camera2D = null
+var coop_hud: CanvasLayer = null
 const MIN_ZOOM = 0.5
 const MAX_ZOOM = 1.2
 const ZOOM_SPEED = 2.0
@@ -233,6 +234,7 @@ func _make_hud_panel(pos: Vector2, color: Color, label: String) -> PanelContaine
 
 	# Level ve kill
 	var stats_row = HBoxContainer.new()
+	stats_row.name = "StatsRow"
 	stats_row.add_theme_constant_override("separation", 10)
 	vbox.add_child(stats_row)
 
@@ -288,7 +290,7 @@ func _update_coop_hud():
 				else:
 					hp_fill.color = Color("#E74C3C")
 		# Level
-		var stats_row = vbox.get_node_or_null("HBoxContainer")
+		var stats_row = vbox.get_node_or_null("StatsRow")
 		if stats_row:
 			var level_label = stats_row.get_node_or_null("LevelLabel")
 			if level_label:
