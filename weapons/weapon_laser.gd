@@ -15,28 +15,29 @@ func attack():
 	var enemies = get_tree().get_nodes_in_group("enemies")
 	if enemies.is_empty():
 		return
-	
 	enemies.sort_custom(func(a, b):
 		return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position)
 	)
-	
 	var target = enemies[0]
 	var dir = (target.global_position - player.global_position).normalized()
 	var effective_range = laser_range * player.get_area_multiplier()
-	
-	_spawn_laser_beam(dir, effective_range)
-	
-	# Multi attack: ekstra lazer açıları
-	var extra = get_effective_multi_attack()
+
 	var directions = [dir]
+	var extra = get_effective_multi_attack()
 	for i in extra:
 		var angle_offset = (float(i + 1) * 15.0) * (PI / 180.0)
 		directions.append(dir.rotated(angle_offset))
 		directions.append(dir.rotated(-angle_offset))
-	
+
 	for d in directions:
 		_spawn_laser_beam(d, effective_range)
+
+	# Her düşmana sadece bir kez hasar ver
+	var hit_enemies = []
+	for d in directions:
 		for enemy in enemies:
+			if enemy in hit_enemies:
+				continue
 			var to_enemy = enemy.global_position - player.global_position
 			var dist = to_enemy.length()
 			if dist > effective_range:
@@ -46,6 +47,7 @@ func attack():
 				var final_damage = player.get_total_damage(damage)
 				enemy.take_damage(final_damage, player)
 				EventBus.on_damage_dealt.emit(player, enemy, final_damage)
+				hit_enemies.append(enemy)
 				
 				
 

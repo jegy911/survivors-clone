@@ -8,6 +8,8 @@ func _ready():
 	if is_weak:
 		hp = 1
 		max_hp = 1
+	hp = 10
+	max_hp = 10
 	BASE_SPEED = 55.0
 	DAMAGE = 10
 	XP_VALUE = 5

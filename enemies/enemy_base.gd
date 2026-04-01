@@ -98,7 +98,7 @@ func take_damage(amount: int, shooter: Node = null):
 	# Vuruş geri tepme efekti
 	if player != null:
 		var knockback_dir = (global_position - player.global_position).normalized()
-		global_position += knockback_dir * 2.0
+		global_position += knockback_dir * 4.0
 
 func take_explosion_damage(amount: int):
 	if is_dead:
