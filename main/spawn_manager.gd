@@ -11,19 +11,87 @@ var healer_scene = preload("res://enemies/healer.tscn")
 var shield_enemy_scene = preload("res://enemies/shield_enemy.tscn")
 var giant_scene = preload("res://enemies/giant.tscn")
 
-const MAX_ENEMIES = 150
+const MAX_ENEMIES = 250
 const ELITE_CHANCE = 0.15
 
 var main_node: Node = null
 
+# VS tarzı wave tablosu
+# Her dakika: { "enemies": [...], "min": int, "interval": float }
+# enemies listesinde her eleman: { "scene": string, "weight": float }
+const WAVE_TABLE = {
+	0:  {"enemies": [{"scene": "enemy", "weight": 1.0}], "min": 2, "interval": 3.0},
+	1:  {"enemies": [{"scene": "enemy", "weight": 1.0}], "min": 5, "interval": 2.5},
+	2:  {"enemies": [{"scene": "enemy", "weight": 0.7}, {"scene": "fast_enemy", "weight": 0.3}], "min": 8, "interval": 2.0},
+	3:  {"enemies": [{"scene": "fast_enemy", "weight": 0.6}, {"scene": "enemy", "weight": 0.4}], "min": 10, "interval": 1.8},
+	4:  {"enemies": [{"scene": "fast_enemy", "weight": 0.5}, {"scene": "dasher", "weight": 0.5}], "min": 12, "interval": 1.5},
+	5:  {"enemies": [{"scene": "fast_enemy", "weight": 0.4}, {"scene": "dasher", "weight": 0.6}], "min": 15, "interval": 1.5},
+	6:  {"enemies": [{"scene": "dasher", "weight": 0.5}, {"scene": "tank", "weight": 0.3}, {"scene": "fast_enemy", "weight": 0.2}], "min": 15, "interval": 1.2},
+	7:  {"enemies": [{"scene": "tank", "weight": 0.4}, {"scene": "dasher", "weight": 0.4}, {"scene": "healer", "weight": 0.2}], "min": 18, "interval": 1.2},
+	8:  {"enemies": [{"scene": "tank", "weight": 0.3}, {"scene": "dasher", "weight": 0.3}, {"scene": "healer", "weight": 0.2}, {"scene": "fast_enemy", "weight": 0.2}], "min": 20, "interval": 1.0},
+	9:  {"enemies": [{"scene": "exploder", "weight": 0.3}, {"scene": "tank", "weight": 0.3}, {"scene": "dasher", "weight": 0.2}, {"scene": "healer", "weight": 0.2}], "min": 20, "interval": 1.0},
+	10: {"enemies": [{"scene": "exploder", "weight": 0.25}, {"scene": "tank", "weight": 0.25}, {"scene": "shield", "weight": 0.25}, {"scene": "healer", "weight": 0.25}], "min": 22, "interval": 0.9},
+	11: {"enemies": [{"scene": "exploder", "weight": 0.2}, {"scene": "shield", "weight": 0.3}, {"scene": "tank", "weight": 0.2}, {"scene": "dasher", "weight": 0.3}], "min": 25, "interval": 0.9},
+	12: {"enemies": [{"scene": "shield", "weight": 0.3}, {"scene": "exploder", "weight": 0.3}, {"scene": "healer", "weight": 0.2}, {"scene": "tank", "weight": 0.2}], "min": 25, "interval": 0.8},
+	13: {"enemies": [{"scene": "shield", "weight": 0.3}, {"scene": "exploder", "weight": 0.2}, {"scene": "dasher", "weight": 0.3}, {"scene": "healer", "weight": 0.2}], "min": 28, "interval": 0.8},
+	14: {"enemies": [{"scene": "giant", "weight": 0.2}, {"scene": "shield", "weight": 0.3}, {"scene": "exploder", "weight": 0.3}, {"scene": "healer", "weight": 0.2}], "min": 28, "interval": 0.7},
+	15: {"enemies": [{"scene": "giant", "weight": 0.3}, {"scene": "shield", "weight": 0.2}, {"scene": "exploder", "weight": 0.3}, {"scene": "ranged", "weight": 0.2}], "min": 30, "interval": 0.7},
+	16: {"enemies": [{"scene": "giant", "weight": 0.3}, {"scene": "ranged", "weight": 0.3}, {"scene": "shield", "weight": 0.2}, {"scene": "healer", "weight": 0.2}], "min": 30, "interval": 0.6},
+	17: {"enemies": [{"scene": "giant", "weight": 0.3}, {"scene": "ranged", "weight": 0.3}, {"scene": "exploder", "weight": 0.2}, {"scene": "tank", "weight": 0.2}], "min": 32, "interval": 0.6},
+	18: {"enemies": [{"scene": "giant", "weight": 0.4}, {"scene": "ranged", "weight": 0.3}, {"scene": "shield", "weight": 0.3}], "min": 35, "interval": 0.5},
+	19: {"enemies": [{"scene": "giant", "weight": 0.4}, {"scene": "ranged", "weight": 0.3}, {"scene": "exploder", "weight": 0.3}], "min": 35, "interval": 0.5},
+	20: {"enemies": [{"scene": "giant", "weight": 0.3}, {"scene": "ranged", "weight": 0.3}, {"scene": "shield", "weight": 0.2}, {"scene": "exploder", "weight": 0.2}], "min": 40, "interval": 0.4},
+}
+
 func initialize(main: Node):
 	main_node = main
+
+func _get_wave_data(game_timer: float) -> Dictionary:
+	var minute = int(game_timer / 60.0)
+	minute = min(minute, 20)
+	return WAVE_TABLE[minute]
+
+func _scene_from_name(name: String) -> PackedScene:
+	match name:
+		"enemy": return enemy_scene
+		"fast_enemy": return fast_enemy_scene
+		"tank": return tank_enemy_scene
+		"ranged": return ranged_enemy_scene
+		"exploder": return exploder_scene
+		"dasher": return dasher_scene
+		"healer": return healer_scene
+		"shield": return shield_enemy_scene
+		"giant": return giant_scene
+		_: return enemy_scene
+
+func _pick_from_wave(wave: Dictionary) -> Node:
+	var enemies = wave["enemies"]
+	var total = 0.0
+	for e in enemies:
+		total += e["weight"]
+	var roll = randf() * total
+	var cumulative = 0.0
+	for e in enemies:
+		cumulative += e["weight"]
+		if roll <= cumulative:
+			return _scene_from_name(e["scene"]).instantiate()
+	return enemy_scene.instantiate()
+
+func get_current_spawn_interval(game_timer: float) -> float:
+	var wave = _get_wave_data(game_timer)
+	var curse = SaveManager.meta_upgrades.get("curse_level", 0)
+	var total_curse = 1.0 + curse * 0.10
+	return max(0.15, wave["interval"] / total_curse)
+
+func get_current_min_enemies(game_timer: float) -> int:
+	var wave = _get_wave_data(game_timer)
+	var curse = SaveManager.meta_upgrades.get("curse_level", 0)
+	return wave["min"] + curse * 2
 
 func get_spawn_outside_screen() -> Vector2:
 	var players = get_tree().get_nodes_in_group("player")
 	if players.is_empty():
 		return Vector2.ZERO
-	# Co-op: tüm oyuncuların ortasından spawn
 	var center = Vector2.ZERO
 	for p in players:
 		center += p.global_position
@@ -41,7 +109,8 @@ func get_spawn_outside_screen() -> Vector2:
 	return center + pos
 
 func spawn_random_enemy(game_timer: float, current_immunity: String):
-	var enemy = _pick_enemy_for_time(game_timer)
+	var wave = _get_wave_data(game_timer)
+	var enemy = _pick_from_wave(wave)
 	if enemy == null:
 		return
 	main_node.add_child(enemy)
@@ -80,71 +149,16 @@ func spawn_reaper(reaper_count: int) -> Node:
 		reaper.get_node("ColorRect").color = Color("#1A0000")
 	return reaper
 
-func _pick_enemy_for_time(t: float) -> Node:
-	var roll = randf()
-	if t < 60:
-		var e = enemy_scene.instantiate()
-		e.set_meta("weak_mode", true)
-		return e
-	if t < 120:
-		return enemy_scene.instantiate()
-	if t < 180:
-		if roll < 0.75:
-			return enemy_scene.instantiate()
-		else:
-			return fast_enemy_scene.instantiate()
-	if roll < 0.20:
-		return enemy_scene.instantiate() if randf() > 0.5 else fast_enemy_scene.instantiate()
-	var r = randf()
-	if t < 300:
-		if r < 0.6: return fast_enemy_scene.instantiate()
-		else: return dasher_scene.instantiate()
-	elif t < 420:
-		if r < 0.35: return fast_enemy_scene.instantiate()
-		elif r < 0.65: return dasher_scene.instantiate()
-		else: return tank_enemy_scene.instantiate()
-	elif t < 540:
-		if r < 0.30: return dasher_scene.instantiate()
-		elif r < 0.60: return tank_enemy_scene.instantiate()
-		else: return healer_scene.instantiate()
-	elif t < 660:
-		if r < 0.25: return exploder_scene.instantiate()
-		elif r < 0.50: return tank_enemy_scene.instantiate()
-		elif r < 0.75: return dasher_scene.instantiate()
-		else: return healer_scene.instantiate()
-	elif t < 900:
-		if r < 0.25: return exploder_scene.instantiate()
-		elif r < 0.40: return dasher_scene.instantiate()
-		elif r < 0.55: return shield_enemy_scene.instantiate()
-		elif r < 0.70: return tank_enemy_scene.instantiate()
-		elif r < 0.85: return healer_scene.instantiate()
-		else: return fast_enemy_scene.instantiate()
-	elif t < 1200:
-		if r < 0.20: return giant_scene.instantiate()
-		elif r < 0.40: return shield_enemy_scene.instantiate()
-		elif r < 0.60: return healer_scene.instantiate()
-		elif r < 0.80: return exploder_scene.instantiate()
-		else: return tank_enemy_scene.instantiate()
-	else:
-		match randi() % 5:
-			0: return giant_scene.instantiate()
-			1: return shield_enemy_scene.instantiate()
-			2: return exploder_scene.instantiate()
-			3: return healer_scene.instantiate()
-			_: return tank_enemy_scene.instantiate()
-
 func _apply_scaling(enemy: Node, game_timer: float):
 	var minutes = game_timer / 60.0
-	var hp_mult = 1.0 + minutes * 0.04
+	var hp_mult = 1.0 + minutes * 0.05
 	var dmg_mult = 1.0 + minutes * 0.04
-	var spd_mult = 1.0 + minutes * 0.02
+	var spd_mult = 1.0 + minutes * 0.005
 	if enemy.get("hp") != null:
 		enemy.hp = int(enemy.hp * hp_mult)
 		enemy.max_hp = enemy.hp
 	if enemy.get("DAMAGE") != null:
 		enemy.DAMAGE = int(enemy.DAMAGE * dmg_mult)
-	if enemy.get("SPEED") != null:
-		enemy.SPEED *= spd_mult
 	if enemy.get("BASE_SPEED") != null:
 		enemy.BASE_SPEED *= spd_mult
 
@@ -152,9 +166,11 @@ func _apply_curse(enemy: Node):
 	var curse = SaveManager.meta_upgrades.get("curse_level", 0)
 	if curse <= 0:
 		return
-	var speed_mult = 1.0 + curse * 0.10
-	if enemy.get("SPEED") != null:
-		enemy.SPEED *= speed_mult
+	var hp_mult = 1.0 + curse * 0.10
+	var speed_mult = 1.0 + curse * 0.05
+	if enemy.get("hp") != null:
+		enemy.hp = int(enemy.hp * hp_mult)
+		enemy.max_hp = enemy.hp
 	if enemy.get("BASE_SPEED") != null:
 		enemy.BASE_SPEED *= speed_mult
 
@@ -168,8 +184,6 @@ func _make_elite(enemy: Node, game_timer: float):
 		enemy.max_hp = enemy.hp
 	if enemy.get("DAMAGE") != null:
 		enemy.DAMAGE = int(enemy.DAMAGE * 1.5)
-	if enemy.get("SPEED") != null:
-		enemy.SPEED *= 1.2
 	if enemy.get("BASE_SPEED") != null:
 		enemy.BASE_SPEED *= 1.2
 	if enemy.get("XP_VALUE") != null:
