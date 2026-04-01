@@ -1,8 +1,6 @@
 extends Node2D
 
 var spawn_timer = 0.0
-var spawn_interval = 3.0
-var enemies_per_wave = 2
 var immunity_timer = 0.0
 var current_immunity = ""
 const IMMUNITY_INTERVAL = 180.0
@@ -77,12 +75,6 @@ func _on_hit_stop_requested(frames: int):
 func get_curse_level() -> int:
 	return SaveManager.meta_upgrades.get("curse_level", 0)
 
-func get_effective_spawn_interval() -> float:
-	var curse = get_curse_level()
-	return max(0.2, spawn_interval * (1.0 - curse * 0.10))
-
-func get_effective_enemies_per_wave() -> int:
-	return enemies_per_wave + get_curse_level()
 
 func _process(delta):
 	if hit_stop_frames > 0:
@@ -132,16 +124,15 @@ func _process(delta):
 	spawn_timer -= delta
 	if spawn_timer <= 0:
 		var current_count = get_tree().get_nodes_in_group("enemies").size()
+		var min_enemies = spawn_manager.get_current_min_enemies(game_timer)
 		if current_count < spawn_manager.MAX_ENEMIES:
-			var to_spawn = get_effective_enemies_per_wave() * wave_manager.get_spawn_multiplier()
+			var to_spawn = int(wave_manager.get_spawn_multiplier())
+			if current_count < min_enemies:
+				to_spawn = max(to_spawn, min_enemies - current_count)
 			var can_spawn = min(to_spawn, spawn_manager.MAX_ENEMIES - current_count)
 			for i in can_spawn:
 				spawn_manager.spawn_random_enemy(game_timer, current_immunity)
-			# Wave artışı
-			if wave_manager.wave_count > 0:
-				enemies_per_wave = 2 + wave_manager.wave_count * 2
-				spawn_interval = max(0.2, 3.0 - wave_manager.wave_count * 0.08)
-		spawn_timer = get_effective_spawn_interval() * wave_manager.get_interval_multiplier()
+		spawn_timer = spawn_manager.get_current_spawn_interval(game_timer) * wave_manager.get_interval_multiplier()
 
 func update_timer_label():
 	if timer_label == null or wave_label == null:
