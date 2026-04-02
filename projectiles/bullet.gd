@@ -22,8 +22,8 @@ func _on_area_entered(area: Area2D):
 	if area.is_in_group("player"):
 		return
 	_hit = true
-	area.take_damage(damage, player)
-	if player:
+	area.take_damage(damage, player if is_instance_valid(player) else null)
+	if is_instance_valid(player):
 		EventBus.on_damage_dealt.emit(player, area, damage)
 	if player and player.get("bounce_timer") != null and player.bounce_timer > 0:
 		var enemies = get_tree().get_nodes_in_group("enemies")

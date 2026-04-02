@@ -21,6 +21,9 @@ var is_dead = false
 var current_speed = BASE_SPEED
 var slow_timer = 0.0
 var rage_triggered = false
+var is_swarm_enemy: bool = false
+var swarm_direction: Vector2 = Vector2.ZERO
+var swarm_speed_override: float = 180.0
 var _poison_damage = 0
 var _poison_timer = 0.0
 var _poison_tick_interval = 1.0
@@ -248,6 +251,19 @@ func _physics_process(delta):
 			if not is_dead:
 				take_damage(_poison_damage)
 
+	if is_swarm_enemy and not is_dead:
+		global_position += swarm_direction * swarm_speed_override * delta
+		_update_enemy_direction()
+		var players = get_tree().get_nodes_in_group("player")
+		if not players.is_empty():
+			var center = Vector2.ZERO
+			for p in players:
+				center += p.global_position
+			center /= players.size()
+			if global_position.distance_to(center) > 1400:
+				is_dead = true
+				queue_free()
+
 func _setup_visuals():
 	if body:
 		body.name = "Body"
@@ -289,3 +305,9 @@ func _get_nearest_player() -> Node2D:
 			nearest_dist = dist
 			nearest = p
 	return nearest
+
+func make_swarm_enemy(direction: Vector2, speed: float = 180.0):
+	is_swarm_enemy = true
+	swarm_direction = direction.normalized()
+	swarm_speed_override = speed
+	set_process(false)

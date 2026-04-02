@@ -217,3 +217,67 @@ func apply_immunity_to_existing(current_immunity: String):
 	for enemy in enemies:
 		if randf() < 0.30:
 			_apply_immunity(enemy, current_immunity)
+
+func spawn_swarm_event(game_timer: float):
+	var players = get_tree().get_nodes_in_group("player")
+	if players.is_empty():
+		return
+	var center = Vector2.ZERO
+	for p in players:
+		center += p.global_position
+	center /= players.size()
+
+	var from_right = randf() > 0.5
+	var direction = Vector2(-1, 0) if from_right else Vector2(1, 0)
+	var spawn_x = center.x + (900 if from_right else -900)
+	var count = 40 + randi() % 21
+
+	for i in count:
+		var current_count = get_tree().get_nodes_in_group("enemies").size()
+		if current_count >= MAX_ENEMIES:
+			break
+		var enemy = _pick_swarm_scene().instantiate()
+		main_node.add_child(enemy)
+		var screen_h = get_viewport().get_visible_rect().size.y
+		enemy.global_position = Vector2(spawn_x, center.y + randf_range(-screen_h * 0.6, screen_h * 0.6))
+		_apply_scaling(enemy, game_timer)
+		enemy.make_swarm_enemy(direction, randf_range(160.0, 220.0))
+
+	players[0].show_floating_text(
+		"⚠ SÜRÜ GELİYOR!",
+		players[0].global_position + Vector2(0, -90),
+		Color("#FF6600"), 20
+	)
+
+func spawn_encircle_event(game_timer: float):
+	var players = get_tree().get_nodes_in_group("player")
+	if players.is_empty():
+		return
+	var center = Vector2.ZERO
+	for p in players:
+		center += p.global_position
+	center /= players.size()
+
+	var count = 16 + randi() % 9
+	var radius = 650.0
+
+	for i in count:
+		var current_count = get_tree().get_nodes_in_group("enemies").size()
+		if current_count >= MAX_ENEMIES:
+			break
+		var angle = (TAU / count) * i
+		var enemy = tank_enemy_scene.instantiate()
+		main_node.add_child(enemy)
+		enemy.global_position = center + Vector2(cos(angle), sin(angle)) * radius
+		_apply_scaling(enemy, game_timer)
+		_apply_curse(enemy)
+
+	players[0].show_floating_text(
+		"☠ KUŞATILIYORSUN!",
+		players[0].global_position + Vector2(0, -90),
+		Color("#E74C3C"), 20
+	)
+
+func _pick_swarm_scene() -> PackedScene:
+	var options = [enemy_scene, fast_enemy_scene, dasher_scene]
+	return options[randi() % options.size()]

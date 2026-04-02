@@ -18,6 +18,9 @@ var mini_boss_times = [300, 600, 900, 1200, 1500]
 var next_mini_boss_index = 0
 
 var main_node: Node = null
+var wave_event_timer: float = 0.0
+const WAVE_EVENT_INTERVAL: float = 180.0
+const WAVE_EVENT_MIN_TIME: float = 120.0
 
 func initialize(main: Node):
 	main_node = main
@@ -50,7 +53,16 @@ func process(delta: float, game_timer: float):
 				siege_active = true
 				siege_timer = SIEGE_DURATION
 				_start_siege_wave()
-
+				
+	# Wave event sistemi
+	if game_timer >= WAVE_EVENT_MIN_TIME and not reaper_mode and not siege_active:
+		wave_event_timer += delta
+		if wave_event_timer >= WAVE_EVENT_INTERVAL:
+			wave_event_timer = 0.0
+			if randf() < 0.60:
+				main_node.spawn_manager.spawn_swarm_event(game_timer)
+			else:
+				main_node.spawn_manager.spawn_encircle_event(game_timer)
 	# Her dakika wave artışı
 	wave_timer += delta
 	if wave_timer >= wave_interval:
