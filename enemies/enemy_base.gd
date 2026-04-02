@@ -169,11 +169,24 @@ func die(killer: Node = null):
 	if SaveManager.settings.get("show_vfx", true):
 		_spawn_particles()
 	_try_drop_gold()
+	_try_drop_special_pickup()
 	_try_drop_chest()
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(death_scale, death_scale), 0.08)
 	tween.tween_property(self, "scale", Vector2(0.0, 0.0), 0.12)
 	tween.tween_callback(_on_death_complete)
+
+func _try_drop_special_pickup():
+	if randf() > 0.012:
+		return
+	var roll = randf()
+	var pickup
+	if roll < 0.5:
+		pickup = load("res://effects/steam_bomb.tscn").instantiate()
+	else:
+		pickup = load("res://effects/time_gear.tscn").instantiate()
+	get_parent().add_child(pickup)
+	pickup.init(global_position)
 
 func _try_drop_chest():
 	var chest_chance = 0.01

@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://dikqubt8ua6jw"]
+
+[ext_resource type="Script" uid="uid://r3w73iipsg07" path="res://effects/time_gear.gd" id="1_qq6i6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_37v5x"]
+
+[node name="TimeGear" type="Area2D" unique_id=636657213]
+script = ExtResource("1_qq6i6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=769365367]
+shape = SubResource("CircleShape2D_37v5x")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2081412977]
+offset_right = 40.0
+offset_bottom = 40.0

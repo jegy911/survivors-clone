@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://ddvkwkpid616c"]
+
+[ext_resource type="Script" uid="uid://bqc7babb5y3ar" path="res://effects/steam_bomb.gd" id="1_c8xk2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_knyv3"]
+radius = 15.0
+
+[node name="SteamBomb" type="Area2D" unique_id=1316168983]
+script = ExtResource("1_c8xk2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=246417736]
+shape = SubResource("CircleShape2D_knyv3")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=194360503]
+offset_right = 40.0
+offset_bottom = 40.0
