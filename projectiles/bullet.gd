@@ -7,12 +7,8 @@ var lifetime = 2.0
 var armor_piercing = false
 var player = null
 var _hit = false
-
-func _ready():
-	$ColorRect.color = Color("#FFD700")
-	if get_node_or_null("Sprite2D"):
-		$ColorRect.visible = false
-	area_entered.connect(_on_area_entered)
+var pierce_count = 0
+var _pierce_remaining = 0
 
 func _on_area_entered(area: Area2D):
 	if _hit:
@@ -21,16 +17,20 @@ func _on_area_entered(area: Area2D):
 		return
 	if area.is_in_group("player"):
 		return
-	_hit = true
 	area.take_damage(damage, player if is_instance_valid(player) else null)
 	if is_instance_valid(player):
 		EventBus.on_damage_dealt.emit(player, area, damage)
-	if player and player.get("bounce_timer") != null and player.bounce_timer > 0:
+	if _pierce_remaining > 0:
+		_pierce_remaining -= 1
+		return
+	_hit = true
+	if is_instance_valid(player) and player.get("bounce_timer") != null and player.bounce_timer > 0:
 		var enemies = get_tree().get_nodes_in_group("enemies")
 		var next = null
 		var best_dist = 999999.0
 		for e in enemies:
-			if e == area: continue
+			if e == area:
+				continue
 			var d = global_position.distance_to(e.global_position)
 			if d < best_dist:
 				best_dist = d
@@ -52,6 +52,7 @@ func _physics_process(delta):
 
 func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter = null):
 	_hit = false
+	_pierce_remaining = pierce_count
 	direction = dir
 	damage = dmg
 	armor_piercing = is_armor_piercing
