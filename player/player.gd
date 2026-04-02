@@ -865,11 +865,12 @@ func _update_screen_shake(delta: float):
 
 
 func _calc_xp_for_level(lvl: int) -> int:
-	var base = 30
 	if lvl <= 20:
-		return base + lvl * 10
+		return 30 + lvl * 10
+	elif lvl <= 40:
+		return 230 + (lvl - 20) * 13
 	else:
-		return int(base * pow(1.2, lvl))
+		return 490 + (lvl - 40) * 16
 
 func _check_speed_synergy() -> bool:
 	# MoveSpeed ve speed_charm ikisi de max level mi?
