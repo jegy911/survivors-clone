@@ -67,7 +67,10 @@ static func get_available_evolutions(player) -> Array:
 			if not player.active_items.has(i):
 				has_all_items = false
 				break
-		
+			var item = player.active_items[i]
+			if item.level < item.max_level:
+				has_all_items = false
+				break
 		# Zaten evrim yapılmış mı?
 		if player.active_weapons.has(evo_id):
 			continue
