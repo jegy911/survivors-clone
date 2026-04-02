@@ -208,9 +208,12 @@ func _try_drop_gold():
 	var v = gold_value
 	if get_meta("is_elite", false):
 		v = elite_gold_value
-	var player_node = get_tree().get_first_node_in_group("player")
-	if player_node and player_node.active_items.has("luck_stone"):
-		v += player_node.active_items["luck_stone"].gold_bonus
+	var player_node = _get_nearest_player()
+	if player_node:
+		if player_node.active_items.has("luck_stone"):
+			v += player_node.active_items["luck_stone"].gold_bonus
+		var gold_meta_bonus = SaveManager.meta_upgrades.get("gold_bonus", 0)
+		v += gold_meta_bonus
 	orb.init(v, global_position)
 
 func _spawn_particles():

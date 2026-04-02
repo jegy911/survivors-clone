@@ -161,21 +161,43 @@ func get_max_rank(key: String) -> int:
 			return 5
 
 func get_upgrade_cost(key: String, current_rank: int) -> int:
-	var base_cost = 100
-	match key:
-		"revival": base_cost = 600
-		"curse_level": base_cost = 80
-		"start_level_bonus": base_cost = 500
-		"multi_attack_bonus": base_cost = 400
-		"cooldown_bonus": base_cost = 300
-		"area_bonus": base_cost = 280
-		"damage_bonus": base_cost = 250
-		"crit_damage_bonus": base_cost = 350
-		"adrenaline": base_cost = 300
-		"momentum": base_cost = 300
-		"overheal": base_cost = 250
-		_: base_cost = 150
-	return base_cost + current_rank * 100
+	var initial_prices = {
+		"max_hp_bonus": 100,
+		"damage_bonus": 150,
+		"speed_bonus": 100,
+		"xp_bonus": 120,
+		"luck_bonus": 200,
+		"reroll_bonus": 300,
+		"skip_bonus": 100,
+		"magnet_bonus": 80,
+		"cooldown_bonus": 250,
+		"area_bonus": 200,
+		"duration_bonus": 150,
+		"multi_attack_bonus": 400,
+		"recovery_bonus": 100,
+		"armor_bonus": 150,
+		"gold_bonus": 120,
+		"crit_damage_bonus": 300,
+		"start_level_bonus": 500,
+		"growth_bonus": 120,
+		"curse_level": 80,
+		"revival": 600,
+		"adrenaline": 250,
+		"momentum": 250,
+		"overheal": 200,
+	}
+	var initial = initial_prices.get(key, 100)
+	var bought = current_rank
+	var total_bought = _get_total_bought()
+	var base_cost = initial * (1 + bought)
+	var fees = 0 if total_bought == 0 else int(20.0 * pow(1.1, total_bought))
+	return base_cost + fees
+
+func _get_total_bought() -> int:
+	var total = 0
+	for key in meta_upgrades:
+		total += meta_upgrades[key]
+	return total
 
 func update_stats_after_game(char_id: String, kills: int, survival_time: float, got_evolution: bool, got_tank_kill: bool, gold: int = 0, xp_levels: int = 0, bosses: int = 0, damage: int = 0, chests: int = 0, items: int = 0, won: bool = false):
 	total_kills += kills

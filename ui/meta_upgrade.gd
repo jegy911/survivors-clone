@@ -1,29 +1,36 @@
 extends CanvasLayer
 
 var upgrade_defs = [
-	{"id": "max_hp_bonus", "name": "💗 Max Can", "desc": "Başlangıç canı +25 per rank", "max_level": 5},
-	{"id": "damage_bonus", "name": "⚔ Hasar Bonusu", "desc": "Tüm silahlar +5 hasar per rank", "max_level": 5},
-	{"id": "speed_bonus", "name": "👟 Hareket Hızı", "desc": "Hareket hızı +10 per rank", "max_level": 5},
-	{"id": "xp_bonus", "name": "⭐ XP Bonusu", "desc": "XP kazanımı +%10 per rank", "max_level": 5},
-	{"id": "luck_bonus", "name": "🍀 Şans", "desc": "Nadir upgrade çıkma ihtimali artar", "max_level": 5},
-	{"id": "reroll_bonus", "name": "🔄 Ekstra Reroll", "desc": "Level up'ta +1 reroll hakkı", "max_level": 3},
-	{"id": "skip_bonus", "name": "⏭ Ekstra Skip", "desc": "Level up'ta +1 skip hakkı", "max_level": 3},
-	{"id": "magnet_bonus", "name": "🧲 Mıknatıs", "desc": "XP çekim menzili +15 per rank", "max_level": 5},
-	{"id": "cooldown_bonus", "name": "⚡ Cooldown Azaltma", "desc": "Tüm silahlar ateş hızı +%8 per rank", "max_level": 5},
-	{"id": "area_bonus", "name": "💥 Alan Genişliği", "desc": "Aura/patlama/zincir menzili +%10 per rank", "max_level": 5},
-	{"id": "duration_bonus", "name": "⏱ Süre Uzatma", "desc": "Zehir/yavaşlatma süresi +%15 per rank", "max_level": 5},
-	{"id": "multi_attack_bonus", "name": "🎯 Çoklu Saldırı", "desc": "Tüm silahlar +1 ekstra saldırı per rank", "max_level": 3},
-	{"id": "recovery_bonus", "name": "💚 Can Yenileme", "desc": "Her dakika +3 HP pasif iyileşme per rank", "max_level": 5},
-	{"id": "armor_bonus", "name": "🛡 Başlangıç Zırhı", "desc": "Başlangıç zırhı +2 per rank", "max_level": 5},
-	{"id": "gold_bonus", "name": "💰 Altın Bonusu", "desc": "Düşmandan +1 altın per rank", "max_level": 5},
-	{"id": "crit_damage_bonus", "name": "🗡 Kritik Hasar", "desc": "Kritik vuruş çarpanı +%25 per rank", "max_level": 3},
-	{"id": "start_level_bonus", "name": "📈 Başlangıç Seviyesi", "desc": "Oyun başında +1 level per rank", "max_level": 3},
-	{"id": "growth_bonus", "name": "📦 Growth", "desc": "Kazanılan altın +%15 per rank", "max_level": 5},
-	{"id": "curse_level", "name": "💀 Curse", "desc": "Düşman hızı/sayısı +%10 ama XP 2x per rank", "max_level": 5},
-	{"id": "revival", "name": "✨ Revival", "desc": "Ölünce 1 kere %30 HP ile canlan", "max_level": 1},
-	{"id": "adrenaline", "name": "🔥 Adrenalin", "desc": "Can azaldıkça hasar artar (+20 per %HP per rank)", "max_level": 5},
-	{"id": "momentum", "name": "💨 Momentum", "desc": "Hareket ettikçe hasar bonusu (+1/sn per rank, max 10x)", "max_level": 5},
-	{"id": "overheal", "name": "🛡 Overheal Kalkan", "desc": "Can doluyken iyileşme geçici kalkan verir", "max_level": 5},
+	# --- SAVAŞ ---
+	{"id": "damage_bonus", "name": "⚔ Hasar Bonusu", "desc": "Tüm silahlar +5 hasar\n(max rank: +25 hasar)", "max_level": 5, "category": "combat"},
+	{"id": "cooldown_bonus", "name": "⚡ Cooldown Azaltma", "desc": "Ateş hızı +%8 per rank\n(max rank: -%40 cooldown)", "max_level": 5, "category": "combat"},
+	{"id": "area_bonus", "name": "💥 Alan Genişliği", "desc": "Saldırı alanı +%10 per rank\n(max rank: +%50 alan)", "max_level": 5, "category": "combat"},
+	{"id": "multi_attack_bonus", "name": "🎯 Çoklu Saldırı", "desc": "Tüm silahlar +1 ekstra saldırı\n(max rank: +3 saldırı)", "max_level": 3, "category": "combat"},
+	{"id": "crit_damage_bonus", "name": "🗡 Kritik Hasar", "desc": "Kritik vuruş çarpanı +%25\n(max rank: 2x → 2.75x)", "max_level": 3, "category": "combat"},
+	{"id": "duration_bonus", "name": "⏱ Süre Uzatma", "desc": "Zehir/yavaşlatma süresi +%15\n(max rank: +%75 süre)", "max_level": 5, "category": "combat"},
+	{"id": "adrenaline", "name": "🔥 Adrenalin", "desc": "Eksik can başına +20 hasar\n(düşük canda daha güçlü)", "max_level": 5, "category": "combat"},
+	{"id": "momentum", "name": "💨 Momentum", "desc": "Hareket ettikçe +1 hasar/sn\n(max rank: +10 hasar bonusu)", "max_level": 5, "category": "combat"},
+
+	# --- SAVUNMA ---
+	{"id": "max_hp_bonus", "name": "💗 Max Can", "desc": "Başlangıç canı +25 per rank\n(max rank: +125 can)", "max_level": 5, "category": "defense"},
+	{"id": "armor_bonus", "name": "🛡 Başlangıç Zırhı", "desc": "Başlangıç zırhı +2 per rank\n(max rank: -10 hasar)", "max_level": 5, "category": "defense"},
+	{"id": "recovery_bonus", "name": "💚 Can Yenileme", "desc": "Her dakika +3 HP iyileşme\n(max rank: +15 HP/dk)", "max_level": 5, "category": "defense"},
+	{"id": "revival", "name": "✨ Revival", "desc": "Ölünce 1 kere %30 HP ile canlan\n(max rank: 1 kullanım)", "max_level": 1, "category": "defense"},
+	{"id": "overheal", "name": "🔰 Overheal Kalkan", "desc": "Can doluyken iyileşme\ngeçici kalkan verir", "max_level": 5, "category": "defense"},
+
+	# --- İLERLEME ---
+	{"id": "xp_bonus", "name": "⭐ XP Bonusu", "desc": "XP kazanımı +%10 per rank\n(max rank: +%50 XP)", "max_level": 5, "category": "progress"},
+	{"id": "luck_bonus", "name": "🍀 Şans", "desc": "Nadir upgrade ihtimali +%10\n(max rank: +%50 şans)", "max_level": 5, "category": "progress"},
+	{"id": "magnet_bonus", "name": "🧲 Mıknatıs", "desc": "XP/gold çekim menzili +15\n(max rank: +75 menzil)", "max_level": 5, "category": "progress"},
+	{"id": "gold_bonus", "name": "💰 Altın Bonusu", "desc": "Düşmandan +1 altın per rank\n(max rank: +5 altın)", "max_level": 5, "category": "progress"},
+	{"id": "growth_bonus", "name": "📦 Altın Çarpanı", "desc": "Kazanılan altın +%15 per rank\n(max rank: +%75 altın)", "max_level": 5, "category": "progress"},
+	{"id": "start_level_bonus", "name": "📈 Başlangıç Seviyesi", "desc": "Oyun başında +1 level\n(max rank: +3 level)", "max_level": 3, "category": "progress"},
+	{"id": "reroll_bonus", "name": "🔄 Ekstra Reroll", "desc": "Level up'ta +1 reroll hakkı\n(max rank: +3 reroll)", "max_level": 3, "category": "progress"},
+	{"id": "skip_bonus", "name": "⏭ Ekstra Skip", "desc": "Level up'ta +1 skip hakkı\n(max rank: +3 skip)", "max_level": 3, "category": "progress"},
+
+	# --- ZOR MOD ---
+	{"id": "speed_bonus", "name": "👟 Hareket Hızı", "desc": "Hareket hızı +10 per rank\n(max rank: +50 hız)", "max_level": 5, "category": "utility"},
+	{"id": "curse_level", "name": "💀 Curse", "desc": "Düşman güç/sayısı +%10\nKarşılığında XP 2x per rank", "max_level": 5, "category": "curse"},
 ]
 
 var pending_reset = false
@@ -95,7 +102,15 @@ func build_upgrade_list():
 		card_style.border_width_right = 1
 		card_style.border_width_top = 1
 		card_style.border_width_bottom = 1
-		card_style.border_color = Color("#3498DB") if is_maxed else Color("#333355")
+		var category_colors = {
+	"combat": Color("#E74C3C"),
+	"defense": Color("#3498DB"),
+	"progress": Color("#2ECC71"),
+	"utility": Color("#F39C12"),
+	"curse": Color("#9B59B6"),
+}
+		var cat = upgrade.get("category", "utility")
+		card_style.border_color = Color("#FFD700") if is_maxed else category_colors.get(cat, Color("#333355"))
 		card.add_theme_stylebox_override("panel", card_style)
 
 		var row = HBoxContainer.new()
