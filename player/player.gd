@@ -461,6 +461,12 @@ func add_item(type: String):
 			item = ItemBloodPool.new()
 		"luck_stone":
 			item = ItemLuckStone.new()
+		"turbine":
+			item = ItemTurbine.new()
+		"steam_armor":
+			item = ItemSteamArmor.new()
+		"energy_cell":
+			item = ItemEnergyCell.new()
 	
 	if item:
 		add_child(item)
@@ -504,7 +510,10 @@ func get_total_damage(base_damage: int) -> int:
 	if adrenaline_rank > 0:
 		var missing_hp_pct = 1.0 - (float(hp) / float(max_hp))
 		adrenaline_bonus = int(missing_hp_pct * adrenaline_rank * 20)
-	var dmg = base_damage + category_damage_bonus + momentum_bonus + adrenaline_bonus
+	var turbine_bonus = 0
+	if active_items.has("turbine"):
+		turbine_bonus = active_items["turbine"].get_damage_bonus()
+	var dmg = base_damage + category_damage_bonus + momentum_bonus + adrenaline_bonus + turbine_bonus
 	var crit_chance = category_crit_bonus + get_tag_crit_bonus()
 	if active_items.has("crit"):
 		crit_chance += active_items["crit"].crit_chance
@@ -599,6 +608,9 @@ func get_item_description(type: String) -> String:
 		"speed_charm": return "Yeni: Hız Tılsımı\nÖldürünce hız bonusu"
 		"blood_pool": return "Yeni: Kan Havuzu\nÖldürünce alan hasarı"
 		"luck_stone": return "Yeni: Şans Taşı\nKritik şansı + altın"
+		"turbine": return "Yeni: Türbin\nHareket edince hasar artar"
+		"steam_armor": return "Yeni: Buharlı Zırh\nHasar alınca yenilmez"
+		"energy_cell": return "Yeni: Enerji Hücresi\nPeriyodik ateş patlaması"
 	return ""
 
 func gain_xp(amount: int):
@@ -716,6 +728,9 @@ func get_nearest_enemy():
 	return nearest
 
 func take_damage(amount: int):
+	# Buharlı Zırh aktifse hasar alma
+	if active_items.has("steam_armor") and active_items["steam_armor"].is_invincible():
+		return
 	var armor = SaveManager.meta_upgrades.get("armor_bonus", 0) * 2 + _origin_armor_bonus
 	if active_items.has("armor"):
 		armor += active_items["armor"].armor_value
@@ -732,6 +747,9 @@ func take_damage(amount: int):
 		return
 	hp -= final_damage
 	update_hp_bar()
+	# Buharlı Zırh tetikle
+	if active_items.has("steam_armor"):
+		active_items["steam_armor"].on_player_damaged()
 	AudioManager.play_player_hurt()
 	_flash_damage()
 	EventBus.player_damaged.emit(final_damage)
