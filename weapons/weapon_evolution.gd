@@ -59,7 +59,10 @@ static func get_available_evolutions(player) -> Array:
 				has_all_weapons = false
 				break
 			var weapon = player.active_weapons[w]
-			if weapon.level < weapon.max_level:
+			var required_level = weapon.max_level
+			if player.get("blood_oath_active") and player.blood_oath_active:
+				required_level = max(1, weapon.max_level / 2)
+			if weapon.level < required_level:
 				has_all_weapons = false
 				break
 		

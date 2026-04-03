@@ -46,6 +46,9 @@ var tank_killed = false        # YENİ
 var evolution_obtained = false # YENİ
 var cog_shard_count: int = 0
 var cog_shard_bonus_active: bool = false
+var blood_oath_active: bool = false
+var blood_oath_timer: float = 0.0
+const BLOOD_OATH_DURATION: float = 30.0
 
 # Pasif iyileşme sayacı
 var recovery_timer = 0.0
@@ -281,6 +284,12 @@ func _process(delta):
 			momentum_timer = max(0.0, momentum_timer - delta * 2)
 			momentum_bonus = min(int(momentum_timer) * momentum_rank, momentum_rank * 10)
 		last_position = global_position
+		# Blood Oath timer
+	if blood_oath_active:
+		blood_oath_timer -= delta
+		if blood_oath_timer <= 0:
+			blood_oath_active = false
+			show_floating_text("🩸 Kan Yemini bitti", global_position + Vector2(0, -60), Color("#8B0000"), 14)
 	# Bounce timer
 	if bounce_timer > 0:
 		bounce_timer -= delta
@@ -1035,3 +1044,11 @@ func collect_cog_shard():
 			global_position + Vector2(0, -80),
 			Color("#00FFFF"), 22
 		)
+func activate_blood_oath():
+	blood_oath_active = true
+	blood_oath_timer = BLOOD_OATH_DURATION
+	show_floating_text(
+		"🩸 KAN YEMİNİ! 30sn",
+		global_position + Vector2(0, -80),
+		Color("#FF0000"), 20
+	)

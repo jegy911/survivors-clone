@@ -178,11 +178,15 @@ func die(killer: Node = null):
 
 func _try_drop_special_pickup():
 	var roll = randf()
-	if roll < 0.02:
+	if roll < 0.005:
+		var oath = load("res://effects/blood_oath.tscn").instantiate()
+		get_parent().add_child(oath)
+		oath.init(global_position)
+	elif roll < 0.025:
 		var shard = load("res://effects/cog_shard.tscn").instantiate()
 		get_parent().add_child(shard)
 		shard.init(global_position)
-	elif roll < 0.032:
+	elif roll < 0.037:
 		var pickup
 		if randf() < 0.5:
 			pickup = load("res://effects/steam_bomb.tscn").instantiate()

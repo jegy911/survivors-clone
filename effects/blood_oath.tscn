@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://daxvepuvefapt"]
+
+[ext_resource type="Script" uid="uid://d1q1t40kc1eph" path="res://effects/blood_oath.gd" id="1_d3toj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wqmmk"]
+radius = 8.0
+
+[node name="BloodOath" type="Area2D" unique_id=351464917]
+script = ExtResource("1_d3toj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2006835514]
+shape = SubResource("CircleShape2D_wqmmk")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=392014953]
+offset_right = 40.0
+offset_bottom = 40.0
