@@ -216,7 +216,10 @@ func show_upgrades(player):
 	skip_count = 2 + SaveManager.meta_upgrades.get("skip_bonus", 0)
 	
 	current_pool = build_pool()
-	chosen_upgrades = weighted_pick(current_pool, 3)
+	var pick_count = 4 if player_ref.get("cog_shard_bonus_active") else 3
+	chosen_upgrades = weighted_pick(current_pool, pick_count)
+	if player_ref.get("cog_shard_bonus_active"):
+		player_ref.cog_shard_bonus_active = false
 	
 	var char_index = SaveManager.selected_character if player_ref.player_id == 0 else SaveManager.selected_character_p2
 	var char_name = CharacterData.CHARACTERS[char_index]["name"]

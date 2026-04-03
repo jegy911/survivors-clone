@@ -177,16 +177,19 @@ func die(killer: Node = null):
 	tween.tween_callback(_on_death_complete)
 
 func _try_drop_special_pickup():
-	if randf() > 0.012:
-		return
 	var roll = randf()
-	var pickup
-	if roll < 0.5:
-		pickup = load("res://effects/steam_bomb.tscn").instantiate()
-	else:
-		pickup = load("res://effects/time_gear.tscn").instantiate()
-	get_parent().add_child(pickup)
-	pickup.init(global_position)
+	if roll < 0.02:
+		var shard = load("res://effects/cog_shard.tscn").instantiate()
+		get_parent().add_child(shard)
+		shard.init(global_position)
+	elif roll < 0.032:
+		var pickup
+		if randf() < 0.5:
+			pickup = load("res://effects/steam_bomb.tscn").instantiate()
+		else:
+			pickup = load("res://effects/time_gear.tscn").instantiate()
+		get_parent().add_child(pickup)
+		pickup.init(global_position)
 
 func _try_drop_chest():
 	var chest_chance = 0.01

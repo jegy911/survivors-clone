@@ -44,6 +44,8 @@ var revival_used = false
 var is_downed: bool = false
 var tank_killed = false        # YENİ
 var evolution_obtained = false # YENİ
+var cog_shard_count: int = 0
+var cog_shard_bonus_active: bool = false
 
 # Pasif iyileşme sayacı
 var recovery_timer = 0.0
@@ -1016,3 +1018,20 @@ func _setup_input():
 
 func set_player_id(id: int):
 	player_id = id
+
+
+func collect_cog_shard():
+	cog_shard_count += 1
+	show_floating_text(
+		"⚙ +" + str(cog_shard_count) + "/5",
+		global_position + Vector2(randf_range(-20, 20), -60),
+		Color("#B0C4DE"), 16
+	)
+	if cog_shard_count >= 5:
+		cog_shard_count = 0
+		cog_shard_bonus_active = true
+		show_floating_text(
+			"⚙ DİŞLİ USTASI!",
+			global_position + Vector2(0, -80),
+			Color("#00FFFF"), 22
+		)
