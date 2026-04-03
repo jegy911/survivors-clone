@@ -66,9 +66,15 @@ func init(gold_value: int, pos: Vector2):
 	player = null
 	global_position = pos
 	add_to_group("gold_orbs")
-	
 	var tween = create_tween()
 	tween.tween_property(self, "global_position", pos + Vector2(randf_range(-15, 15), randf_range(-15, 15)), 0.25)
+	# Bob animasyonu — spawn tweeni bittikten sonra başlasın
+	await tween.finished
+	if is_instance_valid(self) and visible:
+		var bob = create_tween()
+		bob.set_loops()
+		bob.tween_property(self, "position", position + Vector2(0, -4), 0.5).set_trans(Tween.TRANS_SINE)
+		bob.tween_property(self, "position", position, 0.5).set_trans(Tween.TRANS_SINE)
 	show()
 
 func vacuum_attract():

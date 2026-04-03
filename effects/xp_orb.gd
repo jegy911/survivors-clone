@@ -56,11 +56,15 @@ func init(value: int, pos: Vector2):
 	move_speed = 0.0
 	player = null
 	global_position = pos
-	# Görsel hazırlık — ileride Sprite2D ile değiştirilecek
 	if get_node_or_null("ColorRect"):
 		get_node("ColorRect").name = "Body"
 	add_to_group("xp_orbs")
 	show()
+	# Bob animasyonu
+	var tween = create_tween()
+	tween.set_loops()
+	tween.tween_property(self, "position", position + Vector2(0, -4), 0.6).set_trans(Tween.TRANS_SINE)
+	tween.tween_property(self, "position", position, 0.6).set_trans(Tween.TRANS_SINE)
 
 func vacuum_attract():
 	move_speed = 900.0
