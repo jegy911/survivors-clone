@@ -10,6 +10,12 @@ var _hit = false
 var pierce_count = 0
 var _pierce_remaining = 0
 
+func _ready():
+	$ColorRect.color = Color("#FFD700")
+	if get_node_or_null("Sprite2D"):
+		$ColorRect.visible = false
+	area_entered.connect(_on_area_entered)
+
 func _on_area_entered(area: Area2D):
 	if _hit:
 		return
