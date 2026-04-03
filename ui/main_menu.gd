@@ -26,7 +26,7 @@ func _ready():
 	$VBoxContainer.add_theme_constant_override("separation", 14)
 	
 	# Başlık
-	$VBoxContainer/TitleLabel.text = "⚔ SURVIVORS ⚔"
+	$VBoxContainer/TitleLabel.text = "⚔ IRONFALL ⚔"
 	$VBoxContainer/TitleLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	$VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 48)
 	$VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
@@ -39,7 +39,7 @@ func _ready():
 	
 	# Alt başlık
 	var subtitle = Label.new()
-	subtitle.text = "Hayatta Kal. Güçlen. Kazan."
+	subtitle.text = "Demir Düştü. Rünler Yükseldi."
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	subtitle.add_theme_color_override("font_color", Color("#666688"))
 	subtitle.add_theme_font_size_override("font_size", 14)
