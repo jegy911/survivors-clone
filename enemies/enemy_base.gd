@@ -168,9 +168,9 @@ func die(killer: Node = null):
 			fire_tween.tween_callback(fire_flash.queue_free)
 	if SaveManager.settings.get("show_vfx", true):
 		_spawn_particles()
-	_try_drop_gold()
-	_try_drop_special_pickup()
-	_try_drop_chest()
+	call_deferred("_try_drop_gold")
+	call_deferred("_try_drop_chest")
+	call_deferred("_try_drop_special_pickup")
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(death_scale, death_scale), 0.08)
 	tween.tween_property(self, "scale", Vector2(0.0, 0.0), 0.12)
