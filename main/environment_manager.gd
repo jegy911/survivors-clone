@@ -4,6 +4,7 @@ var vacuum_spawn_timer = 120.0
 var trap_spawn_timer = 30.0
 var shrine_spawn_timer = 90.0
 var crate_spawn_timer = 45.0
+var ruin_spawn_timer = 180.0
 
 var main_node: Node = null
 
@@ -31,12 +32,23 @@ func process(delta: float):
 		crate_spawn_timer = randf_range(30.0, 60.0)
 		_spawn_crate()
 
+	ruin_spawn_timer -= delta
+	if ruin_spawn_timer <= 0:
+		ruin_spawn_timer = randf_range(150.0, 240.0)
+		_spawn_ruin_cache()
+
 func _get_player() -> Node:
 	var players = get_tree().get_nodes_in_group("player")
 	if players.is_empty():
 		return null
-	# Co-op: rastgele bir oyuncunun etrafına spawn et
 	return players[randi() % players.size()]
+
+func _get_spawn_pos(min_dist: float, max_dist: float) -> Vector2:
+	var player = _get_player()
+	if player == null:
+		return Vector2.ZERO
+	var angle = randf() * TAU
+	return player.global_position + Vector2(cos(angle), sin(angle)) * randf_range(min_dist, max_dist)
 
 func _spawn_vacuum_orb():
 	var player = _get_player()
@@ -100,8 +112,7 @@ func _spawn_trap():
 	else:
 		trap = load("res://effects/poison_trap.gd").new()
 	main_node.add_child(trap)
-	var angle = randf() * TAU
-	trap.global_position = player.global_position + Vector2(cos(angle), sin(angle)) * randf_range(150.0, 350.0)
+	trap.global_position = _get_spawn_pos(150.0, 350.0)
 	await get_tree().create_timer(30.0).timeout
 	if is_instance_valid(trap):
 		trap.queue_free()
@@ -112,8 +123,7 @@ func _spawn_shrine():
 		return
 	var shrine = load("res://effects/shrine_of_risk.gd").new()
 	main_node.add_child(shrine)
-	var angle = randf() * TAU
-	shrine.global_position = player.global_position + Vector2(cos(angle), sin(angle)) * randf_range(200.0, 400.0)
+	shrine.global_position = _get_spawn_pos(200.0, 400.0)
 	await get_tree().create_timer(45.0).timeout
 	if is_instance_valid(shrine):
 		shrine.queue_free()
@@ -124,5 +134,127 @@ func _spawn_crate():
 		return
 	var crate = load("res://effects/destructible_crate.gd").new()
 	main_node.add_child(crate)
-	var angle = randf() * TAU
-	crate.global_position = player.global_position + Vector2(cos(angle), sin(angle)) * randf_range(100.0, 300.0)
+	crate.global_position = _get_spawn_pos(100.0, 300.0)
+
+func _spawn_ruin_cache():
+	var player = _get_player()
+	if player == null:
+		return
+
+	# Enkaz sandığı node'u oluştur
+	var ruin = Node2D.new()
+	ruin.name = "RuinCache"
+	ruin.add_to_group("env_objects")
+
+	# Görsel — pas rengi kare + parıltı
+	var body = ColorRect.new()
+	body.size = Vector2(28, 28)
+	body.position = Vector2(-14, -14)
+	body.color = Color("#5C3317")
+	ruin.add_child(body)
+
+	var glow = ColorRect.new()
+	glow.size = Vector2(28, 28)
+	glow.position = Vector2(-14, -14)
+	glow.color = Color("#FFD700")
+	glow.modulate.a = 0.25
+	ruin.add_child(glow)
+
+	# Nabız efekti
+	var pulse = glow.create_tween()
+	pulse.set_loops()
+	pulse.tween_property(glow, "modulate:a", 0.6, 0.7)
+	pulse.tween_property(glow, "modulate:a", 0.1, 0.7)
+
+	# Collision
+	var area = Area2D.new()
+	area.collision_layer = 0
+	area.collision_mask = 1
+	var shape = CollisionShape2D.new()
+	var rect = RectangleShape2D.new()
+	rect.size = Vector2(28, 28)
+	shape.shape = rect
+	area.add_child(shape)
+	ruin.add_child(area)
+
+	main_node.add_child(ruin)
+	ruin.global_position = _get_spawn_pos(200.0, 500.0)
+
+	# Oyuncu temas edince aç
+	area.body_entered.connect(_on_ruin_opened.bind(ruin))
+
+	# 60 saniye sonra kaybol
+	await get_tree().create_timer(60.0).timeout
+	if is_instance_valid(ruin):
+		var fade = ruin.get_node_or_null("ColorRect")
+		if fade:
+			var tween = fade.create_tween()
+			tween.tween_property(ruin, "modulate:a", 0.0, 1.5)
+			tween.tween_callback(ruin.queue_free)
+
+func _on_ruin_opened(body: Node, ruin: Node):
+	if not is_instance_valid(ruin):
+		return
+	if not body.is_in_group("player"):
+		return
+
+	# Parçalanma efekti
+	var burst = ruin.create_tween()
+	burst.tween_property(ruin, "scale", Vector2(1.4, 1.4), 0.07)
+	burst.tween_property(ruin, "modulate:a", 0.0, 0.15)
+	burst.tween_callback(ruin.queue_free)
+
+	# Co-op: her oyuncuya ayrı ayrı ver
+	var players = get_tree().get_nodes_in_group("player")
+	for p in players:
+		_give_ruin_reward(p)
+
+func _give_ruin_reward(player: Node):
+	# Önce yükseltebileceğimiz silahları bul
+	var upgradeable_weapons = []
+	for w_id in player.active_weapons:
+		var w = player.active_weapons[w_id]
+		if w.level < w.max_level:
+			upgradeable_weapons.append(w_id)
+
+	# Yükseltebileceğimiz passive itemları bul
+	var upgradeable_items = []
+	for i_id in player.active_items:
+		var i = player.active_items[i_id]
+		if i.level < i.max_level:
+			upgradeable_items.append(i_id)
+
+	if upgradeable_weapons.is_empty() and upgradeable_items.is_empty():
+		# Her şey maxsa altın ver
+		player.collect_gold(50)
+		player.show_floating_text(
+			"⚙ ENKAZ: +50 💰",
+			player.global_position + Vector2(0, -80),
+			Color("#FFD700"), 18
+		)
+		return
+
+	# Rastgele silah mı item mı?
+	var pool = []
+	for w in upgradeable_weapons:
+		pool.append({"type": "weapon", "id": w})
+	for i in upgradeable_items:
+		pool.append({"type": "item", "id": i})
+
+	pool.shuffle()
+	var chosen = pool[0]
+
+	if chosen["type"] == "weapon":
+		player.add_weapon(chosen["id"])
+		player.show_floating_text(
+			"⚙ ENKAZ: " + chosen["id"].to_upper() + " ↑",
+			player.global_position + Vector2(0, -80),
+			Color("#FFD700"), 18
+		)
+	else:
+		player.add_item(chosen["id"])
+		player.show_floating_text(
+			"⚙ ENKAZ: " + chosen["id"].to_upper() + " ↑",
+			player.global_position + Vector2(0, -80),
+			Color("#FFD700"), 18
+		)
