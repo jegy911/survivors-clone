@@ -6,18 +6,18 @@ var description = ""
 var level = 1
 var max_level = 5
 var category = "attack"
-
 var player = null
 
 func _ready():
 	player = get_parent()
-	if player and "category_counts" in player:
-		player.category_counts[category] = player.category_counts.get(category, 0) + 1
 	apply()
-	if player and player.has_method("recalculate_category_bonus"):
-		player.recalculate_category_bonus()
 	if has_method("on_damage_dealt"):
 		EventBus.on_damage_dealt.connect(Callable(self, "on_damage_dealt"))
+	call_deferred("_deferred_init")
+
+func _deferred_init():
+	if player and player.has_method("recalculate_category_bonus"):
+		player.recalculate_category_bonus()
 
 func apply():
 	pass

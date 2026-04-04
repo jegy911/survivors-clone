@@ -469,8 +469,8 @@ func add_item(type: String):
 			item = ItemEnergyCell.new()
 	
 	if item:
-		add_child(item)
 		active_items[type] = item
+		add_child(item)
 		recalculate_category_bonus()
 
 func recalculate_category_bonus():
@@ -709,7 +709,7 @@ func _on_upgrade_chosen(upgrade_id: String):
 				heal(20)
 			"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser":
 				add_weapon(upgrade_id)
-			"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone":
+			"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell":
 				add_item(upgrade_id)
 	
 	if upgrade_ui:
