@@ -99,6 +99,8 @@ func _ready():
 	apply_character_bonuses()
 	$CanvasLayer/StatsRow/KillLabel.text = "💀 0"
 	$CanvasLayer/StatsRow/GoldLabel.text = "💰 0"
+	if has_node("CanvasLayer/StatsRow/CogLabel"):
+		$CanvasLayer/StatsRow/CogLabel.text = "⚙ 0/5"
 	
 	xp_bar.max_value = xp_to_next_level
 	xp_bar.min_value = 0
@@ -1042,24 +1044,23 @@ func _setup_player_visuals():
 
 func _setup_input():
 	# Şimdilik tek oyuncu — ileride player_id'ye göre input mapping yapılacak
-	pass
-
 func set_player_id(id: int):
 	player_id = id
 
 
 func collect_cog_shard():
 	cog_shard_count += 1
-	show_floating_text(
-		"⚙ +" + str(cog_shard_count) + "/5",
-		global_position + Vector2(randf_range(-20, 20), -60),
-		Color("#B0C4DE"), 16
-	)
+	if SaveManager.game_mode != "local_coop":
+		if has_node("CanvasLayer/StatsRow/CogLabel"):
+			$CanvasLayer/StatsRow/CogLabel.text = "⚙ " + str(cog_shard_count) + "/5"
 	if cog_shard_count >= 5:
 		cog_shard_count = 0
 		cog_shard_bonus_active = true
+		if SaveManager.game_mode != "local_coop":
+			if has_node("CanvasLayer/StatsRow/CogLabel"):
+				$CanvasLayer/StatsRow/CogLabel.text = "⚙ 0/5"
 		show_floating_text(
-			"⚙ DİŞLİ USTASI!",
+			"⚙ DİŞLİ USTASI! +1 SEÇENEK",
 			global_position + Vector2(0, -80),
 			Color("#00FFFF"), 22
 		)
