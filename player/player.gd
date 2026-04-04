@@ -99,8 +99,7 @@ func _ready():
 	apply_character_bonuses()
 	$CanvasLayer/StatsRow/KillLabel.text = "💀 0"
 	$CanvasLayer/StatsRow/GoldLabel.text = "💰 0"
-	if has_node("CanvasLayer/StatsRow/CogLabel"):
-		$CanvasLayer/StatsRow/CogLabel.text = "⚙ 0/5"
+	_update_cog_label()
 	
 	xp_bar.max_value = xp_to_next_level
 	xp_bar.min_value = 0
@@ -1049,6 +1048,11 @@ func set_player_id(id: int):
 	player_id = id
 
 
+func _update_cog_label():
+	var cog_label = get_node_or_null("CanvasLayer/StatsRow/CogLabel")
+	if cog_label:
+		cog_label.text = "⚙ " + str(cog_shard_count) + "/5"
+
 func collect_cog_shard():
 	cog_shard_count += 1
 	show_floating_text(
@@ -1056,14 +1060,11 @@ func collect_cog_shard():
 		global_position + Vector2(randf_range(-20, 20), -60),
 		Color("#B0C4DE"), 16
 	)
-	var cog_label = get_node_or_null("CanvasLayer/StatsRow/CogLabel")
-	if cog_label:
-		cog_label.text = "⚙ " + str(cog_shard_count) + "/5"
+	_update_cog_label()
 	if cog_shard_count >= 5:
 		cog_shard_count = 0
 		cog_shard_bonus_active = true
-		if cog_label:
-			cog_label.text = "⚙ 0/5"
+		_update_cog_label()
 		show_floating_text(
 			"⚙ DİŞLİ USTASI! +1 SEÇENEK",
 			global_position + Vector2(0, -80),
