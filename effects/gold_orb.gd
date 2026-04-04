@@ -4,6 +4,7 @@ var value = 1
 var attracted = false
 var attract_speed = 0.0
 var player = null
+var _bob_time = 0.0
 
 func _process(delta):
 	if not visible:
@@ -20,6 +21,15 @@ func _process(delta):
 		attract_speed = min(attract_speed + 400 * delta, 500)
 		var dir = (player.global_position - global_position).normalized()
 		global_position += dir * attract_speed * delta
+		var sprite = get_node_or_null("Sprite2D")
+		if sprite:
+			sprite.position.y = 0.0
+	else:
+		_bob_time += delta
+		var sprite = get_node_or_null("Sprite2D")
+		if sprite:
+			sprite.position.y = sin(_bob_time * 3.0) * 3.0
+
 	var all_players = get_tree().get_nodes_in_group("player")
 	for p in all_players:
 		if global_position.distance_to(p.global_position) < 15:
@@ -48,17 +58,10 @@ func init(gold_value: int, pos: Vector2):
 	attracted = false
 	attract_speed = 0.0
 	player = null
+	_bob_time = randf() * TAU
 	global_position = pos
 	add_to_group("gold_orbs")
 	show()
-	var tween = create_tween()
-	tween.tween_property(self, "global_position", pos + Vector2(randf_range(-15, 15), randf_range(-15, 15)), 0.25)
-	await tween.finished
-	if is_instance_valid(self) and visible:
-		var bob = create_tween()
-		bob.set_loops()
-		bob.tween_property(self, "position", position + Vector2(0, -4), 0.5).set_trans(Tween.TRANS_SINE)
-		bob.tween_property(self, "position", position, 0.5).set_trans(Tween.TRANS_SINE)
 
 func vacuum_attract():
 	attracted = true
@@ -69,5 +72,9 @@ func reset():
 	attracted = false
 	attract_speed = 0.0
 	player = null
+	_bob_time = 0.0
+	var sprite = get_node_or_null("Sprite2D")
+	if sprite:
+		sprite.position.y = 0.0
 	remove_from_group("gold_orbs")
 	hide()
