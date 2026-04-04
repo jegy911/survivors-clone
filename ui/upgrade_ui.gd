@@ -161,7 +161,7 @@ func get_upgrade_text(id: String) -> String:
 	match id:
 		"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser":
 			return "⚔ SİLAH\n" + player_ref.get_weapon_description(id)
-		"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone":
+		"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell":
 			return "🛡 EŞYA\n" + player_ref.get_item_description(id)
 		_:
 			return "🛡 EŞYA\n" + stat_texts.get(id, id)

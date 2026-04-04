@@ -481,6 +481,7 @@ func recalculate_category_bonus():
 	for i in active_items.values():
 		if category_counts.has(i.category):
 			category_counts[i.category] += i.level
+			update_category_ui()
 	
 	category_damage_bonus = 0
 	category_crit_bonus = 0.0
