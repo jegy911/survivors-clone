@@ -3,85 +3,95 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** Nisan 2026
-
-> Yeni fikir geldikçe uygun başlığın altına madde ekleyin; iş bitince **Tamamlananlar** bölümüne taşıyın veya maddeyi `[x]` ile işaretleyin.
+**Son güncelleme:** 2026-04-04
 
 ---
 
-## Tamamlananlar (son dönem)
+## Bu dosyayı ve geliştirici rehberini nasıl güncellemeliyiz?
 
-- [x] **Göçebe (nomad)** — Karakter verisi, sahne, harita spawn, kilit: toplam 175 kill → 350 altın satın alma, seçim ekranı konumu.
-- [x] **Yelpaze Bıçak (fan_blade)** — Yakın menzil silah, `fan_blade_shard` projectile (Polygon2D), havuz, level-up havuzu.
-- [x] **Kor Kalbi (ember_heart)** — Öldürünce can, sandık havuzu, UI isimleri.
-- [x] **Kor Yelpazesi (ember_fan)** — Evrim: MAX `fan_blade` + MAX `ember_heart`.
-- [x] **Karakter sırası kaydı** — `character_order_v2` ile indeks migrasyonu; P2 seçiminin kayda yazılması.
-- [x] **Türbin, Buharlı Zırh, Enerji Hücresi** — Test / doğrulama notu (plan kaynağında tamam işaretli).
-- [x] **Cog Shard HUD sayacı** — Oyuncu HUD’da gösterim.
+| Ne zaman? | Ne yap? |
+|-------------|---------|
+| Bir plan maddesini **bitirdiğinde** | Aşağıdaki **Yapılan iş günlüğü**ne tarih + kısa açıklama ekle; ilgili tabloda `[x]` yap veya maddeyi sil / “İptal” notu düş. |
+| Oyuna **yeni tür içerik** eklediğinde (orb, silah, karakter, vb.) | `docs/GELISTIRICI_REHBERI.md` içinde ilgili checklist veya yeni bölümü güncelle (ör. orb için bölüm 8). |
+| Bir şeyi **koddan kaldırdığında** | Rehberdeki checklist’lerden ve bu dosyadaki maddelerden kaldır veya “kaldırıldı” diye günlüğe yaz. |
+| Repo / çalıştırma **değiştiyse** | `README.md` güncelle. |
+
+> Cursor kullanıyorsan: `.cursor/rules/ironfall-docs.mdc` bu kuralları otomatik hatırlatır.
 
 ---
 
-## Acil — Yarım kalan veya kısa vadede bitirilecek işler
+## Yapılan iş günlüğü (tarihli)
+
+| Tarih | Özet |
+|--------|------|
+| 2026-04 | **Göçebe (nomad)** — Karakter, sahne, spawn, kilit (175 toplam kill → 350 altın), seçim ekranı sırası, indeks migrasyonu (`character_order_v2`). |
+| 2026-04 | **Yelpaze Bıçak + shard** — `fan_blade`, `fan_blade_shard` (Polygon2D, ObjectPool), yakın menzil. |
+| 2026-04 | **Kor Kalbi + Kor Yelpazesi** — `ember_heart`, evrim `ember_fan` (MAX fan_blade + MAX ember_heart). |
+| 2026-04 | **Dokümantasyon** — `docs/GELISTIRICI_REHBERI.md`, `docs/YOL_HARITASI.md`, kök `README.md`, Cursor kuralı `ironfall-docs.mdc`. |
+| (not) | Türbin, Buharlı Zırh, Enerji Hücresi testi; Cog Shard HUD — plan kaynağında tamam notu. |
+
+*Yeni satır en üste veya en alta eklenebilir; takım tercihine göre “en yeni üstte” tutulması okumayı kolaylaştırır.*
+
+---
+
+## Öncelik tabloları (plan)
+
+### Acil — Yarım kalan veya kısa vadede bitirilecek işler
 
 | Durum | İş |
 |--------|-----|
-| [ ] | **XP / Gold orb** — Spritesheet ile orb animasyonu (şu anki görsel/placeholder iyileştirmesi). |
-
-*(Buraya “build kırıyor”, “kritik bug” gibi maddeler eklenebilir.)*
+| [ ] | **XP / Gold orb** — Spritesheet ile orb animasyonu (görsel iyileştirme). |
 
 ---
 
-## Önemli — Sistem temelleri
+### Önemli — Sistem temelleri
 
 | Durum | İş |
 |--------|-----|
-| [x] | **Göçebe + fan_blade + ember_heart + ember_fan** — Entegrasyon (yukarıda tamamlandı). |
-| [ ] | **Dil sistemi (localization)** — Örn. `Localization` autoload veya `core/localization.gd`, `locales/tr.json`, `en.json` … uzun vadede çok dil için zemin; UI metinlerinin yavaş yavaş anahtarlara taşınması. |
-| [ ] | **Evrim sistemi derinleştirme** — Yeni karakter/silah eklemeden önce: daha fazla kombinasyon, UI açıklamaları, denge, kenar durumlar (kan basitliği). |
-| [ ] | **README.md** — GitHub için proje özeti: kurulum (Godot sürümü), çalıştırma, klasör yapısı, lisans. |
-| [ ] | **Bağlam belgesi** — `survivors_clone_context.md` (veya eşdeğeri): Ironfall isimlendirmesi, yeni sistemler (Göçebe, shard projectile, evrim), güncel autoload listesi. |
+| [ ] | **Dil sistemi (localization)** — Örn. autoload + `locales/tr.json`, `en.json`; UI metinlerinin anahtarlara taşınması. |
+| [ ] | **Evrim sistemi derinleştirme** — Kombinasyonlar, denge, UI, kenar durumlar. |
+| [x] | **README.md** — GitHub için özet, Godot ile çalıştırma, `docs/` linkleri. |
+| [ ] | **Bağlam belgesi** — `survivors_clone_context.md` (veya eşdeğeri): Ironfall, yeni sistemler, autoload özeti. |
 
 ---
 
-## Orta vadeli — İçerik genişletme
+### Orta vadeli — İçerik genişletme
 
 | Alan | Hedef / not |
 |------|----------------|
 | **Karakterler** | Örn. 20 satın alınabilir + 3 gizli = 23 toplam (hedef rakam tartışılabilir). |
-| **Silahlar** | Örn. ~20 silah; uzun vadede karakter–silah teması güçlendirme. |
-| **Pasif eşyalar** | Çeşitlendirme (ör. growth / greed / revival tipleri); havuz 10 → 20 bandı gibi hedefler. |
-| **Düşmanlar** | Harita başına 6–8 çeşit gibi çeşitlendirme hedefi. |
-| **Haritalar** | Örn. 5 hikaye + 5 arena haritası (arena modu ile birlikte planlanmalı). |
+| **Silahlar** | Örn. ~20 silah; karakter–silah teması. |
+| **Pasif eşyalar** | Çeşitlendirme; havuz büyütme hedefleri. |
+| **Düşmanlar** | Harita başına 6–8 çeşit gibi hedef. |
+| **Haritalar** | Örn. 5 hikaye + 5 arena (arena modu ile birlikte). |
 
 ---
 
-## Uzun vadeli — Oyun derinliği
+### Uzun vadeli — Oyun derinliği
 
-- [ ] **Lore** — Hikaye metinleri, boss açıklamaları, harita öyküleri.
-- [ ] **Görsel tasarım** — Silah efektleri, pasif ikonlar, pickup görselleri (tutarlı stil rehberi).
-- [ ] **Arena modu** — Dalga sistemi, zorluk seçimi, ödül yapısı (`map_select` içindeki planla uyumlu).
-- [ ] **Koleksiyon / Wiki menüsü** — Silah, eşya, düşman, karakter lexicon (genelde en sona bırakılır).
+- [ ] **Lore** — Hikaye, boss, harita metinleri.
+- [ ] **Görsel tasarım** — Silah efektleri, pasif ikonlar, pickup görselleri.
+- [ ] **Arena modu** — Dalga, zorluk, ödül (`map_select` ile uyumlu).
+- [ ] **Koleksiyon / Wiki menüsü** — En sona bırakılabilir.
 
 ---
 
-## Steam / yayın hazırlığı
+### Steam / yayın hazırlığı
 
-- [ ] Oyun içi **fragman** için kayıt (görsel tasarım olgunlaştıktan sonra).
-- [ ] **Steam mağaza** sayfası — fragman, ekran görüntüleri, kısa / uzun açıklama.
-- [ ] **Early Access** veya tam çıkış stratejisi ve tarih penceresi.
+- [ ] Oyun içi fragman kaydı.
+- [ ] Steam mağaza sayfası.
+- [ ] Early Access veya tam çıkış stratejisi.
 
 ---
 
 ## Fikir havuzu (henüz önceliklendirilmemiş)
 
-*Buraya tek satırlık fikirler eklenebilir; periyodik olarak yukarıdaki bölümlere taşınır.*
-
 - …
 
 ---
 
-## Nasıl kullanılır?
+## Eski “tamamlananlar listesi” (özet)
 
-1. Yeni iş → uygun öncelik bölümüne madde ekle.  
-2. İş bitince → **Tamamlananlar**’a taşı veya tabloda `[x]` yap.  
-3. Büyük mimari karar → `docs/GELISTIRICI_REHBERI.md` içinde ilgili bölümü güncelle.
+Ayrıntılı kayıt için yukarıdaki **Yapılan iş günlüğü** tablosunu kullanın. Burası yalnızca hızlı hatırlatma:
+
+- Göçebe, Yelpaze Bıçak, Kor Kalbi, Kor Yelpazesi evrimi, karakter sırası / kayıt migrasyonu, dokümantasyon ve README tamamlandı (2026-04).

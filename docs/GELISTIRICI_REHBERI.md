@@ -4,7 +4,17 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 *(İngilizce projelerde eşdeğeri genelde `ARCHITECTURE.md`, `DEVELOPER_GUIDE.md` veya `docs/CONTRIBUTING.md` olarak adlandırılır.)*
 
 **Motor:** Godot 4.x  
-**Son güncelleme:** Nisan 2026
+**Son güncelleme:** 2026-04-04
+
+### Dokümantasyonu ne zaman güncellemeliyiz?
+
+Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
+
+1. **`docs/GELISTIRICI_REHBERI.md`** — Yeni bir *tür* içerik eklediysen (ör. yeni orb, yeni pickup, yeni harita akışı) ilgili **checklist veya bölümü** ekle veya mevcut maddeleri güncelle. Sadece küçük denge değişikliği ise yalnızca etkilenen paragrafı düzeltmen yeterli olabilir.
+2. **`docs/YOL_HARITASI.md`** — Planlanan bir iş bittiyse: öncelik tablosunda `[x]` yap veya maddeyi kaldır; **Yapılan iş günlüğü**ne tarih ile kısa satır ekle. İptal edilen işleri not düşerek çıkar.
+3. **`README.md`** — Kurulum / çalıştırma / repo yapısı değiştiyse ana sayfayı güncelle.
+
+*(IDE’de Cursor kullanıyorsan: `.cursor/rules` altındaki `ironfall-docs.mdc` kuralı bu disiplini hatırlatır.)*
 
 ---
 
@@ -136,7 +146,31 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 
 ---
 
-## 8. Checklist: yeni karakter
+## 8. Orb ve toplanabilir nesneler (pickup)
+
+Mevcut örnekler: **`effects/xp_orb.tscn`**, **`effects/gold_orb.tscn`**. İkisi de `Area2D` tabanlı; **ObjectPool** ile alınıp `return_object` ile havuza döner.
+
+### Mevcut bağlantılar (referans)
+
+- **Düşürme:** `enemies/enemy_base.gd` (ölümde altın / XP orb), `enemies/boss.gd`, `enemies/giant.gd` vb. — `ObjectPool.get_object("res://effects/....tscn")`.
+- **Ortam:** `main/environment_manager.gd` — ağaçta kalan `xp_orbs` / `gold_orbs` grupları üzerinde işlem (ör. temizlik).
+- **Havuz boyutu:** `core/ObjectPool.gd` — yol içinde `xp_orb` veya `gold_orb` geçen sahneler için havuz **40** öğe (diğerleri 20).
+
+### Yeni bir orb (veya pickup) türü eklerken — checklist
+
+1. **`effects/<isim>_orb.tscn` + `.gd`** — `Area2D`; çarpışma / toplama mesafesi; oyuncuya yaklaşma mantığı (mıknatıs: `player.get_magnet_bonus()` veya sabit yarıçap).
+2. **`init` / `reset`** — Pool ile uyum: `reset()` içinde hız, pozisyon, görünürlük, grup üyeliği sıfırlanmalı; `ObjectPool.return_object(self)` toplandığında veya ömür bittiğinde çağrılmalı.
+3. **`add_to_group` / `remove_from_group`** — Örn. `"xp_orbs"`, `"gold_orbs"` gibi; **pausa, temizlik veya istatistik** için grupları kullanan kod varsa (`environment_manager` vb.) yeni grup adını oraya da ekle.
+4. **Düşürme noktaları** — Hangi düşman / sandık / olay bu orb’u üretecekse orada `get_object` ile sahne yolu; gerekirse değer parametresi (`xp_value`, `value` gibi) `init` ile verilir.
+5. **Oyuncu tarafı** — Toplanınca `player.gain_xp`, `collect_gold`, `heal`, yeni bir metot veya `EventBus` emit; co-op’ta P1/P2 paylaşımı **mevcut orb’lardaki gibi** düşünülmeli.
+6. **`ObjectPool.gd`** — Çok yoğun sahne ise yeni sahne yolu için havuz boyutu kuralı gerekebilir (şu an sadece xp/gold için özel sayı var).
+7. **Bu rehber + yol haritası** — Orb gerçekten eklendikten sonra bu bölümdeki örnekleri gerekirse yeni dosya adlarıyla güncelle; `YOL_HARITASI.md` günlüğüne tarih koy.
+
+*(Henüz oyunda olmayan bir orb türü için yukarıdaki liste “hedef mimari”dir; ilk implementasyonda `xp_orb.gd` / `gold_orb.gd` dosyalarını kopyalayıp uyarlamak en hızlı yoldur.)*
+
+---
+
+## 9. Checklist: yeni karakter
 
 1. `core/character_data.gd` — yeni sözlük (ID benzersiz).
 2. `characters/<id>/<id>.tscn` — sahne (script `player.gd` uyumu).
@@ -147,7 +181,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 
 ---
 
-## 9. Checklist: yeni taban silah
+## 10. Checklist: yeni taban silah
 
 1. `weapons/weapon_*.gd` + `class_name`.
 2. `player/player.gd` — `add_weapon`, `_on_upgrade_chosen`, `get_weapon_description`.
@@ -158,7 +192,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 
 ---
 
-## 10. Checklist: yeni pasif eşya
+## 11. Checklist: yeni pasif eşya
 
 1. `items/item_*.gd` + `class_name`.
 2. `player/player.gd` — `add_item`, `_on_upgrade_chosen`, `get_item_description`, gerekli oyun döngüsü kancaları (`on_enemy_killed`, `take_damage`, `_process` vb.).
@@ -168,7 +202,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 
 ---
 
-## 11. Checklist: yeni evrim silahı
+## 12. Checklist: yeni evrim silahı
 
 1. `weapons/weapon_*.gd` (evrim sonucu silah).
 2. `weapon_evolution.gd` — `EVOLUTIONS` girişi.
@@ -177,7 +211,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 
 ---
 
-## 12. İlgili klasörler (kısa)
+## 13. İlgili klasörler (kısa)
 
 - `main/` — Oyun sahnesi, spawn, dalga, kamera, co-op HUD tetikleri.
 - `enemies/` — Düşman davranışı, ölüm, orb düşürme.
@@ -188,6 +222,6 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 
 ---
 
-## 13. Son not
+## 14. Son not
 
-Bu rehber, kod tabanındaki gerçek yapıya göre yazılmıştır; yeni sistem eklendikçe **ilgili bölüm güncellenmelidir**. Özellikle string ID eşlemeleri (`match` blokları) unutulursa içerik oyunda görünür ama seçilemez veya çalışmaz.
+Bu rehber, kod tabanındaki gerçek yapıya göre yazılmıştır; yeni sistem eklendikçe **ilgili bölüm güncellenmelidir**. Özellikle string ID eşlemeleri (`match` blokları) unutulursa içerik oyunda görünür ama seçilemez veya çalışmaz. **Yol haritası** (`docs/YOL_HARITASI.md`) ile birlikte yaşayan belgeler olarak tutulmalıdır.

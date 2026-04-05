@@ -10,6 +10,8 @@ Godot 4 ile geliştirilen bir hayatta kalma / vampire survivors tarzı proje.
 
 ## Dokümantasyon
 
+İçerik veya mimari değişikliklerinde **`docs/GELISTIRICI_REHBERI.md`** ve **`docs/YOL_HARITASI.md`** dosyalarını güncel tutmayı unutmayın (tarihli günlük ve checklist’ler orada).
+
 Geliştiriciler için ek belgeler `docs/` klasöründe:
 
 | Dosya | İçerik |

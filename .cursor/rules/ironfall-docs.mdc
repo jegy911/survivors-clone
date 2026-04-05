@@ -1,0 +1,14 @@
+---
+description: Ironfall — kod değişince docs ve yol haritasını güncelle
+alwaysApply: true
+---
+
+# Dokümantasyon disiplini (Ironfall)
+
+Bu repoda **oyun içeriği veya mimari** değiştirildiğinde:
+
+1. **`docs/GELISTIRICI_REHBERI.md`** — Yeni içerik *türü* (orb, silah, karakter, harita akışı, vb.) veya yeni dosya/akış varsa ilgili bölüm veya checklist ekle/güncelle.
+2. **`docs/YOL_HARITASI.md`** — İlgili plan maddesi bittiyse tabloda işaretle (`[x]`) veya kaldır; **Yapılan iş günlüğü** tablosuna `YYYY-AA-GG` tarihi ve tek satır özet yaz.
+3. **`README.md`** — Kurulum, çalıştırma veya `docs/` yapısı değiştiyse güncelle.
+
+Küçük typo / tek satırlık bugfix için sadece ilgili doc’ta gerçekten yanlış bilgi varsa düzelt; her commit’te zorunlu değil.
