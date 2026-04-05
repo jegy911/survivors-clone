@@ -45,12 +45,13 @@ func _get_weapon_name(weapon_id: String) -> String:
 	var names = {
 		"bullet": "Mermi", "aura": "Aura", "chain": "Zincir", "boomerang": "Bumerang",
 		"lightning": "Yıldırım", "ice_ball": "Buz Topu", "shadow": "Gölge", "laser": "Lazer",
-		"holy_bullet": "Kutsal Mermi", "blood_boomerang": "Kan Bumerangı", "death_laser": "Ölüm Lazeri"
+		"holy_bullet": "Kutsal Mermi", "blood_boomerang": "Kan Bumerangı", "death_laser": "Ölüm Lazeri",
+		"fan_blade": "Yelpaze Bıçak", "ember_fan": "Kor Yelpazesi"
 	}
 	return names.get(weapon_id, weapon_id)
 
 func _get_item_name(item_id: String) -> String:
-	var names = {"lifesteal": "Can Çalma", "armor": "Zırh", "crit": "Kritik", "shield": "Kalkan"}
+	var names = {"lifesteal": "Can Çalma", "armor": "Zırh", "crit": "Kritik", "shield": "Kalkan", "ember_heart": "Kor Kalbi"}
 	return names.get(item_id, item_id)
 
 func _build_rich_description(char_data: Dictionary, state: String) -> String:

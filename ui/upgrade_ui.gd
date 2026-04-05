@@ -2,8 +2,8 @@ extends CanvasLayer
 
 signal upgrade_chosen(upgrade_id)
 
-var weapon_upgrades = ["bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser"]
-var item_upgrades = ["lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell"]
+var weapon_upgrades = ["bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade"]
+var item_upgrades = ["lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart"]
 var stat_upgrades = ["speed", "max_hp", "heal"]
 
 var stat_texts = {
@@ -159,9 +159,9 @@ func get_upgrade_text(id: String) -> String:
 		return "⚡ EVRİM: " + evo["name"] + "\n" + evo["description"]
 	
 	match id:
-		"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser":
+		"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade":
 			return "⚔ SİLAH\n" + player_ref.get_weapon_description(id)
-		"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell":
+		"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart":
 			return "🛡 EŞYA\n" + player_ref.get_item_description(id)
 		_:
 			return "🛡 EŞYA\n" + stat_texts.get(id, id)

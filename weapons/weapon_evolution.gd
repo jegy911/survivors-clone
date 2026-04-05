@@ -44,6 +44,12 @@ const EVOLUTIONS = {
 		"name": "Buz Novas",
 		"description": "Buz Topu + Zırh + Kalkan → Buz Novas\nVuruşta alan dondurma + hasar yansıtma"
 	},
+	"ember_fan": {
+		"requires_weapons": ["fan_blade"],
+		"requires_items": ["ember_heart"],
+		"name": "Kor Yelpazesi",
+		"description": "Yelpaze Bıçak (MAX) + Kor Kalbi (MAX) → Kor Yelpazesi\nDaha geniş yelpaze, delici kor kılıçları"
+	},
 }
 
 static func get_available_evolutions(player) -> Array:

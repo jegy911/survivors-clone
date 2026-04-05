@@ -34,7 +34,7 @@ func _give_reward():
 	var roll = randf()
 	if roll < 0.5:
 		# %50 — rastgele passive item ver
-		var all_items = ["armor", "speed_charm", "magnet", "lifesteal", "poison", "shield", "crit", "luck_stone"]
+		var all_items = ["armor", "speed_charm", "magnet", "lifesteal", "poison", "shield", "crit", "luck_stone", "ember_heart"]
 		var item_id = all_items[randi() % all_items.size()]
 		player.add_item(item_id)
 	elif roll < 0.80:

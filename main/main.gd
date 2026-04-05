@@ -67,6 +67,7 @@ func _get_character_scene(char_id: String) -> String:
 		"death_knight": return "res://characters/death_knight/death_knight.tscn"
 		"chaos": return "res://characters/chaos/chaos.tscn"
 		"omega": return "res://characters/omega/omega.tscn"
+		"nomad": return "res://characters/nomad/nomad.tscn"
 		_: return "res://characters/warrior/warrior.tscn"
 
 func _on_hit_stop_requested(frames: int):

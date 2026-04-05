@@ -67,6 +67,12 @@ var unlocked_achievements: Array = []
 var unlocked_characters: Array = ["warrior", "mage", "vampire"]
 var purchased_characters: Array = ["warrior", "mage", "vampire"]
 
+const CHARACTER_ORDER_V2_KEY = "character_order_v2"
+const OLD_CHARACTER_ORDER: Array[String] = [
+	"warrior", "mage", "vampire", "hunter", "stormer", "frost", "shadow_walker",
+	"engineer", "paladin", "blood_prince", "death_knight", "chaos", "omega", "nomad",
+]
+
 func _ready():
 	load_game()
 
@@ -74,6 +80,7 @@ func save_game():
 	var config = ConfigFile.new()
 	config.set_value("player", "gold", gold)
 	config.set_value("player", "selected_character", selected_character)
+	config.set_value("player", "selected_character_p2", selected_character_p2)
 	for key in meta_upgrades:
 		config.set_value("upgrades", key, meta_upgrades[key])
 	for key in settings:
@@ -97,6 +104,7 @@ func save_game():
 	config.set_value("unlock", "unlocked_characters", unlocked_characters)
 	config.set_value("unlock", "unlocked_achievements", unlocked_achievements)
 	config.set_value("unlock", "purchased_characters", purchased_characters)
+	config.set_value("player", CHARACTER_ORDER_V2_KEY, true)
 	var err = config.save(SAVE_PATH)
 	if err != OK:
 		print("SaveManager: Kayıt başarısız! Hata kodu: ", err)
@@ -108,7 +116,12 @@ func load_game():
 		return
 	gold = config.get_value("player", "gold", 0)
 	selected_character = config.get_value("player", "selected_character", 0)
-	selected_character = clamp(selected_character, 0, CharacterData.CHARACTERS.size() - 1)
+	selected_character_p2 = config.get_value("player", "selected_character_p2", 1)
+	if not config.get_value("player", CHARACTER_ORDER_V2_KEY, false):
+		selected_character = _remap_character_index_after_order_change(selected_character)
+		selected_character_p2 = _remap_character_index_after_order_change(selected_character_p2)
+	selected_character = clampi(selected_character, 0, CharacterData.CHARACTERS.size() - 1)
+	selected_character_p2 = clampi(selected_character_p2, 0, CharacterData.CHARACTERS.size() - 1)
 	for key in meta_upgrades:
 		meta_upgrades[key] = config.get_value("upgrades", key, 0)
 	for key in settings:
@@ -224,6 +237,14 @@ func update_stats_after_game(char_id: String, kills: int, survival_time: float, 
 		unique_chars_played.append(char_id)
 	check_and_unlock_characters(char_id, kills, survival_time)
 	save_game()
+
+func _remap_character_index_after_order_change(old_index: int) -> int:
+	var idx = clampi(old_index, 0, OLD_CHARACTER_ORDER.size() - 1)
+	var cid: String = OLD_CHARACTER_ORDER[idx]
+	for i in CharacterData.CHARACTERS.size():
+		if CharacterData.CHARACTERS[i]["id"] == cid:
+			return i
+	return clampi(old_index, 0, CharacterData.CHARACTERS.size() - 1)
 
 func check_and_unlock_characters(char_id: String, run_kills: int, survival_time: float):
 	for char_data in CharacterData.CHARACTERS:

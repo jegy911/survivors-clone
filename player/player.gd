@@ -201,7 +201,7 @@ func apply_character_bonuses():
 	elif special == "damage_double":
 		bullet_damage *= 2
 	elif special == "random_weapons":
-		var all_weapons = ["bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser"]
+		var all_weapons = ["bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade"]
 		all_weapons.shuffle()
 		for w in all_weapons.slice(0, 3):
 			add_weapon(w)
@@ -415,6 +415,10 @@ func add_weapon(type: String):
 			weapon = WeaponShadowStorm.new()
 		"frost_nova":
 			weapon = WeaponFrostNova.new()
+		"fan_blade":
+			weapon = WeaponFanBlade.new()
+		"ember_fan":
+			weapon = WeaponEmberFan.new()
 
 	if weapon:
 		add_child(weapon)
@@ -468,6 +472,8 @@ func add_item(type: String):
 			item = ItemSteamArmor.new()
 		"energy_cell":
 			item = ItemEnergyCell.new()
+		"ember_heart":
+			item = ItemEmberHeart.new()
 	
 	if item:
 		active_items[type] = item
@@ -535,6 +541,8 @@ func on_enemy_killed(enemy_position: Vector2):
 		active_items["blood_pool"].on_enemy_killed(enemy_position)
 	if active_items.has("speed_charm"):
 		active_items["speed_charm"].on_enemy_killed(enemy_position)
+	if active_items.has("ember_heart"):
+		active_items["ember_heart"].on_enemy_killed(enemy_position)
 	if active_weapons.has("storm"):
 		active_weapons["storm"].on_enemy_killed_bonus()
 	kill_count += 1
@@ -591,6 +599,8 @@ func get_weapon_description(type: String) -> String:
 		"ice_ball": return "Yeni Silah: Buz Topu"
 		"shadow": return "Yeni Silah: Gölge"
 		"laser": return "Yeni Silah: Lazer"
+		"fan_blade": return "Yeni Silah: Yelpaze Bıçak\nYakın düşmanlara yelpaze kesikleri"
+		"ember_fan": return "Evrim: Kor Yelpazesi\nDelici kor kılıçları, geniş yelpaze"
 	return ""
 
 func get_item_description(type: String) -> String:
@@ -613,6 +623,7 @@ func get_item_description(type: String) -> String:
 		"turbine": return "Yeni: Türbin\nHareket edince hasar artar"
 		"steam_armor": return "Yeni: Buharlı Zırh\nHasar alınca yenilmez"
 		"energy_cell": return "Yeni: Enerji Hücresi\nPeriyodik ateş patlaması"
+		"ember_heart": return "Yeni: Kor Kalbi\nDüşman öldürünce can yeniler"
 	return ""
 
 func gain_xp(amount: int):
@@ -708,9 +719,9 @@ func _on_upgrade_chosen(upgrade_id: String):
 				update_hp_bar()
 			"heal":
 				heal(20)
-			"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser":
+			"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade":
 				add_weapon(upgrade_id)
-			"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell":
+			"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart":
 				add_item(upgrade_id)
 	
 	if upgrade_ui:

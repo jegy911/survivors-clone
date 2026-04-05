@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://fanbladeshard01"]
+
+[ext_resource type="Script" path="res://projectiles/fan_blade_shard.gd" id="1_script"]
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_blade"]
+points = PackedVector2Array(0, 0, 22, -6, 22, 6)
+
+[node name="FanBladeShard" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(11, 0)
+shape = SubResource("ConvexPolygonShape2D_blade")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.95, 0.35, 0.08, 1)
+polygon = PackedVector2Array(0, 0, 22, -6, 22, 6)

@@ -195,6 +195,25 @@ const CHARACTERS = [
 		"unlock_condition": {"type": "survive_as", "character": "vampire", "amount": 300},
 		"origin_bonus": {"type": "xp_pct", "amount": 0.30, "penalty": "hp_pct", "penalty_amount": -0.15},
 	},
+	{
+		"id": "nomad",
+		"name": "Göçebe",
+		"description": "Sürgün savaşçı.\nYakın menzilli Yelpaze Bıçak ile başlar.\nÖnce 175 düşman öldür, sonra 💰350 altınla satın al.",
+		"color": "#D35400",
+		"start_weapon": "fan_blade",
+		"bonus_damage": 0,
+		"bonus_hp": 0,
+		"bonus_speed": 15,
+		"bonus_armor": 0,
+		"start_item": "",
+		"special": "",
+		"locked": true,
+		"secret": false,
+		"cost": 350,
+		"unlock_hint": "Toplam 175 düşman öldür; kilidi açılınca 💰350 altınla satın alırsın.",
+		"unlock_condition": {"type": "total_kills", "amount": 175},
+		"origin_bonus": {"type": "damage_flat", "amount": 5, "penalty": "none"},
+	},
 
 	# --- SECRET KARAKTERLER (3) ---
 	{
