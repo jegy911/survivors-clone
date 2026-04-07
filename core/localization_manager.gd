@@ -12,7 +12,8 @@ const LANGUAGE_CATALOG: Array = [
 ]
 
 func _ready() -> void:
-	TranslationServer.set_fallback_locale(FALLBACK_LOCALE)
+	# Fallback çeviri dili (TranslationServer'da API yok; proje ayarı + çalışma anı).
+	ProjectSettings.set_setting("internationalization/locale/fallback", FALLBACK_LOCALE)
 	_load_all_translations()
 	var code: String
 	if not FileAccess.file_exists(SaveManager.SAVE_PATH):

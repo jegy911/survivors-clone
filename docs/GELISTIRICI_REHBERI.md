@@ -37,7 +37,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 | Autoload | Görev |
 |----------|--------|
 | **SaveManager** | Altın, seçili karakter/harita, meta upgrade’ler, ayarlar (`locale` dahil), kilit / satın alınmış karakter listeleri, istatistikler. |
-| **LocalizationManager** | `LANGUAGE_CATALOG` + `locales/<code>.json` → `TranslationServer`; `TranslationServer.set_fallback_locale("en")`; ilk kurulumda kayıt yoksa **OS dili** (katalogda varsa); `locale_changed` sinyali. |
+| **LocalizationManager** | `LANGUAGE_CATALOG` + `locales/<code>.json` → `TranslationServer`; fallback dili `project.godot` → `internationalization/locale/fallback` ve `_ready()` içinde `ProjectSettings.set_setting(..., "en")`; ilk kurulumda kayıt yoksa **OS dili** (katalogda varsa); `locale_changed` sinyali. |
 | **AudioManager** | Ses çalma API’si. |
 | **ObjectPool** | Sık oluşturulan nesneler (mermi, orb, damage number vb.) için havuz; `get_object(scene_path)` / `return_object`. |
 | **EventBus** | Sinyal merkezi (hasar, ölüm, level up, altın vb.). |
@@ -50,7 +50,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 - **Tek kaynak dil listesi:** `core/localization_manager.gd` içindeki `LANGUAGE_CATALOG` — her satır: `code`, `label_key` (Dil açılır listesinde `tr()` ile), isteğe bağlı `steam` (Steam `GetCurrentGameLanguage` kısa adı; yayın entegrasyonu için). Yeni dil: katalog satırı + `locales/<code>.json` + **bütün** mevcut dil dosyalarında `ui.settings.lang_<code>` (görünen dil adı).
 - **Ayar:** `SaveManager.settings["locale"]` — geçerli `code`; `ui/settings.tscn` **Dil** sekmesi `LANGUAGE_CATALOG` ile doldurulur; `LocalizationManager.set_locale()`.
 - **İlk oyun açılışı:** `user://save.cfg` yoksa dil, `OS.get_locale()` ile kataloga eşlenir; eşleşmezse `en`. Seçim kayda yazılır.
-- **Eksik çeviri:** `TranslationServer` fallback `en`; yeni dil dosyasında boş anahtar bırakılmamalı — `python locales/check_locale_parity.py` ile tüm `locales/*.json` dosyalarının `en.json` ile anahtar eşitliği kontrol edilir (çıkış kodu 1 = fark var).
+- **Eksik çeviri:** `internationalization/locale/fallback` (`en`); yeni dil dosyasında boş anahtar bırakılmamalı — `python locales/check_locale_parity.py` ile tüm `locales/*.json` dosyalarının `en.json` ile anahtar eşitliği kontrol edilir (çıkış kodu 1 = fark var).
 - **Yeni metin:** Tüm mevcut locale dosyalarına aynı anahtarı ekleyin; gerekirse `locales/gen_locales.py` ile `tr`/`en` üretimi (isteğe bağlı).
 
 #### Mevcut diller (repo)
@@ -90,6 +90,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 ### Sahne
 - **`characters/<id>/<id>.tscn`** — Çoğunlukla `CharacterBody2D` + `player/player.gd`; her karakter kendi klasöründe tutulur.
+- **Çok geniş sprite sheet:** Birçok GPU’da tek dokunun kenarı ~8192 px ile sınırlıdır. Daha geniş PNG kullanıyorsan ilgili `.png.import` içinde `process/size_limit=8192` (veya cihazına uygun üst sınır) kullan ve sahnedeki `AtlasTexture` `region` değerlerini aynı ölçek faktörüyle güncelle (projede savaşçı gövdeleri için örnek: `8192 / 16064`).
 
 ### Spawn
 - **`main/main.gd`** → `_get_character_scene(char_id)` içinde `match` ile `res://characters/...` yolu **mutlaka** eklenmeli.
