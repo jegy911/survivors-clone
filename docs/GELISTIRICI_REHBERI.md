@@ -17,6 +17,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 5. **`docs/KARAKTER_SINIFLARI_VE_TASARIM.md`** — Karakter **sınıfı**, co-op destek vizyonu veya sınıf–kahraman tablosu değiştiyse güncelle.
 6. **`locales/*.json`** — Yeni metin veya anahtar: katalogdaki **tüm** dil dosyalarına aynı anahtarı ekleyin; `python locales/check_locale_parity.py` ile `en.json` referansına göre anahtar eşitliğini doğrulayın.
 7. **`README.md`** — Kurulum / çalıştırma / repo yapısı değiştiyse ana sayfayı güncelle.
+8. **`docs/lore.md`** — Evren, karakter ve düşman anlatısı netleştikçe veya yeni içerik lore ile bağlanacaksa ilgili bölümü güncelle.
 
 *(IDE’de Cursor kullanıyorsan: `.cursor/rules` altındaki `ironfall-docs.mdc` kuralı bu disiplini hatırlatır.)*
 
