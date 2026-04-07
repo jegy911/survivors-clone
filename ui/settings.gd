@@ -130,12 +130,14 @@ func _build_dil_tab(parent: Node):
 	lab.add_theme_font_size_override("font_size", 18)
 	row.add_child(lab)
 
-	var locales: Array[String] = ["tr", "en"]
+	var locales: Array[String] = []
 	var ob = OptionButton.new()
 	ob.custom_minimum_size = Vector2(240, 40)
-	ob.add_item(tr("ui.settings.lang_tr"))
-	ob.add_item(tr("ui.settings.lang_en"))
-	var cur: String = str(SaveManager.settings.get("locale", "tr"))
+	for entry in LocalizationManager.LANGUAGE_CATALOG:
+		var code: String = str(entry["code"])
+		locales.append(code)
+		ob.add_item(tr(str(entry["label_key"])))
+	var cur: String = str(SaveManager.settings.get("locale", "en"))
 	ob.selected = locales.find(cur) if locales.has(cur) else 0
 	ob.item_selected.connect(func(idx: int):
 		LocalizationManager.set_locale(locales[idx])

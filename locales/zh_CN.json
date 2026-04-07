@@ -1,0 +1,292 @@
+{
+  "ui": {
+    "main_menu": {
+      "title": "⚔ IRONFALL ⚔",
+      "subtitle": "铁陨落，符文起。",
+      "stats": "🎮 %d 次游玩  |  💀 %d 击杀  |  🏆 %d 胜利",
+      "gold": "💰 %d 金币",
+      "play": "▶  开始游戏",
+      "meta": "⬆  永久升级",
+      "settings": "⚙  设置",
+      "quit": "✕  退出",
+      "omega_unlock": "????? 已解锁"
+    },
+    "game_mode": {
+      "title": "你想怎么玩？",
+      "solo": "👤 单人\n\n单玩家\n经典模式",
+      "local_coop": "👥 本地合作\n\n同一键盘\n两名玩家",
+      "online": "🌐 在线合作\n\nP2P Steam\n即将推出……",
+      "back": "← 返回"
+    },
+    "map_select": {
+      "title": "模式与地图",
+      "mode_label": "🎮 游戏模式",
+      "map_label": "🗺 地图",
+      "vs_mode": "🗺 剧情模式\n\n开放地图\n存活 30 分钟！",
+      "arena_mode": "⬡ 生存 / 竞技场\n\n波次防守\n🔒 即将推出……",
+      "map1": "🏰 陨落王国\n\n开阔地带\n中世纪遗迹\n存活 30 分钟！",
+      "map2": "⬡ 地图 2\n\n即将推出……",
+      "map3": "⬡ 地图 3\n\n即将推出……",
+      "arena1": "⬡ 竞技场 1\n\n即将推出……",
+      "back": "← 返回",
+      "start": "▶ 开始！"
+    },
+    "pause": {
+      "title": "已暂停",
+      "resume": "▶ 继续",
+      "settings": "⚙ 设置",
+      "main_menu": "🏠 主菜单",
+      "settings_title": "设置",
+      "back": "← 返回"
+    },
+    "settings": {
+      "title": "设置",
+      "back_main": "← 主菜单",
+      "tab_audio": "🔊 音频",
+      "tab_language": "🌐 语言",
+      "tab_video": "🖥 画面",
+      "tab_gameplay": "🎮 玩法",
+      "tab_profile": "👤 档案",
+      "tab_dev": "🛠 开发",
+      "master": "主音量",
+      "sfx": "音效音量",
+      "music": "音乐",
+      "fullscreen": "全屏",
+      "resolution": "分辨率",
+      "vfx": "特效",
+      "damage_numbers": "伤害数字",
+      "hp_bars": "生命条",
+      "screen_shake": "屏幕震动",
+      "language_label": "界面语言",
+      "lang_tr": "Türkçe",
+      "lang_en": "English",
+      "lang_zh_CN": "简体中文",
+      "stats_title": "📊 统计数据",
+      "achievements_title": "🏅 成就",
+      "ach_progress": "%d / %d 已完成",
+      "reset_stats": "📊 重置统计",
+      "reset_stats_confirm": "⚠ 确定吗？再按一次！",
+      "reset_full": "🗑 重置全部进度",
+      "reset_full_confirm": "⚠ 确定吗？再按一次！",
+      "dev_title": "⚠ 开发工具 — 仅供测试",
+      "dev_gold": "当前金币：%d",
+      "option_both_on": "全部显示",
+      "option_player_only": "仅玩家",
+      "option_enemy_only": "仅敌人",
+      "option_both_off": "全部关闭"
+    },
+    "stats": {
+      "total_kills": "⚔ 总击杀",
+      "best_kill_run": "💀 单局最高击杀",
+      "boss_kills": "🏆 Boss 击杀",
+      "total_runs": "🎮 总游玩次数",
+      "total_wins": "🏅 胜利次数",
+      "total_deaths": "💀 总死亡",
+      "total_gold": "💰 累计获得金币",
+      "total_levels": "⬆ 累计等级",
+      "total_damage": "🗡 总伤害",
+      "chests": "📦 开启宝箱",
+      "items": "🛡 收集道具",
+      "survival": "⏱ 最长存活时间"
+    },
+    "character_select": {
+      "title_solo": "选择角色",
+      "p1_title": "👤 选择 P1 角色",
+      "p2_title": "👥 选择 P2 角色",
+      "taken_by_p1": "已被 P1 选择",
+      "locked_p1": "🔒 P1"
+    },
+    "meta_screen": {
+      "title": "永久升级",
+      "back": "← 主菜单",
+      "gold": "💰 金币：%d",
+      "max": "✓ 已满",
+      "cost": "%d 💰",
+      "reset_confirm": "⚠ 确定吗？再按一次！",
+      "reset_all": "🔄 重置全部升级"
+    },
+    "game_over": {
+      "won": "🏆 胜利！",
+      "lost": "☠ 失败",
+      "time": "⏱ 时间：%02d:%02d",
+      "level": "⭐ 到达等级：%d",
+      "kills": "💀 消灭敌人：%d",
+      "kpm": "⚡ 每分钟击杀：%s",
+      "gold_earned": "💰 获得金币：+%d",
+      "restart": "🔄 再玩一局",
+      "menu": "🏠 主菜单"
+    },
+    "upgrade_ui": {
+      "reroll": "🔄 重掷（%d）",
+      "skip": "⏭ 跳过（%d）",
+      "title_coop": "⭐ %s（%s）— 等级 %d ⭐",
+      "title_solo": "⭐ 等级 %d — 选择升级 ⭐",
+      "stat_speed": "移动速度 +20\n提高移动速度",
+      "stat_max_hp": "最大生命 +25\n提高生命上限",
+      "stat_heal": "立即 +20 生命\n立刻恢复生命"
+    },
+    "devtools": {
+      "add_gold": "💰 +1000 金币",
+      "max_meta": "⬆ 升满全部升级",
+      "unlock_chars": "🔓 解锁全部角色",
+      "gold_zero": "💸 金币清零",
+      "lock_chars": "🔒 重置角色"
+    }
+  },
+  "achievement": {
+    "first_blood": {
+      "name": "第一滴血",
+      "desc": "击杀第一个敌人"
+    },
+    "killer_100": {
+      "name": "屠杀",
+      "desc": "单局击杀 100 名敌人"
+    },
+    "killer_500": {
+      "name": "火力全开",
+      "desc": "单局击杀 500 名敌人"
+    },
+    "killer_1000": {
+      "name": "神罚",
+      "desc": "单局击杀 1000 名敌人"
+    },
+    "survive_10": {
+      "name": "幸存者",
+      "desc": "存活 10 分钟"
+    },
+    "survive_20": {
+      "name": "传奇",
+      "desc": "存活 20 分钟"
+    },
+    "survive_30": {
+      "name": "不朽",
+      "desc": "完成一局（30 分钟）"
+    },
+    "boss_first": {
+      "name": "Boss 杀手",
+      "desc": "击杀第一个 Boss"
+    },
+    "boss_10": {
+      "name": "Boss 猎手",
+      "desc": "累计击杀 10 个 Boss"
+    },
+    "evolution": {
+      "name": "进化者",
+      "desc": "进化一把武器"
+    },
+    "collector": {
+      "name": "收藏家",
+      "desc": "使用 5 名不同角色游玩"
+    },
+    "chest_50": {
+      "name": "寻宝者",
+      "desc": "累计开启 50 个宝箱"
+    },
+    "rich": {
+      "name": "富有",
+      "desc": "累计获得 1000 金币"
+    },
+    "unlock_chaos": {
+      "name": "找到混沌",
+      "desc": "解锁混沌角色"
+    },
+    "unlock_omega": {
+      "name": "找到欧米茄",
+      "desc": "解锁欧米茄角色"
+    }
+  },
+  "meta": {
+    "damage_bonus": {
+      "name": "⚔ 伤害加成",
+      "desc": "所有武器 +5 伤害\n（满级：+25 伤害）"
+    },
+    "cooldown_bonus": {
+      "name": "⚡ 冷却缩短",
+      "desc": "每级攻速 +8%\n（满级：-40% 冷却）"
+    },
+    "area_bonus": {
+      "name": "💥 范围扩大",
+      "desc": "每级攻击范围 +10%\n（满级：+50% 范围）"
+    },
+    "multi_attack_bonus": {
+      "name": "🎯 多重打击",
+      "desc": "所有武器 +1 次额外攻击\n（满级：+3 次）"
+    },
+    "crit_damage_bonus": {
+      "name": "🗡 暴击伤害",
+      "desc": "暴击倍率 +25%\n（满级：2x → 2.75x）"
+    },
+    "duration_bonus": {
+      "name": "⏱ 持续时间",
+      "desc": "中毒/减速持续时间 +15%\n（满级：+75%）"
+    },
+    "adrenaline": {
+      "name": "🔥 肾上腺素",
+      "desc": "每损失 1 点生命 +20 伤害\n（低血时更强）"
+    },
+    "momentum": {
+      "name": "💨 动能",
+      "desc": "移动时每秒 +1 伤害\n（满级：+10 加成）"
+    },
+    "max_hp_bonus": {
+      "name": "💗 最大生命",
+      "desc": "起始生命每级 +25\n（满级：+125 生命）"
+    },
+    "armor_bonus": {
+      "name": "🛡 起始护甲",
+      "desc": "起始护甲每级 +2\n（满级：受到伤害 -10）"
+    },
+    "recovery_bonus": {
+      "name": "💚 生命恢复",
+      "desc": "每分钟 +3 生命\n（满级：+15 生命/分）"
+    },
+    "revival": {
+      "name": "✨ 复苏",
+      "desc": "每局一次：以 30% 生命复活\n（满级：1 次）"
+    },
+    "overheal": {
+      "name": "🔰 过量治疗护盾",
+      "desc": "满血时治疗\n转化为护盾"
+    },
+    "xp_bonus": {
+      "name": "⭐ 经验加成",
+      "desc": "每级经验获取 +10%\n（满级：+50% 经验）"
+    },
+    "luck_bonus": {
+      "name": "🍀 幸运",
+      "desc": "稀有升级几率 +10%\n（满级：+50% 幸运）"
+    },
+    "magnet_bonus": {
+      "name": "🧲 磁铁",
+      "desc": "经验/金币吸取范围 +15\n（满级：+75 范围）"
+    },
+    "gold_bonus": {
+      "name": "💰 金币加成",
+      "desc": "每名敌人金币每级 +1\n（满级：+5 金币）"
+    },
+    "growth_bonus": {
+      "name": "📦 金币倍率",
+      "desc": "获得金币每级 +15%\n（满级：+75% 金币）"
+    },
+    "start_level_bonus": {
+      "name": "📈 起始等级",
+      "desc": "开局等级 +1\n（满级：+3 级）"
+    },
+    "reroll_bonus": {
+      "name": "🔄 额外重掷",
+      "desc": "升级时 +1 次重掷\n（满级：+3 次）"
+    },
+    "skip_bonus": {
+      "name": "⏭ 额外跳过",
+      "desc": "升级时 +1 次跳过\n（满级：+3 次）"
+    },
+    "speed_bonus": {
+      "name": "👟 移动速度",
+      "desc": "移动速度每级 +10\n（满级：+50 速度）"
+    },
+    "curse_level": {
+      "name": "💀 诅咒",
+      "desc": "敌人强度/数量 +10%\n每级经验变为 2 倍作为交换"
+    }
+  }
+}

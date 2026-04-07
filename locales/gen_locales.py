@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Bir kerelik: tr.json ve en.json üretir. python locales/gen_locales.py"""
+"""Bir kerelik: tr.json ve en.json üretir. python locales/gen_locales.py
+
+Anahtar eşitliği: `python locales/check_locale_parity.py` (CI / commit öncesi).
+`zh_CN.json` bu script dışında tutulur; anahtarlar `en.json` ile hizalı kalmalıdır.
+"""
 import json
 from pathlib import Path
 

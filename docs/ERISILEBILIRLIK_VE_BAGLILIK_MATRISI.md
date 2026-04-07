@@ -3,7 +3,7 @@
 Bu belge, **20 + 20 maddenin** Ironfall kod tabanındaki **Var / Kısmi / Yok** durumunu ve kısa **repo notunu** içerir.  
 Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 
-**Son kod kontrolü:** 2026-04-04
+**Son kod kontrolü:** 2026-04-07
 
 ---
 
@@ -26,7 +26,7 @@ Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 | 13 | Renk körlüğü paleti | **Yok** | Tema/palet sistemi yok. |
 | 14 | Büyük net ikonlar (level-up) | **Yok** | `upgrade_ui` ağırlıklı metin; ikon asset yok. |
 | 15 | Görsel patlama ön uyarısı (exploder) | **Kısmi** | Anında patlama + parçacık; `flash()` boş — ön uyarı blink yok. |
-| 16 | Metin boyutu (global ölçek) | **Yok** | Global font ölçeği yok. |
+| 16 | Metin boyutu (global ölçek) | **Yok** | Global font ölçeği yok. *(Çoklu arayüz dili: `LocalizationManager`, `locales` — `tr`/`en`/`zh_CN`; bu satır yalnızca font ölçeğini kapsar.)* |
 | 17 | Pencere / tam ekran | **Kısmi** | `settings.gd` tam ekran + çözünürlük; isteğe bağlı global F11 `project.godot`’ta doğrulanmalı. |
 | 18 | Fare veya klavye (hibrit hareket) | **Yok** | `player.gd` klavye/joypad; fare pozisyonuna göre hareket yok. |
 | 19 | Lore’u zorlamama / ayrı sekme | **Kısmi** | Uzun lore ekranı yok; ayrı hikaye sekmesi yok. |

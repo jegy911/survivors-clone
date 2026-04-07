@@ -4,7 +4,7 @@ Oyunda **görsel, ses sunumu, UI/ikon ve pazarlama** tarafında yapılması veya
 Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.  
 Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.
 
-**Son güncelleme:** 2026-04-04
+**Son güncelleme:** 2026-04-07
 
 ---
 
@@ -164,6 +164,7 @@ Level-up ekranı ağırlıklı **metin**; `upgrade_ui` için **büyük net ikon*
 | Duraklat | `ui/pause_menu` | ✅ / ❌ |
 | Meta upgrade | `ui/meta_upgrade` | ✅ / ❌ |
 | Ayarlar | `ui/settings` | ✅ |
+| Arayüz dili (çeviri) | `locales/*.json`, `LocalizationManager`, Ayarlar → Dil | ✅ `tr` / `en` / `zh_CN`; silah-eşya kart metinleri hâlâ kod içi (`player.gd` / `upgrade_ui`) — ileride anahtarlanabilir |
 | Hasar sayıları | `effects/damage_number` | ✅ |
 | Global font ölçeği (okunabilirlik) | — | ❌ |
 | Otomatik pause (odak kaybı) | — | Davranış yok; UI tasarımı gerektirmez ama ürün kararı |
@@ -215,6 +216,7 @@ Aşağıdaki maddelerin **kod karşılığı** matriste; burada yalnızca **tasa
 
 ## Lore ve metin (ürün)
 
+- Menü / ayar / başarım / meta upgrade gibi **UI metinleri** — ✅ `tr()` + `locales` (`tr`, `en`, `zh_CN`); ayrıntı: `GELISTIRICI_REHBERI.md` yerelleştirme bölümü.
 - Boss / harita / karakter **lore** metinleri ve sunumu — ❌ (uzun vadeli içerik).
 - Gereksiz lore’u gizleyen ayrı “hikaye sekmesi” — ❌.
 

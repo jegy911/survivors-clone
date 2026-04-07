@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-06
+**Son güncelleme:** 2026-04-07
 
 ---
 
@@ -22,11 +22,27 @@ Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve iler
 
 ---
 
+## Tamamlanan sistemler (özet, 2026-04)
+
+Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrıntı günlük satırlarında.
+
+| Alan | Ne var? |
+|------|---------|
+| **Yerelleştirme** | `LocalizationManager` autoload; `LANGUAGE_CATALOG` + `locales/tr.json`, `en.json`, `zh_CN.json`; Ayarlar → Dil; ilk kurulumda kayıt yoksa OS dili; fallback `en`; `check_locale_parity.py` (`en.json` referansı). |
+| **Kayıt / ayarlar** | `SaveManager.settings.locale` ve diğer ayarlar; geçersiz dil kodu düzeltmesi. |
+| **İçerik (örnekler)** | Göçebe (nomad), Yelpaze Bıçak + shard, Kor Kalbi + Kor Yelpazesi evrimi; karakter sırası / `character_order_v2` migrasyonu. |
+| **Dokümantasyon disiplini** | `GELISTIRICI_REHBERI`, `YOL_HARITASI`, `TASARIM`, erişilebilirlik matrisi, kök `README`, `.cursor/rules/ironfall-docs.mdc`. |
+
+**Not (dil):** Yeni locale dosyası ekleme işi **şimdilik durduruldu**; sıradaki diller `GELISTIRICI_REHBERI.md` içindeki plan tablosunda listelenir.
+
+---
+
 ## Yapılan iş günlüğü (tarihli)
 
 | Tarih | Özet |
 |--------|------|
-| 2026-04-06 | **Yerelleştirme** — `LocalizationManager` autoload, `locales/tr.json` + `en.json`, `SaveManager.settings.locale`, Ayarlar → Dil sekmesi; ana UI metinleri `tr()` ile anahtarlandı. |
+| 2026-04-07 | **Yerelleştirme paketi (tamam)** — `LANGUAGE_CATALOG`, OS ile ilk kurulum dili, `TranslationServer` fallback, geçersiz `locale` düzeltmesi, `check_locale_parity.py` (tüm `locales/*.json` ↔ `en.json`); **简体中文** `zh_CN.json` + `lang_*` anahtarları + OS `zh` eşlemesi (繁体 bölgeler şimdilik `en`). |
+| 2026-04-06 | **Yerelleştirme (ilk sürüm)** — `LocalizationManager` autoload, `locales/tr.json` + `en.json`, `SaveManager.settings.locale`, Ayarlar → Dil; ana UI metinleri `tr()` ile anahtarlandı. |
 | 2026-04-04 | **Dokümantasyon** — `docs/TASARIM.md` eklendi; sanat/yayın envanteri oraya taşındı; erişilebilirlik matrisi yalnızca kod durumuna indirgendi. |
 | 2026-04 | **Göçebe (nomad)** — Karakter, sahne, spawn, kilit (175 toplam kill → 350 altın), seçim ekranı sırası, indeks migrasyonu (`character_order_v2`). |
 | 2026-04 | **Yelpaze Bıçak + shard** — `fan_blade`, `fan_blade_shard` (Polygon2D, ObjectPool), yakın menzil. |
@@ -61,7 +77,7 @@ Teknik ayar anahtarları: `GELISTIRICI_REHBERI.md` §15.
 
 | Durum | İş |
 |--------|-----|
-| [x] | **Dil sistemi (localization)** — `LocalizationManager`, `locales/tr.json` / `en.json`, Ayarlar → Dil; `tr("ui....")` anahtarları. |
+| [x] | **Dil sistemi (localization)** — `LocalizationManager`, `LANGUAGE_CATALOG`, `tr` / `en` / `zh_CN`, Ayarlar → Dil, OS ilk kurulum, parity script; *yeni diller sonraya bırakıldı.* |
 | [ ] | **Evrim sistemi derinleştirme** — Kombinasyonlar, denge, UI, kenar durumlar. |
 | [x] | **README.md** — GitHub için özet, Godot ile çalıştırma, `docs/` linkleri. |
 | [ ] | **Bağlam belgesi** — `survivors_clone_context.md` (veya eşdeğeri): Ironfall, yeni sistemler, autoload özeti. |
@@ -72,6 +88,7 @@ Teknik ayar anahtarları: `GELISTIRICI_REHBERI.md` §15.
 
 | Alan | Hedef / not |
 |------|----------------|
+| **Yerelleştirme (yeni diller)** | `ru`, `es`, `pt_BR`, `ja`, `de`, `fr`, `ko`, `pl`, `uk` — tablo ve `code`/`steam` eşlemesi: `GELISTIRICI_REHBERI.md` § yerelleştirme. |
 | **Karakterler** | Örn. 20 satın alınabilir + 3 gizli = 23 toplam (hedef rakam tartışılabilir). |
 | **Silahlar** | Örn. ~20 silah; karakter–silah teması. |
 | **Pasif eşyalar** | Çeşitlendirme; havuz büyütme hedefleri. |
@@ -103,6 +120,7 @@ Checklist: `docs/TASARIM.md`.
 
 ## Eski “tamamlananlar listesi” (özet)
 
-Ayrıntılı kayıt için yukarıdaki **Yapılan iş günlüğü** tablosunu kullanın. Burası yalnızca hızlı hatırlatma:
+Ayrıntılı kayıt için yukarıdaki **Tamamlanan sistemler (özet)** ve **Yapılan iş günlüğü** tablolarını kullanın. Burası yalnızca hızlı hatırlatma:
 
 - Göçebe, Yelpaze Bıçak, Kor Kalbi, Kor Yelpazesi evrimi, karakter sırası / kayıt migrasyonu, dokümantasyon ve README tamamlandı (2026-04).
+- Üç dilli arayüz (`tr` / `en` / `zh_CN`) ve yerelleştirme altyapısı tamamlandı (2026-04-07); ek diller planlı.

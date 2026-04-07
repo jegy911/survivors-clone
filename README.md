@@ -10,20 +10,16 @@ Godot 4 ile geliştirilen bir hayatta kalma / vampire survivors tarzı proje.
 
 ## Dokümantasyon
 
-İçerik veya mimari değişikliklerinde **`docs/GELISTIRICI_REHBERI.md`**, **`docs/YOL_HARITASI.md`** ve gerekiyorsa **`docs/TASARIM.md`** dosyalarını güncel tutmayı unutmayın.
-
-Geliştiriciler için ek belgeler `docs/` klasöründe:
+İçerik veya mimari değişikliklerinde **`docs/GELISTIRICI_REHBERI.md`**, **`docs/YOL_HARITASI.md`** ve gerekiyorsa **`docs/TASARIM.md`** ile **erişilebilirlik matrisini** güncel tutmayı unutmayın (ayrıntı: `.cursor/rules/ironfall-docs.mdc`).
 
 | Dosya | İçerik |
 |--------|--------|
-| [docs/GELISTIRICI_REHBERI.md](docs/GELISTIRICI_REHBERI.md) | Proje mimarisi, dosyaların bağlantıları, yeni karakter / silah / eşya ekleme checklist’leri |
-| [docs/YOL_HARITASI.md](docs/YOL_HARITASI.md) | Yol haritası, yapılacaklar ve tamamlanan işler |
-| [docs/TASARIM.md](docs/TASARIM.md) | Görsel / ikon / UI / ses sunumu / yayın envanteri (✅/❌ takibi) |
-| [docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md](docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md) | Erişilebilirlik + bağlılık (20+20 madde), kodla eşleştirilmiş Var/Kısmi/Yok tablosu |
+| [docs/GELISTIRICI_REHBERI.md](docs/GELISTIRICI_REHBERI.md) | Mimari, autoload’lar, yerelleştirme, checklist’ler |
+| [docs/YOL_HARITASI.md](docs/YOL_HARITASI.md) | Plan, **tamamlanan sistemler özeti**, günlük |
+| [docs/TASARIM.md](docs/TASARIM.md) | Görsel / ikon / UI / ses / yayın envanteri (✅/❌) |
+| [docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md](docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md) | Erişilebilirlik + bağlılık (20+20), Var/Kısmi/Yok |
 
-Çeviri dosyaları: `locales/tr.json`, `locales/en.json` (`LocalizationManager` autoload).
-
-Önceki mesajda kastettiğim şey buydu: GitHub veya klasörü açan biri **tek bakışta** bu iki rehbere buradan gidebilsin.
+**Yerelleştirme:** `locales/tr.json`, `en.json`, `zh_CN.json` — `LocalizationManager` + `LANGUAGE_CATALOG`. Anahtar kontrolü: `python locales/check_locale_parity.py` (referans `en.json`). Yeni diller şimdilik plan aşamasında; tablo `GELISTIRICI_REHBERI.md` içinde.
 
 ## Lisans
 
