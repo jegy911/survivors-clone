@@ -173,7 +173,7 @@ Level-up ekranı ağırlıklı **metin**; `upgrade_ui` için **büyük net ikon*
 | Alan | Dosya / konum | İkon / layout / tutarlı tema |
 |------|----------------|------------------------------|
 | Ana menü | `ui/main_menu` | ✅ / ❌ |
-| Karakter seçimi (+ P2) | `ui/character_select*` | Portre / kilit göstergeleri — iyileştirilebilir |
+| Karakter seçimi (+ P2) | `ui/character_select*` | Dört rol filtresi (`hero_class`); portre / kilit göstergeleri — iyileştirilebilir |
 | Harita / mod | `ui/map_select` | Arena kilit görselleri placeholder |
 | Level-up kartları | `ui/upgrade_ui` | ❌ Büyük ikon seti yok |
 | HUD (kill, altın, çubuklar) | `player` + CanvasLayer | ✅ / ❌ |

@@ -45,7 +45,7 @@
     "engineer": {"name": "Mühendis", "desc": "Lazer ve alan bonusu; cam topa yakın."},
     "paladin": {"name": "Paladin", "desc": "Tank kutsal savaşçı; zırh ve Kutsal Mermi."},
     "blood_prince": {"name": "Kan Prensi", "desc": "XP açgözlüsü; Kan Bumerangı fantezisi."},
-    "nomad": {"name": "Göçebe", "desc": "Yelpaze Bıçak dövüşçüsü—kill ile açılır, altınla satın alınır."},
+    "nomad": {"name": "Göçebe", "desc": "Sürgün savaşçı; yakın menzilli Yelpaze Bıçak."},
     "death_knight": {"name": "Ölüm Şövalyesi", "desc": "Gizli: Ölüm Lazeri başlangıcı, dev hasar, sert bedeller."},
     "chaos": {"name": "Kaos", "desc": "Gizli: rastgele silahlarla başla—saf varyans koşuları."},
     "omega": {"name": "Omega", "desc": "Gizli: tüm silahlar, 1 can. Uzman ve gösteriş koşuları."}

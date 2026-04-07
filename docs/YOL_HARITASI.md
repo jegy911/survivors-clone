@@ -41,6 +41,9 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-07 | **Kilit ipucu / açıklama** — Büyücü/Vampir `unlock_hint`, Göçebe `description` ve kodeks `nomad` açıklamaları (tr/en/zh_CN + `codex_extensions_*`) satın alma/altın cümlesinden arındırıldı; ücret yalnızca koşul sonrası satın alma butonunda. |
+| 2026-04-07 | **Karakter ilerlemesi** — Başlangıçta yalnızca Savaşçı ücretsiz; Büyücü (50 toplam kill → 💰150) ve Vampir (Savaşçı ile 120 sn hayatta kalma → 💰175) kilit + satın alma; `SaveManager` / tam sıfırlama / devtool “lock_chars” varsayılanı `["warrior"]`; `selected_character_p2` varsayılan `0`. |
+| 2026-04-07 | **Karakter seçimi — sınıf filtresi** — `hero_class` + `HERO_CLASS_FILTER_IDS`; P1/P2 `character_select*.gd` dört rol filtresi (tekrar basınca tüm liste); `special` kahramanlar yalnızca filtresiz görünür; `ui.character_select.filter_*` locale. |
 | 2026-04-07 | **Lore belgesi** — `docs/lore.md`: çöküş sonrası dünya (kalıntı teknoloji + rün), Şeytani Kral endgame çerçevesi, Warrior/Mage tasvirleri ve tasarım ilkeleri; `GELISTIRICI_REHBERI.md` dokümantasyon listesine `lore.md` maddesi eklendi. |
 | 2026-04-07 | **Performans / refaktör** — `EnemyRegistry` autoload (düşman listesi, `EnemyBase` kayıt); silah/efektlerde `get_nodes_in_group("enemies")` kaldırıldı; `ObjectPool` serbest yuva yığını; `PlayerLoadoutRegistry` (silah/eşya fabrikası); `CharacterData.CHARACTER_SCENE_BY_ID`; `player_ui_helpers`, `character_select_helpers`, `settings_ui_styles`; `MAX_ENEMIES` 1200; `ui.player` / `ui.character_select` locale anahtarları. |
 | 2026-04-07 | **Ürün vizyonu** — Co-op destek kahramanları, dört karakter sınıfı, profil/meta, idle-benzeri görevler, rehber/kodeks/sözlük maddeleri `YOL_HARITASI.md` içinde işaretlendi; ayrıntılı sınıf ve kahraman taslağı: `docs/KARAKTER_SINIFLARI_VE_TASARIM.md`. |

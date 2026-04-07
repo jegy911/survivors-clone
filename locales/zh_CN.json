@@ -95,6 +95,10 @@
       "title_solo": "选择角色",
       "p1_title": "👤 选择 P1 角色",
       "p2_title": "👥 选择 P2 角色",
+      "filter_tank": "坦克",
+      "filter_fighter": "战士",
+      "filter_mage": "法师",
+      "filter_controller": "控场",
       "taken_by_p1": "已被 P1 选择",
       "locked_p1": "🔒 P1",
       "line_start_weapon": "⚔ 初始武器：%s",
@@ -514,7 +518,7 @@
       },
       "nomad": {
         "name": "游牧民",
-        "desc": "扇刃近战；击杀解锁后用金币购买。"
+        "desc": "流亡战士，擅用近程扇刃。"
       },
       "death_knight": {
         "name": "死亡骑士",

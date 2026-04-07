@@ -438,6 +438,7 @@ func _on_reset_full():
 		return
 	SaveManager.gold = 0
 	SaveManager.selected_character = 0
+	SaveManager.selected_character_p2 = 0
 	for key in SaveManager.meta_upgrades:
 		SaveManager.meta_upgrades[key] = 0
 	SaveManager.total_kills = 0
@@ -452,8 +453,8 @@ func _on_reset_full():
 	SaveManager.total_chests_opened = 0
 	SaveManager.total_items_collected = 0
 	SaveManager.max_survival_time = 0.0
-	SaveManager.unlocked_characters = ["warrior", "mage", "vampire"]
-	SaveManager.purchased_characters = ["warrior", "mage", "vampire"]
+	SaveManager.unlocked_characters = ["warrior"]
+	SaveManager.purchased_characters = ["warrior"]
 	SaveManager.unlocked_achievements = []
 	SaveManager.codex_discovered = []
 	SaveManager.codex_weapons = []
@@ -509,8 +510,8 @@ func _build_devtools_tab(parent: Node):
 	)
 
 	_add_dev_button(vbox, tr("ui.devtools.lock_chars"), func():
-		SaveManager.unlocked_characters = ["warrior", "mage", "vampire"]
-		SaveManager.purchased_characters = ["warrior", "mage", "vampire"]
+		SaveManager.unlocked_characters = ["warrior"]
+		SaveManager.purchased_characters = ["warrior"]
 		SaveManager.save_game()
 		_switch_tab("devtools")
 	)

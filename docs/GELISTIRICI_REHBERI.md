@@ -90,10 +90,10 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 ### Rol ve sınıf (tasarım)
 
-- **Sınıf çerçevesi** (Controller, Fighter, Mage, Tank), co-op destek vizyonu ve mevcut kahramanların **taslak** sınıf eşlemesi: **`docs/KARAKTER_SINIFLARI_VE_TASARIM.md`**. Kodda henüz ayrı bir `class` alanı yok; eklendiğinde bu belge ile tablo senkron tutulmalıdır.
+- **Sınıf çerçevesi** (Controller, Fighter, Mage, Tank), co-op destek vizyonu ve mevcut kahramanların **taslak** sınıf eşlemesi: **`docs/KARAKTER_SINIFLARI_VE_TASARIM.md`**. Kodda rol etiketi: `CharacterData.CHARACTERS[].hero_class`; tasarım tablosu ile senkron tutulmalıdır.
 
 ### Veri
-- **`core/character_data.gd`** — `CharacterData.CHARACTERS` dizisi: her eleman bir sözlük (`id`, `name`, `description`, `color`, `start_weapon`, `start_item`, bonuslar, `locked`, `secret`, `cost`, `unlock_hint`, `unlock_condition`, `origin_bonus`, `special`). Karakter sahne yolu: `CharacterData.CHARACTER_SCENE_BY_ID` + `get_character_scene_path(char_id)` (`main/main.gd` oyuncu spawn).
+- **`core/character_data.gd`** — `CharacterData.CHARACTERS` dizisi: her eleman bir sözlük (`id`, `name`, `description`, `color`, `start_weapon`, `start_item`, bonuslar, `locked`, `secret`, `cost`, `unlock_hint`, `unlock_condition`, `origin_bonus`, `special`, `hero_class` — tasarım rolü: `tank` / `fighter` / `mage` / `controller` / `special`; seçim filtresi sırası: `HERO_CLASS_FILTER_IDS`). Karakter sahne yolu: `CharacterData.CHARACTER_SCENE_BY_ID` + `get_character_scene_path(char_id)` (`main/main.gd` oyuncu spawn).
 
 ### Sahne
 - **`characters/<id>/<id>.tscn`** — Çoğunlukla `CharacterBody2D` + `player/player.gd`; her karakter kendi klasöründe tutulur.
@@ -109,11 +109,12 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 - **`core/save_manager.gd`**
   - `unlocked_characters`: Koşul sağlandı mı (ör. toplam kill)?
   - `purchased_characters`: Altınla satın alındı mı?
+  - **Yeni oyuncu varsayılanı:** Yalnızca `warrior` hem açık hem satın alınmış sayılır; `mage` / `vampire` `character_data` içindeki `unlock_condition` + `cost` ile açılır (mevcut kayıt dosyaları değişmez).
   - `check_and_unlock_characters()`: `unlock_condition` tiplerini `character_data` ile eşleştirir.
   - `purchase_character(char_id)`: Hem `unlocked` hem yeterli altın gerekir.
 
 ### UI
-- **`ui/character_select.gd`** / **`ui/character_select_p2.gd`**: Kartlar `CHARACTERS` sırasına göre üretilir; `_get_weapon_name` / `_get_item_name` yeni ID’ler için güncellenmeli.
+- **`ui/character_select.gd`** / **`ui/character_select_p2.gd`**: Kartlar `CHARACTERS` sırasına göre üretilir; sınıf filtresi (`hero_class`); P2’de P1’in karakteri filtre dışı kalsa da kartı görünür (alınamaz). `_get_weapon_name` / `_get_item_name` yeni ID’ler için güncellenmeli.
 
 ### Dikkat: indeks kaydı
 - `selected_character` sayısal **indeks** olarak saklanır. `CHARACTERS` sırası değişirse eski kayıtlar yanlış karaktere işaret edebilir. Projede buna yönelik **`character_order_v2`** ile geçmiş sıra → ID → yeni indeks taşıması kullanılmıştır; benzer büyük sıra değişikliklerinde aynı mantık veya **ID tabanlı seçim** düşünülmeli.
@@ -242,7 +243,7 @@ Yeni orb kodu için başlangıç: `xp_orb.gd` / `gold_orb.gd` ve `.tscn` şablon
 
 ## 9. Checklist: yeni karakter
 
-1. `core/character_data.gd` — yeni sözlük (ID benzersiz).
+1. `core/character_data.gd` — yeni sözlük (ID benzersiz, `hero_class` zorunlu: `tank` / `fighter` / `mage` / `controller` / `special`).
 2. `characters/<id>/<id>.tscn` — sahne (script `player.gd` uyumu).
 3. `core/character_data.gd` — `CHARACTER_SCENE_BY_ID` + `get_character_scene_path` (yeni `id` → `.tscn` yolu).
 4. Gerekirse `save_manager.gd` — varsayılan kilit/purchase (çoğu karakter sadece veri + koşul ile gelir).

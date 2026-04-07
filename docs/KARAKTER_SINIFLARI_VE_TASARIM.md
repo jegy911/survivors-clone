@@ -12,7 +12,7 @@ Görsel envanter: `docs/TASARIM.md`.
 
 | Konu | Kod / içerik | Not |
 |------|----------------|-----|
-| Dört sınıf tanımı (tasarım metni) | Bu dosyada | Uygulama: `CharacterData` içinde henüz `class` alanı yok. |
+| Dört sınıf tanımı (tasarım metni) | Bu dosyada | Uygulama: `CharacterData.CHARACTERS[].hero_class` (`tank` / `fighter` / `mage` / `controller` / `special`) + seçim ekranı filtresi. |
 | Co-op’ta takım arkadaşına buff / destek yetenekleri | **Yok** | İkinci oyuncu seçimi akışı var (`GELISTIRICI_REHBERI.md`); “support karakter” mekaniği planlı. |
 | Mevcut kahramanların sınıfa oturtulması | **Taslak** (aşağıdaki tablo) | Statların sınıfa göre yeniden ayarlanması planlı (`2.3`). |
 | Yeni kahramanlar | — | Bu sınıflardan ilham alınarak tasarlanacak (`2.1`). |

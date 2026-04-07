@@ -95,6 +95,10 @@
       "title_solo": "KARAKTER SEÇ",
       "p1_title": "👤 P1 KARAKTERİNİ SEÇ",
       "p2_title": "👥 P2 KARAKTERİ SEÇ",
+      "filter_tank": "Tank",
+      "filter_fighter": "Dövüşçü",
+      "filter_mage": "Büyücü",
+      "filter_controller": "Kontrolör",
       "taken_by_p1": "P1 tarafından seçildi",
       "locked_p1": "🔒 P1",
       "line_start_weapon": "⚔ Başlangıç: %s",
@@ -514,7 +518,7 @@
       },
       "nomad": {
         "name": "Göçebe",
-        "desc": "Yelpaze Bıçak dövüşçüsü—kill ile açılır, altınla satın alınır."
+        "desc": "Sürgün savaşçı; yakın menzilli Yelpaze Bıçak."
       },
       "death_knight": {
         "name": "Ölüm Şövalyesi",

@@ -95,6 +95,10 @@
       "title_solo": "SELECT CHARACTER",
       "p1_title": "👤 SELECT P1 CHARACTER",
       "p2_title": "👥 SELECT P2 CHARACTER",
+      "filter_tank": "Tank",
+      "filter_fighter": "Fighter",
+      "filter_mage": "Mage",
+      "filter_controller": "Controller",
       "taken_by_p1": "Taken by P1",
       "locked_p1": "🔒 P1",
       "line_start_weapon": "⚔ Start: %s",
@@ -514,7 +518,7 @@
       },
       "nomad": {
         "name": "Nomad",
-        "desc": "Fan Blade brawler—unlock via kills, then purchase with gold."
+        "desc": "Exile brawler; close-range Fan Blade specialist."
       },
       "death_knight": {
         "name": "Death Knight",

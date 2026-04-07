@@ -7,7 +7,7 @@ var selected_mode = "vs"
 var selected_map = "vs_map"
 var selected_character = 0
 var game_mode: String = "solo"  # "solo", "local_coop", "online_coop"
-var selected_character_p2: int = 1
+var selected_character_p2: int = 0
 var meta_upgrades = {
 	"max_hp_bonus": 0,
 	"damage_bonus": 0,
@@ -66,8 +66,8 @@ var killed_tank: bool = false
 var evolution_obtained: bool = false
 var unique_chars_played: Array = []
 var unlocked_achievements: Array = []
-var unlocked_characters: Array = ["warrior", "mage", "vampire"]
-var purchased_characters: Array = ["warrior", "mage", "vampire"]
+var unlocked_characters: Array = ["warrior"]
+var purchased_characters: Array = ["warrior"]
 ## Kodeks: ilk kez öldürülen düşman/boss (`CollectionData.has_bestiary_id`).
 var codex_discovered: Array = []
 ## Kodeks: koşuda ilk kez alınan silah / eşya; oynanan harita.
@@ -128,7 +128,7 @@ func load_game():
 		return
 	gold = config.get_value("player", "gold", 0)
 	selected_character = config.get_value("player", "selected_character", 0)
-	selected_character_p2 = config.get_value("player", "selected_character_p2", 1)
+	selected_character_p2 = config.get_value("player", "selected_character_p2", 0)
 	if not config.get_value("player", CHARACTER_ORDER_V2_KEY, false):
 		selected_character = _remap_character_index_after_order_change(selected_character)
 		selected_character_p2 = _remap_character_index_after_order_change(selected_character_p2)
@@ -154,9 +154,9 @@ func load_game():
 	killed_tank = config.get_value("unlock", "killed_tank", false)
 	evolution_obtained = config.get_value("unlock", "evolution_obtained", false)
 	unique_chars_played = config.get_value("unlock", "unique_chars_played", [])
-	unlocked_characters = config.get_value("unlock", "unlocked_characters", ["warrior", "mage", "vampire"])
+	unlocked_characters = config.get_value("unlock", "unlocked_characters", ["warrior"])
 	unlocked_achievements = config.get_value("unlock", "unlocked_achievements", [])
-	purchased_characters = config.get_value("unlock", "purchased_characters", ["warrior", "mage", "vampire"])
+	purchased_characters = config.get_value("unlock", "purchased_characters", ["warrior"])
 	codex_discovered = config.get_value("unlock", "codex_discovered", [])
 	codex_weapons = config.get_value("unlock", "codex_weapons", [])
 	codex_items = config.get_value("unlock", "codex_items", [])

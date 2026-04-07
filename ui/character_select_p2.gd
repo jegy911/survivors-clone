@@ -1,6 +1,9 @@
 extends CanvasLayer
 
 var selected_index = -1
+var _active_hero_class: String = ""
+var _class_filter_buttons: Dictionary = {}
+var _filter_accent: Color = Color("#2471A3")
 
 func _ready():
 	var vp = get_viewport().get_visible_rect().size
@@ -11,10 +14,78 @@ func _ready():
 	$Panel/VBoxContainer/TitleLabel.text = tr("ui.character_select.p2_title")
 	$Panel/VBoxContainer/ScrollContainer/GridContainer.add_theme_constant_override("h_separation", 16)
 	$Panel/VBoxContainer/ScrollContainer/GridContainer.add_theme_constant_override("v_separation", 16)
+	_setup_class_filter_row()
 	build_characters()
 	$Panel/VBoxContainer/ActionRow/BackButton.pressed.connect(_on_back)
 	$Panel/VBoxContainer/ActionRow/PlayButton.pressed.connect(_on_play)
 	$Panel/VBoxContainer/ActionRow/PlayButton.disabled = true
+
+func _setup_class_filter_row():
+	var vbox: VBoxContainer = $Panel/VBoxContainer
+	if vbox.get_node_or_null("ClassFilterRow"):
+		return
+	var row = HBoxContainer.new()
+	row.name = "ClassFilterRow"
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 10)
+	var gold = vbox.get_node_or_null("GoldLabel")
+	var insert_at = gold.get_index() + 1 if gold else 1
+	vbox.add_child(row)
+	vbox.move_child(row, insert_at)
+	_class_filter_buttons.clear()
+	for class_id in CharacterData.HERO_CLASS_FILTER_IDS:
+		var btn = Button.new()
+		btn.text = tr("ui.character_select.filter_%s" % class_id)
+		btn.custom_minimum_size = Vector2(104, 36)
+		var cid: String = class_id
+		btn.pressed.connect(func(): _on_class_filter_pressed(cid))
+		row.add_child(btn)
+		_class_filter_buttons[cid] = btn
+	_refresh_class_filter_buttons()
+
+func _style_class_filter_button(btn: Button, active: bool) -> void:
+	var style = StyleBoxFlat.new()
+	style.border_width_left = 2
+	style.border_width_right = 2
+	style.border_width_top = 2
+	style.border_width_bottom = 2
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_left = 8
+	style.corner_radius_bottom_right = 8
+	if active:
+		style.bg_color = _filter_accent.darkened(0.45)
+		style.border_color = _filter_accent
+	else:
+		style.bg_color = Color("#252538")
+		style.border_color = Color("#444466")
+	btn.add_theme_stylebox_override("normal", style)
+	btn.add_theme_color_override("font_color", Color.WHITE)
+
+func _refresh_class_filter_buttons() -> void:
+	for class_id in _class_filter_buttons:
+		var btn: Button = _class_filter_buttons[class_id]
+		_style_class_filter_button(btn, class_id == _active_hero_class)
+
+func _on_class_filter_pressed(class_id: String) -> void:
+	if _active_hero_class == class_id:
+		_active_hero_class = ""
+	else:
+		_active_hero_class = class_id
+	_refresh_class_filter_buttons()
+	if selected_index >= 0:
+		var cd: Dictionary = CharacterData.CHARACTERS[selected_index]
+		if _active_hero_class != "" and str(cd.get("hero_class", "")) != _active_hero_class:
+			selected_index = -1
+			$Panel/VBoxContainer/ActionRow/PlayButton.disabled = true
+	build_characters()
+
+func _character_visible_for_filter(char_index: int, char_data: Dictionary) -> bool:
+	if char_index == SaveManager.selected_character:
+		return true
+	if _active_hero_class.is_empty():
+		return true
+	return str(char_data.get("hero_class", "")) == _active_hero_class
 
 func build_characters():
 	var container = $Panel/VBoxContainer/ScrollContainer/GridContainer
@@ -22,6 +93,8 @@ func build_characters():
 		child.queue_free()
 	for i in CharacterData.CHARACTERS.size():
 		var char_data = CharacterData.CHARACTERS[i]
+		if not _character_visible_for_filter(i, char_data):
+			continue
 		# P1'in seçtiği karakteri engelle
 		var is_taken = (i == SaveManager.selected_character)
 		var card = _build_card(i, char_data, is_taken)
@@ -124,11 +197,12 @@ func _on_select(index: int):
 
 func _update_selection_borders():
 	var container = $Panel/VBoxContainer/ScrollContainer/GridContainer
-	for i in container.get_child_count():
-		var card = container.get_child(i)
+	for vis_i in container.get_child_count():
+		var card = container.get_child(vis_i)
+		var char_idx: int = int(card.get_meta("index"))
 		var style = card.get_theme_stylebox("panel").duplicate()
-		if i == selected_index:
-			var char_data = CharacterData.CHARACTERS[i]
+		if char_idx == selected_index:
+			var char_data = CharacterData.CHARACTERS[char_idx]
 			style.border_color = Color(char_data["color"])
 			style.border_width_left = 3
 			style.border_width_right = 3

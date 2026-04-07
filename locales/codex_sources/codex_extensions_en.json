@@ -45,7 +45,7 @@
     "engineer": {"name": "Engineer", "desc": "Laser main with area bonuses—glass cannon leaning."},
     "paladin": {"name": "Paladin", "desc": "Tanky holy starter with armor and Holy Bullet."},
     "blood_prince": {"name": "Blood Prince", "desc": "XP-hungry noble with Blood Boomerang fantasy."},
-    "nomad": {"name": "Nomad", "desc": "Fan Blade brawler—unlock via kills, then purchase with gold."},
+    "nomad": {"name": "Nomad", "desc": "Exile brawler; close-range Fan Blade specialist."},
     "death_knight": {"name": "Death Knight", "desc": "Secret: Death Laser start, huge damage, brutal tradeoffs."},
     "chaos": {"name": "Chaos", "desc": "Secret: random weapon starts—pure variance runs."},
     "omega": {"name": "Omega", "desc": "Secret: all weapons, 1 HP. For experts and showboaters."}

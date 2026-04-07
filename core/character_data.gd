@@ -1,8 +1,11 @@
 extends Resource
 class_name CharacterData
 
+## Karakter seçimi filtreleri (tasarım sınıfları). `special` filtrede gösterilmez; sadece tüm liste modunda.
+const HERO_CLASS_FILTER_IDS: PackedStringArray = ["controller", "fighter", "mage", "tank"]
+
 const CHARACTERS = [
-	# --- AÇIK KARAKTERLER (3) ---
+	# --- Ücretsiz başlangıç (1) ---
 	{
 		"id": "warrior",
 		"name": "Savaşçı",
@@ -21,7 +24,9 @@ const CHARACTERS = [
 		"unlock_hint": "",
 		"unlock_condition": {},
 		"origin_bonus": {"type": "damage_flat", "amount": 15, "penalty": "none"},
+		"hero_class": "fighter",
 	},
+	# --- Erken oyun — görev + altın (2) ---
 	{
 		"id": "mage",
 		"name": "Büyücü",
@@ -34,12 +39,13 @@ const CHARACTERS = [
 		"bonus_armor": 0,
 		"start_item": "",
 		"special": "",
-		"locked": false,
+		"locked": true,
 		"secret": false,
-		"cost": 0,
-		"unlock_hint": "",
-		"unlock_condition": {},
+		"cost": 150,
+		"unlock_hint": "Toplam 50 düşman öldür",
+		"unlock_condition": {"type": "total_kills", "amount": 50},
 		"origin_bonus": {"type": "area_pct", "amount": 0.30, "penalty": "speed_pct", "penalty_amount": -0.15},
+		"hero_class": "mage",
 	},
 	{
 		"id": "vampire",
@@ -53,12 +59,13 @@ const CHARACTERS = [
 		"bonus_armor": 0,
 		"start_item": "lifesteal",
 		"special": "",
-		"locked": false,
+		"locked": true,
 		"secret": false,
-		"cost": 0,
-		"unlock_hint": "",
-		"unlock_condition": {},
+		"cost": 175,
+		"unlock_hint": "Savaşçı ile 2 dakika hayatta kal",
+		"unlock_condition": {"type": "survive_as", "character": "warrior", "amount": 120},
 		"origin_bonus": {"type": "lifesteal_pct", "amount": 0.10, "penalty": "none"},
+		"hero_class": "fighter",
 	},
 
 	# --- KİLİTLİ BASE KARAKTERLER (7) ---
@@ -80,6 +87,7 @@ const CHARACTERS = [
 		"unlock_hint": "100 düşman öldür",
 		"unlock_condition": {"type": "total_kills", "amount": 100},
 		"origin_bonus": {"type": "projectile_count", "amount": 1, "penalty": "none"},
+		"hero_class": "fighter",
 	},
 	{
 		"id": "stormer",
@@ -99,6 +107,7 @@ const CHARACTERS = [
 		"unlock_hint": "5 dakika hayatta kal",
 		"unlock_condition": {"type": "max_survival", "amount": 300},
 		"origin_bonus": {"type": "cooldown_pct", "amount": -0.20, "penalty": "hp_pct", "penalty_amount": -0.20},
+		"hero_class": "mage",
 	},
 	{
 		"id": "frost",
@@ -118,6 +127,7 @@ const CHARACTERS = [
 		"unlock_hint": "Bir tank düşmanı öldür",
 		"unlock_condition": {"type": "killed_tank", "amount": 1},
 		"origin_bonus": {"type": "slow_double", "amount": 1, "penalty": "damage_pct", "penalty_amount": -0.15},
+		"hero_class": "controller",
 	},
 	{
 		"id": "shadow_walker",
@@ -137,6 +147,7 @@ const CHARACTERS = [
 		"unlock_hint": "Toplam 300 düşman öldür",
 		"unlock_condition": {"type": "total_kills", "amount": 300},
 		"origin_bonus": {"type": "speed_pct", "amount": 0.25, "penalty": "hp_pct", "penalty_amount": -0.20},
+		"hero_class": "fighter",
 	},
 	{
 		"id": "engineer",
@@ -156,6 +167,7 @@ const CHARACTERS = [
 		"unlock_hint": "8 dakika hayatta kal",
 		"unlock_condition": {"type": "max_survival", "amount": 480},
 		"origin_bonus": {"type": "single_weapon", "amount": 1, "penalty": "cooldown_pct", "penalty_amount": -0.70},
+		"hero_class": "mage",
 	},
 	{
 		"id": "paladin",
@@ -175,6 +187,7 @@ const CHARACTERS = [
 		"unlock_hint": "Bir evrim silahı elde et",
 		"unlock_condition": {"type": "evolution_obtained", "amount": 1},
 		"origin_bonus": {"type": "armor_flat", "amount": 6, "penalty": "speed_pct", "penalty_amount": -0.15},
+		"hero_class": "tank",
 	},
 	{
 		"id": "blood_prince",
@@ -194,11 +207,12 @@ const CHARACTERS = [
 		"unlock_hint": "Vampir ile 5 dakika hayatta kal",
 		"unlock_condition": {"type": "survive_as", "character": "vampire", "amount": 300},
 		"origin_bonus": {"type": "xp_pct", "amount": 0.30, "penalty": "hp_pct", "penalty_amount": -0.15},
+		"hero_class": "fighter",
 	},
 	{
 		"id": "nomad",
 		"name": "Göçebe",
-		"description": "Sürgün savaşçı.\nYakın menzilli Yelpaze Bıçak ile başlar.\nÖnce 175 düşman öldür, sonra 💰350 altınla satın al.",
+		"description": "Sürgün savaşçı.\nYakın menzilli Yelpaze Bıçak ile başlar.",
 		"color": "#D35400",
 		"start_weapon": "fan_blade",
 		"bonus_damage": 0,
@@ -210,9 +224,10 @@ const CHARACTERS = [
 		"locked": true,
 		"secret": false,
 		"cost": 350,
-		"unlock_hint": "Toplam 175 düşman öldür; kilidi açılınca 💰350 altınla satın alırsın.",
+		"unlock_hint": "Toplam 175 düşman öldür",
 		"unlock_condition": {"type": "total_kills", "amount": 175},
 		"origin_bonus": {"type": "damage_flat", "amount": 5, "penalty": "none"},
+		"hero_class": "fighter",
 	},
 
 	# --- SECRET KARAKTERLER (3) ---
@@ -234,6 +249,7 @@ const CHARACTERS = [
 		"unlock_hint": "Tek bir koşuda 1000 düşman öldür.",
 		"unlock_condition": {"type": "single_run_kills", "amount": 1000},
 		"origin_bonus": {},
+		"hero_class": "fighter",
 	},
 	{
 		"id": "chaos",
@@ -253,6 +269,7 @@ const CHARACTERS = [
 		"unlock_hint": "5 farklı karakterle oyna.",
 		"unlock_condition": {"type": "unique_chars_played", "amount": 5},
 		"origin_bonus": {},
+		"hero_class": "special",
 	},
 	{
 		"id": "omega",
@@ -272,6 +289,7 @@ const CHARACTERS = [
 		"unlock_hint": "Gizli bir kod var...",
 		"unlock_condition": {"type": "easter_egg"},
 		"origin_bonus": {},
+		"hero_class": "special",
 	},
 ]
 
