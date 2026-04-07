@@ -25,6 +25,9 @@ layout_mode = 2
 [node name="UpgradeButton" type="Button" parent="VBoxContainer" unique_id=802178009]
 layout_mode = 2
 
+[node name="CollectionButton" type="Button" parent="VBoxContainer" unique_id=2802178009]
+layout_mode = 2
+
 [node name="SettingsButton" type="Button" parent="VBoxContainer" unique_id=553229284]
 layout_mode = 2
 

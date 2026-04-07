@@ -47,6 +47,7 @@ func flash():
 	tween.tween_property(body, "color", Color("#C0392B"), 0.12)
 
 func _on_death_complete():
+	SaveManager.register_codex_discovered(get_codex_id())
 	var killer = null
 	if has_meta("killer"):
 		killer = get_meta("killer")

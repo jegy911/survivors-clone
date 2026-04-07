@@ -7,6 +7,7 @@
       "gold": "💰 %d Gold",
       "play": "▶  PLAY",
       "meta": "⬆  META UPGRADES",
+      "collection": "📖  CODEX",
       "settings": "⚙  SETTINGS",
       "quit": "✕  QUIT",
       "omega_unlock": "????? UNLOCKED"
@@ -168,6 +169,28 @@
       "unlock_chars": "🔓 Unlock All Characters",
       "gold_zero": "💸 Zero Gold",
       "lock_chars": "🔒 Reset Characters"
+    },
+    "collection_menu": {
+      "title": "📖 Ironfall Codex",
+      "progress": "%d / %d discovered",
+      "tab_enemy": "Enemies",
+      "tab_boss": "Bosses",
+      "tab_weapon": "Weapons",
+      "tab_item": "Items",
+      "tab_character": "Heroes",
+      "tab_map": "Maps",
+      "back": "← Main menu",
+      "pick_title": "Choose an entry",
+      "pick_desc": "Use the tabs: foes, bosses, weapons, items, heroes, maps. Locked cards hint at how to reveal them.",
+      "locked_name": "???",
+      "locked_desc": "Locked.",
+      "locked_short": "???",
+      "locked_desc_enemy": "Defeat this enemy type once in any run.",
+      "locked_desc_boss": "Defeat this boss once in any run.",
+      "locked_desc_weapon": "Obtain this weapon in a run (level-up, chest, or starting loadout).",
+      "locked_desc_item": "Obtain this item in a run.",
+      "locked_desc_character": "Unlock this hero through progression (or secret conditions).",
+      "locked_desc_map": "Start a run on this map to add it to your codex."
     }
   },
   "achievement": {
@@ -230,6 +253,252 @@
     "unlock_omega": {
       "name": "Find Omega",
       "desc": "Unlock the Omega character"
+    }
+  },
+  "codex": {
+    "enemy": {
+      "name": "Grunt",
+      "desc": "The fallen kingdom’s foot soldiers. Slow but relentless; they teach you the rhythm of the horde."
+    },
+    "fast_enemy": {
+      "name": "Striker",
+      "desc": "Yellow streaks that close distance fast. Priority targets when space is tight."
+    },
+    "tank_enemy": {
+      "name": "Bulwark",
+      "desc": "Heavy purple brutes with huge HP. Encircle events love them—break the ring before they collapse on you."
+    },
+    "dasher": {
+      "name": "Dasher",
+      "desc": "Pink hunters that surge in straight lines. Sidestep, then punish."
+    },
+    "healer": {
+      "name": "Mender",
+      "desc": "Green support that keeps allies in the fight. Delete them before the wave stabilizes."
+    },
+    "exploder": {
+      "name": "Volatile",
+      "desc": "Orange carriers that detonate on death. Give them room or pay in HP."
+    },
+    "shield_enemy": {
+      "name": "Aegis",
+      "desc": "Royal-blue shells that shrug damage until you crack the guard or outplay immunity tags."
+    },
+    "giant": {
+      "name": "Colossus",
+      "desc": "Late-game titans. Wide hitbox, brutal presence—kiting is survival."
+    },
+    "ranged_enemy": {
+      "name": "Skirmisher",
+      "desc": "Orange archers that pressure from afar. Close the gap or let your area weapons do the work."
+    },
+    "mini_boss": {
+      "name": "Herald",
+      "desc": "Timeline bosses that announce danger with music and a chest. First kill feels like a milestone."
+    },
+    "reaper": {
+      "name": "Reaper",
+      "desc": "The deep-crimson endgame sweepers. Each wave grows hungrier—finish the run or be finished."
+    },
+    "weapon": {
+      "bullet": {
+        "name": "Bullet",
+        "desc": "Straightforward ranged shots. Your bread-and-butter pressure tool."
+      },
+      "aura": {
+        "name": "Aura",
+        "desc": "Damage zone that follows you. Own the space around your character."
+      },
+      "chain": {
+        "name": "Chain",
+        "desc": "Bouncing lightning chain between targets. Great for clumped waves."
+      },
+      "boomerang": {
+        "name": "Boomerang",
+        "desc": "Returns to you after a sweep. Punishes packs that chase you."
+      },
+      "lightning": {
+        "name": "Lightning",
+        "desc": "Calls down strikes on nearby foes. Strong single-target burst."
+      },
+      "ice_ball": {
+        "name": "Ice Ball",
+        "desc": "Slowing projectile. Control elites and chargers before they reach you."
+      },
+      "shadow": {
+        "name": "Shadow",
+        "desc": "Orbiting shadow orbs. Consistent close-range damage."
+      },
+      "laser": {
+        "name": "Laser",
+        "desc": "Piercing beam in a line. Melts lines of enemies if you aim well."
+      },
+      "fan_blade": {
+        "name": "Fan Blade",
+        "desc": "Wide melee fan of blades. Shreds anything in your face."
+      },
+      "holy_bullet": {
+        "name": "Holy Bullet",
+        "desc": "Evolved bullet: bonus damage and armor break."
+      },
+      "toxic_chain": {
+        "name": "Toxic Chain",
+        "desc": "Evolved chain: spreads poison as it jumps between targets."
+      },
+      "death_laser": {
+        "name": "Death Laser",
+        "desc": "Evolved laser: crits on every tick with extreme reach."
+      },
+      "blood_boomerang": {
+        "name": "Blood Boomerang",
+        "desc": "Evolved boomerang: steals life on each hit."
+      },
+      "storm": {
+        "name": "Storm",
+        "desc": "Evolved lightning: bonus bolts when you score kills."
+      },
+      "shadow_storm": {
+        "name": "Shadow Storm",
+        "desc": "Evolved hybrid: shadow hits can chain lightning."
+      },
+      "frost_nova": {
+        "name": "Frost Nova",
+        "desc": "Evolved ice: area freeze on impact plus reflect tricks."
+      },
+      "ember_fan": {
+        "name": "Ember Fan",
+        "desc": "Evolved fan: wider arc and piercing ember shards."
+      }
+    },
+    "item": {
+      "lifesteal": {
+        "name": "Lifesteal",
+        "desc": "Heal when you deal damage. Stabilizes long fights."
+      },
+      "armor": {
+        "name": "Armor",
+        "desc": "Flat damage reduction. Stack levels to shrug chip damage."
+      },
+      "crit": {
+        "name": "Crit",
+        "desc": "Critical strike chance and damage scaling."
+      },
+      "explosion": {
+        "name": "Explosion",
+        "desc": "On-kill splash damage. Snowballs in dense hordes."
+      },
+      "magnet": {
+        "name": "Magnet",
+        "desc": "Pulls XP and gold farther. Less running, more killing."
+      },
+      "poison": {
+        "name": "Poison",
+        "desc": "DoT that ticks enemies down. Synergizes with chain evolutions."
+      },
+      "shield": {
+        "name": "Shield",
+        "desc": "Blocks hits on a cooldown. Forgives small mistakes."
+      },
+      "speed_charm": {
+        "name": "Speed Charm",
+        "desc": "Move faster. Unlocks Storm-style evolutions at max."
+      },
+      "blood_pool": {
+        "name": "Blood Pool",
+        "desc": "Leaves hazardous pools. Zone control for kiting."
+      },
+      "luck_stone": {
+        "name": "Luck Stone",
+        "desc": "Better odds on rare rolls and a little extra gold."
+      },
+      "turbine": {
+        "name": "Turbine",
+        "desc": "Utility engine item—synergy with cooldown and area builds."
+      },
+      "steam_armor": {
+        "name": "Steam Armor",
+        "desc": "Defense with a steam-themed mitigation twist."
+      },
+      "energy_cell": {
+        "name": "Energy Cell",
+        "desc": "Powers sustained fire and cooldown recovery."
+      },
+      "ember_heart": {
+        "name": "Ember Heart",
+        "desc": "Fireheart passive that pairs with fan evolutions."
+      }
+    },
+    "character": {
+      "warrior": {
+        "name": "Warrior",
+        "desc": "Balanced fighter with bonus starting damage. Great first pick."
+      },
+      "mage": {
+        "name": "Mage",
+        "desc": "Aura starter with extra max HP. Area-control mindset."
+      },
+      "vampire": {
+        "name": "Vampire",
+        "desc": "Speedy hunter with built-in lifesteal. Aggressive sustain."
+      },
+      "hunter": {
+        "name": "Hunter",
+        "desc": "Boomerang expert with extra lifesteal synergy."
+      },
+      "stormer": {
+        "name": "Stormer",
+        "desc": "Lightning focus with cooldown perks."
+      },
+      "frost": {
+        "name": "Frost",
+        "desc": "Slow specialist—double slow duration, ice ball starter."
+      },
+      "shadow_walker": {
+        "name": "Shadow Walker",
+        "desc": "High-speed assassin with shadow orbs."
+      },
+      "engineer": {
+        "name": "Engineer",
+        "desc": "Laser main with area bonuses—glass cannon leaning."
+      },
+      "paladin": {
+        "name": "Paladin",
+        "desc": "Tanky holy starter with armor and Holy Bullet."
+      },
+      "blood_prince": {
+        "name": "Blood Prince",
+        "desc": "XP-hungry noble with Blood Boomerang fantasy."
+      },
+      "nomad": {
+        "name": "Nomad",
+        "desc": "Fan Blade brawler—unlock via kills, then purchase with gold."
+      },
+      "death_knight": {
+        "name": "Death Knight",
+        "desc": "Secret: Death Laser start, huge damage, brutal tradeoffs."
+      },
+      "chaos": {
+        "name": "Chaos",
+        "desc": "Secret: random weapon starts—pure variance runs."
+      },
+      "omega": {
+        "name": "Omega",
+        "desc": "Secret: all weapons, 1 HP. For experts and showboaters."
+      }
+    },
+    "map": {
+      "vs_map": {
+        "name": "Fallen Kingdom",
+        "desc": "Story map—open field, 30-minute survival arc, bosses on the clock."
+      },
+      "map2": {
+        "name": "Map II",
+        "desc": "Reserved slot. Coming in a future update."
+      },
+      "map3": {
+        "name": "Map III",
+        "desc": "Reserved slot. Coming in a future update."
+      }
     }
   },
   "meta": {

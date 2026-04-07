@@ -7,6 +7,7 @@
       "gold": "💰 %d 金币",
       "play": "▶  开始游戏",
       "meta": "⬆  永久升级",
+      "collection": "📖  图鉴",
       "settings": "⚙  设置",
       "quit": "✕  退出",
       "omega_unlock": "????? 已解锁"
@@ -168,6 +169,28 @@
       "unlock_chars": "🔓 解锁全部角色",
       "gold_zero": "💸 金币清零",
       "lock_chars": "🔒 重置角色"
+    },
+    "collection_menu": {
+      "title": "📖 钢铁陨落图鉴",
+      "progress": "已发现 %d / %d",
+      "tab_enemy": "敌人",
+      "tab_boss": "首领",
+      "tab_weapon": "武器",
+      "tab_item": "道具",
+      "tab_character": "英雄",
+      "tab_map": "地图",
+      "back": "← 主菜单",
+      "pick_title": "请选择条目",
+      "pick_desc": "使用页签浏览敌人、首领、武器、道具、英雄与地图。锁定卡片会提示解锁方式。",
+      "locked_name": "？？？",
+      "locked_desc": "未解锁。",
+      "locked_short": "？？？",
+      "locked_desc_enemy": "在任意一局击杀过该敌人类型即可解锁。",
+      "locked_desc_boss": "在任意一局击败过该首领即可解锁。",
+      "locked_desc_weapon": "在局内获得该武器（升级、宝箱或开局配置）。",
+      "locked_desc_item": "在局内获得该道具。",
+      "locked_desc_character": "通过进度或隐藏条件解锁该英雄。",
+      "locked_desc_map": "在该地图开始一局即可记入图鉴。"
     }
   },
   "achievement": {
@@ -230,6 +253,252 @@
     "unlock_omega": {
       "name": "找到欧米茄",
       "desc": "解锁欧米茄角色"
+    }
+  },
+  "codex": {
+    "enemy": {
+      "name": "步兵",
+      "desc": "亡国残兵，移动不快但潮水般涌来，帮你熟悉尸潮节奏。"
+    },
+    "fast_enemy": {
+      "name": "突击者",
+      "desc": "黄色闪电，极快贴近。空间被压缩时要优先处理。"
+    },
+    "tank_enemy": {
+      "name": "重装",
+      "desc": "紫色高血量巨兽。包围事件里常见——先破环再输出。"
+    },
+    "dasher": {
+      "name": "冲撞者",
+      "desc": "粉色直线冲锋怪。侧向拉开身位再反击。"
+    },
+    "healer": {
+      "name": "治疗者",
+      "desc": "绿色支援单位，会抬队友血线。优先点掉以免战线稳住。"
+    },
+    "exploder": {
+      "name": "自爆体",
+      "desc": "橙色载体，死亡时爆炸。保持距离，否则用血量买单。"
+    },
+    "shield_enemy": {
+      "name": "盾卫",
+      "desc": "深蓝护盾，能扛伤害。破盾或利用免疫标记对策。"
+    },
+    "giant": {
+      "name": "巨像",
+      "desc": "后期巨型敌人，判定框巨大——风筝才是生存之道。"
+    },
+    "ranged_enemy": {
+      "name": "射手",
+      "desc": "橙色远程骚扰。贴近解决，或交给范围武器清理。"
+    },
+    "mini_boss": {
+      "name": "先驱",
+      "desc": "时间轴 Boss，伴随音乐与宝箱登场。首杀像里程碑。"
+    },
+    "reaper": {
+      "name": "收割者",
+      "desc": "深红终局清扫者，波次越强越致命——通关或被碾碎。"
+    },
+    "weapon": {
+      "bullet": {
+        "name": "子弹",
+        "desc": "直线远程输出，最稳定的基础压制。"
+      },
+      "aura": {
+        "name": "光环",
+        "desc": "跟随角色的伤害场，掌控身边空间。"
+      },
+      "chain": {
+        "name": "闪电链",
+        "desc": "在敌人之间跳跃，适合密集尸潮。"
+      },
+      "boomerang": {
+        "name": "回旋镖",
+        "desc": "飞出后折返，惩罚追你的怪群。"
+      },
+      "lightning": {
+        "name": "雷击",
+        "desc": "打击附近敌人，爆发可观。"
+      },
+      "ice_ball": {
+        "name": "冰球",
+        "desc": "减速弹道，拖住精英与冲锋怪。"
+      },
+      "shadow": {
+        "name": "暗影",
+        "desc": "环绕暗影球，稳定近战输出。"
+      },
+      "laser": {
+        "name": "激光",
+        "desc": "直线穿透，走位成线可清排。"
+      },
+      "fan_blade": {
+        "name": "扇刃",
+        "desc": "宽近战扇面，贴脸收割。"
+      },
+      "holy_bullet": {
+        "name": "圣弹",
+        "desc": "进化：更高伤害并破甲。"
+      },
+      "toxic_chain": {
+        "name": "剧毒链",
+        "desc": "进化：跳跃时扩散毒素。"
+      },
+      "death_laser": {
+        "name": "死亡激光",
+        "desc": "进化：段段暴击，射程极远。"
+      },
+      "blood_boomerang": {
+        "name": "血旋镖",
+        "desc": "进化：命中吸血。"
+      },
+      "storm": {
+        "name": "风暴",
+        "desc": "进化：击杀触发额外雷击。"
+      },
+      "shadow_storm": {
+        "name": "影雷风暴",
+        "desc": "进化：暗影命中可连锁闪电。"
+      },
+      "frost_nova": {
+        "name": "冰霜新星",
+        "desc": "进化：命中范围冰冻与反伤玩法。"
+      },
+      "ember_fan": {
+        "name": "余烬扇刃",
+        "desc": "进化：更宽扇面与穿透余烬刃片。"
+      }
+    },
+    "item": {
+      "lifesteal": {
+        "name": "吸血",
+        "desc": "造成伤害时回复，拉长战线更稳。"
+      },
+      "armor": {
+        "name": "护甲",
+        "desc": "固定减伤，叠层扛住蹭血。"
+      },
+      "crit": {
+        "name": "暴击",
+        "desc": "暴击率与暴伤成长。"
+      },
+      "explosion": {
+        "name": "爆炸",
+        "desc": "击杀溅射，尸潮里滚雪球。"
+      },
+      "magnet": {
+        "name": "磁铁",
+        "desc": "更远吸取经验与金币，少跑位多输出。"
+      },
+      "poison": {
+        "name": "剧毒",
+        "desc": "持续伤害，与链式进化协同。"
+      },
+      "shield": {
+        "name": "护盾",
+        "desc": "周期格挡，容错更高。"
+      },
+      "speed_charm": {
+        "name": "疾行护符",
+        "desc": "移速提升；满级可走风暴进化路线。"
+      },
+      "blood_pool": {
+        "name": "血池",
+        "desc": "留下危险区域，便于风筝控场。"
+      },
+      "luck_stone": {
+        "name": "幸运石",
+        "desc": "提高稀有选项几率并略增金币。"
+      },
+      "turbine": {
+        "name": "涡轮",
+        "desc": "与冷却、范围构筑相性佳。"
+      },
+      "steam_armor": {
+        "name": "蒸汽护甲",
+        "desc": "蒸汽主题的额外防护。"
+      },
+      "energy_cell": {
+        "name": "能量电池",
+        "desc": "强化持续开火与冷却回转。"
+      },
+      "ember_heart": {
+        "name": "余烬之心",
+        "desc": "与扇刃系进化搭配的火焰心核。"
+      }
+    },
+    "character": {
+      "warrior": {
+        "name": "战士",
+        "desc": "均衡战士，额外起始伤害，新手友好。"
+      },
+      "mage": {
+        "name": "法师",
+        "desc": "光环开局并提高生命上限，偏控场。"
+      },
+      "vampire": {
+        "name": "吸血鬼",
+        "desc": "高机动猎手，自带吸血，激进续航。"
+      },
+      "hunter": {
+        "name": "猎人",
+        "desc": "回旋镖专精，吸血协同。"
+      },
+      "stormer": {
+        "name": "风暴使",
+        "desc": "雷电与冷却向玩法。"
+      },
+      "frost": {
+        "name": "冰霜",
+        "desc": "减速专家，双倍减速时长，冰球开局。"
+      },
+      "shadow_walker": {
+        "name": "影行者",
+        "desc": "高速刺客，暗影球环绕。"
+      },
+      "engineer": {
+        "name": "工程师",
+        "desc": "激光与范围加成，偏玻璃炮。"
+      },
+      "paladin": {
+        "name": "圣骑士",
+        "desc": "坦度与圣弹开局。"
+      },
+      "blood_prince": {
+        "name": "血裔",
+        "desc": "偏 XP 成长，血旋镖主题。"
+      },
+      "nomad": {
+        "name": "游牧民",
+        "desc": "扇刃近战；击杀解锁后用金币购买。"
+      },
+      "death_knight": {
+        "name": "死亡骑士",
+        "desc": "隐藏：死亡激光开局，极高伤害与苛刻代价。"
+      },
+      "chaos": {
+        "name": "混沌",
+        "desc": "隐藏：随机武器开局，纯随机体验。"
+      },
+      "omega": {
+        "name": "欧米茄",
+        "desc": "隐藏：全武器、1 点生命，高手向。"
+      }
+    },
+    "map": {
+      "vs_map": {
+        "name": "陨落王国",
+        "desc": "剧情开放图，30 分钟生存流程，按时间轴出现 Boss。"
+      },
+      "map2": {
+        "name": "地图 II",
+        "desc": "预留位，后续更新推出。"
+      },
+      "map3": {
+        "name": "地图 III",
+        "desc": "预留位，后续更新推出。"
+      }
     }
   },
   "meta": {

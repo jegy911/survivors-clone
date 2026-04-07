@@ -239,7 +239,20 @@ func _spawn_particles():
 		tween.set_parallel(false)
 		tween.tween_callback(particle.queue_free)
 
+func get_codex_id() -> String:
+	if has_meta("codex_id"):
+		return str(get_meta("codex_id"))
+	var p = scene_file_path
+	if p.is_empty():
+		return ""
+	var base = p.get_file().get_basename()
+	if base == "boss":
+		return "mini_boss"
+	return base
+
+
 func _on_death_complete():
+	SaveManager.register_codex_discovered(get_codex_id())
 	# Co-op: en yakın oyuncu kill alır
 	var killer = null
 	if has_meta("killer"):

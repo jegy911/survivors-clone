@@ -59,6 +59,7 @@ func die(killer: Node = null):
 	tween2.tween_callback(_on_death_complete)
 
 func _on_death_complete():
+	SaveManager.register_codex_discovered(get_codex_id())
 	var killer = null
 	if has_meta("killer"):
 		killer = get_meta("killer")

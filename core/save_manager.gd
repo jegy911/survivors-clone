@@ -68,6 +68,12 @@ var unique_chars_played: Array = []
 var unlocked_achievements: Array = []
 var unlocked_characters: Array = ["warrior", "mage", "vampire"]
 var purchased_characters: Array = ["warrior", "mage", "vampire"]
+## Kodeks: ilk kez öldürülen düşman/boss (`CollectionData.has_bestiary_id`).
+var codex_discovered: Array = []
+## Kodeks: koşuda ilk kez alınan silah / eşya; oynanan harita.
+var codex_weapons: Array = []
+var codex_items: Array = []
+var codex_maps: Array = []
 
 const CHARACTER_ORDER_V2_KEY = "character_order_v2"
 const OLD_CHARACTER_ORDER: Array[String] = [
@@ -106,6 +112,10 @@ func save_game():
 	config.set_value("unlock", "unlocked_characters", unlocked_characters)
 	config.set_value("unlock", "unlocked_achievements", unlocked_achievements)
 	config.set_value("unlock", "purchased_characters", purchased_characters)
+	config.set_value("unlock", "codex_discovered", codex_discovered)
+	config.set_value("unlock", "codex_weapons", codex_weapons)
+	config.set_value("unlock", "codex_items", codex_items)
+	config.set_value("unlock", "codex_maps", codex_maps)
 	config.set_value("player", CHARACTER_ORDER_V2_KEY, true)
 	var err = config.save(SAVE_PATH)
 	if err != OK:
@@ -147,6 +157,10 @@ func load_game():
 	unlocked_characters = config.get_value("unlock", "unlocked_characters", ["warrior", "mage", "vampire"])
 	unlocked_achievements = config.get_value("unlock", "unlocked_achievements", [])
 	purchased_characters = config.get_value("unlock", "purchased_characters", ["warrior", "mage", "vampire"])
+	codex_discovered = config.get_value("unlock", "codex_discovered", [])
+	codex_weapons = config.get_value("unlock", "codex_weapons", [])
+	codex_items = config.get_value("unlock", "codex_items", [])
+	codex_maps = config.get_value("unlock", "codex_maps", [])
 	var res_x = settings.get("resolution_x", 1280)
 	var res_y = settings.get("resolution_y", 720)
 	if not settings.get("fullscreen", false):
@@ -291,6 +305,66 @@ func is_unlocked(char_id: String) -> bool:
 
 func is_purchased(char_id: String) -> bool:
 	return purchased_characters.has(char_id)
+
+
+func register_codex_discovered(entry_id: String) -> void:
+	if entry_id.is_empty():
+		return
+	if not CollectionData.has_bestiary_id(entry_id):
+		return
+	if codex_discovered.has(entry_id):
+		return
+	codex_discovered.append(entry_id)
+	save_game()
+
+
+func register_codex_weapon(weapon_id: String) -> void:
+	if weapon_id.is_empty() or not CollectionData.is_valid_weapon_codex_id(weapon_id):
+		return
+	if codex_weapons.has(weapon_id):
+		return
+	codex_weapons.append(weapon_id)
+	save_game()
+
+
+func register_codex_item(item_id: String) -> void:
+	if item_id.is_empty() or not CollectionData.is_valid_item_codex_id(item_id):
+		return
+	if codex_items.has(item_id):
+		return
+	codex_items.append(item_id)
+	save_game()
+
+
+func register_codex_map(map_id: String) -> void:
+	if map_id.is_empty() or not CollectionData.is_valid_map_codex_id(map_id):
+		return
+	if codex_maps.has(map_id):
+		return
+	codex_maps.append(map_id)
+	save_game()
+
+
+func is_codex_discovered(entry_id: String) -> bool:
+	return codex_discovered.has(entry_id)
+
+
+func is_codex_entry_unlocked(entry: Dictionary) -> bool:
+	var tab: String = str(entry.get("tab", ""))
+	var id: String = str(entry.get("id", ""))
+	match tab:
+		"enemy", "boss":
+			return codex_discovered.has(id)
+		"weapon":
+			return codex_weapons.has(id)
+		"item":
+			return codex_items.has(id)
+		"character":
+			return unlocked_characters.has(id)
+		"map":
+			return codex_maps.has(id)
+		_:
+			return false
 
 func reset_meta_upgrades():
 	for key in meta_upgrades:

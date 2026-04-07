@@ -481,6 +481,10 @@ func _on_reset_full():
 	SaveManager.unlocked_characters = ["warrior", "mage", "vampire"]
 	SaveManager.purchased_characters = ["warrior", "mage", "vampire"]
 	SaveManager.unlocked_achievements = []
+	SaveManager.codex_discovered = []
+	SaveManager.codex_weapons = []
+	SaveManager.codex_items = []
+	SaveManager.codex_maps = []
 	SaveManager.save_game()
 	_confirm_reset_full = false
 	_switch_tab("profil")

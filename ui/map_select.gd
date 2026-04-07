@@ -185,5 +185,6 @@ func _on_back():
 func _on_play():
 	SaveManager.selected_mode = selected_mode
 	SaveManager.selected_map = selected_map
+	SaveManager.register_codex_map(selected_map)
 	SaveManager.save_game()
 	get_tree().change_scene_to_file("res://main/main.tscn")

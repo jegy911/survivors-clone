@@ -124,6 +124,7 @@ func spawn_random_enemy(game_timer: float, current_immunity: String):
 func spawn_mini_boss(game_timer: float, boss_index: int):
 	EventBus.boss_spawned.emit()
 	var boss = boss_scene.instantiate()
+	boss.set_meta("codex_id", "mini_boss")
 	main_node.add_child(boss)
 	boss.global_position = get_spawn_outside_screen()
 	if boss.get("hp") != null:
@@ -134,6 +135,7 @@ func spawn_mini_boss(game_timer: float, boss_index: int):
 
 func spawn_reaper(reaper_count: int) -> Node:
 	var reaper = boss_scene.instantiate()
+	reaper.set_meta("codex_id", "reaper")
 	main_node.add_child(reaper)
 	reaper.global_position = get_spawn_outside_screen()
 	var mult = 1.0 + reaper_count * 0.5

@@ -1,0 +1,71 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqx7collectionmenu"]
+
+[ext_resource type="Script" path="res://ui/collection_menu.gd" id="1_script"]
+
+[node name="CollectionMenu" type="CanvasLayer"]
+layer = 12
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MainVBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="MainVBox"]
+layout_mode = 2
+text = "Collection"
+
+[node name="ProgressLabel" type="Label" parent="MainVBox"]
+layout_mode = 2
+text = "0 / 0"
+
+[node name="FilterRow" type="HBoxContainer" parent="MainVBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 2
+
+[node name="EntryGrid" type="GridContainer" parent="MainVBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 4
+
+[node name="DetailPanel" type="PanelContainer" parent="MainVBox"]
+layout_mode = 2
+
+[node name="DetailInner" type="MarginContainer" parent="MainVBox/DetailPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 12
+
+[node name="DetailVBox" type="VBoxContainer" parent="MainVBox/DetailPanel/DetailInner"]
+layout_mode = 2
+
+[node name="DetailTitle" type="Label" parent="MainVBox/DetailPanel/DetailInner/DetailVBox"]
+layout_mode = 2
+text = " "
+
+[node name="DetailDesc" type="Label" parent="MainVBox/DetailPanel/DetailInner/DetailVBox"]
+layout_mode = 2
+text = " "
+autowrap_mode = 3
+
+[node name="BackButton" type="Button" parent="MainVBox"]
+layout_mode = 2
+text = "Back"

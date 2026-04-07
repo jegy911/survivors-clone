@@ -7,6 +7,7 @@
       "gold": "💰 %d Altın",
       "play": "▶  OYNA",
       "meta": "⬆  META UPGRADES",
+      "collection": "📖  KODEKS",
       "settings": "⚙  AYARLAR",
       "quit": "✕  ÇIKIŞ",
       "omega_unlock": "????? UNLOCKED"
@@ -168,6 +169,28 @@
       "unlock_chars": "🔓 Tüm Karakterleri Aç",
       "gold_zero": "💸 Gold Sıfırla",
       "lock_chars": "🔒 Karakterleri Sıfırla"
+    },
+    "collection_menu": {
+      "title": "📖 Ironfall Kodeksi",
+      "progress": "%d / %d keşfedildi",
+      "tab_enemy": "Düşmanlar",
+      "tab_boss": "Bosslar",
+      "tab_weapon": "Silahlar",
+      "tab_item": "Eşyalar",
+      "tab_character": "Kahramanlar",
+      "tab_map": "Haritalar",
+      "back": "← Ana menü",
+      "pick_title": "Bir giriş seç",
+      "pick_desc": "Sekmeler: düşman, boss, silah, eşya, kahraman, harita. Kilitli kartlarda nasıl açılacağı yazar.",
+      "locked_name": "???",
+      "locked_desc": "Kilitli.",
+      "locked_short": "???",
+      "locked_desc_enemy": "Bu düşman türünü herhangi bir koşuda bir kez yen.",
+      "locked_desc_boss": "Bu boss’u herhangi bir koşuda bir kez yen.",
+      "locked_desc_weapon": "Bu silahı koşuda al (level-up, sandık veya başlangıç yükü).",
+      "locked_desc_item": "Bu eşyayı koşuda al.",
+      "locked_desc_character": "Bu kahramanı ilerleme (veya gizli koşullar) ile aç.",
+      "locked_desc_map": "Bu haritada bir koşu başlat; kodekse işlensin."
     }
   },
   "achievement": {
@@ -230,6 +253,252 @@
     "unlock_omega": {
       "name": "Omega'yı Bul",
       "desc": "Omega karakterini aç"
+    }
+  },
+  "codex": {
+    "enemy": {
+      "name": "Lejyoner",
+      "desc": "Düşmüş krallığın ayak askerleri. Yavaş ama inatçı; sürü ritmini öğretirler."
+    },
+    "fast_enemy": {
+      "name": "Akıncı",
+      "desc": "Mesafeyi çabuk kapatan sarı çizgiler. Alan daraldığında öncelik hedefi."
+    },
+    "tank_enemy": {
+      "name": "Kalkanlı",
+      "desc": "Dev canlı mor devler. Kuşatma olaylarında sık görülür—halkayı kırılmadan üzerine çökmesinler."
+    },
+    "dasher": {
+      "name": "Dalıcı",
+      "desc": "Çizgide saldıran pembe avcılar. Yana çekil, sonra cezalandır."
+    },
+    "healer": {
+      "name": "Şifacı",
+      "desc": "Yeşil destek birimleri; müttefikleri ayakta tutar. Dalga oturmadan yok et."
+    },
+    "exploder": {
+      "name": "Patlayıcı",
+      "desc": "Ölünce patlayan turuncu taşıyıcılar. Mesafe bırakmazsan canın yanar."
+    },
+    "shield_enemy": {
+      "name": "Kalkanlı Elit",
+      "desc": "Mavi kabuklu; hasarı savurur. Kalkanı kır veya bağışıklık etiketini akılla oyna."
+    },
+    "giant": {
+      "name": "Dev",
+      "desc": "Geç oyun devleri. Geniş vuruş kutusu—kite etmeden hayatta kalınamaz."
+    },
+    "ranged_enemy": {
+      "name": "Okçu",
+      "desc": "Uzak mesafeden baskı yapan turuncu okçular. Yaklaş ya da alan hasarına bırak."
+    },
+    "mini_boss": {
+      "name": "Müjdeci",
+      "desc": "Zaman çizelgesi boss’ları; müzik ve sandıkla gelir. İlk yenilgi bir dönüm noktasıdır."
+    },
+    "reaper": {
+      "name": "Ölüm Biçen",
+      "desc": "Koyu bordo son oyun süpürücüleri. Her dalga daha aç—koşuyu bitir ya da bitirilirsin."
+    },
+    "weapon": {
+      "bullet": {
+        "name": "Mermi",
+        "desc": "Düz menzilli atışlar. Temel baskı silahın."
+      },
+      "aura": {
+        "name": "Aura",
+        "desc": "Karakterinin etrafında hasar alanı. Alanı sen kontrol edersin."
+      },
+      "chain": {
+        "name": "Zincir",
+        "desc": "Hedefler arasında sıçrayan zincir. Kalabalık dalgalarda güçlü."
+      },
+      "boomerang": {
+        "name": "Bumerang",
+        "desc": "Geri döner; peşinden gelen sürülere ceza keser."
+      },
+      "lightning": {
+        "name": "Yıldırım",
+        "desc": "Yakındaki düşmanlara iniş. Tek hedef patlaması."
+      },
+      "ice_ball": {
+        "name": "Buz Topu",
+        "desc": "Yavaşlatan mermi. Tank ve dalıcıları uzakta tut."
+      },
+      "shadow": {
+        "name": "Gölge",
+        "desc": "Etrafında dönen gölge küreleri. Yakın mesafe sürekli hasar."
+      },
+      "laser": {
+        "name": "Lazer",
+        "desc": "Çizgide delen ışın. Hizalanırsa hat temizler."
+      },
+      "fan_blade": {
+        "name": "Yelpaze Bıçak",
+        "desc": "Geniş yakın fan. Yüzüne yapışan her şeyi doğrar."
+      },
+      "holy_bullet": {
+        "name": "Kutsal Mermi",
+        "desc": "Evrim: ekstra hasar ve zırh kırma."
+      },
+      "toxic_chain": {
+        "name": "Zehirli Zincir",
+        "desc": "Evrim: sıçrarken zehir yayar."
+      },
+      "death_laser": {
+        "name": "Ölüm Lazeri",
+        "desc": "Evrim: her tik kritik, dev menzil."
+      },
+      "blood_boomerang": {
+        "name": "Kan Bumerangı",
+        "desc": "Evrim: vuruş başına can çalar."
+      },
+      "storm": {
+        "name": "Fırtına",
+        "desc": "Evrim: öldürmede ekstra yıldırım."
+      },
+      "shadow_storm": {
+        "name": "Gölge Fırtınası",
+        "desc": "Evrim: gölge vuruşları yıldırım zinciri tetikleyebilir."
+      },
+      "frost_nova": {
+        "name": "Buz Novası",
+        "desc": "Evrim: vuruşta alan dondurma + yansıtma oyunu."
+      },
+      "ember_fan": {
+        "name": "Kor Yelpazesi",
+        "desc": "Evrim: daha geniş yay ve delici kor parçaları."
+      }
+    },
+    "item": {
+      "lifesteal": {
+        "name": "Can Çalma",
+        "desc": "Hasar verirken iyileş. Uzun kavgada stabilite."
+      },
+      "armor": {
+        "name": "Zırh",
+        "desc": "Düz hasar azaltma. Seviye at, çip hasarı sil."
+      },
+      "crit": {
+        "name": "Kritik",
+        "desc": "Kritik şans ve çarpan."
+      },
+      "explosion": {
+        "name": "Patlama",
+        "desc": "Öldürmede alan hasarı. Yoğun sürüde kar topu."
+      },
+      "magnet": {
+        "name": "Mıknatıs",
+        "desc": "XP ve altını daha uzağa çeker. Daha az koşu."
+      },
+      "poison": {
+        "name": "Zehir",
+        "desc": "Zamanla hasar. Zincir evrimleriyle uyumlu."
+      },
+      "shield": {
+        "name": "Kalkan",
+        "desc": "Belli aralıkta isabeti bloklar. Küçük hataları affeder."
+      },
+      "speed_charm": {
+        "name": "Hız Tılsımı",
+        "desc": "Daha hızlı hareket. Max’ta Fırtına evrim yolunu açar."
+      },
+      "blood_pool": {
+        "name": "Kan Havuzu",
+        "desc": "Tehlikeli alan bırakır. Kite için bölge kontrolü."
+      },
+      "luck_stone": {
+        "name": "Şans Taşı",
+        "desc": "Nadir seçenek ihtimali ve azıcık altın."
+      },
+      "turbine": {
+        "name": "Türbin",
+        "desc": "Cooldown ve alan build’leriyle sinerji."
+      },
+      "steam_armor": {
+        "name": "Buharlı Zırh",
+        "desc": "Buhar temalı ek savunma."
+      },
+      "energy_cell": {
+        "name": "Enerji Hücresi",
+        "desc": "Sürekli ateş ve cooldown toparlamasına güç verir."
+      },
+      "ember_heart": {
+        "name": "Kor Kalbi",
+        "desc": "Yelpaze evrimleriyle eşleşen kor pasifi."
+      }
+    },
+    "character": {
+      "warrior": {
+        "name": "Savaşçı",
+        "desc": "Dengeli dövüşçü; ekstra başlangıç hasarı. İlk seçim için ideal."
+      },
+      "mage": {
+        "name": "Büyücü",
+        "desc": "Aura ile başlar, ekstra max can. Alan kontrolü oynanışı."
+      },
+      "vampire": {
+        "name": "Vampir",
+        "desc": "Hızlı avcı; gömülü can çalma. Agresif sürdürülebilirlik."
+      },
+      "hunter": {
+        "name": "Avcı",
+        "desc": "Bumerang ustası; can çalma sinerjisi."
+      },
+      "stormer": {
+        "name": "Fırtına",
+        "desc": "Yıldırım odağı; cooldown bonusları."
+      },
+      "frost": {
+        "name": "Buzcu",
+        "desc": "Yavaşlatma uzmanı; çift süre, buz topu başlangıcı."
+      },
+      "shadow_walker": {
+        "name": "Gölge Yürüyücü",
+        "desc": "Yüksek hızlı suikastçı; gölge küreleri."
+      },
+      "engineer": {
+        "name": "Mühendis",
+        "desc": "Lazer ve alan bonusu; cam topa yakın."
+      },
+      "paladin": {
+        "name": "Paladin",
+        "desc": "Tank kutsal savaşçı; zırh ve Kutsal Mermi."
+      },
+      "blood_prince": {
+        "name": "Kan Prensi",
+        "desc": "XP açgözlüsü; Kan Bumerangı fantezisi."
+      },
+      "nomad": {
+        "name": "Göçebe",
+        "desc": "Yelpaze Bıçak dövüşçüsü—kill ile açılır, altınla satın alınır."
+      },
+      "death_knight": {
+        "name": "Ölüm Şövalyesi",
+        "desc": "Gizli: Ölüm Lazeri başlangıcı, dev hasar, sert bedeller."
+      },
+      "chaos": {
+        "name": "Kaos",
+        "desc": "Gizli: rastgele silahlarla başla—saf varyans koşuları."
+      },
+      "omega": {
+        "name": "Omega",
+        "desc": "Gizli: tüm silahlar, 1 can. Uzman ve gösteriş koşuları."
+      }
+    },
+    "map": {
+      "vs_map": {
+        "name": "Düşmüş Krallık",
+        "desc": "Hikâye haritası—açık alan, 30 dk hayatta kalma, zamana bağlı boss’lar."
+      },
+      "map2": {
+        "name": "Harita II",
+        "desc": "Yer ayrıldı. İlerideki güncellemede."
+      },
+      "map3": {
+        "name": "Harita III",
+        "desc": "Yer ayrıldı. İlerideki güncellemede."
+      }
     }
   },
   "meta": {

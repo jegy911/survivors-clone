@@ -209,7 +209,7 @@ Aşağıdaki maddelerin **kod karşılığı** matriste; burada yalnızca **tasa
 ## Bağlılık — sunum ve koleksiyon
 
 - **Sandık heyecanı:** Açılış animasyonu + VFX + ses — kısmi.
-- **Koleksiyon / wiki / bestiary menüsü** (grid, keşfedilenler) — ❌.
+- **Koleksiyon / wiki / bestiary menüsü** (grid, keşfedilenler) — ✅ `ui/collection_menu`, `CollectionData` + `codex_discovered` / `codex_weapons` / `codex_items` / `codex_maps` + kahraman kilidi; 6 sekme (düşman, boss, silah, eşya, kahraman, harita), kart + detay.
 - **Kozmetik ödüller** (şapka, mermi rengi, texture varyantı) — ❌.
 - **Görsel juiciness:** Hit-stop, parçacık, orb — ✅ (genel); yoğun sahnede polish devam edebilir.
 

@@ -428,6 +428,7 @@ func add_weapon(type: String):
 		add_child(weapon)
 		active_weapons[type] = weapon
 		recalculate_category_bonus()
+		SaveManager.register_codex_weapon(type)
 
 func evolve_weapon(evo_id: String):
 	if not WeaponEvolution.is_evolution_ready(self, evo_id):
@@ -488,6 +489,7 @@ func add_item(type: String):
 		active_items[type] = item
 		add_child(item)
 		recalculate_category_bonus()
+		SaveManager.register_codex_item(type)
 
 func recalculate_category_bonus():
 	category_counts = {"attack": 0, "defense": 0, "vampire": 0, "utility": 0}

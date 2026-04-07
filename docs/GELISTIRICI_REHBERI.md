@@ -36,7 +36,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 | Autoload | Görev |
 |----------|--------|
-| **SaveManager** | Altın, seçili karakter/harita, meta upgrade’ler, ayarlar (`locale` dahil), kilit / satın alınmış karakter listeleri, istatistikler. |
+| **SaveManager** | Altın, seçili karakter/harita, meta upgrade’ler, ayarlar (`locale` dahil), kilit / satın alınmış karakter listeleri, istatistikler; kodeks: **`codex_discovered`**, **`codex_weapons`**, **`codex_items`**, **`codex_maps`**. |
 | **LocalizationManager** | `LANGUAGE_CATALOG` + `locales/<code>.json` → `TranslationServer`; fallback dili `project.godot` → `internationalization/locale/fallback` ve `_ready()` içinde `ProjectSettings.set_setting(..., "en")`; ilk kurulumda kayıt yoksa **OS dili** (katalogda varsa); `locale_changed` sinyali. |
 | **AudioManager** | Ses çalma API’si. |
 | **ObjectPool** | Sık oluşturulan nesneler (mermi, orb, damage number vb.) için havuz; `get_object(scene_path)` / `return_object`. |
@@ -168,9 +168,21 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 ---
 
+## 5a. Koleksiyon (bestiary / kodeks)
+
+- **`core/collection_data.gd`** — Sekmeler: `TAB_ENEMY`, `TAB_BOSS`, `TAB_WEAPON`, `TAB_ITEM`, `TAB_CHARACTER`, `TAB_MAP`. Tablo dizileri: `ENEMY_ENTRIES`, `BOSS_ENTRIES`, `WEAPON_ENTRIES`, `ITEM_ENTRIES`, `MAP_ENTRIES`; kahramanlar **`character_entries()`** ile `CharacterData.CHARACTERS` üzerinden üretilir (emoji + `accent` = karakter rengi). `all_entries()`, `entries_for_tab(tab)`, `total_entry_count()`, `has_bestiary_id()` (sadece ölüm kaydı).
+- **`SaveManager`**: `codex_discovered` (düşman/boss), `codex_weapons`, `codex_items`, `codex_maps`; `is_codex_entry_unlocked(entry)` tek doğrulama; `register_codex_*` aileleri. **Tüm ilerlemeyi sıfırla** dört kodeks dizisini de temizler.
+- **Keşif tetikleyicileri:** düşman ölümü `enemy_base` / `boss` / `giant`; silah ve eşya ilk alımda **`player/player.gd`** `add_weapon` / `add_item`; harita **`ui/map_select.gd`** oyun başlatırken `register_codex_map`; kahramanlar **`unlocked_characters`** (kilit açılmadan kart gizli).
+- **Yeni düşman:** `.tscn` + `ENEMY_ENTRIES`/`BOSS_ENTRIES` + `codex.<id>.name/desc` (düşman/boss düz anahtar).
+- **Yeni silah / eşya / harita:** `WEAPON_ENTRIES` / `ITEM_ENTRIES` / `MAP_ENTRIES` + üç dilde `codex.<weapon|item|map>.<id>.name/desc`. Toplu ek için **`locales/codex_sources/codex_extensions_{en,tr,zh_CN}.json`** düzenle → `python locales/merge_codex_extensions.py` (çıktı `locales/*.json` içindeki `codex` altına yazar; `check_locale_parity.py` yalnızca kök `*.json` dosyalarını karşılaştırır).
+- **Yeni kahraman:** `CharacterData`’ya ekle; `codex.character.<id>` metinleri üç dilde.
+- **UI:** `ui/collection_menu.gd` — üstte 6 sekme (`ui.collection_menu.tab_*`); ana menü **`ui/main_menu.gd`** → Kodeks.
+
+---
+
 ## 6. Harita ve mod seçimi
 
-- **`ui/map_select.gd`**: Mod (`vs` / `arena` planı) ve harita butonları; `SaveManager.selected_mode`, `SaveManager.selected_map` atanır; oyun **`res://main/main.tscn`** ile başlar.
+- **`ui/map_select.gd`**: Mod (`vs` / `arena` planı) ve harita butonları; `SaveManager.selected_mode`, `SaveManager.selected_map` atanır; **Başlat** sırasında `register_codex_map(selected_map)` (kodeks). Oyun **`res://main/main.tscn`** ile başlar.
 - Yeni **hikaye haritası**: Burada yeni buton + `selected_map` string ID + `main` veya ortam tarafında bu ID’ye göre sahne/tileset/spawn mantığı (projede harita özel kod `main` ve ilgili manager’larda aranmalı).
 - **Arena**: `map_select` içinde kilitli; mod + `main` dalga mantığı `YOL_HARITASI.md` planı ile genişletilecek.
 
@@ -187,6 +199,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 | HUD (kill, altın, çubuklar) | `player/player.gd` + `player` sahnesindeki `CanvasLayer` düğümleri |
 | Oyun sonu / duraklat | `ui/game_over.gd`, `pause_menu.gd` |
 | Meta upgrade | `ui/meta_upgrade.gd` |
+| Koleksiyon (kodeks) | `ui/collection_menu.gd` / `.tscn` |
 | Ayarlar | `ui/settings.gd` |
 
 **Yeni bir Label / buton:** İlgili `.tscn` düğümü + `.gd` içinde `onready` veya `%UniqueName` ile referans.

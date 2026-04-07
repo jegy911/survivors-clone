@@ -3,7 +3,7 @@
 Bu belge, **20 + 20 maddenin** Ironfall kod tabanındaki **Var / Kısmi / Yok** durumunu ve kısa **repo notunu** içerir.  
 Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 
-**Son kod kontrolü:** 2026-04-07 (güncelleme: oyuncu VFX opaklığı)
+**Son kod kontrolü:** 2026-04-07 (güncelleme: kodeks / koleksiyon menüsü)
 
 ---
 
@@ -48,7 +48,7 @@ Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 | 8 | Tatmin edici ses (XP pitch) | **Kısmi** | `audio_manager.gd` `play_xp()` — pentatonik sıra var; streak bazlı sürekli yükselen pitch yok. |
 | 9 | Sandık heyecanı | **Kısmi** | `effects/chest.gd` anında ödül; özel açılış animasyonu yok. |
 | 10 | Beklenmedik boss | **Var** | `wave_manager.gd` `mini_boss_times`. |
-| 11 | Koleksiyon / bestiary | **Yok** | Wiki / koleksiyon menüsü yok. |
+| 11 | Koleksiyon / bestiary | **Var** | `core/collection_data.gd`, `SaveManager.codex_discovered`, ölümde `register_codex_discovered` (`enemy_base`, `boss`); `ui/collection_menu.tscn`; ana menü; `locales` `codex.*`. |
 | 12 | Sayılar büyür (oyun sonu) | **Var** | `game_over.gd`. |
 | 13 | Zorluk kademeleri (run başı) | **Kısmi** | `curse_level` meta; run başı 0–5 seçim ekranı yok. |
 | 14 | Risk / ödül | **Var** | `shrine_of_risk.gd`, shrine XP çarpanı. |
@@ -66,7 +66,7 @@ Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 | Kategori | Var | Kısmi | Yok |
 |----------|-----|-------|-----|
 | Erişilebilirlik (20) | 7 | 7 | 6 |
-| Bağlılık (20) | 11 | 6 | 3 |
+| Bağlılık (20) | 12 | 6 | 2 |
 
 ---
 
