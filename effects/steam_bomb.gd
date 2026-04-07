@@ -26,7 +26,7 @@ func _process(delta):
 
 func _on_collected(player: Node):
 	# Ekrandaki tüm düşmanları öldür
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	var kill_count = 0
 	for enemy in enemies:
 		if not enemy.is_in_group("boss"):

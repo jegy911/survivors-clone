@@ -13,7 +13,7 @@ func _ready():
 	max_level = 5
 
 func attack():
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	if enemies.is_empty():
 		return
 	enemies.sort_custom(func(a, b):

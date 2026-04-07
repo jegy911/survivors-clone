@@ -21,13 +21,13 @@ func _on_locale_changed(_locale: String) -> void:
 
 func _refresh_chrome() -> void:
 	$VBoxContainer/TitleLabel.text = tr("ui.settings.title")
-	_style_tab_button($VBoxContainer/TabRow/SesTab, tr("ui.settings.tab_audio"))
-	_style_tab_button($VBoxContainer/TabRow/DilTab, tr("ui.settings.tab_language"))
-	_style_tab_button($VBoxContainer/TabRow/GoruntuTab, tr("ui.settings.tab_video"))
-	_style_tab_button($VBoxContainer/TabRow/OynanisTab, tr("ui.settings.tab_gameplay"))
-	_style_tab_button($VBoxContainer/TabRow/ProfilTab, tr("ui.settings.tab_profile"))
-	_style_tab_button($VBoxContainer/TabRow/DevToolsTab, tr("ui.settings.tab_dev"))
-	_style_back_button($VBoxContainer/BackButton)
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/SesTab, tr("ui.settings.tab_audio"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/DilTab, tr("ui.settings.tab_language"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/GoruntuTab, tr("ui.settings.tab_video"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/OynanisTab, tr("ui.settings.tab_gameplay"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/ProfilTab, tr("ui.settings.tab_profile"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/DevToolsTab, tr("ui.settings.tab_dev"))
+	SettingsUiStyles.style_back_button($VBoxContainer/BackButton, tr("ui.settings.back_main"))
 
 func _build_ui():
 	var vbox = $VBoxContainer
@@ -40,12 +40,12 @@ func _build_ui():
 	$VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 36)
 	$VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
 
-	_style_tab_button($VBoxContainer/TabRow/SesTab, tr("ui.settings.tab_audio"))
-	_style_tab_button($VBoxContainer/TabRow/DilTab, tr("ui.settings.tab_language"))
-	_style_tab_button($VBoxContainer/TabRow/GoruntuTab, tr("ui.settings.tab_video"))
-	_style_tab_button($VBoxContainer/TabRow/OynanisTab, tr("ui.settings.tab_gameplay"))
-	_style_tab_button($VBoxContainer/TabRow/ProfilTab, tr("ui.settings.tab_profile"))
-	_style_tab_button($VBoxContainer/TabRow/DevToolsTab, tr("ui.settings.tab_dev"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/SesTab, tr("ui.settings.tab_audio"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/DilTab, tr("ui.settings.tab_language"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/GoruntuTab, tr("ui.settings.tab_video"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/OynanisTab, tr("ui.settings.tab_gameplay"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/ProfilTab, tr("ui.settings.tab_profile"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/DevToolsTab, tr("ui.settings.tab_dev"))
 
 	$VBoxContainer/TabRow/DevToolsTab.pressed.connect(func(): _switch_tab("devtools"))
 	$VBoxContainer/TabRow/SesTab.pressed.connect(func(): _switch_tab("ses"))
@@ -54,36 +54,10 @@ func _build_ui():
 	$VBoxContainer/TabRow/OynanisTab.pressed.connect(func(): _switch_tab("oynanis"))
 	$VBoxContainer/TabRow/ProfilTab.pressed.connect(func(): _switch_tab("profil"))
 
-	_style_back_button($VBoxContainer/BackButton)
+	SettingsUiStyles.style_back_button($VBoxContainer/BackButton, tr("ui.settings.back_main"))
 	$VBoxContainer/BackButton.pressed.connect(_on_back)
 
 	_switch_tab("ses")
-
-func _style_tab_button(btn: Button, text: String):
-	btn.text = text
-	btn.custom_minimum_size = Vector2(160, 50)
-	var style = StyleBoxFlat.new()
-	style.bg_color = Color("#1A1A2E")
-	style.corner_radius_top_left = 8
-	style.corner_radius_top_right = 8
-	style.corner_radius_bottom_left = 0
-	style.corner_radius_bottom_right = 0
-	btn.add_theme_stylebox_override("normal", style)
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.add_theme_font_size_override("font_size", 15)
-
-func _style_back_button(btn: Button):
-	btn.text = tr("ui.settings.back_main")
-	btn.custom_minimum_size = Vector2(200, 50)
-	btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	var style = StyleBoxFlat.new()
-	style.bg_color = Color("#1A1A2E")
-	style.corner_radius_top_left = 8
-	style.corner_radius_top_right = 8
-	style.corner_radius_bottom_left = 8
-	style.corner_radius_bottom_right = 8
-	btn.add_theme_stylebox_override("normal", style)
-	btn.add_theme_color_override("font_color", Color.WHITE)
 
 func _switch_tab(tab: String):
 	current_tab = tab

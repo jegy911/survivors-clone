@@ -1,45 +1,67 @@
 extends Node
+## Sahne yolu başına havuz; serbest nesne seçimi yığın ile O(1) yaklaşık.
 
-var pools = {}
+var _pools: Dictionary = {}
 
-func _ensure_pool(scene_path: String):
-	if pools.has(scene_path):
+
+func _ensure_pool(scene_path: String) -> void:
+	if _pools.has(scene_path):
 		return
-	pools[scene_path] = []
-	var scene = load(scene_path)
-	var pool_size = 40 if scene_path.contains("xp_orb") or scene_path.contains("gold_orb") else 20
+	var scene: PackedScene = load(scene_path)
+	var pool_size: int = 40 if scene_path.contains("xp_orb") or scene_path.contains("gold_orb") else 20
+	var objects: Array = []
+	var free_indices: Array = []
 	for i in pool_size:
-		var obj = scene.instantiate()
+		var obj: Node = scene.instantiate()
 		obj.set_meta("pool_path", scene_path)
+		obj.set_meta("pool_index", objects.size())
 		obj.set_meta("in_pool", true)
 		add_child(obj)
 		obj.hide()
-		pools[scene_path].append(obj)
+		objects.append(obj)
+		free_indices.append(objects.size() - 1)
+	_pools[scene_path] = {"objects": objects, "free": free_indices}
+
 
 func get_object(scene_path: String) -> Node:
 	_ensure_pool(scene_path)
-	for obj in pools[scene_path]:
-		if obj.get_meta("in_pool", false):
-			obj.set_meta("in_pool", false)
-			return obj
-	# Havuz doluysa yeni oluştur
-	var scene = load(scene_path)
-	var obj = scene.instantiate()
-	obj.set_meta("pool_path", scene_path)
-	obj.set_meta("in_pool", false)
-	add_child(obj)
-	pools[scene_path].append(obj)
-	return obj
+	var p: Dictionary = _pools[scene_path]
+	var objects: Array = p["objects"]
+	var free: Array = p["free"]
+	if free.is_empty():
+		var scene: PackedScene = load(scene_path)
+		var obj: Node = scene.instantiate()
+		obj.set_meta("pool_path", scene_path)
+		obj.set_meta("pool_index", objects.size())
+		obj.set_meta("in_pool", false)
+		add_child(obj)
+		objects.append(obj)
+		return obj
+	var idx: int = free.pop_back()
+	var reused: Node = objects[idx]
+	reused.set_meta("in_pool", false)
+	return reused
 
-func return_object(obj: Node):
+
+func return_object(obj: Node) -> void:
 	obj.hide()
 	obj.set_meta("in_pool", true)
+	var path: String = str(obj.get_meta("pool_path", ""))
+	if path.is_empty() or not _pools.has(path):
+		return
+	var p: Dictionary = _pools[path]
+	var idx: int = int(obj.get_meta("pool_index", -1))
+	if idx < 0:
+		return
+	p["free"].append(idx)
 	if obj.has_method("reset"):
 		obj.reset()
 
-func reset_all():
-	for scene_path in pools:
-		for obj in pools[scene_path]:
+
+func reset_all() -> void:
+	for scene_path in _pools:
+		var objects: Array = _pools[scene_path]["objects"]
+		for obj in objects:
 			if is_instance_valid(obj):
 				obj.queue_free()
-	pools.clear()
+	_pools.clear()

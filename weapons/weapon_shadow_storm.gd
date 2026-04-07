@@ -18,7 +18,7 @@ func attack():
 	orbit_angle += 0.4
 	var orbit_pos = player.global_position + Vector2(cos(orbit_angle), sin(orbit_angle)) * orbit_radius * player.get_area_multiplier()
 	
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	for enemy in enemies:
 		if enemy.global_position.distance_to(orbit_pos) < 40:
 			var final_damage = player.get_total_damage(damage)
@@ -39,7 +39,7 @@ func attack():
 	tween.tween_callback(orb.queue_free)
 
 func _chain_lightning(start_enemy: Node):
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	var hit = [start_enemy]
 	var current = start_enemy
 	for i in 3:

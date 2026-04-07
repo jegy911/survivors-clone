@@ -96,7 +96,50 @@
       "p1_title": "👤 选择 P1 角色",
       "p2_title": "👥 选择 P2 角色",
       "taken_by_p1": "已被 P1 选择",
-      "locked_p1": "🔒 P1"
+      "locked_p1": "🔒 P1",
+      "line_start_weapon": "⚔ 初始武器：%s",
+      "line_start_item": "🛡 道具：%s",
+      "line_bonus_damage": "🗡 +%d 伤害",
+      "line_bonus_hp": "💗 +%d 最大生命",
+      "line_bonus_speed": "👟 +%d 移速",
+      "line_bonus_armor": "🛡 +%d 护甲",
+      "special": {
+        "lifesteal_15": "🩸 +15% 吸血",
+        "cooldown_10": "⚡ -10% 冷却",
+        "slow_double": "❄ 减速持续时间 x2",
+        "area_15": "💥 +15% 范围",
+        "xp_20": "⭐ +20% 经验",
+        "all_weapons_1hp": "☠ 1 点生命，全武器",
+        "damage_double": "⚔ 伤害 x2",
+        "random_weapons": "🎲 随机初始武器"
+      }
+    },
+    "player": {
+      "crit_floating": "暴击！",
+      "hud_stats_title": "📊 属性",
+      "stat_damage": "⚔ 伤害",
+      "stat_hp": "💗 生命",
+      "stat_armor": "🛡 护甲",
+      "stat_lifesteal": "🩸 吸血",
+      "stat_crit": "🎯 暴击率",
+      "stat_cooldown": "⚡ 冷却",
+      "stat_area": "💥 范围",
+      "stat_speed": "👟 移速",
+      "stat_magnet": "🧲 磁铁",
+      "stat_tag_kesici": "✂ 斩击 x%d",
+      "stat_tag_patlayici": "💣 爆炸 x%d",
+      "stat_tag_buyu": "🔮 魔法 x%d",
+      "stat_tag_teknolojik": "⚙ 科技 x%d",
+      "stat_overheal": "🛡 过量治疗护盾",
+      "stat_bounce": "⚡ 弹跳",
+      "stat_shrine": "🕯 神龛",
+      "loadout": {
+        "max_suffix": " (满级)",
+        "weapon_upgrade": "⬆ %s → Lv%d",
+        "item_upgrade": "⬆ %s → Lv%d",
+        "new_weapon": "新武器：%s",
+        "new_item": "新道具：%s"
+      }
     },
     "meta_screen": {
       "title": "永久升级",

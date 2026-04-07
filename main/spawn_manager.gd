@@ -11,7 +11,7 @@ var healer_scene = preload("res://enemies/healer.tscn")
 var shield_enemy_scene = preload("res://enemies/shield_enemy.tscn")
 var giant_scene = preload("res://enemies/giant.tscn")
 
-const MAX_ENEMIES = 250
+const MAX_ENEMIES = 1200
 const ELITE_CHANCE = 0.15
 
 var main_node: Node = null
@@ -215,7 +215,7 @@ func _apply_immunity(enemy: Node, immunity_type: String):
 	enemy.add_child(indicator)
 
 func apply_immunity_to_existing(current_immunity: String):
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	for enemy in enemies:
 		if randf() < 0.30:
 			_apply_immunity(enemy, current_immunity)
@@ -235,7 +235,7 @@ func spawn_swarm_event(game_timer: float):
 	var count = 40 + randi() % 21
 
 	for i in count:
-		var current_count = get_tree().get_nodes_in_group("enemies").size()
+		var current_count = EnemyRegistry.get_live_count()
 		if current_count >= MAX_ENEMIES:
 			break
 		var enemy = _pick_swarm_scene().instantiate()
@@ -264,7 +264,7 @@ func spawn_encircle_event(game_timer: float):
 	var radius = 650.0
 
 	for i in count:
-		var current_count = get_tree().get_nodes_in_group("enemies").size()
+		var current_count = EnemyRegistry.get_live_count()
 		if current_count >= MAX_ENEMIES:
 			break
 		var angle = (TAU / count) * i

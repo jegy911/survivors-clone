@@ -274,3 +274,25 @@ const CHARACTERS = [
 		"origin_bonus": {},
 	},
 ]
+
+## `main.gd` karakter sahnesi yolu eşlemesi (tek kaynak).
+const CHARACTER_SCENE_BY_ID: Dictionary = {
+	"warrior": "res://characters/warrior/warrior.tscn",
+	"mage": "res://characters/mage/mage.tscn",
+	"vampire": "res://characters/vampire/vampire.tscn",
+	"hunter": "res://characters/hunter/hunter.tscn",
+	"stormer": "res://characters/stormer/stormer.tscn",
+	"frost": "res://characters/frost/frost.tscn",
+	"shadow_walker": "res://characters/shadow_walker/shadow_walker.tscn",
+	"engineer": "res://characters/engineer/engineer.tscn",
+	"paladin": "res://characters/paladin/paladin.tscn",
+	"blood_prince": "res://characters/blood_prince/blood_prince.tscn",
+	"nomad": "res://characters/nomad/nomad.tscn",
+	"death_knight": "res://characters/death_knight/death_knight.tscn",
+	"chaos": "res://characters/chaos/chaos.tscn",
+	"omega": "res://characters/omega/omega.tscn",
+}
+
+
+static func get_character_scene_path(char_id: String) -> String:
+	return str(CHARACTER_SCENE_BY_ID.get(char_id, "res://characters/warrior/warrior.tscn"))

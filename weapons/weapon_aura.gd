@@ -16,7 +16,7 @@ func _ready():
 
 func attack():
 	var effective_radius = radius * player.get_area_multiplier()
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	# Hit cooldown'ları temizle
 	for key in hit_cooldowns.keys():
 		hit_cooldowns[key] -= get_effective_cooldown()

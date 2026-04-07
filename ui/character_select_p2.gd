@@ -27,36 +27,6 @@ func build_characters():
 		var card = _build_card(i, char_data, is_taken)
 		container.add_child(card)
 
-func _get_weapon_name(weapon_id: String) -> String:
-	var names = {
-		"bullet": "Mermi", "aura": "Aura", "chain": "Zincir",
-		"boomerang": "Bumerang", "lightning": "Yıldırım",
-		"ice_ball": "Buz Topu", "shadow": "Gölge", "laser": "Lazer",
-		"holy_bullet": "Kutsal Mermi", "blood_boomerang": "Kan Bumerangı",
-		"death_laser": "Ölüm Lazeri", "fan_blade": "Yelpaze Bıçak", "ember_fan": "Kor Yelpazesi"
-	}
-	return names.get(weapon_id, weapon_id)
-
-func _get_item_name(item_id: String) -> String:
-	var names = {"lifesteal": "Can Çalma", "armor": "Zırh", "crit": "Kritik", "shield": "Kalkan", "ember_heart": "Kor Kalbi"}
-	return names.get(item_id, item_id)
-
-func _build_rich_description(char_data: Dictionary) -> String:
-	var parts: Array = []
-	if char_data["start_weapon"] != "":
-		parts.append("⚔ Başlangıç: " + _get_weapon_name(char_data["start_weapon"]))
-	if char_data["start_item"] != "":
-		parts.append("🛡 Item: " + _get_item_name(char_data["start_item"]))
-	if char_data["bonus_damage"] > 0:
-		parts.append("🗡 +" + str(char_data["bonus_damage"]) + " hasar")
-	if char_data["bonus_hp"] > 0:
-		parts.append("💗 +" + str(char_data["bonus_hp"]) + " max can")
-	if char_data["bonus_speed"] > 0:
-		parts.append("👟 +" + str(char_data["bonus_speed"]) + " hız")
-	if parts.is_empty():
-		return char_data["description"]
-	return "\n".join(parts)
-
 func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContainer:
 	var card = PanelContainer.new()
 	card.custom_minimum_size = Vector2(180, 280)
@@ -110,7 +80,7 @@ func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContaine
 		char_visual.color = Color(char_data["color"])
 		name_label.text = char_data["name"]
 		name_label.add_theme_color_override("font_color", Color(char_data["color"]))
-		desc_label.text = _build_rich_description(char_data)
+		desc_label.text = CharacterSelectHelpers.rich_description_unlocked(char_data)
 		desc_label.add_theme_color_override("font_color", Color("#B0B0B0"))
 		var btn: Button
 		if i == selected_index:

@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-07 (koleksiyon menüsü)
+**Son güncelleme:** 2026-04-07 (ürün vizyonu + karakter sınıfı belgesi)
 
 ---
 
@@ -41,6 +41,8 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-07 | **Performans / refaktör** — `EnemyRegistry` autoload (düşman listesi, `EnemyBase` kayıt); silah/efektlerde `get_nodes_in_group("enemies")` kaldırıldı; `ObjectPool` serbest yuva yığını; `PlayerLoadoutRegistry` (silah/eşya fabrikası); `CharacterData.CHARACTER_SCENE_BY_ID`; `player_ui_helpers`, `character_select_helpers`, `settings_ui_styles`; `MAX_ENEMIES` 1200; `ui.player` / `ui.character_select` locale anahtarları. |
+| 2026-04-07 | **Ürün vizyonu** — Co-op destek kahramanları, dört karakter sınıfı, profil/meta, idle-benzeri görevler, rehber/kodeks/sözlük maddeleri `YOL_HARITASI.md` içinde işaretlendi; ayrıntılı sınıf ve kahraman taslağı: `docs/KARAKTER_SINIFLARI_VE_TASARIM.md`. |
 | 2026-04-07 | **TASARIM.md — düşman görsel envanteri** — Tüm düşman türleri için `AnimatedSprite2D` + asset yolları doğrulandı; eski “yalnız ColorRect” satırları kaldırıldı; outline / exploder ön uyarısı ayrı hedef olarak not edildi. |
 | 2026-04-07 | **Kodeks genişletme** — Sekmeler: düşman, boss, silah, eşya, kahraman, harita; `codex_weapons` / `codex_items` / `codex_maps`; `CollectionData` + `locales/codex_sources` + `merge_codex_extensions.py`. |
 | 2026-04-07 | **Bağlılık matrisi Tablo 2 #11 (koleksiyon / bestiary)** — Ana menüden kodeks; grid + filtre + detay; ilk öldürmede `codex_discovered` kaydı; `tr` / `en` / `zh_CN` `codex.*` metinleri. |
@@ -112,6 +114,52 @@ Paralel envanter: `docs/TASARIM.md`.
 
 ---
 
+## Ürün vizyonu — güven, statü, verimlilik, rehber
+
+Aşağıdaki maddeler **ürün / tasarım** kaynağıdır; kod durumu satır içi notlarla işaretlenir. Karakter sınıfları ve kahraman taslak tablosu: [KARAKTER_SINIFLARI_VE_TASARIM.md](KARAKTER_SINIFLARI_VE_TASARIM.md).
+
+### A. Oyuncunun kendine güveni
+
+| Durum | Madde |
+|--------|--------|
+| [ ] | **P2P / co-op destek kahramanları** — Takım arkadaşına kısa süreli hasar buff’ı, iyileşme oranı, cooldown / area büyütme vb.; çeşitli support kimlikleri. *(Co-op’ta P2 seçimi var; takım buff mekaniği yok.)* |
+| [x] | **Dört sınıf tanımı (metin)** — Controller, Fighter, Mage, Tank açıklamaları `KARAKTER_SINIFLARI_VE_TASARIM.md` içinde. |
+| [ ] | **Sınıfın oyuna bağlanması** — `CharacterData` veya eşdeğerinde `class` alanı, UI’da gösterim, denge. |
+| [ ] | **Mevcut kahramanların sınıfa göre stat hizalaması** — Taslak atama belgede; sayısal denge beklemede. |
+| [x] | **Yeni kahramanlar için sınıf çerçevesi** — Tasarım kuralı olarak belgelendi (`2.1`). |
+
+### B. Oyuncunun “statüsü” hissi
+
+| Durum | Madde |
+|--------|--------|
+| [x] | **Profil sekmesi (temel)** — Ayarlar → Profil: kalıcı istatistikler + başarı listesi (`ui/settings.gd` `_build_profil_tab`). |
+| [ ] | **Profil genişlemesi** — Takma adlar, ikonlar, açılabilir profil arka planı ve çerçeveler. |
+| [ ] | **Hesap / seviye sistemi** — Level atladıkça ödüller (yukarıdaki kozmetiklerle bağlantılı olabilir). |
+| [ ] | **İleride rank sistemi** — Rekabetçi veya görünür derecelendirme (tasarım açık). |
+
+### C. Verimlilik (idle-benzeri, ana oyunu gölgelemeden)
+
+| Durum | Madde |
+|--------|--------|
+| [ ] | **Görev / idle-benzeri gönderim** — Oyun tam idle olmayacak; açılmış kahramanlardan bir veya birkaçını gerçek zamanlı süreli görevlere gönderme (ör. 30 dk → 24 saat arası birkaç süre seçeneği). |
+| [ ] | **Ödüller** — Dönüşte altın ve/veya XP; hesap seviyesi veya modlara göre kullanılabilir para ayrımı (tasarım kararı). |
+| [ ] | **Ölçekleme** — Rank / seviyeye göre görev açılımı; eşzamanlı görev sayısı; gönderilebilen kahraman sayısı; idle menü içi shop / güçlendirme. |
+| [ ] | **Hedef** — Az vakitli oyuncular için alternatif kasma yolu; **asıl run deneyiminin önüne geçmeyecek** şekilde sınırlar. |
+
+### D. Direction — rehber ve kodeks
+
+| Durum | Madde |
+|--------|--------|
+| [ ] | **Her deneyim seviyesine onboarding** — İlk kez açan, türe yabancı veya deneyimli oyuncu için yönlendirme akışı. |
+| [ ] | **Sağlam rehber kaynağı** — Tek yerden erişilen, güncellenebilir rehber (UI + metin). |
+| [x] | **Koleksiyon / kodeks zemini** — Ana menüden kodeks; düşman, boss, silah, eşya, kahraman, harita sekmeleri (`CollectionData.TAB_ORDER`). |
+| [ ] | **Koleksiyonda evrim bölümü** — Evrim silahları run içinde var; kodekste ayrı **Evrim** sekmesi veya alt bölüm yok. |
+| [ ] | **İleride idle / görev sistemi** — Rehber veya kodeksten bağlantı (D + C entegrasyonu). |
+| [ ] | **Oyun içi sözlük** — Cooldown, area ve benzeri terimlerin açıklaması; koleksiyon içi bölüm veya ayrı sözlük sekmesi. |
+| [ ] | **Genel rehberlik önceliği** — Oyuncunun ne topladığını, neyin ne işe yaradığını anlaması (UX + metin). |
+
+---
+
 ### Yayın (dış platformlar)
 
 Checklist: `docs/TASARIM.md`.
@@ -120,6 +168,7 @@ Checklist: `docs/TASARIM.md`.
 
 ## Fikir havuzu (henüz önceliklendirilmemiş)
 
+- Üst bölüm **Ürün vizyonu — güven, statü, verimlilik, rehber** geniş planı toplar; buraya daha ince fikirler eklenebilir.
 - …
 
 ---

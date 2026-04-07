@@ -14,7 +14,7 @@ func _ready():
 	max_level = 5
 
 func attack():
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	if enemies.is_empty():
 		return
 	enemies.sort_custom(func(a, b): return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position))
@@ -36,7 +36,7 @@ func attack():
 		current = next
 
 func _find_next(current: Node, hit: Array):
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	var nearest = null
 	var nearest_dist = chain_range
 	for enemy in enemies:

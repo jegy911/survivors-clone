@@ -31,7 +31,7 @@ func _on_area_entered(area: Area2D):
 		return
 	_hit = true
 	if is_instance_valid(player) and player.get("bounce_timer") != null and player.bounce_timer > 0:
-		var enemies = get_tree().get_nodes_in_group("enemies")
+		var enemies = EnemyRegistry.get_enemies()
 		var next = null
 		var best_dist = 999999.0
 		for e in enemies:

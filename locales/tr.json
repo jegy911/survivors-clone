@@ -96,7 +96,50 @@
       "p1_title": "👤 P1 KARAKTERİNİ SEÇ",
       "p2_title": "👥 P2 KARAKTERİ SEÇ",
       "taken_by_p1": "P1 tarafından seçildi",
-      "locked_p1": "🔒 P1"
+      "locked_p1": "🔒 P1",
+      "line_start_weapon": "⚔ Başlangıç: %s",
+      "line_start_item": "🛡 Eşya: %s",
+      "line_bonus_damage": "🗡 +%d hasar",
+      "line_bonus_hp": "💗 +%d max can",
+      "line_bonus_speed": "👟 +%d hız",
+      "line_bonus_armor": "🛡 +%d zırh",
+      "special": {
+        "lifesteal_15": "🩸 +%15 can çalma",
+        "cooldown_10": "⚡ Cooldown -%10",
+        "slow_double": "❄ Yavaşlatma 2x",
+        "area_15": "💥 Alan +%15",
+        "xp_20": "⭐ XP +%20",
+        "all_weapons_1hp": "☠ 1 HP ile oyna, tüm silahlar aktif",
+        "damage_double": "⚔ Hasar 2x",
+        "random_weapons": "🎲 Rastgele silahlarla başla"
+      }
+    },
+    "player": {
+      "crit_floating": "KRİTİK!",
+      "hud_stats_title": "📊 İSTATİSTİK",
+      "stat_damage": "⚔ Hasar",
+      "stat_hp": "💗 Can",
+      "stat_armor": "🛡 Zırh",
+      "stat_lifesteal": "🩸 Can çalma",
+      "stat_crit": "🎯 Kritik şans",
+      "stat_cooldown": "⚡ Cooldown",
+      "stat_area": "💥 Alan",
+      "stat_speed": "👟 Hız",
+      "stat_magnet": "🧲 Mıknatıs",
+      "stat_tag_kesici": "✂ Kesici x%d",
+      "stat_tag_patlayici": "💣 Patlayıcı x%d",
+      "stat_tag_buyu": "🔮 Büyü x%d",
+      "stat_tag_teknolojik": "⚙ Teknolojik x%d",
+      "stat_overheal": "🛡 Overheal",
+      "stat_bounce": "⚡ Bounce",
+      "stat_shrine": "🕯 Sunak",
+      "loadout": {
+        "max_suffix": " (MAX)",
+        "weapon_upgrade": "⬆ %s → Lv%d",
+        "item_upgrade": "⬆ %s → Lv%d",
+        "new_weapon": "Yeni silah: %s",
+        "new_item": "Yeni: %s"
+      }
     },
     "meta_screen": {
       "title": "META UPGRADES",

@@ -27,7 +27,7 @@ func _process(_delta):
 
 func _explode():
 	triggered = true
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	for enemy in enemies:
 		if global_position.distance_to(enemy.global_position) < 110:
 			if enemy.has_method("apply_poison"):

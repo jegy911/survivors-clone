@@ -14,8 +14,9 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 2. **`docs/YOL_HARITASI.md`** — Planlanan bir iş bittiyse: öncelik tablosunda `[x]` yap veya maddeyi kaldır; **Yapılan iş günlüğü**ne tarih ile kısa satır ekle. İptal edilen işleri not düşerek çıkar.
 3. **`docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`** — Erişilebilirlik veya bağlılık maddelerinden birinin **Var/Kısmi/Yok** durumu kodda değiştiyse ilgili tablo satırını güncelle.
 4. **`docs/TASARIM.md`** — Envanterdeki bir madde teslim edildiyse veya yeni kalem eklendiyse ilgili satırları güncelle.
-5. **`locales/*.json`** — Yeni metin veya anahtar: katalogdaki **tüm** dil dosyalarına aynı anahtarı ekleyin; `python locales/check_locale_parity.py` ile `en.json` referansına göre anahtar eşitliğini doğrulayın.
-6. **`README.md`** — Kurulum / çalıştırma / repo yapısı değiştiyse ana sayfayı güncelle.
+5. **`docs/KARAKTER_SINIFLARI_VE_TASARIM.md`** — Karakter **sınıfı**, co-op destek vizyonu veya sınıf–kahraman tablosu değiştiyse güncelle.
+6. **`locales/*.json`** — Yeni metin veya anahtar: katalogdaki **tüm** dil dosyalarına aynı anahtarı ekleyin; `python locales/check_locale_parity.py` ile `en.json` referansına göre anahtar eşitliğini doğrulayın.
+7. **`README.md`** — Kurulum / çalıştırma / repo yapısı değiştiyse ana sayfayı güncelle.
 
 *(IDE’de Cursor kullanıyorsan: `.cursor/rules` altındaki `ironfall-docs.mdc` kuralı bu disiplini hatırlatır.)*
 
@@ -24,7 +25,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 ## 1. Genel akış (oyun döngüsü)
 
 1. **`project.godot`** → `run/main_scene` ile giriş sahnesi (genelde ana menü).
-2. **Autoload’lar** (`project.godot` → `[autoload]`): `SaveManager`, `LocalizationManager`, `AudioManager`, `ObjectPool`, `EventBus`, `AchievementManager` — sahne yüklenmeden önce hazır olurlar (`SaveManager` her zaman `LocalizationManager`’dan önce yüklenir).
+2. **Autoload’lar** (`project.godot` → `[autoload]`): `SaveManager`, `LocalizationManager`, `AudioManager`, `ObjectPool`, `EnemyRegistry`, `EventBus`, `AchievementManager` — sahne yüklenmeden önce hazır olurlar (`SaveManager` her zaman `LocalizationManager`’dan önce yüklenir).
 3. Tipik oyuncu akışı: **Ana menü** → mod seçimi → **Karakter seçimi** → (co-op ise P2 karakter) → **Harita seçimi** → **`main/main.tscn`** (asıl oyun).
 4. Oyunda oyuncu **`player/player.gd`** (karakter sahnesi üzerinden) ile yaratılır; `main/main.gd` spawn, dalga, ortam yöneticilerini kurar.
 
@@ -39,7 +40,8 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 | **SaveManager** | Altın, seçili karakter/harita, meta upgrade’ler, ayarlar (`locale` dahil), kilit / satın alınmış karakter listeleri, istatistikler; kodeks: **`codex_discovered`**, **`codex_weapons`**, **`codex_items`**, **`codex_maps`**. |
 | **LocalizationManager** | `LANGUAGE_CATALOG` + `locales/<code>.json` → `TranslationServer`; fallback dili `project.godot` → `internationalization/locale/fallback` ve `_ready()` içinde `ProjectSettings.set_setting(..., "en")`; ilk kurulumda kayıt yoksa **OS dili** (katalogda varsa); `locale_changed` sinyali. |
 | **AudioManager** | Ses çalma API’si. |
-| **ObjectPool** | Sık oluşturulan nesneler (mermi, orb, damage number vb.) için havuz; `get_object(scene_path)` / `return_object`. |
+| **ObjectPool** | Sık oluşturulan nesneler (mermi, orb, damage number vb.) için havuz; `get_object(scene_path)` / `return_object` (serbest yuva yığını ile hızlı seçim). |
+| **EnemyRegistry** | Canlı düşman listesi; `EnemyBase` kayıt/çıkış (`tree_exiting`); silah ve efektler `EnemyRegistry.get_enemies()` ile okur (yoğun sürüde `get_nodes_in_group` yükünü azaltır). |
 | **EventBus** | Sinyal merkezi (hasar, ölüm, level up, altın vb.). |
 | **AchievementManager** | Başarı kontrolleri. |
 
@@ -85,8 +87,12 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 ## 3. Karakter sistemi
 
+### Rol ve sınıf (tasarım)
+
+- **Sınıf çerçevesi** (Controller, Fighter, Mage, Tank), co-op destek vizyonu ve mevcut kahramanların **taslak** sınıf eşlemesi: **`docs/KARAKTER_SINIFLARI_VE_TASARIM.md`**. Kodda henüz ayrı bir `class` alanı yok; eklendiğinde bu belge ile tablo senkron tutulmalıdır.
+
 ### Veri
-- **`core/character_data.gd`** — `CharacterData.CHARACTERS` dizisi: her eleman bir sözlük (`id`, `name`, `description`, `color`, `start_weapon`, `start_item`, bonuslar, `locked`, `secret`, `cost`, `unlock_hint`, `unlock_condition`, `origin_bonus`, `special`).
+- **`core/character_data.gd`** — `CharacterData.CHARACTERS` dizisi: her eleman bir sözlük (`id`, `name`, `description`, `color`, `start_weapon`, `start_item`, bonuslar, `locked`, `secret`, `cost`, `unlock_hint`, `unlock_condition`, `origin_bonus`, `special`). Karakter sahne yolu: `CharacterData.CHARACTER_SCENE_BY_ID` + `get_character_scene_path(char_id)` (`main/main.gd` oyuncu spawn).
 
 ### Sahne
 - **`characters/<id>/<id>.tscn`** — Çoğunlukla `CharacterBody2D` + `player/player.gd`; her karakter kendi klasöründe tutulur.
@@ -122,10 +128,11 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 - `weapons/weapon_<isim>.gd`, tercihen **`class_name Weapon...`** (Godot global sınıf).
 
 ### Oyuncuya bağlama
+- **`core/player_loadout_registry.gd`** — `PlayerLoadoutRegistry.WEAPON_SCRIPT_BY_ID`: string ID → `preload` script; `create_weapon(id)`.
 - **`player/player.gd`**
-  - `add_weapon(type: String)` → `match type:` ile `...new()`.
-  - `_on_upgrade_chosen` → yeni silah ID’si aynı `match` listesinde olmalı.
-  - `get_weapon_description(type)` → level-up kartı metinleri.
+  - `add_weapon(type: String)` → `PlayerLoadoutRegistry.create_weapon(type)`.
+  - `_on_upgrade_chosen` → yeni silah ID’si bu sözlükte ve `upgrade_ui` havuzunda olmalı.
+  - `get_weapon_description(type)` → `codex.weapon.<id>.name/desc` + `ui.player.loadout.*` (yükseltme / yeni silah metni).
 
 ### Level-up havuzu
 - **`ui/upgrade_ui.gd`**
@@ -154,10 +161,11 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 - **`items/passive_item.gd`** — `PassiveItem`: `category`, `apply()`, `upgrade()`, isteğe bağlı `on_damage_dealt` için `EventBus` bağlantısı.
 
 ### Oyuncuya bağlama
+- **`core/player_loadout_registry.gd`** — `ITEM_SCRIPT_BY_ID` + `create_item(id)`.
 - **`player/player.gd`**
-  - `add_item(type: String)` → `match`.
-  - `_on_upgrade_chosen` → item listesi.
-  - `get_item_description(type)`.
+  - `add_item(type: String)` → `PlayerLoadoutRegistry.create_item(type)`.
+  - `_on_upgrade_chosen` → item ID listesi ile uyumlu olmalı.
+  - `get_item_description(type)` → `codex.item.<id>.name/desc` + `ui.player.loadout.*`.
   - Oyun olayları: örn. `on_enemy_killed` içinde `active_items.has("...")` ile özel item metodu çağrısı.
 
 ### Level-up havuzu
@@ -193,14 +201,14 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 | Alan | Tipik dosya |
 |------|-------------|
 | Ana menü | `ui/main_menu.gd` / `.tscn` |
-| Karakter seçimi | `ui/character_select.gd`, `character_select_p2.gd` |
+| Karakter seçimi | `ui/character_select.gd`, `character_select_p2.gd` (+ ortak metinler `ui/character_select_helpers.gd`) |
 | Harita | `ui/map_select.gd` |
 | Level-up | `ui/upgrade_ui.gd` |
 | HUD (kill, altın, çubuklar) | `player/player.gd` + `player` sahnesindeki `CanvasLayer` düğümleri |
 | Oyun sonu / duraklat | `ui/game_over.gd`, `pause_menu.gd` |
 | Meta upgrade | `ui/meta_upgrade.gd` |
 | Koleksiyon (kodeks) | `ui/collection_menu.gd` / `.tscn` |
-| Ayarlar | `ui/settings.gd` |
+| Ayarlar | `ui/settings.gd` (+ sekme stilleri `ui/settings_ui_styles.gd`) |
 
 **Yeni bir Label / buton:** İlgili `.tscn` düğümü + `.gd` içinde `onready` veya `%UniqueName` ile referans.
 
@@ -235,9 +243,9 @@ Yeni orb kodu için başlangıç: `xp_orb.gd` / `gold_orb.gd` ve `.tscn` şablon
 
 1. `core/character_data.gd` — yeni sözlük (ID benzersiz).
 2. `characters/<id>/<id>.tscn` — sahne (script `player.gd` uyumu).
-3. `main/main.gd` — `_get_character_scene` eşlemesi.
+3. `core/character_data.gd` — `CHARACTER_SCENE_BY_ID` + `get_character_scene_path` (yeni `id` → `.tscn` yolu).
 4. Gerekirse `save_manager.gd` — varsayılan kilit/purchase (çoğu karakter sadece veri + koşul ile gelir).
-5. `ui/character_select.gd` ve `character_select_p2.gd` — `_get_weapon_name` / `_get_item_name` / özel `special` satırları.
+5. `locales/*.json` — `ui.character_select.special.*` (kartlarda `special` alanı için) ve kodeks kahraman metinleri.
 6. `CHARACTERS` sırası değişecekse: kayıtlı indeks migrasyonu veya ID tabanlı seçim.
 
 ---
@@ -245,21 +253,23 @@ Yeni orb kodu için başlangıç: `xp_orb.gd` / `gold_orb.gd` ve `.tscn` şablon
 ## 10. Checklist: yeni taban silah
 
 1. `weapons/weapon_*.gd` + `class_name`.
-2. `player/player.gd` — `add_weapon`, `_on_upgrade_chosen`, `get_weapon_description`.
-3. `ui/upgrade_ui.gd` — `weapon_upgrades`, `get_upgrade_text`.
-4. Varsa projectile: `projectiles/*.tscn` + script, `ObjectPool` uyumu.
-5. Kaos: `random_weapons` listesi.
-6. Karakter seçimi isimleri: `character_select*.gd`.
+2. `core/player_loadout_registry.gd` — `WEAPON_SCRIPT_BY_ID` içine aynı string ID.
+3. `player/player.gd` — `_on_upgrade_chosen` `match` listesi (veya havuz); açıklama `codex` + `ui.player.loadout` ile gelir.
+4. `ui/upgrade_ui.gd` — `weapon_upgrades`, `get_upgrade_text`.
+5. Varsa projectile: `projectiles/*.tscn` + script, `ObjectPool` uyumu; hedef seçiminde tercihen `EnemyRegistry.get_enemies()`.
+6. Kaos: `apply_character_bonuses` içindeki `random_weapons` listesi.
+7. `locales/*.json` — `codex.weapon.<id>.name/desc` (üç dil).
 
 ---
 
 ## 11. Checklist: yeni pasif eşya
 
 1. `items/item_*.gd` + `class_name`.
-2. `player/player.gd` — `add_item`, `_on_upgrade_chosen`, `get_item_description`, gerekli oyun döngüsü kancaları (`on_enemy_killed`, `take_damage`, `_process` vb.).
-3. `ui/upgrade_ui.gd` — `item_upgrades`, `get_upgrade_text`.
-4. Sandık/boss/dalga ödül listeleri (kullanılacaksa).
-5. Evrim gereksinimi olacaksa `weapon_evolution.gd` — `requires_items`.
+2. `core/player_loadout_registry.gd` — `ITEM_SCRIPT_BY_ID` satırı.
+3. `player/player.gd` — `_on_upgrade_chosen` ve oyun döngüsü kancaları (`on_enemy_killed`, `take_damage`, `_process` vb.); açıklama `codex` + `ui.player.loadout`.
+4. `ui/upgrade_ui.gd` — `item_upgrades`, `get_upgrade_text`.
+5. Sandık/boss/dalga ödül listeleri (kullanılacaksa).
+6. Evrim gereksinimi olacaksa `weapon_evolution.gd` — `requires_items`.
 
 ---
 
@@ -267,9 +277,10 @@ Yeni orb kodu için başlangıç: `xp_orb.gd` / `gold_orb.gd` ve `.tscn` şablon
 
 1. `weapons/weapon_*.gd` (evrim sonucu silah).
 2. `weapon_evolution.gd` — `EVOLUTIONS` girişi.
-3. `player/player.gd` — `add_weapon` içinde evrim ID’si (örn. `ember_fan`).
-4. `get_weapon_description` / karakter seçimi isimleri (gerekirse).
-5. `locales/tr.json`, `en.json`, `zh_CN.json` — `ui.evolution_defs.<evo_id>` (`name`, `desc`); mümkünse `gen_locales.py` (tr/en).
+3. `core/player_loadout_registry.gd` — `WEAPON_SCRIPT_BY_ID` içine evrim silahı ID’si (örn. `ember_fan`).
+4. `player/player.gd` — `_on_upgrade_chosen` `match` listesinde evrim ID’si (gerekirse).
+5. `codex` + `ui.evolution_defs` / `get_weapon_description` (gerekirse).
+6. `locales/tr.json`, `en.json`, `zh_CN.json` — `ui.evolution_defs.<evo_id>` (`name`, `desc`); mümkünse `gen_locales.py` (tr/en).
 
 ---
 
@@ -279,7 +290,8 @@ Yeni orb kodu için başlangıç: `xp_orb.gd` / `gold_orb.gd` ve `.tscn` şablon
 - `enemies/` — Düşman davranışı, ölüm, orb düşürme.
 - `effects/` — Sandık, parçacık benzeri efektler.
 - `projectiles/` — Oyuncu / düşman mermileri.
-- `core/` — Kayıt, karakter verisi, kategori bonusları, havuz.
+- `core/` — Kayıt, karakter verisi, kategori bonusları, havuz, `EnemyRegistry`, `PlayerLoadoutRegistry`.
+- `player/` — `player.gd` + `player_ui_helpers.gd` (level-up VFX, istatistik paneli).
 - `weapons/`, `items/` — Oyun içi ekipman mantığı.
 
 ---

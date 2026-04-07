@@ -53,22 +53,7 @@ func _spawn_player(id: int, offset: Vector2):
 	add_child(player)
 
 func _get_character_scene(char_id: String) -> String:
-	match char_id:
-		"warrior": return "res://characters/warrior/warrior.tscn"
-		"mage": return "res://characters/mage/mage.tscn"
-		"vampire": return "res://characters/vampire/vampire.tscn"
-		"hunter": return "res://characters/hunter/hunter.tscn"
-		"stormer": return "res://characters/stormer/stormer.tscn"
-		"frost": return "res://characters/frost/frost.tscn"
-		"shadow_walker": return "res://characters/shadow_walker/shadow_walker.tscn"
-		"engineer": return "res://characters/engineer/engineer.tscn"
-		"paladin": return "res://characters/paladin/paladin.tscn"
-		"blood_prince": return "res://characters/blood_prince/blood_prince.tscn"
-		"death_knight": return "res://characters/death_knight/death_knight.tscn"
-		"chaos": return "res://characters/chaos/chaos.tscn"
-		"omega": return "res://characters/omega/omega.tscn"
-		"nomad": return "res://characters/nomad/nomad.tscn"
-		_: return "res://characters/warrior/warrior.tscn"
+	return CharacterData.get_character_scene_path(char_id)
 
 func _on_hit_stop_requested(frames: int):
 	hit_stop_frames = max(hit_stop_frames, frames)
@@ -124,7 +109,7 @@ func _process(delta):
 	# Spawn
 	spawn_timer -= delta
 	if spawn_timer <= 0:
-		var current_count = get_tree().get_nodes_in_group("enemies").size()
+		var current_count = EnemyRegistry.get_live_count()
 		var min_enemies = spawn_manager.get_current_min_enemies(game_timer)
 		if current_count < spawn_manager.MAX_ENEMIES:
 			var to_spawn = int(wave_manager.get_spawn_multiplier())

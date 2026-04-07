@@ -4,7 +4,23 @@ Oyunda **görsel, ses sunumu, UI/ikon ve pazarlama** tarafında yapılması veya
 Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.  
 Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.
 
-**Son güncelleme:** 2026-04-07 (düşman görsel envanteri düzeltmesi)
+**Son güncelleme:** 2026-04-07 (meta UI / rehber hedef notu)
+
+---
+
+## Meta UI, profil ve rehber (planlı hedefler)
+
+Oyuncunun statü hissi ve yönlendirme için ürün maddeleri `docs/YOL_HARITASI.md` → **Ürün vizyonu** B ve D altında takip edilir. Özet:
+
+| Hedef | Tasarım / UI durumu |
+|--------|----------------------|
+| Profil genişlemesi (takma ad, ikon, çerçeve, arka plan) | Henüz yok; Ayarlar → Profil şu an istatistik + başarılar. |
+| Hesap seviyesi / rank | Henüz yok. |
+| Kodeks — evrim sekmesi veya alt bölüm | Run içi evrim var; koleksiyon menüsünde ayrı evrim sekmesi yok. |
+| Oyun içi sözlük (cooldown, area, vb.) | Planlı; kodeks içi veya ayrı giriş. |
+| Idle-benzeri görev menüsü (C) | Planlı; ana menü akışına entegrasyon tasarım aşamasında. |
+
+Karakter sınıfı ve rol envanteri (oyun dizaynı metni): `docs/KARAKTER_SINIFLARI_VE_TASARIM.md`.
 
 ---
 

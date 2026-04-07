@@ -43,51 +43,6 @@ func _get_state(char_id: String) -> String:
 	else:
 		return "locked"
 
-func _get_weapon_name(weapon_id: String) -> String:
-	var names = {
-		"bullet": "Mermi", "aura": "Aura", "chain": "Zincir", "boomerang": "Bumerang",
-		"lightning": "Yıldırım", "ice_ball": "Buz Topu", "shadow": "Gölge", "laser": "Lazer",
-		"holy_bullet": "Kutsal Mermi", "blood_boomerang": "Kan Bumerangı", "death_laser": "Ölüm Lazeri",
-		"fan_blade": "Yelpaze Bıçak", "ember_fan": "Kor Yelpazesi"
-	}
-	return names.get(weapon_id, weapon_id)
-
-func _get_item_name(item_id: String) -> String:
-	var names = {"lifesteal": "Can Çalma", "armor": "Zırh", "crit": "Kritik", "shield": "Kalkan", "ember_heart": "Kor Kalbi"}
-	return names.get(item_id, item_id)
-
-func _build_rich_description(char_data: Dictionary, state: String) -> String:
-	if state == "locked":
-		if char_data["secret"]:
-			return "🔒 " + char_data.get("unlock_hint", "???")
-		return "🔒 " + char_data.get("unlock_hint", "")
-	var parts: Array = []
-	if char_data["start_weapon"] != "":
-		parts.append("⚔ Başlangıç: " + _get_weapon_name(char_data["start_weapon"]))
-	if char_data["start_item"] != "":
-		parts.append("🛡 Item: " + _get_item_name(char_data["start_item"]))
-	if char_data["bonus_damage"] > 0:
-		parts.append("🗡 +" + str(char_data["bonus_damage"]) + " hasar")
-	if char_data["bonus_hp"] > 0:
-		parts.append("💗 +" + str(char_data["bonus_hp"]) + " max can")
-	if char_data["bonus_speed"] > 0:
-		parts.append("👟 +" + str(char_data["bonus_speed"]) + " hız")
-	if char_data["bonus_armor"] > 0:
-		parts.append("🛡 +" + str(char_data["bonus_armor"]) + " zırh")
-	if char_data["special"] != "":
-		var s = char_data["special"]
-		if s == "lifesteal_15": parts.append("🩸 +%15 can çalma")
-		elif s == "cooldown_10": parts.append("⚡ Cooldown -%10")
-		elif s == "slow_double": parts.append("❄ Yavaşlatma 2x")
-		elif s == "area_15": parts.append("💥 Alan +%15")
-		elif s == "xp_20": parts.append("⭐ XP +%20")
-		elif s == "all_weapons_1hp": parts.append("☠ 1 HP ile oyna, tüm silahlar aktif")
-		elif s == "damage_double": parts.append("⚔ Hasar 2x")
-		elif s == "random_weapons": parts.append("🎲 Rastgele silahlarla başla")
-	if parts.is_empty():
-		return char_data["description"]
-	return "\n".join(parts)
-
 func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer:
 	var card = PanelContainer.new()
 	card.custom_minimum_size = Vector2(180, 340)
@@ -137,7 +92,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			char_visual.color = Color(char_data["color"])
 			name_label.text = char_data["name"]
 			name_label.add_theme_color_override("font_color", Color(char_data["color"]))
-			desc_label.text = _build_rich_description(char_data, state)
+			desc_label.text = CharacterSelectHelpers.rich_description_unlocked(char_data)
 			desc_label.add_theme_color_override("font_color", Color("#B0B0B0"))
 
 			var btn = _make_button("Seç", Color("#3498DB"))
@@ -152,7 +107,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			char_visual.color = Color(char_data["color"])
 			name_label.text = char_data["name"]
 			name_label.add_theme_color_override("font_color", Color(char_data["color"]))
-			desc_label.text = _build_rich_description(char_data, state)
+			desc_label.text = CharacterSelectHelpers.rich_description_unlocked(char_data)
 			desc_label.add_theme_color_override("font_color", Color("#666666"))
 
 			var cost = char_data["cost"]

@@ -129,7 +129,7 @@ func _ready():
 	btn_style.corner_radius_bottom_left = 6
 	btn_style.corner_radius_bottom_right = 6
 	stats_btn.add_theme_stylebox_override("normal", btn_style)
-	stats_btn.pressed.connect(_toggle_stat_panel)
+	stats_btn.pressed.connect(_on_stats_button_pressed)
 	$CanvasLayer.add_child(stats_btn)
 	# Co-op: player_id'ye göre input ayarla
 	_setup_input()
@@ -308,7 +308,7 @@ func _process(delta):
 		trail_timer -= delta
 		if trail_timer <= 0:
 			trail_timer = 0.3
-			_spawn_trail()
+			PlayerUiHelpers.spawn_speed_synergy_trail(self)
 	
 	# Koleksiyon Bonusu — 6 item = %1 HP/sn
 	if active_items.size() >= 6:
@@ -386,43 +386,8 @@ func add_weapon(type: String):
 		return
 	if not can_add_weapon():
 		return
-	
-	var weapon = null
-	match type:
-		"bullet":
-			weapon = WeaponBullet.new()
-		"aura":
-			weapon = WeaponAura.new()
-		"chain":
-			weapon = WeaponChain.new()
-		"boomerang":
-			weapon = WeaponBoomerang.new()
-		"lightning":
-			weapon = WeaponLightning.new()
-		"ice_ball":
-			weapon = WeaponIceBall.new()
-		"shadow":
-			weapon = WeaponShadow.new()
-		"laser":
-			weapon = WeaponLaser.new()
-		"holy_bullet":
-			weapon = WeaponHolyBullet.new()
-		"toxic_chain":
-			weapon = WeaponToxicChain.new()
-		"death_laser":
-			weapon = WeaponDeathLaser.new()
-		"blood_boomerang":
-			weapon = WeaponBloodBoomerang.new()
-		"storm":
-			weapon = WeaponStorm.new()
-		"shadow_storm":
-			weapon = WeaponShadowStorm.new()
-		"frost_nova":
-			weapon = WeaponFrostNova.new()
-		"fan_blade":
-			weapon = WeaponFanBlade.new()
-		"ember_fan":
-			weapon = WeaponEmberFan.new()
+
+	var weapon: Node = PlayerLoadoutRegistry.create_weapon(type)
 
 	if weapon:
 		add_child(weapon)
@@ -453,38 +418,9 @@ func add_item(type: String):
 		return
 	if not can_add_item():
 		return
-	
-	var item = null
-	match type:
-		"lifesteal":
-			item = ItemLifesteal.new()
-		"armor":
-			item = ItemArmor.new()
-		"crit":
-			item = ItemCrit.new()
-		"explosion":
-			item = ItemExplosion.new()
-		"magnet":
-			item = ItemMagnet.new()
-		"poison":
-			item = ItemPoison.new()
-		"shield":
-			item = ItemShield.new()
-		"speed_charm":
-			item = ItemSpeedCharm.new()
-		"blood_pool":
-			item = ItemBloodPool.new()
-		"luck_stone":
-			item = ItemLuckStone.new()
-		"turbine":
-			item = ItemTurbine.new()
-		"steam_armor":
-			item = ItemSteamArmor.new()
-		"energy_cell":
-			item = ItemEnergyCell.new()
-		"ember_heart":
-			item = ItemEmberHeart.new()
-	
+
+	var item: Node = PlayerLoadoutRegistry.create_item(type)
+
 	if item:
 		active_items[type] = item
 		add_child(item)
@@ -499,7 +435,6 @@ func recalculate_category_bonus():
 	for i in active_items.values():
 		if category_counts.has(i.category):
 			category_counts[i.category] += i.level
-			update_category_ui()
 	
 	category_damage_bonus = 0
 	category_crit_bonus = 0.0
@@ -541,7 +476,7 @@ func get_total_damage(base_damage: int) -> int:
 		var crit_multiplier = 2.0 + SaveManager.meta_upgrades.get("crit_damage_bonus", 0) * 0.25
 		dmg = int(dmg * crit_multiplier)
 		EventBus.hit_stop_requested.emit(2)
-		show_floating_text("KRİTİK!", global_position + Vector2(0, -70), Color("#FFD700"), 28)
+		show_floating_text(tr("ui.player.crit_floating"), global_position + Vector2(0, -70), Color("#FFD700"), 28)
 	return dmg
 
 
@@ -599,43 +534,35 @@ func get_weapon_description(type: String) -> String:
 	if active_weapons.has(type):
 		var w = active_weapons[type]
 		if w.level >= w.max_level:
-			return w.get_description() + " (MAX)"
-		return "⬆ " + w.get_description() + " → Lv" + str(w.level + 1)
-	match type:
-		"bullet": return "Yeni Silah: Mermi"
-		"aura": return "Yeni Silah: Aura"
-		"chain": return "Yeni Silah: Zincir"
-		"boomerang": return "Yeni Silah: Bumerang"
-		"lightning": return "Yeni Silah: Yıldırım"
-		"ice_ball": return "Yeni Silah: Buz Topu"
-		"shadow": return "Yeni Silah: Gölge"
-		"laser": return "Yeni Silah: Lazer"
-		"fan_blade": return "Yeni Silah: Yelpaze Bıçak\nYakın düşmanlara yelpaze kesikleri"
-		"ember_fan": return "Evrim: Kor Yelpazesi\nDelici kor kılıçları, geniş yelpaze"
-	return ""
+			return w.get_description() + tr("ui.player.loadout.max_suffix")
+		return tr("ui.player.loadout.weapon_upgrade") % [w.get_description(), w.level + 1]
+	var name_key := "codex.weapon.%s.name" % type
+	var wname := tr(name_key)
+	if wname == name_key:
+		return ""
+	var line := tr("ui.player.loadout.new_weapon") % wname
+	var desc_key := "codex.weapon.%s.desc" % type
+	var desc := tr(desc_key)
+	if desc != desc_key and not desc.is_empty():
+		line += "\n" + desc
+	return line
 
 func get_item_description(type: String) -> String:
 	if active_items.has(type):
 		var i = active_items[type]
 		if i.level >= i.max_level:
-			return i.get_description() + " (MAX)"
-		return "⬆ " + i.get_description() + " → Lv" + str(i.level + 1)
-	match type:
-		"lifesteal": return "Yeni: Can Çalma\nHer vuruşta hasar → HP"
-		"armor": return "Yeni: Zırh\nAlınan hasarı azaltır"
-		"crit": return "Yeni: Kritik Vuruş\nŞans ile 2x hasar"
-		"explosion": return "Yeni: Patlama\nDüşman ölünce alan hasarı"
-		"magnet": return "Yeni: Mıknatıs\nXP çekim menzili artar"
-		"poison": return "Yeni: Zehir\nVuruşta zehir uygular"
-		"shield": return "Yeni: Kalkan\nHasar absorbe eder"
-		"speed_charm": return "Yeni: Hız Tılsımı\nÖldürünce hız bonusu"
-		"blood_pool": return "Yeni: Kan Havuzu\nÖldürünce alan hasarı"
-		"luck_stone": return "Yeni: Şans Taşı\nKritik şansı + altın"
-		"turbine": return "Yeni: Türbin\nHareket edince hasar artar"
-		"steam_armor": return "Yeni: Buharlı Zırh\nHasar alınca yenilmez"
-		"energy_cell": return "Yeni: Enerji Hücresi\nPeriyodik ateş patlaması"
-		"ember_heart": return "Yeni: Kor Kalbi\nDüşman öldürünce can yeniler"
-	return ""
+			return i.get_description() + tr("ui.player.loadout.max_suffix")
+		return tr("ui.player.loadout.item_upgrade") % [i.get_description(), i.level + 1]
+	var name_key := "codex.item.%s.name" % type
+	var iname := tr(name_key)
+	if iname == name_key:
+		return ""
+	var line := tr("ui.player.loadout.new_item") % iname
+	var desc_key := "codex.item.%s.desc" % type
+	var desc := tr(desc_key)
+	if desc != desc_key and not desc.is_empty():
+		line += "\n" + desc
+	return line
 
 func gain_xp(amount: int):
 	var curse_multiplier = 1.0 + SaveManager.meta_upgrades.get("curse_level", 0) * 1.0
@@ -661,8 +588,8 @@ func level_up():
 	if SaveManager.game_mode != "local_coop":
 		$CanvasLayer/StatsRow/GoldLabel.text = "💰 " + str(gold_earned)
 	AudioManager.play_levelup()
-	_spawn_levelup_effect()
-	_spawn_levelup_screen_flash()
+	PlayerUiHelpers.spawn_levelup_effect(self)
+	PlayerUiHelpers.spawn_levelup_screen_flash(self)
 	if SaveManager.game_mode == "local_coop":
 		var main = get_tree().get_first_node_in_group("main")
 		if main:
@@ -675,43 +602,8 @@ func level_up():
 		upgrade_ui.upgrade_chosen.connect(_on_upgrade_chosen)
 		upgrade_ui.show_upgrades(self)
 
-func _spawn_levelup_effect():
-	var vfx_a = get_player_vfx_opacity()
-	for i in 5:
-		var ring = ColorRect.new()
-		ring.size = Vector2(30, 30)
-		ring.color = Color("#FFD700")
-		ring.modulate.a = vfx_a
-		ring.position = global_position - Vector2(15, 15)
-		get_parent().add_child(ring)
-		var tween = ring.create_tween()
-		var target_size = Vector2(180 + i * 80, 180 + i * 80)
-		var target_pos = global_position - target_size / 2
-		tween.set_parallel(true)
-		tween.tween_property(ring, "size", target_size, 0.35 + i * 0.08)
-		tween.tween_property(ring, "position", target_pos, 0.35 + i * 0.08)
-		tween.tween_property(ring, "modulate:a", 0.0, 0.35 + i * 0.08)
-		tween.set_parallel(false)
-		tween.tween_callback(ring.queue_free)
-
-func _spawn_levelup_screen_flash():
-	var flash = ColorRect.new()
-	flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	flash.color = Color.WHITE
-	flash.modulate = Color(1, 1, 1, 0)
-	flash.z_index = 100
-	var vp_size = get_viewport().get_visible_rect().size
-	flash.size = vp_size * 2
-	flash.position = -vp_size / 2
-	var layer = CanvasLayer.new()
-	layer.layer = 100
-	layer.add_child(flash)
-	get_tree().root.add_child(layer)
-	var peak_a = 0.7 * get_player_vfx_opacity()
-	var tween = flash.create_tween()
-	tween.tween_property(flash, "modulate", Color(1, 1, 1, peak_a), 0.06)
-	tween.tween_property(flash, "modulate", Color(1, 1, 1, 0), 0.4)
-	tween.tween_callback(layer.queue_free)
+func _on_stats_button_pressed() -> void:
+	PlayerUiHelpers.toggle_stats_panel(self)
 
 func _on_upgrade_chosen(upgrade_id: String):
 	if upgrade_id == "skip":
@@ -744,7 +636,7 @@ func _on_upgrade_chosen(upgrade_id: String):
 	get_tree().paused = false
 
 func get_nearest_enemy():
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	var nearest = null
 	var nearest_dist = 999999.0
 	for enemy in enemies:
@@ -934,22 +826,6 @@ func _check_speed_synergy() -> bool:
 	var speed_bonus = SaveManager.meta_upgrades.get("speed_bonus", 0)
 	return has_speed_charm_max and speed_bonus >= 5
 
-func _spawn_trail():
-	var trail = ColorRect.new()
-	trail.size = Vector2(10, 10)
-	trail.color = Color("#00FFFF")
-	trail.modulate.a = 0.6 * get_player_vfx_opacity()
-	trail.global_position = global_position - Vector2(5, 5)
-	get_parent().add_child(trail)
-	var tween = trail.create_tween()
-	tween.tween_property(trail, "modulate:a", 0.0, 0.4)
-	tween.tween_callback(trail.queue_free)
-	# Trail hasar
-	var enemies = get_tree().get_nodes_in_group("enemies")
-	for enemy in enemies:
-		if enemy.global_position.distance_to(global_position) < 30:
-			enemy.take_damage(int(bullet_damage * 0.3))
-
 func get_weapon_tag_counts() -> Dictionary:
 	var counts = {"kesici": 0, "patlayici": 0, "buyu": 0, "teknolojik": 0}
 	for w in active_weapons.values():
@@ -970,95 +846,6 @@ func get_tag_crit_bonus() -> float:
 
 
 var _stat_panel = null
-
-func _toggle_stat_panel():
-	if _stat_panel and is_instance_valid(_stat_panel):
-		_stat_panel.queue_free()
-		_stat_panel = null
-		return
-	
-	var layer = CanvasLayer.new()
-	layer.layer = 50
-	get_tree().root.add_child(layer)
-	_stat_panel = layer
-	
-	var panel = PanelContainer.new()
-	panel.custom_minimum_size = Vector2(220, 0)
-	var style = StyleBoxFlat.new()
-	style.bg_color = Color("#0D0D1AEE")
-	style.border_color = Color("#9B59B6")
-	style.border_width_left = 2
-	style.border_width_right = 2
-	style.border_width_top = 2
-	style.border_width_bottom = 2
-	style.corner_radius_top_left = 10
-	style.corner_radius_top_right = 10
-	style.corner_radius_bottom_left = 10
-	style.corner_radius_bottom_right = 10
-	panel.add_theme_stylebox_override("panel", style)
-	panel.position = Vector2(10, 50)
-	layer.add_child(panel)
-	
-	var vbox = VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 6)
-	panel.add_child(vbox)
-	
-	var title = Label.new()
-	title.text = "📊 STATS"
-	title.add_theme_color_override("font_color", Color("#9B59B6"))
-	title.add_theme_font_size_override("font_size", 16)
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	vbox.add_child(title)
-	
-	var tag_counts = get_weapon_tag_counts()
-	var tag_crit = get_tag_crit_bonus()
-	var lifesteal_pct = 0.0
-	if active_items.has("lifesteal"):
-		lifesteal_pct = active_items["lifesteal"].steal_percent
-	var crit_item = 0.0
-	if active_items.has("crit"):
-		crit_item = active_items["crit"].crit_chance
-	var armor_val = SaveManager.meta_upgrades.get("armor_bonus", 0) * 2
-	if active_items.has("armor"):
-		armor_val += active_items["armor"].armor_value
-	
-	var stats_list = [
-		["⚔ Hasar", str(bullet_damage + category_damage_bonus + momentum_bonus)],
-		["💗 Can", str(hp) + "/" + str(max_hp)],
-		["🛡 Zırh", str(armor_val)],
-		["🩸 Can Çalma", "%d%%" % int(lifesteal_pct * 100)],
-		["🎯 Kritik Şans", "%d%%" % int((category_crit_bonus + crit_item + tag_crit) * 100)],
-		["⚡ Cooldown", "%d%%" % int((1.0 - get_cooldown_multiplier()) * 100)],
-		["💥 Alan", "%d%%" % int((get_area_multiplier() - 1.0) * 100)],
-		["👟 Hız", str(int(SPEED))],
-		["🧲 Mıknatıs", str(int(get_magnet_bonus()))],
-		["✂ Kesici x%d" % tag_counts.get("kesici",0), ""],
-		["💣 Patlayıcı x%d" % tag_counts.get("patlayici",0), ""],
-		["🔮 Büyü x%d" % tag_counts.get("buyu",0), ""],
-		["⚙ Teknolojik x%d" % tag_counts.get("teknolojik",0), ""],
-	]
-	if overheal_shield > 0:
-		stats_list.append(["🛡 Overheal", str(overheal_shield)])
-	if bounce_timer > 0:
-		stats_list.append(["⚡ Bounce", "%.1fsn" % bounce_timer])
-	if shrine_active:
-		stats_list.append(["🕯 Sunak", "%.0fsn" % shrine_timer])
-	
-	for stat in stats_list:
-		var row = HBoxContainer.new()
-		var lbl = Label.new()
-		lbl.text = stat[0]
-		lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		lbl.add_theme_color_override("font_color", Color("#AAAAAA"))
-		lbl.add_theme_font_size_override("font_size", 12)
-		row.add_child(lbl)
-		if stat[1] != "":
-			var val = Label.new()
-			val.text = stat[1]
-			val.add_theme_color_override("font_color", Color("#FFFFFF"))
-			val.add_theme_font_size_override("font_size", 12)
-			row.add_child(val)
-		vbox.add_child(row)
 
 
 func _setup_player_visuals():

@@ -46,11 +46,10 @@ func _spawn_pool(pos: Vector2):
 	
 	var dmg = pool_damage
 	var radius = effective_radius
-	var tree = player.get_tree()
 	damage_timer.timeout.connect(func():
 		if not is_instance_valid(pool):
 			return
-		var enemies = tree.get_nodes_in_group("enemies")
+		var enemies = EnemyRegistry.get_enemies()
 		for enemy in enemies:
 			if enemy.global_position.distance_to(pos) <= radius:
 				if enemy.has_method("take_explosion_damage"):

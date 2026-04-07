@@ -33,8 +33,15 @@ var _poison_tick_interval = 1.0
 
 func _ready():
 	add_to_group("enemies")
+	EnemyRegistry.register_enemy(self)
+	if not tree_exiting.is_connected(_on_tree_exiting_unregister):
+		tree_exiting.connect(_on_tree_exiting_unregister)
 	_setup_hp_bar()
 	_setup_visuals()
+
+
+func _on_tree_exiting_unregister() -> void:
+	EnemyRegistry.unregister_enemy(self)
 
 func _setup_hp_bar():
 	var hp_setting = SaveManager.settings.get("hp_bars", "both_on")
@@ -151,7 +158,7 @@ func die(killer: Node = null):
 				evolved_count += 1
 		if evolved_count >= 2 and randf() < 0.10:
 			var explosion_range = 100.0
-			var enemies = get_tree().get_nodes_in_group("enemies")
+			var enemies = EnemyRegistry.get_enemies()
 			for enemy in enemies:
 				if enemy == self:
 					continue

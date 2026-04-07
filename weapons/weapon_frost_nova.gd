@@ -15,7 +15,7 @@ func _ready():
 
 func attack():
 	var effective_radius = nova_radius * player.get_area_multiplier()
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	for enemy in enemies:
 		if enemy.global_position.distance_to(player.global_position) < effective_radius:
 			var final_damage = player.get_total_damage(damage)

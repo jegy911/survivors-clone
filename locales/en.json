@@ -96,7 +96,50 @@
       "p1_title": "👤 SELECT P1 CHARACTER",
       "p2_title": "👥 SELECT P2 CHARACTER",
       "taken_by_p1": "Taken by P1",
-      "locked_p1": "🔒 P1"
+      "locked_p1": "🔒 P1",
+      "line_start_weapon": "⚔ Start: %s",
+      "line_start_item": "🛡 Item: %s",
+      "line_bonus_damage": "🗡 +%d damage",
+      "line_bonus_hp": "💗 +%d max HP",
+      "line_bonus_speed": "👟 +%d speed",
+      "line_bonus_armor": "🛡 +%d armor",
+      "special": {
+        "lifesteal_15": "🩸 +15% lifesteal",
+        "cooldown_10": "⚡ -10% cooldown",
+        "slow_double": "❄ Slow duration 2x",
+        "area_15": "💥 +15% area",
+        "xp_20": "⭐ +20% XP",
+        "all_weapons_1hp": "☠ Play at 1 HP, all weapons active",
+        "damage_double": "⚔ Damage x2",
+        "random_weapons": "🎲 Start with random weapons"
+      }
+    },
+    "player": {
+      "crit_floating": "CRIT!",
+      "hud_stats_title": "📊 STATS",
+      "stat_damage": "⚔ Damage",
+      "stat_hp": "💗 HP",
+      "stat_armor": "🛡 Armor",
+      "stat_lifesteal": "🩸 Lifesteal",
+      "stat_crit": "🎯 Crit chance",
+      "stat_cooldown": "⚡ Cooldown",
+      "stat_area": "💥 Area",
+      "stat_speed": "👟 Speed",
+      "stat_magnet": "🧲 Magnet",
+      "stat_tag_kesici": "✂ Slashing x%d",
+      "stat_tag_patlayici": "💣 Explosive x%d",
+      "stat_tag_buyu": "🔮 Magic x%d",
+      "stat_tag_teknolojik": "⚙ Tech x%d",
+      "stat_overheal": "🛡 Overheal",
+      "stat_bounce": "⚡ Bounce",
+      "stat_shrine": "🕯 Shrine",
+      "loadout": {
+        "max_suffix": " (MAX)",
+        "weapon_upgrade": "⬆ %s → Lv%d",
+        "item_upgrade": "⬆ %s → Lv%d",
+        "new_weapon": "New weapon: %s",
+        "new_item": "New: %s"
+      }
     },
     "meta_screen": {
       "title": "META UPGRADES",

@@ -26,7 +26,7 @@ func _process(delta):
 
 func _on_collected(player: Node):
 	# Tüm düşmanları 10 saniye dondur
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	for enemy in enemies:
 		if enemy.has_method("apply_slow"):
 			enemy.apply_slow(0.0, 10.0)

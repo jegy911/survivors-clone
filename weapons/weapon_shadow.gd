@@ -46,7 +46,7 @@ func _process(delta):
 			hit_cooldowns.erase(key)
 	
 	# Her frame düşman kontrolü
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	for orb in orbs:
 		if not is_instance_valid(orb):
 			continue

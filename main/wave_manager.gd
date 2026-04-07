@@ -78,7 +78,7 @@ func get_interval_multiplier() -> float:
 
 func _start_reaper_mode(game_timer: float):
 	reaper_mode = true
-	for enemy in get_tree().get_nodes_in_group("enemies"):
+	for enemy in EnemyRegistry.get_enemies():
 		if not enemy.is_in_group("boss"):
 			enemy.queue_free()
 	var players = get_tree().get_nodes_in_group("player")

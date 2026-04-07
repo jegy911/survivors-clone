@@ -24,6 +24,7 @@ SaveManager="*uid://cvcdlgqf65851"
 LocalizationManager="*res://core/localization_manager.gd"
 AudioManager="*uid://dkf8pjyhbu6xj"
 ObjectPool="*uid://dmgclbk4ofl3u"
+EnemyRegistry="*res://core/enemy_registry.gd"
 EventBus="*uid://b31g0p1hnvt7s"
 AchievementManager="*uid://dv022g7ecjml0"
 

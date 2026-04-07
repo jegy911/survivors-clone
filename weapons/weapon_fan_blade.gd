@@ -16,7 +16,7 @@ func _ready():
 	cooldown = 1.35
 
 func attack():
-	var enemies = get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	if enemies.is_empty():
 		return
 	var nearest = null

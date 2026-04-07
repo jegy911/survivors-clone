@@ -32,7 +32,7 @@ func on_enemy_killed(position: Vector2):
 
 func _do_explosion(position: Vector2):
 	var effective_radius = explosion_radius * player.get_area_multiplier()
-	var enemies = player.get_tree().get_nodes_in_group("enemies")
+	var enemies = EnemyRegistry.get_enemies()
 	for enemy in enemies:
 		if not is_instance_valid(enemy):
 			continue
