@@ -4,7 +4,7 @@ Oyunda **görsel, ses sunumu, UI/ikon ve pazarlama** tarafında yapılması veya
 Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.  
 Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.
 
-**Son güncelleme:** 2026-04-07
+**Son güncelleme:** 2026-04-07 (düşman görsel envanteri düzeltmesi)
 
 ---
 
@@ -46,22 +46,22 @@ Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: 
 
 ## Düşmanlar (görsel kimlik)
 
-Çoğu düşman gövdesi `EnemyBase` → `ColorRect` ile renkli blok; **tür başına özel sprite / siluet yok**.
+Her düşman `.tscn` içinde **`AnimatedSprite2D`** + atlas / spritesheet ile **yürüme / idle** animasyonları kullanıyor; tür başına asset klasörü var. `EnemyBase` kodu hâlâ `ColorRect` (`body`) üzerinden boyut, renk flash ve bazı VFX bağlar — sahnelerde genelde hem `ColorRect` hem sprite bulunur; **oyuncunun gördüğü ana siluet sprite’dır**.
 
-| Tür / script | Özel sprite veya okunaklı siluet | Not |
-|----------------|----------------------------------|-----|
-| enemy (taban) | ❌ | Renkli dikdörtgen |
-| fast_enemy | ❌ | |
-| dasher | ❌ | |
-| ranged_enemy | ❌ | |
-| tank_enemy | ❌ | |
-| shield_enemy | ❌ | |
-| healer | ❌ | |
-| giant | ❌ | |
-| exploder | ❌ | Ön uyarı (patlamadan önce görsel blink) matriste **Kısmi** — `flash()` boş; VFX tasarımı gerekli |
-| boss | ❌ | Boss için ayırt edici görsel dil |
+| Tür / sahne | Sprite / animasyon seti | Not |
+|-------------|-------------------------|-----|
+| enemy | ✅ | `assets/warrior assetleri/enemy1.png` |
+| fast_enemy | ✅ | `assets/enemy2/spritesheet (13).png` |
+| dasher | ✅ | `assets/enemy assets/dasher assets/` |
+| ranged_enemy | ✅ | `assets/enemy assets/ranged assets/` |
+| tank_enemy | ✅ | `assets/enemy assets/tank assets/` |
+| shield_enemy | ✅ | `assets/enemy assets/shield assets/` |
+| healer | ✅ | `assets/enemy assets/healer assets/` |
+| giant | ✅ | `assets/enemy assets/giant assets/` |
+| exploder | ✅ | `assets/enemy assets/exploder assets/` — patlamadan önce **ekstra okunaklı ön uyarı** (blink / işaret) matriste hâlâ **Kısmi** (`flash()` sınırlı) |
+| boss | ✅ | `assets/enemy assets/boss assets/` — Reaper renk override kodda (`spawn_manager`) |
 
-**Genel hedefler (erişilebilirlik):** yüksek kontrast / outline (`enemy_base._setup_visuals()` bağlantı noktası — shader veya hat henüz atanmadı). Detaylı teknik durum: erişilebilirlik matrisi satır 5, 15.
+**İnce ayar / ürün hedefi:** türler arası stil birliği, siluet okunurluğu ve **yüksek kontrast outline** hâlâ açık iş — `enemy_base._setup_visuals()` bağlantı noktası; erişilebilirlik matrisi satır 5, 15.
 
 ---
 
