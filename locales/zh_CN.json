@@ -123,7 +123,43 @@
       "title_solo": "⭐ 等级 %d — 选择升级 ⭐",
       "stat_speed": "移动速度 +20\n提高移动速度",
       "stat_max_hp": "最大生命 +25\n提高生命上限",
-      "stat_heal": "立即 +20 生命\n立刻恢复生命"
+      "stat_heal": "立即 +20 生命\n立刻恢复生命",
+      "evolution_pick_title": "⚡ 进化",
+      "evolution_floating": "⚡ 进化：%s！"
+    },
+    "evolution_defs": {
+      "holy_bullet": {
+        "name": "神圣子弹",
+        "desc": "子弹 + 护甲 → 神圣子弹\n伤害 +50%，可破甲"
+      },
+      "toxic_chain": {
+        "name": "剧毒锁链",
+        "desc": "锁链 + 毒素 → 剧毒锁链\n连锁跳跃时扩散毒素"
+      },
+      "death_laser": {
+        "name": "死亡激光",
+        "desc": "激光 + 暴击 → 死亡激光\n每次命中必暴击，射程 ×2"
+      },
+      "blood_boomerang": {
+        "name": "鲜血回旋镖",
+        "desc": "回旋镖 + 吸血 → 鲜血回旋镖\n命中时吸取生命"
+      },
+      "storm": {
+        "name": "风暴",
+        "desc": "闪电 + 速度护符 → 风暴\n击杀时额外落雷"
+      },
+      "shadow_storm": {
+        "name": "暗影风暴",
+        "desc": "暗影 + 闪电 + 速度 → 暗影风暴\n暗影命中触发闪电链"
+      },
+      "frost_nova": {
+        "name": "冰霜新星",
+        "desc": "冰球 + 护甲 + 护盾 → 冰霜新星\n命中范围冰冻并反射伤害"
+      },
+      "ember_fan": {
+        "name": "余烬扇刃",
+        "desc": "扇刃（满级）+ 余烬之心（满级）→ 余烬扇刃\n更宽扇面，穿透余烬刀片"
+      }
     },
     "devtools": {
       "add_gold": "💰 +1000 金币",

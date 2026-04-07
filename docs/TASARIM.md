@@ -87,7 +87,8 @@ Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: 
 
 ## Evrim silahları
 
-`weapon_evolution.gd` ile bağlı sonuçlar (görsel olarak taban silahla aynı VFX hattını paylaşabilir).
+`weapon_evolution.gd` ile bağlı sonuçlar (görsel olarak taban silahla aynı VFX hattını paylaşabilir).  
+Level-up kartı ve yüzen evrim bildirimi metinleri: `locales/*.json` → `ui.evolution_defs.<id>` ve `ui.upgrade_ui.evolution_pick_title` / `evolution_floating`.
 
 | Evrim sonucu | Ayrı “evrim” görsel kimliği |
 |--------------|------------------------------|

@@ -131,6 +131,42 @@ ui_tr = {
         "stat_speed": "Hareket Hızı +20\nHareket hızını artırır",
         "stat_max_hp": "Max Can +25\nMaksimum canı artırır",
         "stat_heal": "Anında +20 Can\nHemen can yeniler",
+        "evolution_pick_title": "⚡ EVRİM",
+        "evolution_floating": "⚡ EVRİM: %s!",
+    },
+    "evolution_defs": {
+        "holy_bullet": {
+            "name": "Kutsal Mermi",
+            "desc": "Mermi + Zırh → Kutsal Mermi\n+%50 hasar, düşman zırhını kırar",
+        },
+        "toxic_chain": {
+            "name": "Zehirli Zincir",
+            "desc": "Zincir + Zehir → Zehirli Zincir\nZincirleme atlarken zehir yayar",
+        },
+        "death_laser": {
+            "name": "Ölüm Lazeri",
+            "desc": "Lazer + Kritik → Ölüm Lazeri\nHer vuruş kritik, menzil 2x",
+        },
+        "blood_boomerang": {
+            "name": "Kan Bumerangı",
+            "desc": "Bumerang + Can Çalma → Kan Bumerangı\nVurdukça can çalar",
+        },
+        "storm": {
+            "name": "Fırtına",
+            "desc": "Yıldırım + Hız Tılsımı → Fırtına\nHer öldürmede ekstra yıldırım",
+        },
+        "shadow_storm": {
+            "name": "Gölge Fırtınası",
+            "desc": "Gölge + Yıldırım + Hız → Gölge Fırtınası\nHer gölge vuruşu yıldırım zinciri tetikler",
+        },
+        "frost_nova": {
+            "name": "Buz Novası",
+            "desc": "Buz Topu + Zırh + Kalkan → Buz Novası\nVuruşta alan dondurma + hasar yansıtma",
+        },
+        "ember_fan": {
+            "name": "Kor Yelpazesi",
+            "desc": "Yelpaze Bıçak (MAX) + Kor Kalbi (MAX) → Kor Yelpazesi\nDaha geniş yelpaze, delici kor kılıçları",
+        },
     },
     "devtools": {
         "add_gold": "💰 +1000 Gold Ekle",
@@ -309,6 +345,42 @@ ui_en = {
         "stat_speed": "Move Speed +20\nIncreases move speed",
         "stat_max_hp": "Max HP +25\nIncreases maximum HP",
         "stat_heal": "Instant +20 HP\nHeals immediately",
+        "evolution_pick_title": "⚡ EVOLUTION",
+        "evolution_floating": "⚡ EVOLUTION: %s!",
+    },
+    "evolution_defs": {
+        "holy_bullet": {
+            "name": "Holy Bullet",
+            "desc": "Bullet + Armor → Holy Bullet\n+50% damage, breaks enemy armor",
+        },
+        "toxic_chain": {
+            "name": "Toxic Chain",
+            "desc": "Chain + Poison → Toxic Chain\nSpreads poison when the chain jumps",
+        },
+        "death_laser": {
+            "name": "Death Laser",
+            "desc": "Laser + Crit → Death Laser\nEvery hit is critical, 2× range",
+        },
+        "blood_boomerang": {
+            "name": "Blood Boomerang",
+            "desc": "Boomerang + Lifesteal → Blood Boomerang\nSteals HP on hit",
+        },
+        "storm": {
+            "name": "Storm",
+            "desc": "Lightning + Speed Charm → Storm\nExtra lightning on kills",
+        },
+        "shadow_storm": {
+            "name": "Shadow Storm",
+            "desc": "Shadow + Lightning + Speed → Shadow Storm\nShadow hits trigger lightning chains",
+        },
+        "frost_nova": {
+            "name": "Frost Nova",
+            "desc": "Ice Ball + Armor + Shield → Frost Nova\nArea freeze on hit + damage reflect",
+        },
+        "ember_fan": {
+            "name": "Ember Fan",
+            "desc": "Fan Blade (MAX) + Ember Heart (MAX) → Ember Fan\nWider fan, piercing ember blades",
+        },
     },
     "devtools": {
         "add_gold": "💰 +1000 Gold",

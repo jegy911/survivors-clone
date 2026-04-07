@@ -426,6 +426,9 @@ func add_weapon(type: String):
 		recalculate_category_bonus()
 
 func evolve_weapon(evo_id: String):
+	if not WeaponEvolution.is_evolution_ready(self, evo_id):
+		push_warning("evolve_weapon: requirements not met (%s)" % evo_id)
+		return
 	var evo = WeaponEvolution.EVOLUTIONS[evo_id]
 	for w in evo["requires_weapons"]:
 		if active_weapons.has(w):
@@ -434,7 +437,9 @@ func evolve_weapon(evo_id: String):
 	EventBus.hit_stop_requested.emit(4)
 	add_weapon(evo_id)
 	evolution_obtained = true
-	show_floating_text("⚡ EVRİM: " + evo["name"] + "!", global_position + Vector2(0, -80), Color("#FFD700"))
+	var evo_name = WeaponEvolution.localized_name(evo_id)
+	var float_fmt = tr("ui.upgrade_ui.evolution_floating")
+	show_floating_text(float_fmt % evo_name, global_position + Vector2(0, -80), Color("#FFD700"))
 
 func add_item(type: String):
 	if active_items.has(type):

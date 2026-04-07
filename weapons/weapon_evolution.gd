@@ -52,39 +52,69 @@ const EVOLUTIONS = {
 	},
 }
 
+static func _meets_weapon_requirements(player, evo: Dictionary) -> bool:
+	for w in evo["requires_weapons"]:
+		if not player.active_weapons.has(w):
+			return false
+		var weapon = player.active_weapons[w]
+		var required_level = weapon.max_level
+		if player.get("blood_oath_active") and player.blood_oath_active:
+			required_level = max(1, weapon.max_level / 2)
+		if weapon.level < required_level:
+			return false
+	return true
+
+
+static func _meets_item_requirements(player, evo: Dictionary) -> bool:
+	for i in evo["requires_items"]:
+		if not player.active_items.has(i):
+			return false
+		var item = player.active_items[i]
+		if item.level < item.max_level:
+			return false
+	return true
+
+
+## Gerekli silah/eşya MAX, evrim silahı henüz yok.
+static func is_evolution_ready(player, evo_id: String) -> bool:
+	if not EVOLUTIONS.has(evo_id):
+		return false
+	if player.active_weapons.has(evo_id):
+		return false
+	var evo = EVOLUTIONS[evo_id]
+	return _meets_weapon_requirements(player, evo) and _meets_item_requirements(player, evo)
+
+
 static func get_available_evolutions(player) -> Array:
-	var available = []
+	var available: Array = []
 	for evo_id in EVOLUTIONS:
-		var evo = EVOLUTIONS[evo_id]
-		var has_all_weapons = true
-		var has_all_items = true
-		
-		# Silahlar max level de olmalı
-		for w in evo["requires_weapons"]:
-			if not player.active_weapons.has(w):
-				has_all_weapons = false
-				break
-			var weapon = player.active_weapons[w]
-			var required_level = weapon.max_level
-			if player.get("blood_oath_active") and player.blood_oath_active:
-				required_level = max(1, weapon.max_level / 2)
-			if weapon.level < required_level:
-				has_all_weapons = false
-				break
-		
-		for i in evo["requires_items"]:
-			if not player.active_items.has(i):
-				has_all_items = false
-				break
-			var item = player.active_items[i]
-			if item.level < item.max_level:
-				has_all_items = false
-				break
-		# Zaten evrim yapılmış mı?
-		if player.active_weapons.has(evo_id):
-			continue
-		
-		if has_all_weapons and has_all_items:
+		if is_evolution_ready(player, evo_id):
 			available.append(evo_id)
-	
+	available.shuffle()
 	return available
+
+
+static func get_evolution_weight(evo_id: String) -> float:
+	if not EVOLUTIONS.has(evo_id):
+		return 10.0
+	return float(EVOLUTIONS[evo_id].get("weight", 10.0))
+
+
+static func localized_name(evo_id: String) -> String:
+	if not EVOLUTIONS.has(evo_id):
+		return evo_id
+	var key = "ui.evolution_defs.%s.name" % evo_id
+	var t = TranslationServer.translate(key)
+	if t == key:
+		return str(EVOLUTIONS[evo_id]["name"])
+	return t
+
+
+static func localized_description(evo_id: String) -> String:
+	if not EVOLUTIONS.has(evo_id):
+		return ""
+	var key = "ui.evolution_defs.%s.desc" % evo_id
+	var t = TranslationServer.translate(key)
+	if t == key:
+		return str(EVOLUTIONS[evo_id]["description"])
+	return t

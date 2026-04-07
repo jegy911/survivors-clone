@@ -123,7 +123,43 @@
       "title_solo": "⭐ LEVEL %d — CHOOSE YOUR UPGRADE ⭐",
       "stat_speed": "Move Speed +20\nIncreases move speed",
       "stat_max_hp": "Max HP +25\nIncreases maximum HP",
-      "stat_heal": "Instant +20 HP\nHeals immediately"
+      "stat_heal": "Instant +20 HP\nHeals immediately",
+      "evolution_pick_title": "⚡ EVOLUTION",
+      "evolution_floating": "⚡ EVOLUTION: %s!"
+    },
+    "evolution_defs": {
+      "holy_bullet": {
+        "name": "Holy Bullet",
+        "desc": "Bullet + Armor → Holy Bullet\n+50% damage, breaks enemy armor"
+      },
+      "toxic_chain": {
+        "name": "Toxic Chain",
+        "desc": "Chain + Poison → Toxic Chain\nSpreads poison when the chain jumps"
+      },
+      "death_laser": {
+        "name": "Death Laser",
+        "desc": "Laser + Crit → Death Laser\nEvery hit is critical, 2× range"
+      },
+      "blood_boomerang": {
+        "name": "Blood Boomerang",
+        "desc": "Boomerang + Lifesteal → Blood Boomerang\nSteals HP on hit"
+      },
+      "storm": {
+        "name": "Storm",
+        "desc": "Lightning + Speed Charm → Storm\nExtra lightning on kills"
+      },
+      "shadow_storm": {
+        "name": "Shadow Storm",
+        "desc": "Shadow + Lightning + Speed → Shadow Storm\nShadow hits trigger lightning chains"
+      },
+      "frost_nova": {
+        "name": "Frost Nova",
+        "desc": "Ice Ball + Armor + Shield → Frost Nova\nArea freeze on hit + damage reflect"
+      },
+      "ember_fan": {
+        "name": "Ember Fan",
+        "desc": "Fan Blade (MAX) + Ember Heart (MAX) → Ember Fan\nWider fan, piercing ember blades"
+      }
     },
     "devtools": {
       "add_gold": "💰 +1000 Gold",

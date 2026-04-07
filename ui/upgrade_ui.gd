@@ -17,6 +17,27 @@ var chosen_upgrades = []
 
 var reroll_count = 2
 var skip_count = 2
+var pick_count: int = 3
+
+
+func _option_buttons() -> Array:
+	return [
+		$Panel/VBoxContainer/HBoxContainer/Option1,
+		$Panel/VBoxContainer/HBoxContainer/Option2,
+		$Panel/VBoxContainer/HBoxContainer/Option3,
+		$Panel/VBoxContainer/HBoxContainer/Option4,
+	]
+
+
+func _layout_levelup_panel(n_options: int) -> void:
+	var screen_size = get_viewport().get_visible_rect().size
+	var panel_w = 1000 if n_options >= 4 else 800
+	var btn_w = 190 if n_options >= 4 else 220
+	$Panel.size = Vector2(panel_w, 380)
+	$Panel.position = screen_size / 2 - $Panel.size / 2
+	for btn in _option_buttons():
+		btn.custom_minimum_size = Vector2(btn_w, 130)
+
 
 func _ready():
 	var screen_size = get_viewport().get_visible_rect().size
@@ -48,10 +69,7 @@ func _ready():
 	$Panel/VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 24)
 	$Panel/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color.WHITE)
 	
-	for btn in [$Panel/VBoxContainer/HBoxContainer/Option1,
-				$Panel/VBoxContainer/HBoxContainer/Option2,
-				$Panel/VBoxContainer/HBoxContainer/Option3]:
-		btn.custom_minimum_size = Vector2(220, 130)
+	for btn in _option_buttons():
 		var btn_style = StyleBoxFlat.new()
 		btn_style.bg_color = Color(0.15, 0.15, 0.25, 1)
 		btn_style.corner_radius_top_left = 8
@@ -78,9 +96,12 @@ func _ready():
 		btn.add_theme_color_override("font_color", Color.WHITE)
 		btn.add_theme_font_size_override("font_size", 16)
 	
+	_layout_levelup_panel(3)
+	
 	$Panel/VBoxContainer/HBoxContainer/Option1.pressed.connect(_on_option1)
 	$Panel/VBoxContainer/HBoxContainer/Option2.pressed.connect(_on_option2)
 	$Panel/VBoxContainer/HBoxContainer/Option3.pressed.connect(_on_option3)
+	$Panel/VBoxContainer/HBoxContainer/Option4.pressed.connect(_on_option4)
 	$Panel/VBoxContainer/ActionRow/RerollButton.pressed.connect(_on_reroll)
 	$Panel/VBoxContainer/ActionRow/SkipButton.pressed.connect(_on_skip)
 
@@ -88,11 +109,14 @@ func build_pool() -> Array:
 	var pool = []
 	var luck = player_ref.get_luck()
 	
-	# Evrim seçenekleri — en yüksek öncelik
+	# Evrim seçenekleri — en yüksek öncelik (havuz sırası get_available_evolutions içinde karıştırılır)
 	var available_evos = WeaponEvolution.get_available_evolutions(player_ref)
 	for evo_id in available_evos:
-		var evo = WeaponEvolution.EVOLUTIONS[evo_id]
-		pool.append({"id": evo_id, "weight": 10.0, "is_evolution": true})
+		pool.append({
+			"id": evo_id,
+			"weight": WeaponEvolution.get_evolution_weight(evo_id),
+			"is_evolution": true
+		})
 	
 	for id in stat_upgrades:
 		pool.append({"id": id, "weight": 1.5, "is_evolution": false})
@@ -154,8 +178,8 @@ func get_upgrade_text(id: String) -> String:
 	
 	# Evrim silahı mı?
 	if WeaponEvolution.EVOLUTIONS.has(id):
-		var evo = WeaponEvolution.EVOLUTIONS[id]
-		return "⚡ EVRİM: " + evo["name"] + "\n" + evo["description"]
+		var title = tr("ui.upgrade_ui.evolution_pick_title")
+		return title + "\n" + WeaponEvolution.localized_name(id) + "\n" + WeaponEvolution.localized_description(id)
 	
 	match id:
 		"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade":
@@ -166,9 +190,7 @@ func get_upgrade_text(id: String) -> String:
 			return "🛡 EŞYA\n" + _stat_upgrade_text(id)
 
 func refresh_buttons():
-	var buttons = [$Panel/VBoxContainer/HBoxContainer/Option1,
-				   $Panel/VBoxContainer/HBoxContainer/Option2,
-				   $Panel/VBoxContainer/HBoxContainer/Option3]
+	var buttons = _option_buttons()
 	
 	for i in chosen_upgrades.size():
 		var upgrade = chosen_upgrades[i]
@@ -201,7 +223,7 @@ func refresh_buttons():
 			buttons[i].add_theme_stylebox_override("normal", normal_style)
 			buttons[i].add_theme_color_override("font_color", Color.WHITE)
 	
-	for i in range(chosen_upgrades.size(), 3):
+	for i in range(chosen_upgrades.size(), buttons.size()):
 		buttons[i].visible = false
 	
 	$Panel/VBoxContainer/ActionRow/RerollButton.text = tr("ui.upgrade_ui.reroll") % reroll_count
@@ -214,8 +236,10 @@ func show_upgrades(player):
 	reroll_count = 2 + SaveManager.meta_upgrades.get("reroll_bonus", 0)
 	skip_count = 2 + SaveManager.meta_upgrades.get("skip_bonus", 0)
 	
+	pick_count = 4 if player_ref.get("cog_shard_bonus_active") else 3
+	_layout_levelup_panel(pick_count)
+	
 	current_pool = build_pool()
-	var pick_count = 4 if player_ref.get("cog_shard_bonus_active") else 3
 	chosen_upgrades = weighted_pick(current_pool, pick_count)
 	if player_ref.get("cog_shard_bonus_active"):
 		player_ref.cog_shard_bonus_active = false
@@ -243,12 +267,16 @@ func _on_option3():
 	upgrade_chosen.emit($Panel/VBoxContainer/HBoxContainer/Option3.get_meta("upgrade_id"))
 	visible = false
 
+func _on_option4():
+	upgrade_chosen.emit($Panel/VBoxContainer/HBoxContainer/Option4.get_meta("upgrade_id"))
+	visible = false
+
 func _on_reroll():
 	if reroll_count <= 0:
 		return
 	reroll_count -= 1
 	current_pool = build_pool()
-	chosen_upgrades = weighted_pick(current_pool, 3)
+	chosen_upgrades = weighted_pick(current_pool, pick_count)
 	refresh_buttons()
 
 func _on_skip():

@@ -123,7 +123,43 @@
       "title_solo": "⭐ LEVEL %d — SEÇİMİNİ YAP ⭐",
       "stat_speed": "Hareket Hızı +20\nHareket hızını artırır",
       "stat_max_hp": "Max Can +25\nMaksimum canı artırır",
-      "stat_heal": "Anında +20 Can\nHemen can yeniler"
+      "stat_heal": "Anında +20 Can\nHemen can yeniler",
+      "evolution_pick_title": "⚡ EVRİM",
+      "evolution_floating": "⚡ EVRİM: %s!"
+    },
+    "evolution_defs": {
+      "holy_bullet": {
+        "name": "Kutsal Mermi",
+        "desc": "Mermi + Zırh → Kutsal Mermi\n+%50 hasar, düşman zırhını kırar"
+      },
+      "toxic_chain": {
+        "name": "Zehirli Zincir",
+        "desc": "Zincir + Zehir → Zehirli Zincir\nZincirleme atlarken zehir yayar"
+      },
+      "death_laser": {
+        "name": "Ölüm Lazeri",
+        "desc": "Lazer + Kritik → Ölüm Lazeri\nHer vuruş kritik, menzil 2x"
+      },
+      "blood_boomerang": {
+        "name": "Kan Bumerangı",
+        "desc": "Bumerang + Can Çalma → Kan Bumerangı\nVurdukça can çalar"
+      },
+      "storm": {
+        "name": "Fırtına",
+        "desc": "Yıldırım + Hız Tılsımı → Fırtına\nHer öldürmede ekstra yıldırım"
+      },
+      "shadow_storm": {
+        "name": "Gölge Fırtınası",
+        "desc": "Gölge + Yıldırım + Hız → Gölge Fırtınası\nHer gölge vuruşu yıldırım zinciri tetikler"
+      },
+      "frost_nova": {
+        "name": "Buz Novası",
+        "desc": "Buz Topu + Zırh + Kalkan → Buz Novası\nVuruşta alan dondurma + hasar yansıtma"
+      },
+      "ember_fan": {
+        "name": "Kor Yelpazesi",
+        "desc": "Yelpaze Bıçak (MAX) + Kor Kalbi (MAX) → Kor Yelpazesi\nDaha geniş yelpaze, delici kor kılıçları"
+      }
     },
     "devtools": {
       "add_gold": "💰 +1000 Gold Ekle",

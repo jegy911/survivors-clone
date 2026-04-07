@@ -31,6 +31,9 @@ layout_mode = 2
 [node name="Option3" type="Button" parent="Panel/VBoxContainer/HBoxContainer" unique_id=1282703884]
 layout_mode = 2
 
+[node name="Option4" type="Button" parent="Panel/VBoxContainer/HBoxContainer" unique_id=1282703885]
+layout_mode = 2
+
 [node name="ActionRow" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=932521472]
 layout_mode = 2
 

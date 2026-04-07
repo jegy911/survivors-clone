@@ -134,9 +134,13 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 ### Evrim
 - **`weapons/weapon_evolution.gd`**
-  - `EVOLUTIONS`: `requires_weapons`, `requires_items`, `name`, `description`.
-  - `get_available_evolutions(player)`: Gerekli silah/eşya **MAX seviye** ve evrim silahı henüz yok.
-- **`player/player.gd`** → `evolve_weapon`: Sadece **`requires_weapons`** listedeki silahları kaldırır; **eşyalar kalır**.
+  - `EVOLUTIONS`: `requires_weapons`, `requires_items`, `name`, `description`; isteğe bağlı `weight` (level-up havuzunda ağırlık, varsayılan `10.0`).
+  - `is_evolution_ready(player, evo_id)`: Tek doğrulama kaynağı (silah/eşya MAX, evrim henüz yok).
+  - `get_available_evolutions(player)`: Hazır evrimleri döndürür; sıra **karıştırılır** (aynı ekranda birden fazla evrim adil görünsün).
+  - `localized_name` / `localized_description`: `ui.evolution_defs.<id>.name|desc`; çeviri yoksa sözlükteki `name` / `description`.
+- **`player/player.gd`** → `evolve_weapon`: Önce `is_evolution_ready`; sonra sadece **`requires_weapons`** silahlarını kaldırır; **eşyalar kalır**. Yüzen metin: `ui.upgrade_ui.evolution_floating`.
+- **`ui/upgrade_ui.gd`**: Evrim kartı başlığı `ui.upgrade_ui.evolution_pick_title`; cog shard **4 seçenek** (`Option4`); reroll aynı `pick_count` ile çalışır.
+- **Locale**: Yeni evrim → `locales/*.json` içinde `ui.evolution_defs.<evo_id>` (`name`, `desc`) + mümkünse `gen_locales.py` (tr/en).
 
 ### Özel davranışlar
 - **Kaos** karakteri: `apply_character_bonuses` içinde `random_weapons` listesine yeni taban silah eklenmeli.
@@ -252,6 +256,7 @@ Yeni orb kodu için başlangıç: `xp_orb.gd` / `gold_orb.gd` ve `.tscn` şablon
 2. `weapon_evolution.gd` — `EVOLUTIONS` girişi.
 3. `player/player.gd` — `add_weapon` içinde evrim ID’si (örn. `ember_fan`).
 4. `get_weapon_description` / karakter seçimi isimleri (gerekirse).
+5. `locales/tr.json`, `en.json`, `zh_CN.json` — `ui.evolution_defs.<evo_id>` (`name`, `desc`); mümkünse `gen_locales.py` (tr/en).
 
 ---
 
