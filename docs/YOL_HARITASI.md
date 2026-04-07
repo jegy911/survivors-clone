@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-06
+**Son güncelleme:** 2026-04-04
 
 ---
 
@@ -13,6 +13,7 @@ Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve iler
 |-------------|---------|
 | Bir plan maddesini **bitirdiğinde** | Aşağıdaki **Yapılan iş günlüğü**ne tarih + kısa açıklama ekle; ilgili tabloda `[x]` yap veya maddeyi sil / “İptal” notu düş. |
 | Oyuna **yeni tür içerik** eklediğinde (orb, silah, karakter, vb.) | `docs/GELISTIRICI_REHBERI.md` içinde ilgili checklist veya yeni bölümü güncelle (ör. orb için bölüm 8). |
+| `docs/TASARIM.md` kapsamındaki bir madde kod + asset olarak **bittiğinde** | O dosyadaki ilgili satırları güncelle. |
 | Bir şeyi **koddan kaldırdığında** | Rehberdeki checklist’lerden ve bu dosyadaki maddelerden kaldır veya “kaldırıldı” diye günlüğe yaz. |
 | Repo / çalıştırma **değiştiyse** | `README.md` güncelle. |
 | **Erişilebilirlik / bağlılık** satırı kodda değişti | `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md` ilgili satırı güncelle. |
@@ -25,6 +26,7 @@ Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve iler
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-04 | **Dokümantasyon** — `docs/TASARIM.md` eklendi; sanat/yayın envanteri oraya taşındı; erişilebilirlik matrisi yalnızca kod durumuna indirgendi. |
 | 2026-04 | **Göçebe (nomad)** — Karakter, sahne, spawn, kilit (175 toplam kill → 350 altın), seçim ekranı sırası, indeks migrasyonu (`character_order_v2`). |
 | 2026-04 | **Yelpaze Bıçak + shard** — `fan_blade`, `fan_blade_shard` (Polygon2D, ObjectPool), yakın menzil. |
 | 2026-04 | **Kor Kalbi + Kor Yelpazesi** — `ember_heart`, evrim `ember_fan` (MAX fan_blade + MAX ember_heart). |
@@ -39,10 +41,10 @@ Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve iler
 
 ## Erişilebilirlik ve devamlılık
 
-**Tam matris (20 erişilebilirlik + 20 bağlılık maddesi, önem / geliştirilebilirlik, Var–Kısmi–Yok, kod yolu):**  
-[ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md](ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md)
+**Kod durumu matrisi:** [ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md](ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md)  
+**`TASARIM.md`:** [TASARIM.md](TASARIM.md)
 
-Özet: Matris, ürün taslağını satır satır repoya bağlar; yeni özellik yapılınca ilgili satır orada güncellenir. Teknik ayar anahtarları: `GELISTIRICI_REHBERI.md` §15.
+Teknik ayar anahtarları: `GELISTIRICI_REHBERI.md` §15.
 
 ---
 
@@ -50,9 +52,7 @@ Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve iler
 
 ### Acil — Yarım kalan veya kısa vadede bitirilecek işler
 
-| Durum | İş |
-|--------|-----|
-| [ ] | **XP / Gold orb** — Spritesheet ile orb animasyonu (görsel iyileştirme). |
+*(Boş: acil işler buraya eklenir.)*
 
 ---
 
@@ -77,22 +77,20 @@ Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve iler
 | **Düşmanlar** | Harita başına 6–8 çeşit gibi hedef. |
 | **Haritalar** | Örn. 5 hikaye + 5 arena (arena modu ile birlikte). |
 
+Paralel envanter: `docs/TASARIM.md`.
+
 ---
 
 ### Uzun vadeli — Oyun derinliği
 
-- [ ] **Lore** — Hikaye, boss, harita metinleri.
-- [ ] **Görsel tasarım** — Silah efektleri, pasif ikonlar, pickup görselleri.
+- [ ] **Lore** — Hikaye, boss, harita metinleri (metin/envanter: `docs/TASARIM.md`).
 - [ ] **Arena modu** — Dalga, zorluk, ödül (`map_select` ile uyumlu).
-- [ ] **Koleksiyon / Wiki menüsü** — En sona bırakılabilir.
 
 ---
 
-### Steam / yayın hazırlığı
+### Yayın (dış platformlar)
 
-- [ ] Oyun içi fragman kaydı.
-- [ ] Steam mağaza sayfası.
-- [ ] Early Access veya tam çıkış stratejisi.
+Checklist: `docs/TASARIM.md`.
 
 ---
 
