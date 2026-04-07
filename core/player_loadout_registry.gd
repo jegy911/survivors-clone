@@ -20,6 +20,14 @@ const WEAPON_SCRIPT_BY_ID: Dictionary = {
 	"frost_nova": preload("res://weapons/weapon_frost_nova.gd"),
 	"fan_blade": preload("res://weapons/weapon_fan_blade.gd"),
 	"ember_fan": preload("res://weapons/weapon_ember_fan.gd"),
+	"hex_sigil": preload("res://weapons/weapon_hex_sigil.gd"),
+	"binding_circle": preload("res://weapons/weapon_binding_circle.gd"),
+	"gravity_anchor": preload("res://weapons/weapon_gravity_anchor.gd"),
+	"void_lens": preload("res://weapons/weapon_void_lens.gd"),
+	"bastion_flail": preload("res://weapons/weapon_bastion_flail.gd"),
+	"citadel_flail": preload("res://weapons/weapon_citadel_flail.gd"),
+	"shield_ram": preload("res://weapons/weapon_shield_ram.gd"),
+	"fortress_ram": preload("res://weapons/weapon_fortress_ram.gd"),
 }
 
 const ITEM_SCRIPT_BY_ID: Dictionary = {
@@ -37,6 +45,10 @@ const ITEM_SCRIPT_BY_ID: Dictionary = {
 	"steam_armor": preload("res://items/item_steam_armor.gd"),
 	"energy_cell": preload("res://items/item_energy_cell.gd"),
 	"ember_heart": preload("res://items/item_ember_heart.gd"),
+	"glyph_charm": preload("res://items/item_glyph_charm.gd"),
+	"resonance_stone": preload("res://items/item_resonance_stone.gd"),
+	"rampart_plate": preload("res://items/item_rampart_plate.gd"),
+	"iron_bulwark": preload("res://items/item_iron_bulwark.gd"),
 }
 
 

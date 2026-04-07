@@ -55,6 +55,10 @@ Karakter sınıfı ve rol envanteri (oyun dizaynı metni): `docs/KARAKTER_SINIFL
 | death_knight | ✅ | `assets/character assets/dk assets/` |
 | chaos | ✅ | `assets/character assets/Kaos assets/` |
 | omega | ✅ | `assets/character assets/omega assets/` (`characters/omega/omega.tscn`) |
+| sigil_warden | ⚠️ | Şimdilik **Buzcu ile aynı** Frost asset yolları; özel rün mühür görseli sonra. |
+| grav_binder | ⚠️ | Şimdilik **Buzcu ile aynı** Frost asset yolları; çekim teması için ayrı set hedef. |
+| ironclad | ⚠️ | Şimdilik **Paladin ile aynı** paladin asset yolları; tam zırh varyantı sonra. |
+| linebreaker | ⚠️ | Şimdilik **Paladin ile aynı** paladin asset yolları; kalkan koşusu görseli sonra. |
 
 **Teknik not:** `characters/warrior/omega.tscn` savaşçı asset’lerini kullanan yedek/legacy sahne; oyun `characters/omega/omega.tscn` ile spawn ediyor — tasarım envanterinde ana Omega ✅ satırı geçerlidir.
 

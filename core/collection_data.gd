@@ -50,6 +50,14 @@ const WEAPON_ENTRIES: Array = [
 	{"id": "shadow_storm", "tab": TAB_WEAPON, "emoji": "🌑", "accent": "#5B2C6F"},
 	{"id": "frost_nova", "tab": TAB_WEAPON, "emoji": "💠", "accent": "#AED6F1"},
 	{"id": "ember_fan", "tab": TAB_WEAPON, "emoji": "🔥", "accent": "#E67E22"},
+	{"id": "hex_sigil", "tab": TAB_WEAPON, "emoji": "⬡", "accent": "#48C9B0"},
+	{"id": "binding_circle", "tab": TAB_WEAPON, "emoji": "⌘", "accent": "#1ABC9C"},
+	{"id": "gravity_anchor", "tab": TAB_WEAPON, "emoji": "⚓", "accent": "#AF7AC5"},
+	{"id": "void_lens", "tab": TAB_WEAPON, "emoji": "🕳", "accent": "#884EA0"},
+	{"id": "bastion_flail", "tab": TAB_WEAPON, "emoji": "⛓", "accent": "#7F8C8D"},
+	{"id": "citadel_flail", "tab": TAB_WEAPON, "emoji": "🏰", "accent": "#566573"},
+	{"id": "shield_ram", "tab": TAB_WEAPON, "emoji": "🛡", "accent": "#B7950B"},
+	{"id": "fortress_ram", "tab": TAB_WEAPON, "emoji": "⚔", "accent": "#9A7D0A"},
 ]
 
 ## `ui/upgrade_ui.gd` item_upgrades ile uyumlu.
@@ -68,6 +76,10 @@ const ITEM_ENTRIES: Array = [
 	{"id": "steam_armor", "tab": TAB_ITEM, "emoji": "♨", "accent": "#BDC3C7"},
 	{"id": "energy_cell", "tab": TAB_ITEM, "emoji": "🔋", "accent": "#F39C12"},
 	{"id": "ember_heart", "tab": TAB_ITEM, "emoji": "🔥", "accent": "#E74C3C"},
+	{"id": "glyph_charm", "tab": TAB_ITEM, "emoji": "📜", "accent": "#48C9B0"},
+	{"id": "resonance_stone", "tab": TAB_ITEM, "emoji": "💎", "accent": "#AF7AC5"},
+	{"id": "rampart_plate", "tab": TAB_ITEM, "emoji": "🧱", "accent": "#7F8C8D"},
+	{"id": "iron_bulwark", "tab": TAB_ITEM, "emoji": "🔩", "accent": "#B7950B"},
 ]
 
 const MAP_ENTRIES: Array = [
@@ -92,6 +104,10 @@ static func _char_emoji(char_id: String) -> String:
 		"death_knight": "💀",
 		"chaos": "🌀",
 		"omega": "∞",
+		"sigil_warden": "⬡",
+		"grav_binder": "🌀",
+		"ironclad": "⛓",
+		"linebreaker": "🛡",
 	}
 	return str(m.get(char_id, "⭐"))
 

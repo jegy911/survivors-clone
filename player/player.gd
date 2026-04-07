@@ -201,7 +201,7 @@ func apply_character_bonuses():
 	elif special == "damage_double":
 		bullet_damage *= 2
 	elif special == "random_weapons":
-		var all_weapons = ["bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade"]
+		var all_weapons = ["bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade", "hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram"]
 		all_weapons.shuffle()
 		for w in all_weapons.slice(0, 3):
 			add_weapon(w)
@@ -528,6 +528,8 @@ func get_magnet_bonus() -> float:
 	var bonus = SaveManager.meta_upgrades.get("magnet_bonus", 0) * 15.0
 	if active_items.has("magnet"):
 		bonus += active_items["magnet"].get_bonus_radius()
+	if active_items.has("resonance_stone"):
+		bonus += active_items["resonance_stone"].get_pickup_bonus()
 	return bonus
 
 func get_weapon_description(type: String) -> String:
@@ -653,6 +655,12 @@ func take_damage(amount: int):
 	var armor = SaveManager.meta_upgrades.get("armor_bonus", 0) * 2 + _origin_armor_bonus
 	if active_items.has("armor"):
 		armor += active_items["armor"].armor_value
+	if active_items.has("glyph_charm"):
+		armor += active_items["glyph_charm"].ward_value
+	if active_items.has("rampart_plate"):
+		armor += active_items["rampart_plate"].armor_value
+	if active_items.has("iron_bulwark"):
+		armor += active_items["iron_bulwark"].armor_value
 	var final_damage = max(1, amount - armor)
 	if overheal_shield > 0:
 		var absorbed = min(overheal_shield, final_damage)

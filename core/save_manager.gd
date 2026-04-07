@@ -79,6 +79,7 @@ const CHARACTER_ORDER_V2_KEY = "character_order_v2"
 const OLD_CHARACTER_ORDER: Array[String] = [
 	"warrior", "mage", "vampire", "hunter", "stormer", "frost", "shadow_walker",
 	"engineer", "paladin", "blood_prince", "death_knight", "chaos", "omega", "nomad",
+	"sigil_warden", "grav_binder", "ironclad", "linebreaker",
 ]
 
 func _ready():

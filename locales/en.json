@@ -208,6 +208,22 @@
       "ember_fan": {
         "name": "Ember Fan",
         "desc": "Fan Blade (MAX) + Ember Heart (MAX) → Ember Fan\nWider fan, piercing ember blades"
+      },
+      "binding_circle": {
+        "name": "Binding Circle",
+        "desc": "Hex Sigil (MAX) + Glyph Charm (MAX) → Binding Circle\nWide seal: heavy slow and damage."
+      },
+      "void_lens": {
+        "name": "Void Lens",
+        "desc": "Gravity Anchor (MAX) + Resonance Stone (MAX) → Void Lens\nStronger pull-in and area damage."
+      },
+      "citadel_flail": {
+        "name": "Citadel Flail",
+        "desc": "Bastion Flail (MAX) + Rampart Plate (MAX) → Citadel Flail\nLarger sweep, brutal knockback."
+      },
+      "fortress_ram": {
+        "name": "Fortress Ram",
+        "desc": "Shield Ram (MAX) + Iron Bulwark (MAX) → Fortress Ram\nWider cone, wall-breaker pressure."
       }
     },
     "devtools": {
@@ -415,6 +431,38 @@
       "ember_fan": {
         "name": "Ember Fan",
         "desc": "Evolved fan: wider arc and piercing ember shards."
+      },
+      "hex_sigil": {
+        "name": "Hex Sigil",
+        "desc": "Runic seal around you: chips enemies and slows them—controller spacing tool."
+      },
+      "binding_circle": {
+        "name": "Binding Circle",
+        "desc": "Evolved sigil: larger seal with stronger slow and damage."
+      },
+      "gravity_anchor": {
+        "name": "Gravity Anchor",
+        "desc": "Pulls nearby foes inward and ticks damage—crowd compression."
+      },
+      "void_lens": {
+        "name": "Void Lens",
+        "desc": "Evolved anchor: nastier pull and bigger effective radius."
+      },
+      "bastion_flail": {
+        "name": "Bastion Flail",
+        "desc": "Short-range sweep with knockback—tank frontline fantasy."
+      },
+      "citadel_flail": {
+        "name": "Citadel Flail",
+        "desc": "Evolved flail: wider arc and heavier hits."
+      },
+      "shield_ram": {
+        "name": "Shield Ram",
+        "desc": "Cone bash in front of you; shoves enemies back."
+      },
+      "fortress_ram": {
+        "name": "Fortress Ram",
+        "desc": "Evolved ram: wider cone and crushing impact."
       }
     },
     "item": {
@@ -473,6 +521,22 @@
       "ember_heart": {
         "name": "Ember Heart",
         "desc": "Fireheart passive that pairs with fan evolutions."
+      },
+      "glyph_charm": {
+        "name": "Glyph Charm",
+        "desc": "Etched runes shave a little damage off every hit."
+      },
+      "resonance_stone": {
+        "name": "Resonance Stone",
+        "desc": "Extends pickup radius for XP and gold."
+      },
+      "rampart_plate": {
+        "name": "Rampart Plate",
+        "desc": "Layered plates tuned for bastion-style builds."
+      },
+      "iron_bulwark": {
+        "name": "Iron Bulwark",
+        "desc": "Thick frontal shielding—flat damage reduction."
       }
     },
     "character": {
@@ -531,6 +595,22 @@
       "omega": {
         "name": "Omega",
         "desc": "Secret: all weapons, 1 HP. For experts and showboaters."
+      },
+      "sigil_warden": {
+        "name": "Sigil Warden",
+        "desc": "Rune-seal controller: Hex Sigil + Glyph Charm; evolve into Binding Circle."
+      },
+      "grav_binder": {
+        "name": "Grav Binder",
+        "desc": "Ruin-tech gravity: Gravity Anchor + Resonance Stone; evolve into Void Lens."
+      },
+      "ironclad": {
+        "name": "Ironclad",
+        "desc": "Frontline tank: Bastion Flail + Rampart Plate; evolve into Citadel Flail."
+      },
+      "linebreaker": {
+        "name": "Linebreaker",
+        "desc": "Shield-ram specialist: Shield Ram + Iron Bulwark; evolve into Fortress Ram."
       }
     },
     "map": {

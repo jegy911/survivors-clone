@@ -50,6 +50,30 @@ const EVOLUTIONS = {
 		"name": "Kor Yelpazesi",
 		"description": "Yelpaze Bıçak (MAX) + Kor Kalbi (MAX) → Kor Yelpazesi\nDaha geniş yelpaze, delici kor kılıçları"
 	},
+	"binding_circle": {
+		"requires_weapons": ["hex_sigil"],
+		"requires_items": ["glyph_charm"],
+		"name": "Bağlayıcı Halka",
+		"description": "Altıgön Mühür + Rün Tılsımı → Bağlayıcı Halka\nGeniş alan, güçlü yavaşlatma ve hasar"
+	},
+	"void_lens": {
+		"requires_weapons": ["gravity_anchor"],
+		"requires_items": ["resonance_stone"],
+		"name": "Uçurum Merceği",
+		"description": "Çekim Çapası + Rezonans Taşı → Uçurum Merceği\nDaha güçlü çekim ve alan hasarı"
+	},
+	"citadel_flail": {
+		"requires_weapons": ["bastion_flail"],
+		"requires_items": ["rampart_plate"],
+		"name": "Hisar Zinciri",
+		"description": "Kale Gürzü + Rampa Plakası → Hisar Zinciri\nGeniş alan, yüksek itme ve hasar"
+	},
+	"fortress_ram": {
+		"requires_weapons": ["shield_ram"],
+		"requires_items": ["iron_bulwark"],
+		"name": "Kale Sur Koşusu",
+		"description": "Kalkan Hamlesi + Demir Siper → Kale Sur Koşusu\nGeniş koni, sur gibi baskı"
+	},
 }
 
 static func _meets_weapon_requirements(player, evo: Dictionary) -> bool:

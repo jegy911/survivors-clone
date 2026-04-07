@@ -151,7 +151,7 @@ func die(killer: Node = null):
 # Ateş sinerjisi — evrimi olan silahlar varsa %10 patlama
 	var player_node = get_tree().get_first_node_in_group("player")
 	if player_node:
-		var evolved = ["holy_bullet", "toxic_chain", "death_laser", "blood_boomerang", "storm"]
+		var evolved = ["holy_bullet", "toxic_chain", "death_laser", "blood_boomerang", "storm", "binding_circle", "void_lens", "citadel_flail", "fortress_ram"]
 		var evolved_count = 0
 		for e in evolved:
 			if player_node.active_weapons.has(e):

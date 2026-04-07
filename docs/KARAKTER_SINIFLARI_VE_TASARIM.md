@@ -4,7 +4,7 @@ Oyuncunun **kendine güveni**, takımda **rolünü bilmesi** ve yeni kahramanlar
 Kod envanteri (`core/character_data.gd`, sahneler): `docs/GELISTIRICI_REHBERI.md` §3.  
 Görsel envanter: `docs/TASARIM.md`.
 
-**Son güncelleme:** 2026-04-07
+**Son güncelleme:** 2026-04-07 (4 yeni kahraman: kontrolör ×2, tank ×2)
 
 ---
 
@@ -88,9 +88,13 @@ Aşağıdaki atamalar **taslak**tır; denge ve co-op destek tasarımı netleşti
 | hunter | Avcı | Fighter | Fiziksel projectile, menzil orta |
 | stormer | Fırtına | Mage | Yetenek hızı / şimşek, burst eğilimi |
 | frost | Buzcu | Controller | Yavaşlatma / CC odaklı |
+| sigil_warden | Mühür Ustası | Controller | Rün mühürü, alan yavaşlatma + bağlayıcı evrim |
+| grav_binder | Eğim Bağlayıcı | Controller | Çekim alanı, kalabalık sıkıştırma + rezonans |
 | shadow_walker | Gölge Yürüyücü | Fighter | Mobilite + gölge hasarı, assassin-fighter |
 | engineer | Mühendis | Mage | Lazer / alan, yetenek konumlandırma |
 | paladin | Paladin | Tank | Zırh, kutsal mermi, ön saflar |
+| ironclad | Tam Zırhlı | Tank | Gürz + siper plakası, itme ve ön hat |
+| linebreaker | Hat Kıran | Tank | Kalkan koşusu, koni darbe, demir siper |
 | blood_prince | Kan Prensi | Fighter | Vampir soyundan agresif fighter |
 | nomad | Göçebe | Fighter | Yakın menzil bıçak, mobilite |
 | death_knight | Ölüm Şövalyesi | Fighter | Yüksek risk / yüksek ödül burst (özel kurallar) |
@@ -101,10 +105,10 @@ Aşağıdaki atamalar **taslak**tır; denge ve co-op destek tasarımı netleşti
 
 | Sınıf | Adet (taslak) | Kimlikler |
 |-------|-----------------|-----------|
-| Controller | 1 | frost |
+| Controller | 3 | frost, sigil_warden, grav_binder |
 | Fighter | 7 | warrior, vampire, hunter, shadow_walker, blood_prince, nomad, death_knight |
 | Mage | 3 | mage, stormer, engineer |
-| Tank | 1 | paladin |
+| Tank | 3 | paladin, ironclad, linebreaker |
 | Özel | 2 | chaos, omega |
 
 **Not:** Controller ve Tank havuzları bilinçle genişletilecek; co-op destek kahramanları özellikle **Controller** (ve kısmen Tank) ile örtüşebilir.

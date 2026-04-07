@@ -38,6 +38,26 @@ Bu dosya, **oyun evreni ve anlatı** üzerinde bu sohbet ve tasarım sürecinde 
 - **Görsel kimlik:** Üzerinde **işlenmiş rünler** bulunan cübbe; elinde büyülü ışıklar yayan bir **fener** (veya fener formunda bir odak cihazı).
 - **Oyun notu:** Birincil saldırı tipi **`aura`** benzeri bir yapıdadır (alan/emanasyon); lore’da bu, rünlerin ışık ve enerjiyi **fener üzerinden** yönlendirmesi olarak yorumlanabilir.
 
+### 3.3 Mühür Ustası (Sigil Warden) — kontrolör
+
+- **Tema:** Çöküş öncesi **rün mühürleri**ni taşıyan uzman; düşmanları yerinde tutan **altıgen işaretler** (oyunda `hex_sigil` / evrim `binding_circle`).
+- **Eşya:** **Rün Tılsımı** (`glyph_charm`) — taşınan mühürlerin oyuncuya yansıyan koruyucu katmanı (düz hasar azaltma).
+
+### 3.4 Eğim Bağlayıcı (Grav Binder) — kontrolör
+
+- **Tema:** Harabe **çekim alanı** / antik yerçekimi kalıntısı; kalabalığı tek noktada toplar (`gravity_anchor` → `void_lens`).
+- **Eşya:** **Rezonans Taşı** — alan içi enerjinin XP ve ganimet çekimine “rezonans” ile yansıması (genişletilmiş toplama yarıçapı).
+
+### 3.5 Tam Zırhlı (Ironclad) — tank
+
+- **Tema:** Ön hat **sur / kale** doktrini; gürzle çember çizip düşmanı iter (`bastion_flail` → `citadel_flail`).
+- **Eşya:** **Rampa Plakası** — üst üste bağlanan levhalarla ek zırh (Paladin’den farklı, siper ağırlıklı fantezi).
+
+### 3.6 Hat Kıran (Linebreaker) — tank
+
+- **Tema:** **Kalkan hamlesi** ile hat yaran ağır piyade; koni darbesi (`shield_ram` → `fortress_ram`).
+- **Eşya:** **Demir Siper** — kalın ön siper; düz hasar kesintisi (rampa plakasından ayrı kimlik).
+
 ---
 
 ## 4. Düşmanlar ve bosslar (çerçeve)
@@ -52,6 +72,7 @@ Bu dosya, **oyun evreni ve anlatı** üzerinde bu sohbet ve tasarım sürecinde 
 | Tarih | Özet |
 |-------|------|
 | 2026-04-07 | İlk taslak: çöküş sonrası dünya, rün + kalıntı teknoloji, Şeytani Kral endgame hedefi; Warrior (Desert Eagle / bullet→weapon notu), Mage (rün cübbesi, fener, aura). |
+| 2026-04-07 | Dört yeni kahraman (kontrolör ×2, tank ×2): Mühür Ustası, Eğim Bağlayıcı, Tam Zırhlı, Hat Kıran — her biri özel silah + eşya + evrim çifti; kod ID’leri `sigil_warden`, `grav_binder`, `ironclad`, `linebreaker`. |
 
 ---
 

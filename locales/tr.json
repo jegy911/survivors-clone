@@ -208,6 +208,22 @@
       "ember_fan": {
         "name": "Kor Yelpazesi",
         "desc": "Yelpaze Bıçak (MAX) + Kor Kalbi (MAX) → Kor Yelpazesi\nDaha geniş yelpaze, delici kor kılıçları"
+      },
+      "binding_circle": {
+        "name": "Bağlayıcı Halka",
+        "desc": "Altıgön Mühür (MAX) + Rün Tılsımı (MAX) → Bağlayıcı Halka\nGeniş mühür; güçlü yavaşlatma ve hasar."
+      },
+      "void_lens": {
+        "name": "Uçurum Merceği",
+        "desc": "Çekim Çapası (MAX) + Rezonans Taşı (MAX) → Uçurum Merceği\nDaha güçlü çekim ve alan hasarı."
+      },
+      "citadel_flail": {
+        "name": "Hisar Zinciri",
+        "desc": "Kale Gürzü (MAX) + Rampa Plakası (MAX) → Hisar Zinciri\nDaha geniş savurma, sert itme."
+      },
+      "fortress_ram": {
+        "name": "Kale Sur Koşusu",
+        "desc": "Kalkan Hamlesi (MAX) + Demir Siper (MAX) → Kale Sur Koşusu\nGeniş koni; sur gibi baskı."
       }
     },
     "devtools": {
@@ -415,6 +431,38 @@
       "ember_fan": {
         "name": "Kor Yelpazesi",
         "desc": "Evrim: daha geniş yay ve delici kor parçaları."
+      },
+      "hex_sigil": {
+        "name": "Altıgön Mühür",
+        "desc": "Etrafında rün mührü; hasar + yavaşlatma—kontrolör mesafe aracı."
+      },
+      "binding_circle": {
+        "name": "Bağlayıcı Halka",
+        "desc": "Evrim mührü: daha büyük alan, daha sert yavaşlatma ve hasar."
+      },
+      "gravity_anchor": {
+        "name": "Çekim Çapası",
+        "desc": "Yakındakileri içeri çeker ve hasar tikler—kalabalık sıkıştırma."
+      },
+      "void_lens": {
+        "name": "Uçurum Merceği",
+        "desc": "Evrim çekim: daha güçlü çekiş ve yarıçap."
+      },
+      "bastion_flail": {
+        "name": "Kale Gürzü",
+        "desc": "Kısa menzil savurma + itme—tank ön hat fantezisi."
+      },
+      "citadel_flail": {
+        "name": "Hisar Zinciri",
+        "desc": "Evrim gürz: daha geniş yay ve ağır vuruş."
+      },
+      "shield_ram": {
+        "name": "Kalkan Hamlesi",
+        "desc": "Önünde koni darbesi; düşmanları geri iter."
+      },
+      "fortress_ram": {
+        "name": "Kale Sur Koşusu",
+        "desc": "Evrim koşu: daha geniş koni ve ezici darbe."
       }
     },
     "item": {
@@ -473,6 +521,22 @@
       "ember_heart": {
         "name": "Kor Kalbi",
         "desc": "Yelpaze evrimleriyle eşleşen kor pasifi."
+      },
+      "glyph_charm": {
+        "name": "Rün Tılsımı",
+        "desc": "İşlenmiş rünler her vuruştan biraz hasar keser."
+      },
+      "resonance_stone": {
+        "name": "Rezonans Taşı",
+        "desc": "XP ve altın çekim yarıçapını artırır."
+      },
+      "rampart_plate": {
+        "name": "Rampa Plakası",
+        "desc": "Kale tarzı build’ler için katmanlı plaka zırhı."
+      },
+      "iron_bulwark": {
+        "name": "Demir Siper",
+        "desc": "Kalın ön siper; düz hasar azaltma."
       }
     },
     "character": {
@@ -531,6 +595,22 @@
       "omega": {
         "name": "Omega",
         "desc": "Gizli: tüm silahlar, 1 can. Uzman ve gösteriş koşuları."
+      },
+      "sigil_warden": {
+        "name": "Mühür Ustası",
+        "desc": "Rün mühürlü kontrolör: Altıgön Mühür + Rün Tılsımı; evrim Bağlayıcı Halka."
+      },
+      "grav_binder": {
+        "name": "Eğim Bağlayıcı",
+        "desc": "Harabe çekim: Çekim Çapası + Rezonans Taşı; evrim Uçurum Merceği."
+      },
+      "ironclad": {
+        "name": "Tam Zırhlı",
+        "desc": "Ön hat tank: Kale Gürzü + Rampa Plakası; evrim Hisar Zinciri."
+      },
+      "linebreaker": {
+        "name": "Hat Kıran",
+        "desc": "Kalkan koşusu: Kalkan Hamlesi + Demir Siper; evrim Kale Sur Koşusu."
       }
     },
     "map": {

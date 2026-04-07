@@ -41,6 +41,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-07 | **4 kahraman + 8 silah + 4 eşya + 4 evrim** — Kontrolör: `sigil_warden` (hex_sigil + glyph_charm → binding_circle), `grav_binder` (gravity_anchor + resonance_stone → void_lens). Tank: `ironclad` (bastion_flail + rampart_plate → citadel_flail), `linebreaker` (shield_ram + iron_bulwark → fortress_ram). `CharacterData` sonda (indeks uyumu); `player.gd` glyph/rampart/iron bulwark zırh + rezonans çekim; sahneler frost/paladin kopyası; `locales` + `CollectionData` + `upgrade_ui` havuzları. |
 | 2026-04-07 | **Kilit ipucu / açıklama** — Büyücü/Vampir `unlock_hint`, Göçebe `description` ve kodeks `nomad` açıklamaları (tr/en/zh_CN + `codex_extensions_*`) satın alma/altın cümlesinden arındırıldı; ücret yalnızca koşul sonrası satın alma butonunda. |
 | 2026-04-07 | **Karakter ilerlemesi** — Başlangıçta yalnızca Savaşçı ücretsiz; Büyücü (50 toplam kill → 💰150) ve Vampir (Savaşçı ile 120 sn hayatta kalma → 💰175) kilit + satın alma; `SaveManager` / tam sıfırlama / devtool “lock_chars” varsayılanı `["warrior"]`; `selected_character_p2` varsayılan `0`. |
 | 2026-04-07 | **Karakter seçimi — sınıf filtresi** — `hero_class` + `HERO_CLASS_FILTER_IDS`; P1/P2 `character_select*.gd` dört rol filtresi (tekrar basınca tüm liste); `special` kahramanlar yalnızca filtresiz görünür; `ui.character_select.filter_*` locale. |
