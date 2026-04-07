@@ -32,6 +32,7 @@ func attack():
 	orb.size = Vector2(14, 14)
 	orb.color = Color("#8E44AD")
 	orb.global_position = orbit_pos - Vector2(7, 7)
+	orb.modulate.a = player.get_player_vfx_opacity() if player else 1.0
 	player.get_parent().add_child(orb)
 	var tween = orb.create_tween()
 	tween.tween_property(orb, "modulate:a", 0.0, 0.3)

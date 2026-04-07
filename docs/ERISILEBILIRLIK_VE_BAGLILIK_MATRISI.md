@@ -3,7 +3,7 @@
 Bu belge, **20 + 20 maddenin** Ironfall kod tabanındaki **Var / Kısmi / Yok** durumunu ve kısa **repo notunu** içerir.  
 Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 
-**Son kod kontrolü:** 2026-04-07
+**Son kod kontrolü:** 2026-04-07 (güncelleme: oyuncu VFX opaklığı)
 
 ---
 
@@ -14,7 +14,7 @@ Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 | 1 | Oto-ateş | **Var** | `weapons/weapon_base.gd` — `_process` içinde timer → `attack()`. |
 | 2 | Tek çubuk kontrol | **Kısmi** | Solo: `player.gd` WASD/ok. Local co-op: ikinci giriş haritası gerekir. |
 | 3 | Anında restart | **Var** | `ui/game_over.gd` — tekrar oyna, havuz sıfırlama, `character_select`. |
-| 4 | Görsel karmaşa (oyuncu efekt opaklığı) | **Yok** | `SaveManager.settings` + `settings.gd` + sprite/modulate entegrasyonu yok. |
+| 4 | Görsel karmaşa (oyuncu efekt opaklığı) | **Var** | `SaveManager.settings["player_vfx_opacity"]` (0–1); `ui/settings.gd` + `pause_menu` kaydırıcı; `player.get_player_vfx_opacity()` — level-up halkası/flash, trail, co-op downed; silah VFX (`weapon_lightning`, `laser`, `death_laser`, `storm`, `toxic_chain`, `frost_nova`, `shadow_storm`, `shadow`); `projectiles/bullet`, `boomerang`, `ice_ball` (donma), `fan_blade_shard`; `item_blood_pool`, `item_steam_armor` buhar rengi. |
 | 5 | Yüksek kontrast düşman (outline) | **Yok** | `enemy_base.gd` `_setup_visuals()` uygun; shader atanmadı. |
 | 6 | Düşük donanım | **Kısmi** | `ObjectPool` vb.; tam performans raporu yok. |
 | 7 | Manyetik toplama | **Var** | `xp_orb.gd`, `gold_orb.gd`, `player.get_magnet_bonus()`, item magnet. |
@@ -65,7 +65,7 @@ Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 
 | Kategori | Var | Kısmi | Yok |
 |----------|-----|-------|-----|
-| Erişilebilirlik (20) | 6 | 7 | 7 |
+| Erişilebilirlik (20) | 7 | 7 | 6 |
 | Bağlılık (20) | 11 | 6 | 3 |
 
 ---

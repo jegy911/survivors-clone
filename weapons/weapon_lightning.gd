@@ -54,6 +54,7 @@ func _spawn_lightning(pos: Vector2):
 	flash.size = Vector2(12, 12)
 	flash.color = Color("#FFD700")
 	flash.position = pos - Vector2(6, 6)
+	flash.modulate.a = player.get_player_vfx_opacity() if player else 1.0
 	player.get_parent().add_child(flash)
 	
 	var tween = flash.create_tween()

@@ -249,6 +249,11 @@ func _build_oynanis_tab(parent: Node):
 		SaveManager.save_game()
 	)
 
+	_add_slider(vbox, tr("ui.settings.player_vfx_opacity"), SaveManager.settings.get("player_vfx_opacity", 1.0), func(val):
+		SaveManager.settings["player_vfx_opacity"] = val
+		SaveManager.save_game()
+	)
+
 func _add_dropdown(parent: Node, label_text: String, current_val: String, callback: Callable):
 	var row = HBoxContainer.new()
 	row.add_theme_constant_override("separation", 20)

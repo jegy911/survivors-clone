@@ -296,11 +296,12 @@ Bu rehber, kod tabanındaki gerçek yapıya göre yazılmıştır; yeni sistem e
 | `resolution_y` | int | Pencere yüksekliği |
 | `show_vfx` | bool | Birçok düşman/efektte VFX aç/kapa |
 | `screen_shake` | bool | Ekran sarsıntısı |
+| `player_vfx_opacity` | float | Oyuncu tarafı görsel efekt opaklığı çarpanı (0–1); `player.get_player_vfx_opacity()` |
 | `damage_numbers` | String | `"both_on"`, `"player_only"`, `"enemy_only"`, `"both_off"` |
 | `hp_bars` | String | Aynı seçenek kümesi |
 | `locale` | String | Arayüz dili: `LANGUAGE_CATALOG` içindeki `code` (örn. `tr`, `en`, `zh_CN`); `LocalizationManager` yazar/okur. |
 
-**UI:** `ui/settings.gd` — Sekmeler: Ses, **Dil** (`locale`), Görüntü (`fullscreen`, çözünürlük, VFX), Oynanış (`damage_numbers`, `hp_bars`, `screen_shake`), Profil, Dev.
+**UI:** `ui/settings.gd` — Sekmeler: Ses, **Dil** (`locale`), Görüntü (`fullscreen`, çözünürlük, VFX), Oynanış (`damage_numbers`, `hp_bars`, `screen_shake`, `player_vfx_opacity`), Profil, Dev.
 
 ### Yeni ayar eklerken
 

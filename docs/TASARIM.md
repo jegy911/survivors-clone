@@ -69,7 +69,7 @@ Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: 
 
 | Silah ID | Oyunda mantık | Final VFX / okunaklı mermi görselleri |
 |----------|----------------|----------------------------------------|
-| bullet | ✅ | Basit sprite; oyuncu efekt opaklığı ayarı (slider) yok |
+| bullet | ✅ | `projectiles/bullet.gd` — `player_vfx_opacity` → ColorRect/Sprite2D `modulate.a` |
 | aura | ✅ / ❌ | Alan efekti; yoğunlukta “kendi efektlerim” ayrımı yok |
 | chain | ✅ / ❌ | |
 | boomerang | ✅ | `projectiles/boomerang.tscn` |
@@ -197,7 +197,7 @@ Level-up ekranı ağırlıklı **metin**; `upgrade_ui` için **büyük net ikon*
 
 Aşağıdaki maddelerin **kod karşılığı** matriste; burada yalnızca **tasarım çıktısı** beklenenler özetlenir.
 
-- **Görsel karmaşa:** Oyuncu mermi / efekt opaklığı slider’ı — ❌ (ayar + sprite/modulate tasarımı).
+- **Görsel karmaşa:** Oyuncu mermi / efekt opaklığı — ✅ `player_vfx_opacity` (Ayarlar / Duraklatma → oynanış); matris Tablo 1 satır 4.
 - **Yüksek kontrast düşman:** Outline / hat — ❌.
 - **Renk körlüğü paleti:** Alternatif tema — ❌.
 - **Büyük net ikonlar:** Level-up — ❌.

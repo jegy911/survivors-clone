@@ -43,6 +43,7 @@ func _spawn_laser_beam(dir: Vector2):
 	beam.color = Color("#FF0000")
 	beam.position = player.global_position
 	beam.rotation = dir.angle()
+	beam.modulate.a = player.get_player_vfx_opacity() if player else 1.0
 	player.get_parent().add_child(beam)
 	
 	var tween = beam.create_tween()

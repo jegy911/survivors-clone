@@ -54,7 +54,10 @@ func init(
 	player = shooter
 	speed = move_speed
 	lifetime = life
-	_base_modulate = tint
+	var vfx_a = 1.0
+	if shooter and shooter.has_method("get_player_vfx_opacity"):
+		vfx_a = shooter.get_player_vfx_opacity()
+	_base_modulate = Color(tint.r, tint.g, tint.b, tint.a * vfx_a)
 	var poly = get_node_or_null("Polygon2D") as Polygon2D
 	if poly:
 		poly.modulate = _base_modulate

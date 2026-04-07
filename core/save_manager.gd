@@ -40,6 +40,7 @@ var settings = {
 	"fullscreen": false,
 	"show_vfx": true,
 	"screen_shake": true,
+	"player_vfx_opacity": 1.0,
 	"damage_numbers": "both_on",
 	"hp_bars": "both_on",
 	"resolution_x": 1280,

@@ -29,6 +29,7 @@ func _spawn_orbs():
 		visual.size = Vector2(14, 14)
 		visual.color = Color("#9B59B6")
 		visual.position = Vector2(-7, -7)
+		visual.modulate.a = player.get_player_vfx_opacity() if player else 1.0
 		orb.add_child(visual)
 		player.get_parent().call_deferred("add_child", orb)
 		orbs.append(orb)

@@ -356,6 +356,10 @@ func update_category_ui():
 func get_luck() -> float:
 	return SaveManager.meta_upgrades["luck_bonus"] * 0.1
 
+## Ayarlar → oynanış: oyuncu tarafı görsel efekt opaklığı (0–100%).
+func get_player_vfx_opacity() -> float:
+	return clampf(float(SaveManager.settings.get("player_vfx_opacity", 1.0)), 0.0, 1.0)
+
 func get_cooldown_multiplier() -> float:
 	var reduction = SaveManager.meta_upgrades.get("cooldown_bonus", 0) * 0.08
 	return max(0.10, 1.0 - reduction + _origin_cooldown_bonus)
@@ -670,10 +674,12 @@ func level_up():
 		upgrade_ui.show_upgrades(self)
 
 func _spawn_levelup_effect():
+	var vfx_a = get_player_vfx_opacity()
 	for i in 5:
 		var ring = ColorRect.new()
 		ring.size = Vector2(30, 30)
 		ring.color = Color("#FFD700")
+		ring.modulate.a = vfx_a
 		ring.position = global_position - Vector2(15, 15)
 		get_parent().add_child(ring)
 		var tween = ring.create_tween()
@@ -699,8 +705,9 @@ func _spawn_levelup_screen_flash():
 	layer.layer = 100
 	layer.add_child(flash)
 	get_tree().root.add_child(layer)
+	var peak_a = 0.7 * get_player_vfx_opacity()
 	var tween = flash.create_tween()
-	tween.tween_property(flash, "modulate", Color(1, 1, 1, 0.7), 0.06)
+	tween.tween_property(flash, "modulate", Color(1, 1, 1, peak_a), 0.06)
 	tween.tween_property(flash, "modulate", Color(1, 1, 1, 0), 0.4)
 	tween.tween_callback(layer.queue_free)
 
@@ -804,7 +811,7 @@ func _enter_downed_state():
 	# Görsel — transparan yap
 	if body:
 		var tween = body.create_tween()
-		tween.tween_property(body, "modulate:a", 0.3, 0.5)
+		tween.tween_property(body, "modulate:a", 0.3 * get_player_vfx_opacity(), 0.5)
 	show_floating_text("💀 KNO DOWN!", global_position + Vector2(0, -60), Color("#FF0000"), 20)
 	# Canlandırma alanı oluştur
 	_setup_revive_area()
@@ -929,7 +936,7 @@ func _spawn_trail():
 	var trail = ColorRect.new()
 	trail.size = Vector2(10, 10)
 	trail.color = Color("#00FFFF")
-	trail.modulate.a = 0.6
+	trail.modulate.a = 0.6 * get_player_vfx_opacity()
 	trail.global_position = global_position - Vector2(5, 5)
 	get_parent().add_child(trail)
 	var tween = trail.create_tween()

@@ -58,6 +58,10 @@ func init(dir: Vector2, dmg: int, player: Node2D):
 	hit_enemies.clear()
 	lifetime = 3.0
 	rotation = 0.0
+	var vfx_a = 1.0
+	if player and player.has_method("get_player_vfx_opacity"):
+		vfx_a = player.get_player_vfx_opacity()
+	body.modulate.a = vfx_a
 	show()
 
 func reset():
@@ -68,4 +72,5 @@ func reset():
 	hit_enemies.clear()
 	lifetime = 3.0
 	lifesteal = false
+	body.modulate.a = 1.0
 	hide()

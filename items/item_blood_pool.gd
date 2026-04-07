@@ -28,10 +28,11 @@ func _spawn_pool(pos: Vector2):
 	var effective_radius = pool_radius * player.get_area_multiplier()
 	var effective_duration = pool_duration * player.get_duration_multiplier()
 	
+	var vfx_a = player.get_player_vfx_opacity() if player else 1.0
 	var pool = ColorRect.new()
 	pool.size = Vector2(effective_radius * 2, effective_radius * 2)
 	pool.position = pos - Vector2(effective_radius, effective_radius)
-	pool.color = Color(0.5, 0.0, 0.0, 0.4)
+	pool.color = Color(0.5, 0.0, 0.0, 0.4 * vfx_a)
 	player.get_parent().add_child(pool)
 	
 	var tween = pool.create_tween()

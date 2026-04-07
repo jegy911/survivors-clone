@@ -28,7 +28,7 @@ func attack():
 	var nova = ColorRect.new()
 	nova.size = Vector2(effective_radius * 2, effective_radius * 2)
 	nova.color = Color("#00BFFF")
-	nova.modulate.a = 0.35
+	nova.modulate.a = 0.35 * (player.get_player_vfx_opacity() if player else 1.0)
 	nova.global_position = player.global_position - Vector2(effective_radius, effective_radius)
 	player.get_parent().add_child(nova)
 	var tween = nova.create_tween()

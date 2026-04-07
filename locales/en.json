@@ -57,6 +57,7 @@
       "damage_numbers": "Damage Numbers",
       "hp_bars": "HP Bars",
       "screen_shake": "Screen Shake",
+      "player_vfx_opacity": "Player effect opacity",
       "language_label": "Interface language",
       "lang_tr": "Türkçe",
       "lang_en": "English",

@@ -64,6 +64,15 @@ func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter 
 	armor_piercing = is_armor_piercing
 	player = shooter
 	lifetime = 2.0
+	var vfx_a = 1.0
+	if shooter and shooter.has_method("get_player_vfx_opacity"):
+		vfx_a = shooter.get_player_vfx_opacity()
+	var cr = get_node_or_null("ColorRect")
+	if cr:
+		cr.modulate.a = vfx_a
+	var spr = get_node_or_null("Sprite2D")
+	if spr:
+		spr.modulate.a = vfx_a
 	add_to_group("player_bullets")
 	if get_node_or_null("Sprite2D"):
 		$Sprite2D.rotation = direction.angle()
@@ -75,5 +84,11 @@ func reset():
 	damage = 10
 	lifetime = 2.0
 	armor_piercing = false
+	var cr = get_node_or_null("ColorRect")
+	if cr:
+		cr.modulate.a = 1.0
+	var spr = get_node_or_null("Sprite2D")
+	if spr:
+		spr.modulate.a = 1.0
 	remove_from_group("player_bullets")
 	hide()

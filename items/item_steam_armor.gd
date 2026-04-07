@@ -41,7 +41,8 @@ func on_player_damaged():
 			Color("#00BFFF"), 16
 		)
 		if player.get_node_or_null("Body"):
-			player.get_node("Body").modulate = Color(0.5, 0.8, 1.0, 0.7)
+			var a = 0.7 * player.get_player_vfx_opacity()
+			player.get_node("Body").modulate = Color(0.5, 0.8, 1.0, a)
 
 func is_invincible() -> bool:
 	return invincible

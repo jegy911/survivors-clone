@@ -61,6 +61,7 @@ func _spawn_flash(pos: Vector2):
 	flash.size = Vector2(14, 14)
 	flash.color = Color("#00BFFF")
 	flash.position = pos - Vector2(7, 7)
+	flash.modulate.a = player.get_player_vfx_opacity() if player else 1.0
 	player.get_parent().add_child(flash)
 	
 	var tween = flash.create_tween()

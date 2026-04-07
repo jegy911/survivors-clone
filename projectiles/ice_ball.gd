@@ -38,19 +38,24 @@ func init(dir: Vector2, dmg: int, shooter = null):
 	damage = dmg
 	lifetime = 2.5
 	rotation = 0.0
+	var vfx_a = player.get_player_vfx_opacity() if player else 1.0
+	body.modulate.a = vfx_a
 	show()
 
 func reset():
 	direction = Vector2.ZERO
 	damage = 15
 	lifetime = 2.5
+	body.modulate.a = 1.0
 	hide()
 
 func _spawn_freeze_effect():
+	var vfx_a = player.get_player_vfx_opacity() if player else 1.0
 	for i in 5:
 		var particle = ColorRect.new()
 		particle.size = Vector2(6, 6)
 		particle.color = Color("#00BFFF")
+		particle.modulate.a = vfx_a
 		particle.position = global_position
 		get_parent().add_child(particle)
 		var angle = (float(i) / 5.0) * TAU

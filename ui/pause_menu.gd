@@ -102,6 +102,11 @@ func _build_settings_panel() -> Control:
 		SaveManager.save_game()
 	)
 
+	_add_slider_to(vbox, tr("ui.settings.player_vfx_opacity"), SaveManager.settings.get("player_vfx_opacity", 1.0), func(val):
+		SaveManager.settings["player_vfx_opacity"] = val
+		SaveManager.save_game()
+	)
+
 	_add_dropdown_to(vbox, tr("ui.settings.damage_numbers"), SaveManager.settings.get("damage_numbers", "both_on"), func(val):
 		SaveManager.settings["damage_numbers"] = val
 		SaveManager.save_game()
