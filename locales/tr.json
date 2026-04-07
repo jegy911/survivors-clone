@@ -1,0 +1,291 @@
+{
+  "ui": {
+    "main_menu": {
+      "title": "⚔ IRONFALL ⚔",
+      "subtitle": "Demir Düştü. Rünler Yükseldi.",
+      "stats": "🎮 %d Koşu  |  💀 %d Öldürme  |  🏆 %d Kazanma",
+      "gold": "💰 %d Altın",
+      "play": "▶  OYNA",
+      "meta": "⬆  META UPGRADES",
+      "settings": "⚙  AYARLAR",
+      "quit": "✕  ÇIKIŞ",
+      "omega_unlock": "????? UNLOCKED"
+    },
+    "game_mode": {
+      "title": "NASIL OYNAMAK İSTİYORSUN?",
+      "solo": "👤 SOLO\n\nTek oyuncu\nKlasik mod",
+      "local_coop": "👥 LOCAL CO-OP\n\nAynı klavye\n2 oyuncu",
+      "online": "🌐 ONLINE CO-OP\n\nP2P Steam\nYakında...",
+      "back": "← GERİ"
+    },
+    "map_select": {
+      "title": "MOD & HARİTA SEÇ",
+      "mode_label": "🎮 OYUN MODU",
+      "map_label": "🗺 HARİTA",
+      "vs_mode": "🗺 HİKAYE MODU\n\nAçık harita\n30 dakika hayatta kal!",
+      "arena_mode": "⬡ SURVIVAL/ARENA\n\nDalga savunma\n🔒 Yakında...",
+      "map1": "🏰 DÜŞMÜŞ KRALLIK\n\nAçık alan\nOrtaçağ kalıntıları\n30 dakika hayatta kal!",
+      "map2": "⬡ HARİTA 2\n\nYakında...",
+      "map3": "⬡ HARİTA 3\n\nYakında...",
+      "arena1": "⬡ ARENA 1\n\nYakında...",
+      "back": "← GERİ",
+      "start": "▶ BAŞLAT!"
+    },
+    "pause": {
+      "title": "DURAKLATILDI",
+      "resume": "▶ DEVAM",
+      "settings": "⚙ AYARLAR",
+      "main_menu": "🏠 ANA MENÜ",
+      "settings_title": "AYARLAR",
+      "back": "← Geri"
+    },
+    "settings": {
+      "title": "AYARLAR",
+      "back_main": "← Ana Menü",
+      "tab_audio": "🔊 Ses",
+      "tab_language": "🌐 Dil",
+      "tab_video": "🖥 Görüntü",
+      "tab_gameplay": "🎮 Oynanış",
+      "tab_profile": "👤 Profil",
+      "tab_dev": "🛠 Dev",
+      "master": "Genel Ses",
+      "sfx": "Efekt Sesi",
+      "music": "Müzik",
+      "fullscreen": "Tam Ekran",
+      "resolution": "Çözünürlük",
+      "vfx": "VFX Efektleri",
+      "damage_numbers": "Hasar Sayıları",
+      "hp_bars": "Can Barları",
+      "screen_shake": "Ekran Sarsıntısı",
+      "language_label": "Arayüz dili",
+      "lang_tr": "Türkçe",
+      "lang_en": "English",
+      "stats_title": "📊 İSTATİSTİKLER",
+      "achievements_title": "🏅 BAŞARIMLAR",
+      "ach_progress": "%d / %d tamamlandı",
+      "reset_stats": "📊 İstatistikleri Sıfırla",
+      "reset_stats_confirm": "⚠ Emin misin? Tekrar bas!",
+      "reset_full": "🗑 Tüm İlerlemeyi Sıfırla",
+      "reset_full_confirm": "⚠ Emin misin? Tekrar bas!",
+      "dev_title": "⚠ DEV TOOLS - Sadece Test İçin",
+      "dev_gold": "Mevcut Gold: %d",
+      "option_both_on": "İkisi de Açık",
+      "option_player_only": "Sadece Oyuncu",
+      "option_enemy_only": "Sadece Düşman",
+      "option_both_off": "İkisi de Kapalı"
+    },
+    "stats": {
+      "total_kills": "⚔ Toplam Öldürme",
+      "best_kill_run": "💀 En İyi Koşu (Kill)",
+      "boss_kills": "🏆 Boss Öldürme",
+      "total_runs": "🎮 Toplam Koşu",
+      "total_wins": "🏅 Kazanılan Koşu",
+      "total_deaths": "💀 Toplam Ölüm",
+      "total_gold": "💰 Toplam Altın",
+      "total_levels": "⬆ Toplam Level",
+      "total_damage": "🗡 Toplam Hasar",
+      "chests": "📦 Açılan Sandık",
+      "items": "🛡 Toplanan Item",
+      "survival": "⏱ En Uzun Hayatta Kalma"
+    },
+    "character_select": {
+      "title_solo": "KARAKTER SEÇ",
+      "p1_title": "👤 P1 KARAKTERİNİ SEÇ",
+      "p2_title": "👥 P2 KARAKTERİ SEÇ",
+      "taken_by_p1": "P1 tarafından seçildi",
+      "locked_p1": "🔒 P1"
+    },
+    "meta_screen": {
+      "title": "META UPGRADES",
+      "back": "← Ana Menü",
+      "gold": "💰 Altın: %d",
+      "max": "✓ MAX",
+      "cost": "%d 💰",
+      "reset_confirm": "⚠ Emin misin? Tekrar bas!",
+      "reset_all": "🔄 Tüm Upgradeleri Sıfırla"
+    },
+    "game_over": {
+      "won": "🏆 KAZANDIN!",
+      "lost": "☠ ÖLDÜN",
+      "time": "⏱ Süre: %02d:%02d",
+      "level": "⭐ Ulaşılan Level: %d",
+      "kills": "💀 Öldürülen Düşman: %d",
+      "kpm": "⚡ Dakikada Öldürme: %s",
+      "gold_earned": "💰 Kazanılan Altın: +%d",
+      "restart": "🔄 Tekrar Oyna",
+      "menu": "🏠 Ana Menü"
+    },
+    "upgrade_ui": {
+      "reroll": "🔄 Reroll (%d)",
+      "skip": "⏭ Skip (%d)",
+      "title_coop": "⭐ %s (%s) — LEVEL %d ⭐",
+      "title_solo": "⭐ LEVEL %d — SEÇİMİNİ YAP ⭐",
+      "stat_speed": "Hareket Hızı +20\nHareket hızını artırır",
+      "stat_max_hp": "Max Can +25\nMaksimum canı artırır",
+      "stat_heal": "Anında +20 Can\nHemen can yeniler"
+    },
+    "devtools": {
+      "add_gold": "💰 +1000 Gold Ekle",
+      "max_meta": "⬆ Tüm Upgradeleri Maxla",
+      "unlock_chars": "🔓 Tüm Karakterleri Aç",
+      "gold_zero": "💸 Gold Sıfırla",
+      "lock_chars": "🔒 Karakterleri Sıfırla"
+    }
+  },
+  "achievement": {
+    "first_blood": {
+      "name": "İlk Kan",
+      "desc": "İlk düşmanı öldür"
+    },
+    "killer_100": {
+      "name": "Katliamcı",
+      "desc": "Tek koşuda 100 düşman öldür"
+    },
+    "killer_500": {
+      "name": "Makineli",
+      "desc": "Tek koşuda 500 düşman öldür"
+    },
+    "killer_1000": {
+      "name": "Tanrının Gazabı",
+      "desc": "Tek koşuda 1000 düşman öldür"
+    },
+    "survive_10": {
+      "name": "Hayatta Kalan",
+      "desc": "10 dakika hayatta kal"
+    },
+    "survive_20": {
+      "name": "Efsane",
+      "desc": "20 dakika hayatta kal"
+    },
+    "survive_30": {
+      "name": "Ölümsüz",
+      "desc": "Oyunu bitir (30 dakika)"
+    },
+    "boss_first": {
+      "name": "Boss Katili",
+      "desc": "İlk boss'u öldür"
+    },
+    "boss_10": {
+      "name": "Boss Avcısı",
+      "desc": "Toplamda 10 boss öldür"
+    },
+    "evolution": {
+      "name": "Evrimci",
+      "desc": "Bir silahı evrimleştir"
+    },
+    "collector": {
+      "name": "Koleksiyoncu",
+      "desc": "5 farklı karakterle oyna"
+    },
+    "chest_50": {
+      "name": "Sandık Avcısı",
+      "desc": "Toplamda 50 sandık aç"
+    },
+    "rich": {
+      "name": "Zengin",
+      "desc": "Toplamda 1000 altın kazan"
+    },
+    "unlock_chaos": {
+      "name": "Kaos'u Bul",
+      "desc": "Kaos karakterini aç"
+    },
+    "unlock_omega": {
+      "name": "Omega'yı Bul",
+      "desc": "Omega karakterini aç"
+    }
+  },
+  "meta": {
+    "damage_bonus": {
+      "name": "⚔ Hasar Bonusu",
+      "desc": "Tüm silahlar +5 hasar\n(max rank: +25 hasar)"
+    },
+    "cooldown_bonus": {
+      "name": "⚡ Cooldown Azaltma",
+      "desc": "Ateş hızı +%8 per rank\n(max rank: -%40 cooldown)"
+    },
+    "area_bonus": {
+      "name": "💥 Alan Genişliği",
+      "desc": "Saldırı alanı +%10 per rank\n(max rank: +%50 alan)"
+    },
+    "multi_attack_bonus": {
+      "name": "🎯 Çoklu Saldırı",
+      "desc": "Tüm silahlar +1 ekstra saldırı\n(max rank: +3 saldırı)"
+    },
+    "crit_damage_bonus": {
+      "name": "🗡 Kritik Hasar",
+      "desc": "Kritik vuruş çarpanı +%25\n(max rank: 2x → 2.75x)"
+    },
+    "duration_bonus": {
+      "name": "⏱ Süre Uzatma",
+      "desc": "Zehir/yavaşlatma süresi +%15\n(max rank: +%75 süre)"
+    },
+    "adrenaline": {
+      "name": "🔥 Adrenalin",
+      "desc": "Eksik can başına +20 hasar\n(düşük canda daha güçlü)"
+    },
+    "momentum": {
+      "name": "💨 Momentum",
+      "desc": "Hareket ettikçe +1 hasar/sn\n(max rank: +10 hasar bonusu)"
+    },
+    "max_hp_bonus": {
+      "name": "💗 Max Can",
+      "desc": "Başlangıç canı +25 per rank\n(max rank: +125 can)"
+    },
+    "armor_bonus": {
+      "name": "🛡 Başlangıç Zırhı",
+      "desc": "Başlangıç zırhı +2 per rank\n(max rank: -10 hasar)"
+    },
+    "recovery_bonus": {
+      "name": "💚 Can Yenileme",
+      "desc": "Her dakika +3 HP iyileşme\n(max rank: +15 HP/dk)"
+    },
+    "revival": {
+      "name": "✨ Revival",
+      "desc": "Ölünce 1 kere %30 HP ile canlan\n(max rank: 1 kullanım)"
+    },
+    "overheal": {
+      "name": "🔰 Overheal Kalkan",
+      "desc": "Can doluyken iyileşme\ngeçici kalkan verir"
+    },
+    "xp_bonus": {
+      "name": "⭐ XP Bonusu",
+      "desc": "XP kazanımı +%10 per rank\n(max rank: +%50 XP)"
+    },
+    "luck_bonus": {
+      "name": "🍀 Şans",
+      "desc": "Nadir upgrade ihtimali +%10\n(max rank: +%50 şans)"
+    },
+    "magnet_bonus": {
+      "name": "🧲 Mıknatıs",
+      "desc": "XP/gold çekim menzili +15\n(max rank: +75 menzil)"
+    },
+    "gold_bonus": {
+      "name": "💰 Altın Bonusu",
+      "desc": "Düşmandan +1 altın per rank\n(max rank: +5 altın)"
+    },
+    "growth_bonus": {
+      "name": "📦 Altın Çarpanı",
+      "desc": "Kazanılan altın +%15 per rank\n(max rank: +%75 altın)"
+    },
+    "start_level_bonus": {
+      "name": "📈 Başlangıç Seviyesi",
+      "desc": "Oyun başında +1 level\n(max rank: +3 level)"
+    },
+    "reroll_bonus": {
+      "name": "🔄 Ekstra Reroll",
+      "desc": "Level up'ta +1 reroll hakkı\n(max rank: +3 reroll)"
+    },
+    "skip_bonus": {
+      "name": "⏭ Ekstra Skip",
+      "desc": "Level up'ta +1 skip hakkı\n(max rank: +3 skip)"
+    },
+    "speed_bonus": {
+      "name": "👟 Hareket Hızı",
+      "desc": "Hareket hızı +10 per rank\n(max rank: +50 hız)"
+    },
+    "curse_level": {
+      "name": "💀 Curse",
+      "desc": "Düşman güç/sayısı +%10\nKarşılığında XP 2x per rank"
+    }
+  }
+}

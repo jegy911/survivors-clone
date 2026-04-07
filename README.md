@@ -21,6 +21,8 @@ Geliştiriciler için ek belgeler `docs/` klasöründe:
 | [docs/TASARIM.md](docs/TASARIM.md) | Görsel / ikon / UI / ses sunumu / yayın envanteri (✅/❌ takibi) |
 | [docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md](docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md) | Erişilebilirlik + bağlılık (20+20 madde), kodla eşleştirilmiş Var/Kısmi/Yok tablosu |
 
+Çeviri dosyaları: `locales/tr.json`, `locales/en.json` (`LocalizationManager` autoload).
+
 Önceki mesajda kastettiğim şey buydu: GitHub veya klasörü açan biri **tek bakışta** bu iki rehbere buradan gidebilsin.
 
 ## Lisans

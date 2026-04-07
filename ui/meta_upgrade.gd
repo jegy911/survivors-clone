@@ -36,13 +36,15 @@ var upgrade_defs = [
 var pending_reset = false
 
 func _ready():
+	if not LocalizationManager.locale_changed.is_connected(_on_locale_changed):
+		LocalizationManager.locale_changed.connect(_on_locale_changed)
 	var screen_size = get_viewport().get_visible_rect().size
 	$Background.size = screen_size
 	$Background.color = Color("#0D0D1A")
 	$VBoxContainer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	$VBoxContainer.alignment = BoxContainer.ALIGNMENT_BEGIN
 	$VBoxContainer.add_theme_constant_override("separation", 10)
-	$VBoxContainer/TitleLabel.text = "META UPGRADES"
+	$VBoxContainer/TitleLabel.text = tr("ui.meta_screen.title")
 	$VBoxContainer/TitleLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	$VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 36)
 	$VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
@@ -57,7 +59,7 @@ func _ready():
 	back_style.corner_radius_bottom_right = 8
 	$VBoxContainer/BackButton.add_theme_stylebox_override("normal", back_style)
 	$VBoxContainer/BackButton.add_theme_color_override("font_color", Color.WHITE)
-	$VBoxContainer/BackButton.text = "← Ana Menü"
+	$VBoxContainer/BackButton.text = tr("ui.meta_screen.back")
 	$VBoxContainer/BackButton.custom_minimum_size = Vector2(200, 50)
 	$VBoxContainer/BackButton.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	$VBoxContainer/BackButton.pressed.connect(_on_back)
@@ -69,6 +71,12 @@ func _ready():
 	$VBoxContainer/ScrollContainer.add_theme_stylebox_override("panel", scroll_style)
 	$VBoxContainer/ScrollContainer/UpgradeList.add_theme_constant_override("separation", 12)
 	$VBoxContainer/ScrollContainer/UpgradeList.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	build_upgrade_list()
+
+func _on_locale_changed(_locale: String) -> void:
+	$VBoxContainer/TitleLabel.text = tr("ui.meta_screen.title")
+	$VBoxContainer/BackButton.text = tr("ui.meta_screen.back")
+	update_gold_label()
 	build_upgrade_list()
 
 func build_upgrade_list():
@@ -121,12 +129,13 @@ func build_upgrade_list():
 		info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 		var name_label = Label.new()
-		name_label.text = upgrade["name"] + "  [" + str(level) + "/" + str(max_level) + "]"
+		var uid = upgrade["id"]
+		name_label.text = tr("meta." + uid + ".name") + "  [" + str(level) + "/" + str(max_level) + "]"
 		name_label.add_theme_color_override("font_color", Color("#FFD700") if is_maxed else Color.WHITE)
 		name_label.add_theme_font_size_override("font_size", 18)
 
 		var desc_label = Label.new()
-		desc_label.text = upgrade["desc"]
+		desc_label.text = tr("meta." + uid + ".desc")
 		desc_label.add_theme_color_override("font_color", Color("#AAAAAA"))
 
 		info.add_child(name_label)
@@ -134,10 +143,10 @@ func build_upgrade_list():
 
 		var btn = Button.new()
 		if is_maxed:
-			btn.text = "✓ MAX"
+			btn.text = tr("ui.meta_screen.max")
 			btn.disabled = true
 		else:
-			btn.text = str(cost) + " 💰"
+			btn.text = tr("ui.meta_screen.cost") % cost
 			btn.disabled = SaveManager.gold < cost
 
 		btn.custom_minimum_size = Vector2(120, 50)
@@ -161,10 +170,10 @@ func build_upgrade_list():
 	# Reset butonu — listenin en altında
 	var reset_btn = Button.new()
 	if pending_reset:
-		reset_btn.text = "⚠ Emin misin? Tekrar bas!"
+		reset_btn.text = tr("ui.meta_screen.reset_confirm")
 		reset_btn.add_theme_color_override("font_color", Color("#E74C3C"))
 	else:
-		reset_btn.text = "🔄 Tüm Upgradeleri Sıfırla"
+		reset_btn.text = tr("ui.meta_screen.reset_all")
 		reset_btn.add_theme_color_override("font_color", Color("#E74C3C"))
 	reset_btn.custom_minimum_size = Vector2(300, 55)
 	reset_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
@@ -184,7 +193,7 @@ func build_upgrade_list():
 	list.add_child(reset_btn)
 
 func update_gold_label():
-	$VBoxContainer/GoldLabel.text = "💰 Altın: " + str(SaveManager.gold)
+	$VBoxContainer/GoldLabel.text = tr("ui.meta_screen.gold") % SaveManager.gold
 	$VBoxContainer/GoldLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	$VBoxContainer/GoldLabel.add_theme_color_override("font_color", Color("#F5E642"))
 	$VBoxContainer/GoldLabel.add_theme_font_size_override("font_size", 22)

@@ -25,6 +25,9 @@ layout_mode = 2
 [node name="SesTab" type="Button" parent="VBoxContainer/TabRow" unique_id=561024240]
 layout_mode = 2
 
+[node name="DilTab" type="Button" parent="VBoxContainer/TabRow" unique_id=561024241]
+layout_mode = 2
+
 [node name="GoruntuTab" type="Button" parent="VBoxContainer/TabRow" unique_id=1293643784]
 layout_mode = 2
 

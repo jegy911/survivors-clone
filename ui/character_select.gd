@@ -9,7 +9,9 @@ func _ready():
 	$Panel/VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 32)
 	$Panel/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
 	if SaveManager.game_mode == "local_coop":
-		$Panel/VBoxContainer/TitleLabel.text = "👤 P1 KARAKTERİNİ SEÇ"
+		$Panel/VBoxContainer/TitleLabel.text = tr("ui.character_select.p1_title")
+	else:
+		$Panel/VBoxContainer/TitleLabel.text = tr("ui.character_select.title_solo")
 	$Panel/VBoxContainer/ScrollContainer/GridContainer.add_theme_constant_override("h_separation", 16)
 	$Panel/VBoxContainer/ScrollContainer/GridContainer.add_theme_constant_override("v_separation", 16)
 	build_characters()

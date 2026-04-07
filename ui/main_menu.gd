@@ -1,13 +1,66 @@
 extends CanvasLayer
 
 func _ready():
+	if not LocalizationManager.locale_changed.is_connected(_refresh_ui):
+		LocalizationManager.locale_changed.connect(_refresh_ui)
+	_build_ui()
+
+func _refresh_ui(_locale: String = "") -> void:
+	_apply_texts()
+
+func _apply_texts():
 	var screen_size = get_viewport().get_visible_rect().size
-	
-	# Arka plan — gradient efekti
+
+	$VBoxContainer/TitleLabel.text = tr("ui.main_menu.title")
+
+	var subtitle = $VBoxContainer.get_node_or_null("SubtitleLabel")
+	if subtitle:
+		subtitle.text = tr("ui.main_menu.subtitle")
+
+	var stats_label = $VBoxContainer.get_node_or_null("StatsLabel")
+	if stats_label:
+		var wins = SaveManager.total_wins
+		var runs = SaveManager.total_runs
+		var kills = SaveManager.total_kills
+		stats_label.text = tr("ui.main_menu.stats") % [runs, kills, wins]
+
+	$VBoxContainer/GoldLabel.text = tr("ui.main_menu.gold") % SaveManager.gold
+
+	var button_configs = [
+		[$VBoxContainer/StartButton, tr("ui.main_menu.play"), Color("#27AE60"), Color("#1E8449")],
+		[$VBoxContainer/UpgradeButton, tr("ui.main_menu.meta"), Color("#8E44AD"), Color("#6C3483")],
+		[$VBoxContainer/SettingsButton, tr("ui.main_menu.settings"), Color("#2471A3"), Color("#1A5276")],
+		[$VBoxContainer/QuitButton, tr("ui.main_menu.quit"), Color("#922B21"), Color("#7B241C")],
+	]
+
+	for config in button_configs:
+		var btn = config[0]
+		btn.text = config[1]
+		var style = StyleBoxFlat.new()
+		style.bg_color = config[3]
+		style.border_color = config[2]
+		style.border_width_left = 2
+		style.border_width_right = 2
+		style.border_width_top = 2
+		style.border_width_bottom = 2
+		style.corner_radius_top_left = 10
+		style.corner_radius_top_right = 10
+		style.corner_radius_bottom_left = 10
+		style.corner_radius_bottom_right = 10
+		btn.add_theme_stylebox_override("normal", style)
+		var hover_style = style.duplicate()
+		hover_style.bg_color = config[2]
+		btn.add_theme_stylebox_override("hover", hover_style)
+
+func _build_ui():
+	var screen_size = get_viewport().get_visible_rect().size
+
 	$Background.size = screen_size
 	$Background.color = Color("#0A0A14")
-	
-	# Yıldız parçacıkları
+
+	for c in $Background.get_children():
+		c.queue_free()
+
 	for i in 40:
 		var star = ColorRect.new()
 		star.size = Vector2(randf_range(1, 3), randf_range(1, 3))
@@ -18,63 +71,59 @@ func _ready():
 		st.set_loops()
 		st.tween_property(star, "modulate:a", 0.1, randf_range(1.0, 3.0))
 		st.tween_property(star, "modulate:a", 1.0, randf_range(1.0, 3.0))
-	
+
 	$VBoxContainer.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	$VBoxContainer.alignment = BoxContainer.ALIGNMENT_CENTER
 	$VBoxContainer.size = Vector2(420, 580)
 	$VBoxContainer.position = screen_size / 2 - $VBoxContainer.size / 2
 	$VBoxContainer.add_theme_constant_override("separation", 14)
-	
-	# Başlık
-	$VBoxContainer/TitleLabel.text = "⚔ IRONFALL ⚔"
+
+	$VBoxContainer/TitleLabel.text = tr("ui.main_menu.title")
 	$VBoxContainer/TitleLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	$VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 48)
 	$VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
-	
-	# Başlık animasyonu — renk geçişi
+
 	var tween = create_tween()
 	tween.set_loops()
 	tween.tween_property($VBoxContainer/TitleLabel, "modulate", Color(1.0, 0.8, 1.0, 1.0), 1.5)
 	tween.tween_property($VBoxContainer/TitleLabel, "modulate", Color(0.7, 0.5, 1.0, 0.8), 1.5)
-	
-	# Alt başlık
+
 	var subtitle = Label.new()
-	subtitle.text = "Demir Düştü. Rünler Yükseldi."
+	subtitle.name = "SubtitleLabel"
+	subtitle.text = tr("ui.main_menu.subtitle")
 	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	subtitle.add_theme_color_override("font_color", Color("#666688"))
 	subtitle.add_theme_font_size_override("font_size", 14)
 	$VBoxContainer.add_child(subtitle)
 	$VBoxContainer.move_child(subtitle, 1)
-	
-	# İstatistik özeti
+
 	var stats_label = Label.new()
+	stats_label.name = "StatsLabel"
 	var wins = SaveManager.total_wins
 	var runs = SaveManager.total_runs
 	var kills = SaveManager.total_kills
-	stats_label.text = "🎮 %d Koşu  |  💀 %d Öldürme  |  🏆 %d Kazanma" % [runs, kills, wins]
+	stats_label.text = tr("ui.main_menu.stats") % [runs, kills, wins]
 	stats_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	stats_label.add_theme_color_override("font_color", Color("#555577"))
 	stats_label.add_theme_font_size_override("font_size", 12)
 	$VBoxContainer.add_child(stats_label)
 	$VBoxContainer.move_child(stats_label, 2)
-	
-	# Gold label
-	$VBoxContainer/GoldLabel.text = "💰 " + str(SaveManager.gold) + " Altın"
+
+	$VBoxContainer/GoldLabel.text = tr("ui.main_menu.gold") % SaveManager.gold
 	$VBoxContainer/GoldLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	$VBoxContainer/GoldLabel.add_theme_color_override("font_color", Color("#FFD700"))
 	$VBoxContainer/GoldLabel.add_theme_font_size_override("font_size", 20)
-	
+
 	if not AudioManager.music_player.playing:
 		AudioManager.play_music(1)
-	
-	# Buton stilleri
+
 	var button_configs = [
-		[$VBoxContainer/StartButton, "▶  OYNA", Color("#27AE60"), Color("#1E8449")],
-		[$VBoxContainer/UpgradeButton, "⬆  META UPGRADES", Color("#8E44AD"), Color("#6C3483")],
-		[$VBoxContainer/SettingsButton, "⚙  AYARLAR", Color("#2471A3"), Color("#1A5276")],
-		[$VBoxContainer/QuitButton, "✕  ÇIKIŞ", Color("#922B21"), Color("#7B241C")],
+		[$VBoxContainer/StartButton, tr("ui.main_menu.play"), Color("#27AE60"), Color("#1E8449")],
+		[$VBoxContainer/UpgradeButton, tr("ui.main_menu.meta"), Color("#8E44AD"), Color("#6C3483")],
+		[$VBoxContainer/SettingsButton, tr("ui.main_menu.settings"), Color("#2471A3"), Color("#1A5276")],
+		[$VBoxContainer/QuitButton, tr("ui.main_menu.quit"), Color("#922B21"), Color("#7B241C")],
 	]
-	
+
 	for config in button_configs:
 		var btn = config[0]
 		btn.text = config[1]
@@ -93,11 +142,10 @@ func _ready():
 		btn.add_theme_stylebox_override("normal", style)
 		btn.add_theme_color_override("font_color", Color.WHITE)
 		btn.add_theme_font_size_override("font_size", 20)
-		# Hover efekti
 		var hover_style = style.duplicate()
 		hover_style.bg_color = config[2]
 		btn.add_theme_stylebox_override("hover", hover_style)
-	
+
 	$VBoxContainer/StartButton.pressed.connect(_on_start)
 	$VBoxContainer/UpgradeButton.pressed.connect(_on_upgrades)
 	$VBoxContainer/SettingsButton.pressed.connect(_on_settings)
@@ -133,7 +181,7 @@ func _try_unlock_omega():
 	SaveManager.unlocked_characters.append("omega")
 	SaveManager.save_game()
 	var label = Label.new()
-	label.text = "????? UNLOCKED"
+	label.text = tr("ui.main_menu.omega_unlock")
 	label.add_theme_color_override("font_color", Color("#FF0000"))
 	label.add_theme_font_size_override("font_size", 28)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

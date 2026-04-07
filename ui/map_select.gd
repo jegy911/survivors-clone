@@ -42,7 +42,7 @@ func _ready():
 	panel.add_child(vbox)
 
 	var title = Label.new()
-	title.text = "MOD & HARİTA SEÇ"
+	title.text = tr("ui.map_select.title")
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 28)
 	title.add_theme_color_override("font_color", Color("#9B59B6"))
@@ -52,7 +52,7 @@ func _ready():
 
 	# Oyun modu seçimi
 	var mode_label = Label.new()
-	mode_label.text = "🎮 OYUN MODU"
+	mode_label.text = tr("ui.map_select.mode_label")
 	mode_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	mode_label.add_theme_color_override("font_color", Color("#9B59B6"))
 	mode_label.add_theme_font_size_override("font_size", 16)
@@ -63,8 +63,8 @@ func _ready():
 	mode_row.add_theme_constant_override("separation", 16)
 	vbox.add_child(mode_row)
 
-	var vs_btn = _make_btn("🗺 HİKAYE MODU\n\nAçık harita\n30 dakika hayatta kal!", Color("#27AE60"), true)
-	var arena_btn = _make_btn("⬡ SURVIVAL/ARENA\n\nDalga savunma\n🔒 Yakında...", Color("#6C3483"), false)
+	var vs_btn = _make_btn(tr("ui.map_select.vs_mode"), Color("#27AE60"), true)
+	var arena_btn = _make_btn(tr("ui.map_select.arena_mode"), Color("#6C3483"), false)
 	arena_btn.disabled = true
 	arena_btn.modulate.a = 0.4
 	vs_btn.pressed.connect(func(): _on_mode_selected("vs", vs_btn, arena_btn))
@@ -76,7 +76,7 @@ func _ready():
 
 	# Harita başlığı
 	var map_label = Label.new()
-	map_label.text = "🗺 HARİTA"
+	map_label.text = tr("ui.map_select.map_label")
 	map_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	map_label.add_theme_color_override("font_color", Color("#9B59B6"))
 	map_label.add_theme_font_size_override("font_size", 16)
@@ -97,8 +97,8 @@ func _ready():
 	btn_row.add_theme_constant_override("separation", 20)
 	vbox.add_child(btn_row)
 
-	var back_btn = _make_action_btn("← GERİ", Color("#922B21"))
-	var play_btn = _make_action_btn("▶ BAŞLAT!", Color("#1E8449"))
+	var back_btn = _make_action_btn(tr("ui.map_select.back"), Color("#922B21"))
+	var play_btn = _make_action_btn(tr("ui.map_select.start"), Color("#1E8449"))
 	back_btn.pressed.connect(_on_back)
 	play_btn.pressed.connect(_on_play)
 	btn_row.add_child(back_btn)
@@ -108,9 +108,9 @@ func _build_maps(mode: String):
 	for child in map_row.get_children():
 		child.queue_free()
 	if mode == "vs":
-		var map1 = _make_btn("🏰 DÜŞMÜŞ KRALLIK\n\nAçık alan\nOrtaçağ kalıntıları\n30 dakika hayatta kal!", Color("#27AE60"), true)
-		var map2 = _make_btn("⬡ HARİTA 2\n\nYakında...", Color("#6C3483"), false)
-		var map3 = _make_btn("⬡ HARİTA 3\n\nYakında...", Color("#6C3483"), false)
+		var map1 = _make_btn(tr("ui.map_select.map1"), Color("#27AE60"), true)
+		var map2 = _make_btn(tr("ui.map_select.map2"), Color("#6C3483"), false)
+		var map3 = _make_btn(tr("ui.map_select.map3"), Color("#6C3483"), false)
 		map2.disabled = true
 		map2.modulate.a = 0.4
 		map3.disabled = true
@@ -121,7 +121,7 @@ func _build_maps(mode: String):
 		map_row.add_child(map2)
 		map_row.add_child(map3)
 	else:
-		var arena1 = _make_btn("⬡ ARENA 1\n\nYakında...", Color("#6C3483"), false)
+		var arena1 = _make_btn(tr("ui.map_select.arena1"), Color("#6C3483"), false)
 		arena1.disabled = true
 		arena1.modulate.a = 0.4
 		map_row.add_child(arena1)

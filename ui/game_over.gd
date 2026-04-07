@@ -37,29 +37,23 @@ func show_stats(time: float, level: int, kills: int, gold: int, won: bool = fals
 	for child in vbox.get_children():
 		child.queue_free()
 	
-	# Başlık
 	if won:
-		_add_label(vbox, "🏆 KAZANDIN!", 36, Color("#FFD700"), true)
+		_add_label(vbox, tr("ui.game_over.won"), 36, Color("#FFD700"), true)
 	else:
-		_add_label(vbox, "☠ ÖLDÜN", 36, Color("#E74C3C"), true)
+		_add_label(vbox, tr("ui.game_over.lost"), 36, Color("#E74C3C"), true)
 	_add_separator(vbox)
-	
-	# Süre
-	_add_label(vbox, "⏱ Süre: %02d:%02d" % [minutes, seconds], 20, Color.WHITE)
-	
-	# Level
-	_add_label(vbox, "⭐ Ulaşılan Level: " + str(level), 20, Color("#F1C40F"))
-	
-	# Öldürme
-	_add_label(vbox, "💀 Öldürülen Düşman: " + str(kills), 20, Color("#E74C3C"))
-	
-	# Dakikada öldürme
-	_add_label(vbox, "⚡ Dakikada Öldürme: " + ("%.1f" % kpm), 18, Color("#AAA"))
-	
+
+	_add_label(vbox, tr("ui.game_over.time") % [minutes, seconds], 20, Color.WHITE)
+
+	_add_label(vbox, tr("ui.game_over.level") % level, 20, Color("#F1C40F"))
+
+	_add_label(vbox, tr("ui.game_over.kills") % kills, 20, Color("#E74C3C"))
+
+	_add_label(vbox, tr("ui.game_over.kpm") % ("%.1f" % kpm), 18, Color("#AAA"))
+
 	_add_separator(vbox)
-	
-	# Altın
-	_add_label(vbox, "💰 Kazanılan Altın: +" + str(gold), 22, Color("#F5E642"))
+
+	_add_label(vbox, tr("ui.game_over.gold_earned") % gold, 22, Color("#F5E642"))
 	
 	_add_separator(vbox)
 	
@@ -69,8 +63,8 @@ func show_stats(time: float, level: int, kills: int, gold: int, won: bool = fals
 	btn_row.add_theme_constant_override("separation", 20)
 	vbox.add_child(btn_row)
 	
-	var restart_btn = _make_button("🔄 Tekrar Oyna", Color("#1A1A2E"))
-	var menu_btn = _make_button("🏠 Ana Menü", Color("#1A1A2E"))
+	var restart_btn = _make_button(tr("ui.game_over.restart"), Color("#1A1A2E"))
+	var menu_btn = _make_button(tr("ui.game_over.menu"), Color("#1A1A2E"))
 	
 	restart_btn.pressed.connect(_on_restart)
 	menu_btn.pressed.connect(_on_menu)

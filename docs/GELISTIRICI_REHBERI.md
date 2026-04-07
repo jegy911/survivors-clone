@@ -4,7 +4,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 *(İngilizce projelerde eşdeğeri genelde `ARCHITECTURE.md`, `DEVELOPER_GUIDE.md` veya `docs/CONTRIBUTING.md` olarak adlandırılır.)*
 
 **Motor:** Godot 4.x  
-**Son güncelleme:** 2026-04-04
+**Son güncelleme:** 2026-04-06
 
 ### Dokümantasyonu ne zaman güncellemeliyiz?
 
@@ -14,7 +14,8 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 2. **`docs/YOL_HARITASI.md`** — Planlanan bir iş bittiyse: öncelik tablosunda `[x]` yap veya maddeyi kaldır; **Yapılan iş günlüğü**ne tarih ile kısa satır ekle. İptal edilen işleri not düşerek çıkar.
 3. **`docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`** — Erişilebilirlik veya bağlılık maddelerinden birinin **Var/Kısmi/Yok** durumu kodda değiştiyse ilgili tablo satırını güncelle.
 4. **`docs/TASARIM.md`** — Envanterdeki bir madde teslim edildiyse veya yeni kalem eklendiyse ilgili satırları güncelle.
-5. **`README.md`** — Kurulum / çalıştırma / repo yapısı değiştiyse ana sayfayı güncelle.
+5. **`locales/tr.json` ve `locales/en.json`** — Oyuna görünür yeni metin veya çeviri anahtarı eklendiyse her iki dosyada aynı anahtarı güncelle.
+6. **`README.md`** — Kurulum / çalıştırma / repo yapısı değiştiyse ana sayfayı güncelle.
 
 *(IDE’de Cursor kullanıyorsan: `.cursor/rules` altındaki `ironfall-docs.mdc` kuralı bu disiplini hatırlatır.)*
 
@@ -35,11 +36,19 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 | Autoload | Görev |
 |----------|--------|
-| **SaveManager** | Altın, seçili karakter/harita, meta upgrade’ler, ayarlar, kilit / satın alınmış karakter listeleri, istatistikler. |
+| **SaveManager** | Altın, seçili karakter/harita, meta upgrade’ler, ayarlar (`locale` dahil), kilit / satın alınmış karakter listeleri, istatistikler. |
+| **LocalizationManager** | `locales/tr.json` ve `en.json` dosyalarını `TranslationServer`’a yükler; `settings.locale` ile eşler; `locale_changed` sinyali. |
 | **AudioManager** | Ses çalma API’si. |
 | **ObjectPool** | Sık oluşturulan nesneler (mermi, orb, damage number vb.) için havuz; `get_object(scene_path)` / `return_object`. |
 | **EventBus** | Sinyal merkezi (hasar, ölüm, level up, altın vb.). |
 | **AchievementManager** | Başarı kontrolleri. |
+
+### Yerelleştirme (UI metinleri)
+
+- **Çeviriler:** `locales/tr.json`, `locales/en.json` — iç içe sözlükler düz anahtara çevrilir (`ui.settings.title` gibi).
+- **Kod:** `tr("anahtar")` veya `tr("anahtar") % değerler` (printf biçimli dizeler için).
+- **Ayar:** `SaveManager.settings["locale"]` — `"tr"` | `"en"`; `ui/settings.tscn` içinde **Dil** sekmesinden değiştirilir; `LocalizationManager.set_locale()`.
+- **Yeni metin:** Her iki JSON’a aynı anahtarı ekleyin; gerekirse `locales/gen_locales.py` ile yeniden üretim (isteğe bağlı).
 
 ---
 

@@ -6,11 +6,10 @@ var weapon_upgrades = ["bullet", "aura", "chain", "boomerang", "lightning", "ice
 var item_upgrades = ["lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart"]
 var stat_upgrades = ["speed", "max_hp", "heal"]
 
-var stat_texts = {
-	"speed": "Hareket Hızı +20\nHareket hızını artırır",
-	"max_hp": "Max Can +25\nMaksimum canı artırır",
-	"heal": "Anında +20 Can\nHemen can yeniler",
-}
+func _stat_upgrade_text(id: String) -> String:
+	var key_map = {"speed": "stat_speed", "max_hp": "stat_max_hp", "heal": "stat_heal"}
+	var k = key_map.get(id, id)
+	return tr("ui.upgrade_ui." + k)
 
 var player_ref = null
 var current_pool = []
@@ -164,7 +163,7 @@ func get_upgrade_text(id: String) -> String:
 		"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart":
 			return "🛡 EŞYA\n" + player_ref.get_item_description(id)
 		_:
-			return "🛡 EŞYA\n" + stat_texts.get(id, id)
+			return "🛡 EŞYA\n" + _stat_upgrade_text(id)
 
 func refresh_buttons():
 	var buttons = [$Panel/VBoxContainer/HBoxContainer/Option1,
@@ -205,9 +204,9 @@ func refresh_buttons():
 	for i in range(chosen_upgrades.size(), 3):
 		buttons[i].visible = false
 	
-	$Panel/VBoxContainer/ActionRow/RerollButton.text = "🔄 Reroll (" + str(reroll_count) + ")"
+	$Panel/VBoxContainer/ActionRow/RerollButton.text = tr("ui.upgrade_ui.reroll") % reroll_count
 	$Panel/VBoxContainer/ActionRow/RerollButton.disabled = reroll_count <= 0
-	$Panel/VBoxContainer/ActionRow/SkipButton.text = "⏭ Skip (" + str(skip_count) + ")"
+	$Panel/VBoxContainer/ActionRow/SkipButton.text = tr("ui.upgrade_ui.skip") % skip_count
 	$Panel/VBoxContainer/ActionRow/SkipButton.disabled = skip_count <= 0
 
 func show_upgrades(player):
@@ -225,9 +224,9 @@ func show_upgrades(player):
 	var char_name = CharacterData.CHARACTERS[char_index]["name"]
 	var player_label = "P1" if player_ref.player_id == 0 else "P2"
 	if SaveManager.game_mode == "local_coop":
-		$Panel/VBoxContainer/TitleLabel.text = "⭐ %s (%s) — LEVEL %d ⭐" % [char_name, player_label, player_ref.level]
+		$Panel/VBoxContainer/TitleLabel.text = tr("ui.upgrade_ui.title_coop") % [char_name, player_label, player_ref.level]
 	else:
-		$Panel/VBoxContainer/TitleLabel.text = "⭐ LEVEL %d — SEÇİMİNİ YAP ⭐" % player_ref.level
+		$Panel/VBoxContainer/TitleLabel.text = tr("ui.upgrade_ui.title_solo") % player_ref.level
 	$Panel/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#FFD700"))
 	refresh_buttons()
 	visible = true

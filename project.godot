@@ -21,6 +21,7 @@ buses/default_bus_layout="uid://dqkybanx2ua7f"
 [autoload]
 
 SaveManager="*uid://cvcdlgqf65851"
+LocalizationManager="*res://core/localization_manager.gd"
 AudioManager="*uid://dkf8pjyhbu6xj"
 ObjectPool="*uid://dmgclbk4ofl3u"
 EventBus="*uid://b31g0p1hnvt7s"

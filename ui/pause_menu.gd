@@ -4,21 +4,21 @@ func _ready():
 	layer = 10
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	var screen_size = get_viewport().get_visible_rect().size
-	
+
 	$Background.size = screen_size
 	$Background.color = Color(0, 0, 0, 0.6)
-	
+
 	$VBoxContainer.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	$VBoxContainer.alignment = BoxContainer.ALIGNMENT_CENTER
 	$VBoxContainer.size = Vector2(350, 400)
 	$VBoxContainer.position = screen_size / 2 - $VBoxContainer.size / 2
 	$VBoxContainer.add_theme_constant_override("separation", 16)
-	
-	$VBoxContainer/TitleLabel.text = "PAUSED"
+
+	$VBoxContainer/TitleLabel.text = tr("ui.pause.title")
 	$VBoxContainer/TitleLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	$VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 42)
 	$VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color.WHITE)
-	
+
 	for btn in [$VBoxContainer/ResumeButton, $VBoxContainer/SettingsButton, $VBoxContainer/MainMenuButton]:
 		btn.custom_minimum_size = Vector2(300, 60)
 		var style = StyleBoxFlat.new()
@@ -30,11 +30,11 @@ func _ready():
 		btn.add_theme_stylebox_override("normal", style)
 		btn.add_theme_color_override("font_color", Color.WHITE)
 		btn.add_theme_font_size_override("font_size", 20)
-	
-	$VBoxContainer/ResumeButton.text = "▶ DEVAM"
-	$VBoxContainer/SettingsButton.text = "⚙ AYARLAR"
-	$VBoxContainer/MainMenuButton.text = "🏠 ANA MENÜ"
-	
+
+	$VBoxContainer/ResumeButton.text = tr("ui.pause.resume")
+	$VBoxContainer/SettingsButton.text = tr("ui.pause.settings")
+	$VBoxContainer/MainMenuButton.text = tr("ui.pause.main_menu")
+
 	$VBoxContainer/ResumeButton.pressed.connect(_on_resume)
 	$VBoxContainer/SettingsButton.pressed.connect(_on_settings)
 	$VBoxContainer/MainMenuButton.pressed.connect(_on_main_menu)
@@ -57,63 +57,63 @@ func _build_settings_panel() -> Control:
 	bg.color = Color("#0D0D1A")
 	bg.name = "SettingsPanel"
 	bg.z_index = 100
-	
+
 	var vbox = VBoxContainer.new()
 	vbox.size = Vector2(600, 500)
 	vbox.position = screen_size / 2 - Vector2(300, 250)
 	vbox.alignment = BoxContainer.ALIGNMENT_BEGIN
 	vbox.add_theme_constant_override("separation", 24)
 	bg.add_child(vbox)
-	
+
 	var title = Label.new()
-	title.text = "AYARLAR"
+	title.text = tr("ui.pause.settings_title")
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 36)
 	title.add_theme_color_override("font_color", Color("#9B59B6"))
 	vbox.add_child(title)
-	
-	_add_slider_to(vbox, "Genel Ses", SaveManager.settings.get("master_volume", 1.0), func(val):
+
+	_add_slider_to(vbox, tr("ui.settings.master"), SaveManager.settings.get("master_volume", 1.0), func(val):
 		SaveManager.settings["master_volume"] = val
 		AudioServer.set_bus_volume_db(0, linear_to_db(val))
 		SaveManager.save_game()
 	)
-	_add_slider_to(vbox, "Efekt Sesi", SaveManager.settings.get("sfx_volume", 1.0), func(val):
+	_add_slider_to(vbox, tr("ui.settings.sfx"), SaveManager.settings.get("sfx_volume", 1.0), func(val):
 		SaveManager.settings["sfx_volume"] = val
 		var bus = AudioServer.get_bus_index("SFX")
 		if bus >= 0:
 			AudioServer.set_bus_volume_db(bus, linear_to_db(val))
 		SaveManager.save_game()
 	)
-	_add_slider_to(vbox, "Müzik", SaveManager.settings.get("music_volume", 1.0), func(val):
+	_add_slider_to(vbox, tr("ui.settings.music"), SaveManager.settings.get("music_volume", 1.0), func(val):
 		SaveManager.settings["music_volume"] = val
 		var bus = AudioServer.get_bus_index("Music")
 		if bus >= 0:
 			AudioServer.set_bus_volume_db(bus, linear_to_db(val))
 		SaveManager.save_game()
 	)
-	
-	_add_toggle_to(vbox, "VFX Efektleri", SaveManager.settings.get("show_vfx", true), func(val):
+
+	_add_toggle_to(vbox, tr("ui.settings.vfx"), SaveManager.settings.get("show_vfx", true), func(val):
 		SaveManager.settings["show_vfx"] = val
 		SaveManager.save_game()
 	)
-	
-	_add_toggle_to(vbox, "Ekran Sarsıntısı", SaveManager.settings.get("screen_shake", true), func(val):
+
+	_add_toggle_to(vbox, tr("ui.settings.screen_shake"), SaveManager.settings.get("screen_shake", true), func(val):
 		SaveManager.settings["screen_shake"] = val
 		SaveManager.save_game()
 	)
-	
-	_add_dropdown_to(vbox, "Hasar Sayıları", SaveManager.settings.get("damage_numbers", "both_on"), func(val):
+
+	_add_dropdown_to(vbox, tr("ui.settings.damage_numbers"), SaveManager.settings.get("damage_numbers", "both_on"), func(val):
 		SaveManager.settings["damage_numbers"] = val
 		SaveManager.save_game()
 	)
-	
-	_add_dropdown_to(vbox, "Can Barları", SaveManager.settings.get("hp_bars", "both_on"), func(val):
+
+	_add_dropdown_to(vbox, tr("ui.settings.hp_bars"), SaveManager.settings.get("hp_bars", "both_on"), func(val):
 		SaveManager.settings["hp_bars"] = val
 		SaveManager.save_game()
 	)
-	
+
 	var back_btn = Button.new()
-	back_btn.text = "← Geri"
+	back_btn.text = tr("ui.pause.back")
 	back_btn.custom_minimum_size = Vector2(200, 50)
 	back_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	var back_style = StyleBoxFlat.new()
@@ -185,16 +185,16 @@ func _add_dropdown_to(parent: Node, label_text: String, current_val: String, cal
 	label.add_theme_font_size_override("font_size", 18)
 	row.add_child(label)
 	var options = ["both_on", "player_only", "enemy_only", "both_off"]
-	var option_labels = ["İkisi de Açık", "Sadece Oyuncu", "Sadece Düşman", "İkisi de Kapalı"]
+	var option_keys = ["option_both_on", "option_player_only", "option_enemy_only", "option_both_off"]
 	var dropdown = OptionButton.new()
 	dropdown.custom_minimum_size = Vector2(220, 40)
 	for i in options.size():
-		dropdown.add_item(option_labels[i])
+		dropdown.add_item(tr("ui.settings." + option_keys[i]))
 	dropdown.selected = options.find(current_val)
 	dropdown.item_selected.connect(func(idx): callback.call(options[idx]))
 	row.add_child(dropdown)
 
 func _on_main_menu():
 	get_tree().paused = false
-	queue_free()  # bunu ekle
+	queue_free()
 	get_tree().change_scene_to_file("res://ui/main_menu.tscn")

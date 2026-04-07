@@ -8,7 +8,7 @@ func _ready():
 	$Panel/VBoxContainer.add_theme_constant_override("separation", 16)
 	$Panel/VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 32)
 	$Panel/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#2471A3"))
-	$Panel/VBoxContainer/TitleLabel.text = "👥 P2 KARAKTERİ SEÇ"
+	$Panel/VBoxContainer/TitleLabel.text = tr("ui.character_select.p2_title")
 	$Panel/VBoxContainer/ScrollContainer/GridContainer.add_theme_constant_override("h_separation", 16)
 	$Panel/VBoxContainer/ScrollContainer/GridContainer.add_theme_constant_override("v_separation", 16)
 	build_characters()
@@ -96,10 +96,10 @@ func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContaine
 		char_visual.color = Color(0.1, 0.1, 0.15, 1.0)
 		name_label.text = char_data["name"]
 		name_label.add_theme_color_override("font_color", Color("#444466"))
-		desc_label.text = "P1 tarafından seçildi"
+		desc_label.text = tr("ui.character_select.taken_by_p1")
 		desc_label.add_theme_color_override("font_color", Color("#444466"))
 		var taken_label = Label.new()
-		taken_label.text = "🔒 P1"
+		taken_label.text = tr("ui.character_select.locked_p1")
 		taken_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		taken_label.add_theme_color_override("font_color", Color("#922B21"))
 		vbox.add_child(char_visual)

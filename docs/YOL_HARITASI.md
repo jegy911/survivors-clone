@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-04
+**Son güncelleme:** 2026-04-06
 
 ---
 
@@ -26,6 +26,7 @@ Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve iler
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-06 | **Yerelleştirme** — `LocalizationManager` autoload, `locales/tr.json` + `en.json`, `SaveManager.settings.locale`, Ayarlar → Dil sekmesi; ana UI metinleri `tr()` ile anahtarlandı. |
 | 2026-04-04 | **Dokümantasyon** — `docs/TASARIM.md` eklendi; sanat/yayın envanteri oraya taşındı; erişilebilirlik matrisi yalnızca kod durumuna indirgendi. |
 | 2026-04 | **Göçebe (nomad)** — Karakter, sahne, spawn, kilit (175 toplam kill → 350 altın), seçim ekranı sırası, indeks migrasyonu (`character_order_v2`). |
 | 2026-04 | **Yelpaze Bıçak + shard** — `fan_blade`, `fan_blade_shard` (Polygon2D, ObjectPool), yakın menzil. |
@@ -60,7 +61,7 @@ Teknik ayar anahtarları: `GELISTIRICI_REHBERI.md` §15.
 
 | Durum | İş |
 |--------|-----|
-| [ ] | **Dil sistemi (localization)** — Örn. autoload + `locales/tr.json`, `en.json`; UI metinlerinin anahtarlara taşınması. |
+| [x] | **Dil sistemi (localization)** — `LocalizationManager`, `locales/tr.json` / `en.json`, Ayarlar → Dil; `tr("ui....")` anahtarları. |
 | [ ] | **Evrim sistemi derinleştirme** — Kombinasyonlar, denge, UI, kenar durumlar. |
 | [x] | **README.md** — GitHub için özet, Godot ile çalıştırma, `docs/` linkleri. |
 | [ ] | **Bağlam belgesi** — `survivors_clone_context.md` (veya eşdeğeri): Ironfall, yeni sistemler, autoload özeti. |

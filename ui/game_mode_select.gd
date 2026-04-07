@@ -37,7 +37,7 @@ func _ready():
 	panel.add_child(vbox)
 
 	var title = Label.new()
-	title.text = "NASIL OYNAMAK İSTİYORSUN?"
+	title.text = tr("ui.game_mode.title")
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 28)
 	title.add_theme_color_override("font_color", Color("#9B59B6"))
@@ -51,13 +51,13 @@ func _ready():
 	vbox.add_child(btn_row)
 
 	var solo_btn = _make_btn(
-		"👤 SOLO\n\nTek oyuncu\nKlasik mod",
+		tr("ui.game_mode.solo"),
 		Color("#27AE60"))
 	var local_btn = _make_btn(
-		"👥 LOCAL CO-OP\n\nAynı klavye\n2 oyuncu",
+		tr("ui.game_mode.local_coop"),
 		Color("#2471A3"))
 	var online_btn = _make_btn(
-		"🌐 ONLINE CO-OP\n\nP2P Steam\nYakında...",
+		tr("ui.game_mode.online"),
 		Color("#6C3483"))
 	online_btn.disabled = true
 	online_btn.modulate.a = 0.4
@@ -71,7 +71,7 @@ func _ready():
 
 	vbox.add_child(HSeparator.new())
 
-	var back_btn = _make_action_btn("← GERİ", Color("#922B21"))
+	var back_btn = _make_action_btn(tr("ui.game_mode.back"), Color("#922B21"))
 	back_btn.pressed.connect(_on_back)
 	vbox.add_child(back_btn)
 

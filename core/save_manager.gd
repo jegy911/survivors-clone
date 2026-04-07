@@ -44,6 +44,7 @@ var settings = {
 	"hp_bars": "both_on",
 	"resolution_x": 1280,
 	"resolution_y": 720,
+	"locale": "tr",
 }
 
 # Kilit sistemi
