@@ -18,6 +18,7 @@ Geliştiriciler için ek belgeler `docs/` klasöründe:
 |--------|--------|
 | [docs/GELISTIRICI_REHBERI.md](docs/GELISTIRICI_REHBERI.md) | Proje mimarisi, dosyaların bağlantıları, yeni karakter / silah / eşya ekleme checklist’leri |
 | [docs/YOL_HARITASI.md](docs/YOL_HARITASI.md) | Yol haritası, yapılacaklar ve tamamlanan işler |
+| [docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md](docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md) | Erişilebilirlik + bağlılık (20+20 madde), kodla eşleştirilmiş durum tablosu |
 
 Önceki mesajda kastettiğim şey buydu: GitHub veya klasörü açan biri **tek bakışta** bu iki rehbere buradan gidebilsin.
 

@@ -4,7 +4,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 *(İngilizce projelerde eşdeğeri genelde `ARCHITECTURE.md`, `DEVELOPER_GUIDE.md` veya `docs/CONTRIBUTING.md` olarak adlandırılır.)*
 
 **Motor:** Godot 4.x  
-**Son güncelleme:** 2026-04-04
+**Son güncelleme:** 2026-04-06
 
 ### Dokümantasyonu ne zaman güncellemeliyiz?
 
@@ -12,7 +12,8 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 1. **`docs/GELISTIRICI_REHBERI.md`** — Yeni bir *tür* içerik eklediysen (ör. yeni orb, yeni pickup, yeni harita akışı) ilgili **checklist veya bölümü** ekle veya mevcut maddeleri güncelle. Sadece küçük denge değişikliği ise yalnızca etkilenen paragrafı düzeltmen yeterli olabilir.
 2. **`docs/YOL_HARITASI.md`** — Planlanan bir iş bittiyse: öncelik tablosunda `[x]` yap veya maddeyi kaldır; **Yapılan iş günlüğü**ne tarih ile kısa satır ekle. İptal edilen işleri not düşerek çıkar.
-3. **`README.md`** — Kurulum / çalıştırma / repo yapısı değiştiyse ana sayfayı güncelle.
+3. **`docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`** — Erişilebilirlik veya bağlılık maddelerinden birinin **Var/Kısmi/Yok** durumu kodda değiştiyse ilgili tablo satırını güncelle.
+4. **`README.md`** — Kurulum / çalıştırma / repo yapısı değiştiyse ana sayfayı güncelle.
 
 *(IDE’de Cursor kullanıyorsan: `.cursor/rules` altındaki `ironfall-docs.mdc` kuralı bu disiplini hatırlatır.)*
 
@@ -225,3 +226,47 @@ Mevcut örnekler: **`effects/xp_orb.tscn`**, **`effects/gold_orb.tscn`**. İkisi
 ## 14. Son not
 
 Bu rehber, kod tabanındaki gerçek yapıya göre yazılmıştır; yeni sistem eklendikçe **ilgili bölüm güncellenmelidir**. Özellikle string ID eşlemeleri (`match` blokları) unutulursa içerik oyunda görünür ama seçilemez veya çalışmaz. **Yol haritası** (`docs/YOL_HARITASI.md`) ile birlikte yaşayan belgeler olarak tutulmalıdır.
+
+---
+
+## 15. Erişilebilirlik ve devamlılık referansları
+
+**Tam 20+20 madde matrisi** (ürün taslağı sütunları + Var/Kısmi/Yok + repo notu):  
+`docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`
+
+Yol haritası özeti: `docs/YOL_HARITASI.md` → *Erişilebilirlik ve devamlılık* (matrise link).
+
+### `SaveManager.settings` anahtarları (`core/save_manager.gd`)
+
+| Anahtar | Tip | Açıklama |
+|---------|-----|----------|
+| `master_volume` | float | Ana ses (0–1) |
+| `sfx_volume` | float | Efekt bus |
+| `music_volume` | float | Müzik bus |
+| `fullscreen` | bool | Tam ekran |
+| `resolution_x` | int | Pencere genişliği (pencereli mod) |
+| `resolution_y` | int | Pencere yüksekliği |
+| `show_vfx` | bool | Birçok düşman/efektte VFX aç/kapa |
+| `screen_shake` | bool | Ekran sarsıntısı |
+| `damage_numbers` | String | `"both_on"`, `"player_only"`, `"enemy_only"`, `"both_off"` |
+| `hp_bars` | String | Aynı seçenek kümesi |
+
+**UI:** `ui/settings.gd` — Sekmeler: Ses, Görüntü (`fullscreen`, çözünürlük, VFX), Oynanış (`damage_numbers`, `hp_bars`, `screen_shake`), Profil, Dev.
+
+### Yeni ayar eklerken
+
+1. `core/save_manager.gd` → `settings` sözlüğüne **varsayılan** değer.
+2. `ui/settings.gd` → İlgili sekmeye `_add_toggle`, `_add_slider` veya `_add_dropdown`.
+3. Oyun mantığında `SaveManager.settings.get("anahtar", varsayılan)` ile oku; değişince `SaveManager.save_game()` (settings sekmesindeki callback’lerde zaten çağrılıyor).
+
+### XP sesi (`pitch_scale`)
+
+`core/audio_manager.gd` → `play_xp()`: Her toplamada `xp_player.pitch_scale` pentatonik dizi (`xp_notes`) ile ayarlanır; kısa süre sonra `xp_note_index` sıfırlanır (`_process`).
+
+İleride “streak / daha yoğun geri bildirim” için aynı fonksiyonda ek modülasyon veya ayrı ses örnekleri düşünülebilir — yol haritasındaki ilgili madde buna göre güncellendi.
+
+### Düşman kontrastı (outline)
+
+`enemies/enemy_base.gd` içinde `_setup_visuals()` mevcut — yüksek kontrast veya outline için uygun bağlama noktası (shader material, child `Line2D`, veya sprite üzerinde material).
+
+Bu bölümdeki teknik maddeler değişince **`docs/YOL_HARITASI.md`** kontrol listesini senkron tut.
