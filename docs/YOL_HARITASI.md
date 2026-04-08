@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-07 (ürün vizyonu + karakter sınıfı belgesi)
+**Son güncelleme:** 2026-04-09 (Ayarlar: Kontroller sekmesi + InputRemap; görüntü/oynanış sekme düzeni)
 
 ---
 
@@ -29,7 +29,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 | Alan | Ne var? |
 |------|---------|
 | **Yerelleştirme** | `LocalizationManager` autoload; `LANGUAGE_CATALOG` + `locales/tr.json`, `en.json`, `zh_CN.json`; Ayarlar → Dil; ilk kurulumda kayıt yoksa OS dili; `internationalization/locale/fallback` `en`; `check_locale_parity.py` (`en.json` referansı). |
-| **Kayıt / ayarlar** | `SaveManager.settings.locale` ve diğer ayarlar; geçersiz dil kodu düzeltmesi. |
+| **Kayıt / ayarlar** | `SaveManager.settings` (ses, görüntü, oynanış, `input_keyboard_overrides`, …); `InputRemap` ile kalıcı klavye eşlemesi; geçersiz dil kodu düzeltmesi. |
 | **İçerik (örnekler)** | Göçebe (nomad): Yelpaze Bıçak başlangıç; Kor Kalbi koşuda, Kor Yelpazesi evrimi; karakter sırası / `character_order_v2` migrasyonu. |
 | **Dokümantasyon disiplini** | `GELISTIRICI_REHBERI`, `YOL_HARITASI`, `TASARIM`, erişilebilirlik matrisi, kök `README`, `.cursor/rules/ironfall-docs.mdc`. |
 
@@ -41,6 +41,8 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-09 | **Ayarlar — Kontroller + sekme düzeni** — `InputRemap` autoload; `input_keyboard_overrides` kaydı; Ayarlar → **Kontroller**: P1/P2 yön, duraklat, tam ekran için klavye yeniden atama (oyun kolu olayları korunur); **Görüntü**: `enemy_high_contrast_outline`; **Oynanış**: `pause_on_focus_loss` vb.; tam ilerleme sıfırlamada tuşlar varsayılana; `locales` + matris Tablo 1 satır 18 **Kısmi** notu. |
+| 2026-04-09 | **Erişilebilirlik (matris Tablo 1)** — Pencere odak kaybında otomatik duraklatma (`main.gd` + `pause_on_focus_loss`); F11 tam ekran (`toggle_fullscreen`, `SaveManager.apply_window_mode_from_settings`); isteğe bağlı düşman yüksek kontrast çerçevesi (`enemy_high_contrast_outline` + `enemy_base`); exploder yakınlık nabız uyarısı; `pause_menu_overlay` grubu ile ESC/odak senkronu; locale `tr`/`en`/`zh_CN`. |
 | 2026-04-07 | **Erişilebilirlik matrisi — çoklu dil** — `ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`: Tablo 1 altında **Çoklu dil (çapraz)** bölümü; run HUD / dalga ödülü / level-up önekleri kapsamı + kalan sabit metin notu; üst bilgi “son kod kontrolü” güncellendi. |
 | 2026-04-07 | **Run UI / denge** — HUD dalga metni + dalga ödülü paneli `tr` / `en` / `zh_CN`; ödül altın (12+4×dalga), iyileşme %15, hasar +5; çoklu seviye XP → sıralı level-up kuyruğu (`main.queue_upgrade` solo+coop); `get_total_damage` artık `bullet_damage` ekler; level-up silah/eşya ID eşlemesi genişletildi. `TASARIM.md` karakter görselleri ✅. |
 | 2026-04-07 | **Kahraman `start_item` kaldırıldı** — Tüm `CharacterData.CHARACTERS` için `start_item` boş; yalnız başlangıç silahı. Vampir / Göçebe / dört yeni rol açıklamaları Hat Kıran tarzı bilgi kartı (silah, eşya, evrim, açılış, origin); kodeks `codex_extensions_*` + merge; `lore.md` başlangıç yükü ilkesi. |

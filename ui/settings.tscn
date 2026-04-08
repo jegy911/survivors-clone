@@ -34,6 +34,9 @@ layout_mode = 2
 [node name="OynanisTab" type="Button" parent="VBoxContainer/TabRow" unique_id=2087812698]
 layout_mode = 2
 
+[node name="KontrolTab" type="Button" parent="VBoxContainer/TabRow" unique_id=2087812699]
+layout_mode = 2
+
 [node name="ProfilTab" type="Button" parent="VBoxContainer/TabRow" unique_id=3012345678]
 layout_mode = 2
 

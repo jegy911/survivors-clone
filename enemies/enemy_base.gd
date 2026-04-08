@@ -27,6 +27,7 @@ var swarm_speed_override: float = 180.0
 var _poison_damage = 0
 var _poison_timer = 0.0
 var _poison_tick_interval = 1.0
+var _contrast_outline_sprite: AnimatedSprite2D = null
 
 
 @onready var body = $ColorRect
@@ -286,6 +287,17 @@ func _on_death_complete():
 
 
 func _physics_process(delta):
+	if _contrast_outline_sprite != null:
+		var sp = get_node_or_null("AnimatedSprite2D")
+		if sp == null or not is_instance_valid(_contrast_outline_sprite):
+			_contrast_outline_sprite = null
+		else:
+			if _contrast_outline_sprite.animation != sp.animation:
+				_contrast_outline_sprite.play(sp.animation)
+			_contrast_outline_sprite.frame = sp.frame
+			_contrast_outline_sprite.frame_progress = sp.frame_progress
+			_contrast_outline_sprite.speed_scale = sp.speed_scale
+			_contrast_outline_sprite.flip_h = sp.flip_h
 	if _poison_timer > 0:
 		_poison_timer -= delta
 		_poison_tick_interval -= delta
@@ -313,6 +325,39 @@ func _setup_visuals():
 	var sprite = get_node_or_null("AnimatedSprite2D")
 	if sprite:
 		sprite.play("walk_left")
+	if SaveManager.settings.get("enemy_high_contrast_outline", false):
+		_try_add_high_contrast_outline(sprite)
+
+
+func _try_add_high_contrast_outline(vis_sprite: Node) -> void:
+	if get_node_or_null("HighContrastOutline") != null:
+		return
+	var sprite = vis_sprite as AnimatedSprite2D
+	if sprite != null and sprite.visible:
+		var ol = sprite.duplicate() as AnimatedSprite2D
+		ol.name = "HighContrastOutline"
+		ol.modulate = Color(1.0, 0.92, 0.0, 0.95)
+		ol.z_index = sprite.z_index - 1
+		ol.scale = sprite.scale * 1.08
+		add_child(ol)
+		move_child(ol, sprite.get_index())
+		_contrast_outline_sprite = ol
+	elif body != null and body.visible:
+		var sz = body.size
+		var pos = body.position
+		var off = 3.0
+		var dirs: Array[Vector2] = [
+			Vector2(off, 0), Vector2(-off, 0), Vector2(0, off), Vector2(0, -off),
+		]
+		for i in dirs.size():
+			var r = ColorRect.new()
+			r.name = "HighContrastOutlineRect_%d" % i
+			r.size = sz
+			r.position = pos + dirs[i]
+			r.color = Color(1.0, 1.0, 0.0, 1.0)
+			r.z_index = body.z_index - 1
+			add_child(r)
+			move_child(r, body.get_index())
 
 func _update_animation(is_moving: bool):
 	var sprite = get_node_or_null("AnimatedSprite2D")

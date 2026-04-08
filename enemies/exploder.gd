@@ -1,7 +1,9 @@
 extends EnemyBase
 
 const EXPLOSION_RADIUS = 120.0
+const _WARN_DISTANCE = 95.0
 var is_exploding = false
+var _warn_pulse_t := 0.0
 
 func _ready():
 	super._ready()
@@ -23,12 +25,22 @@ func _process(delta):
 	if dist < 60 and not is_exploding:
 		explode()
 		return
+	var spr = get_node_or_null("AnimatedSprite2D")
+	if spr and dist < _WARN_DISTANCE:
+		_warn_pulse_t += delta * 10.0
+		var w = 0.55 + 0.45 * sin(_warn_pulse_t)
+		spr.modulate = Color(1.0, 0.2 + 0.75 * w, 0.12, 1.0)
+	elif spr:
+		spr.modulate = Color.WHITE
 	var direction = (player.global_position - global_position).normalized()
 	global_position += direction * BASE_SPEED * delta
 
 	_update_enemy_direction()
 
 func explode():
+	var spr_done = get_node_or_null("AnimatedSprite2D")
+	if spr_done:
+		spr_done.modulate = Color.WHITE
 	is_exploding = true
 	is_dead = true
 	_try_drop_gold()
@@ -74,6 +86,3 @@ func apply_poison(_damage_per_tick: int, _duration: float):
 	if is_dead:
 		return
 	explode()
-
-func flash():
-	pass

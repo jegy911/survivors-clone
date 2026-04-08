@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 func _ready():
+	add_to_group("pause_menu_overlay")
 	layer = 10
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	var screen_size = get_viewport().get_visible_rect().size

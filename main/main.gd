@@ -35,6 +35,9 @@ func _ready():
 	_setup_coop_hud()
 	EventBus.game_started.emit()
 	EventBus.hit_stop_requested.connect(_on_hit_stop_requested)
+	var win = get_window()
+	if not win.focus_exited.is_connected(_on_window_focus_lost):
+		win.focus_exited.connect(_on_window_focus_lost)
 
 func _load_player():
 	_spawn_player(0, Vector2(0, 0))
@@ -60,6 +63,19 @@ func _on_hit_stop_requested(frames: int):
 
 func get_curse_level() -> int:
 	return SaveManager.meta_upgrades.get("curse_level", 0)
+
+
+func _on_window_focus_lost() -> void:
+	if not SaveManager.settings.get("pause_on_focus_loss", true):
+		return
+	var tree = get_tree()
+	if tree == null or tree.paused:
+		return
+	if tree.get_first_node_in_group("pause_menu_overlay"):
+		return
+	var pm = preload("res://ui/pause_menu.tscn").instantiate()
+	tree.root.add_child(pm)
+	tree.paused = true
 
 
 func _process(delta):

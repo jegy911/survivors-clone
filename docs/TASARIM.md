@@ -78,10 +78,10 @@ Her düşman `.tscn` içinde **`AnimatedSprite2D`** + atlas / spritesheet ile **
 | shield_enemy | ✅ | `assets/enemy assets/shield assets/` |
 | healer | ✅ | `assets/enemy assets/healer assets/` |
 | giant | ✅ | `assets/enemy assets/giant assets/` |
-| exploder | ✅ | `assets/enemy assets/exploder assets/` — patlamadan önce **ekstra okunaklı ön uyarı** (blink / işaret) matriste hâlâ **Kısmi** (`flash()` sınırlı) |
+| exploder | ✅ | `assets/enemy assets/exploder assets/` — yakınlıkta **modulate nabız** ön uyarısı (`exploder.gd`); matris Tablo 1 satır 15 **Var** |
 | boss | ✅ | `assets/enemy assets/boss assets/` — Reaper renk override kodda (`spawn_manager`) |
 
-**İnce ayar / ürün hedefi:** türler arası stil birliği, siluet okunurluğu ve **yüksek kontrast outline** hâlâ açık iş — `enemy_base._setup_visuals()` bağlantı noktası; erişilebilirlik matrisi satır 5, 15.
+**İnce ayar / ürün hedefi:** türler arası stil birliği ve siluet okunurluğu — isteğe bağlı **yüksek kontrast** (`enemy_high_contrast_outline`) kodda; ek sanat polish matris / ürün notlarında takip edilebilir.
 
 ---
 
@@ -218,10 +218,11 @@ Level-up ekranı ağırlıklı **metin**; `upgrade_ui` için **büyük net ikon*
 Aşağıdaki maddelerin **kod karşılığı** matriste; burada yalnızca **tasarım çıktısı** beklenenler özetlenir.
 
 - **Görsel karmaşa:** Oyuncu mermi / efekt opaklığı — ✅ `player_vfx_opacity` (Ayarlar / Duraklatma → oynanış); matris Tablo 1 satır 4.
-- **Yüksek kontrast düşman:** Outline / hat — ❌.
+- **Yüksek kontrast düşman:** Ayarlarda açılabilir sarı siluet/çerçeve — ✅ (`enemy_high_contrast_outline`, **Görüntü** sekmesi); matris satır 5.
+- **Tuş atamaları:** Ayarlar → **Kontroller** — P1/P2 hareket, duraklat, tam ekran (`InputRemap`); matris satır 18 (fare hareketi hâlâ yok).
 - **Renk körlüğü paleti:** Alternatif tema — ❌.
 - **Büyük net ikonlar:** Level-up — ❌.
-- **Ön uyarı (exploder):** Patlamadan önce görsel blink — ❌.
+- **Ön uyarı (exploder):** Yakınlıkta modulate nabız — ✅; matris satır 15.
 - **Öğretici / ilk 10 sn:** Bilinçli “güvenli” görsel ve düşman yerleşimi — kısmi (ayrı tutorial sahnesi yok).
 
 ---

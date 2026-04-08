@@ -151,9 +151,9 @@ func _ready():
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		if get_tree().paused:
-			if pause_menu:
-				pause_menu.queue_free()
-				pause_menu = null
+			for n in get_tree().get_nodes_in_group("pause_menu_overlay"):
+				n.queue_free()
+			pause_menu = null
 			get_tree().paused = false
 		else:
 			get_tree().paused = true

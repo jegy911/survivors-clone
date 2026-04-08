@@ -46,6 +46,9 @@ var settings = {
 	"resolution_x": 1280,
 	"resolution_y": 720,
 	"locale": "tr",
+	"pause_on_focus_loss": true,
+	"enemy_high_contrast_outline": false,
+	"input_keyboard_overrides": {},
 }
 
 # Kilit sistemi
@@ -84,6 +87,26 @@ const OLD_CHARACTER_ORDER: Array[String] = [
 
 func _ready():
 	load_game()
+	set_process_unhandled_input(true)
+
+
+func apply_window_mode_from_settings() -> void:
+	if settings.get("fullscreen", false):
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		var res_x: int = int(settings.get("resolution_x", 1280))
+		var res_y: int = int(settings.get("resolution_y", 720))
+		DisplayServer.window_set_size(Vector2i(res_x, res_y))
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("toggle_fullscreen"):
+		settings["fullscreen"] = not settings.get("fullscreen", false)
+		apply_window_mode_from_settings()
+		save_game()
+		if get_viewport():
+			get_viewport().set_input_as_handled()
 
 func save_game():
 	var config = ConfigFile.new()
@@ -162,10 +185,7 @@ func load_game():
 	codex_weapons = config.get_value("unlock", "codex_weapons", [])
 	codex_items = config.get_value("unlock", "codex_items", [])
 	codex_maps = config.get_value("unlock", "codex_maps", [])
-	var res_x = settings.get("resolution_x", 1280)
-	var res_y = settings.get("resolution_y", 720)
-	if not settings.get("fullscreen", false):
-		DisplayServer.window_set_size(Vector2i(res_x, res_y))
+	apply_window_mode_from_settings()
 
 func add_gold(amount: int):
 	var bonus = 1.0 + meta_upgrades["growth_bonus"] * 0.15

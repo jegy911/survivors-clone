@@ -22,6 +22,8 @@ Godot 4 ile geliştirilen bir hayatta kalma / vampire survivors tarzı proje.
 
 **Yerelleştirme:** `locales/tr.json`, `en.json`, `zh_CN.json` — `LocalizationManager` + `LANGUAGE_CATALOG`. Anahtar kontrolü: `python locales/check_locale_parity.py` (referans `en.json`). Yeni diller şimdilik plan aşamasında; tablo `GELISTIRICI_REHBERI.md` içinde.
 
+**Tuşlar:** Ana menü / duraklatmadan **Ayarlar → Kontroller** ile P1 ve P2 hareketi, duraklat ve tam ekran için klavye yeniden atama (`InputRemap`, `user://save.cfg` içinde `input_keyboard_overrides`). Oyun kolu eksen ve tuşları projedeki `InputMap` tanımıyla kalır.
+
 ## Lisans
 
 *(İleride eklenecekse buraya yazın.)*

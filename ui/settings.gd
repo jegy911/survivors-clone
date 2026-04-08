@@ -4,8 +4,12 @@ var current_tab = "ses"
 var _confirm_reset_full = false
 var _confirm_reset_stats = false
 var _dev_gold_amount = 1000
+var _rebind_listen: bool = false
+var _rebind_action: String = ""
+var _rebind_btn: Button = null
 
 func _ready():
+	set_process_unhandled_input(false)
 	var screen_size = get_viewport().get_visible_rect().size
 	$Background.size = screen_size
 	$Background.color = Color("#0D0D1A")
@@ -14,6 +18,65 @@ func _ready():
 		LocalizationManager.locale_changed.connect(_on_locale_changed)
 
 	_build_ui()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not _rebind_listen:
+		return
+	if event is InputEventKey and event.pressed and not event.is_echo():
+		var e := event as InputEventKey
+		if e.keycode == KEY_ESCAPE or e.physical_keycode == KEY_ESCAPE:
+			_cancel_rebind()
+			get_viewport().set_input_as_handled()
+			return
+		var pk: Key = e.physical_keycode
+		if pk == KEY_NONE:
+			pk = e.keycode
+		if pk == KEY_NONE:
+			return
+		InputRemap.set_keyboard_binding(_rebind_action, pk)
+		if _rebind_btn:
+			_rebind_btn.text = InputRemap.get_keyboard_binding_display(_rebind_action)
+		_rebind_listen = false
+		_rebind_action = ""
+		_rebind_btn = null
+		set_process_unhandled_input(false)
+		get_viewport().set_input_as_handled()
+
+
+func _cancel_rebind() -> void:
+	if _rebind_btn and _rebind_action != "":
+		_rebind_btn.text = InputRemap.get_keyboard_binding_display(_rebind_action)
+	_rebind_listen = false
+	_rebind_action = ""
+	_rebind_btn = null
+	set_process_unhandled_input(false)
+
+
+func _begin_rebind(action: String, btn: Button) -> void:
+	if _rebind_listen:
+		_cancel_rebind()
+	_rebind_listen = true
+	_rebind_action = action
+	_rebind_btn = btn
+	btn.text = tr("ui.settings.press_key")
+	set_process_unhandled_input(true)
+
+
+func _binding_locale_key(action: String) -> String:
+	match action:
+		"ui_up": return "ui.settings.bind_p1_up"
+		"ui_down": return "ui.settings.bind_p1_down"
+		"ui_left": return "ui.settings.bind_p1_left"
+		"ui_right": return "ui.settings.bind_p1_right"
+		"p2_up": return "ui.settings.bind_p2_up"
+		"p2_down": return "ui.settings.bind_p2_down"
+		"p2_left": return "ui.settings.bind_p2_left"
+		"p2_right": return "ui.settings.bind_p2_right"
+		"ui_cancel": return "ui.settings.bind_pause"
+		"toggle_fullscreen": return "ui.settings.bind_fullscreen"
+		_:
+			return action
 
 func _on_locale_changed(_locale: String) -> void:
 	_refresh_chrome()
@@ -25,6 +88,7 @@ func _refresh_chrome() -> void:
 	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/DilTab, tr("ui.settings.tab_language"))
 	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/GoruntuTab, tr("ui.settings.tab_video"))
 	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/OynanisTab, tr("ui.settings.tab_gameplay"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/KontrolTab, tr("ui.settings.tab_controls"))
 	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/ProfilTab, tr("ui.settings.tab_profile"))
 	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/DevToolsTab, tr("ui.settings.tab_dev"))
 	SettingsUiStyles.style_back_button($VBoxContainer/BackButton, tr("ui.settings.back_main"))
@@ -44,6 +108,7 @@ func _build_ui():
 	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/DilTab, tr("ui.settings.tab_language"))
 	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/GoruntuTab, tr("ui.settings.tab_video"))
 	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/OynanisTab, tr("ui.settings.tab_gameplay"))
+	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/KontrolTab, tr("ui.settings.tab_controls"))
 	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/ProfilTab, tr("ui.settings.tab_profile"))
 	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/DevToolsTab, tr("ui.settings.tab_dev"))
 
@@ -52,6 +117,7 @@ func _build_ui():
 	$VBoxContainer/TabRow/DilTab.pressed.connect(func(): _switch_tab("dil"))
 	$VBoxContainer/TabRow/GoruntuTab.pressed.connect(func(): _switch_tab("goruntu"))
 	$VBoxContainer/TabRow/OynanisTab.pressed.connect(func(): _switch_tab("oynanis"))
+	$VBoxContainer/TabRow/KontrolTab.pressed.connect(func(): _switch_tab("kontrol"))
 	$VBoxContainer/TabRow/ProfilTab.pressed.connect(func(): _switch_tab("profil"))
 
 	SettingsUiStyles.style_back_button($VBoxContainer/BackButton, tr("ui.settings.back_main"))
@@ -60,6 +126,8 @@ func _build_ui():
 	_switch_tab("ses")
 
 func _switch_tab(tab: String):
+	if _rebind_listen:
+		_cancel_rebind()
 	current_tab = tab
 	var content = $VBoxContainer/ContentArea
 	for child in content.get_children():
@@ -70,6 +138,7 @@ func _switch_tab(tab: String):
 		"dil": _build_dil_tab(content)
 		"goruntu": _build_goruntu_tab(content)
 		"oynanis": _build_oynanis_tab(content)
+		"kontrol": _build_kontrol_tab(content)
 		"profil": _build_profil_tab(content)
 		"devtools": _build_devtools_tab(content)
 
@@ -78,6 +147,7 @@ func _switch_tab(tab: String):
 		"dil": $VBoxContainer/TabRow/DilTab,
 		"goruntu": $VBoxContainer/TabRow/GoruntuTab,
 		"oynanis": $VBoxContainer/TabRow/OynanisTab,
+		"kontrol": $VBoxContainer/TabRow/KontrolTab,
 		"profil": $VBoxContainer/TabRow/ProfilTab,
 		"devtools": $VBoxContainer/TabRow/DevToolsTab,
 	}
@@ -154,10 +224,7 @@ func _build_goruntu_tab(parent: Node):
 
 	_add_toggle(vbox, tr("ui.settings.fullscreen"), SaveManager.settings.get("fullscreen", false), func(val):
 		SaveManager.settings["fullscreen"] = val
-		if val:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-		else:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		SaveManager.apply_window_mode_from_settings()
 		SaveManager.save_game()
 	)
 
@@ -203,6 +270,11 @@ func _build_goruntu_tab(parent: Node):
 		SaveManager.save_game()
 	)
 
+	_add_toggle(vbox, tr("ui.settings.enemy_high_contrast_outline"), SaveManager.settings.get("enemy_high_contrast_outline", false), func(val):
+		SaveManager.settings["enemy_high_contrast_outline"] = val
+		SaveManager.save_game()
+	)
+
 func _build_oynanis_tab(parent: Node):
 	var vbox = VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", 20)
@@ -223,10 +295,63 @@ func _build_oynanis_tab(parent: Node):
 		SaveManager.save_game()
 	)
 
+	_add_toggle(vbox, tr("ui.settings.pause_on_focus_loss"), SaveManager.settings.get("pause_on_focus_loss", true), func(val):
+		SaveManager.settings["pause_on_focus_loss"] = val
+		SaveManager.save_game()
+	)
+
 	_add_slider(vbox, tr("ui.settings.player_vfx_opacity"), SaveManager.settings.get("player_vfx_opacity", 1.0), func(val):
 		SaveManager.settings["player_vfx_opacity"] = val
 		SaveManager.save_game()
 	)
+
+func _build_kontrol_tab(parent: Node) -> void:
+	var outer := VBoxContainer.new()
+	outer.add_theme_constant_override("separation", 12)
+	parent.add_child(outer)
+
+	var hint := Label.new()
+	hint.text = tr("ui.settings.controls_hint")
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	hint.add_theme_color_override("font_color", Color("#AAAAAA"))
+	hint.add_theme_font_size_override("font_size", 15)
+	outer.add_child(hint)
+
+	var reset_btn := Button.new()
+	reset_btn.text = tr("ui.settings.reset_keybindings")
+	reset_btn.pressed.connect(func():
+		InputRemap.reset_to_defaults_and_save()
+		_switch_tab("kontrol")
+	)
+	outer.add_child(reset_btn)
+
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(0, 360)
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	outer.add_child(scroll)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 10)
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(vbox)
+
+	for action in InputRemap.REMAPPABLE_ACTIONS:
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 16)
+		vbox.add_child(row)
+		var lab := Label.new()
+		lab.text = tr(_binding_locale_key(action))
+		lab.custom_minimum_size = Vector2(260, 0)
+		lab.add_theme_color_override("font_color", Color.WHITE)
+		lab.add_theme_font_size_override("font_size", 17)
+		row.add_child(lab)
+		var bind_btn := Button.new()
+		bind_btn.custom_minimum_size = Vector2(200, 44)
+		bind_btn.text = InputRemap.get_keyboard_binding_display(action)
+		var a := action
+		bind_btn.pressed.connect(func(): _begin_rebind(a, bind_btn))
+		row.add_child(bind_btn)
 
 func _add_dropdown(parent: Node, label_text: String, current_val: String, callback: Callable):
 	var row = HBoxContainer.new()
@@ -460,6 +585,7 @@ func _on_reset_full():
 	SaveManager.codex_weapons = []
 	SaveManager.codex_items = []
 	SaveManager.codex_maps = []
+	InputRemap.reset_to_defaults_and_save()
 	SaveManager.save_game()
 	_confirm_reset_full = false
 	_switch_tab("profil")

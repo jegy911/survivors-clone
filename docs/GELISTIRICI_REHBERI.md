@@ -26,7 +26,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 ## 1. Genel akış (oyun döngüsü)
 
 1. **`project.godot`** → `run/main_scene` ile giriş sahnesi (genelde ana menü).
-2. **Autoload’lar** (`project.godot` → `[autoload]`): `SaveManager`, `LocalizationManager`, `AudioManager`, `ObjectPool`, `EnemyRegistry`, `EventBus`, `AchievementManager` — sahne yüklenmeden önce hazır olurlar (`SaveManager` her zaman `LocalizationManager`’dan önce yüklenir).
+2. **Autoload’lar** (`project.godot` → `[autoload]`): `SaveManager`, `InputRemap`, `LocalizationManager`, `AudioManager`, `ObjectPool`, `EnemyRegistry`, `EventBus`, `AchievementManager` — sahne yüklenmeden önce hazır olurlar (`SaveManager` ve `InputRemap`, `LocalizationManager`’dan önce yüklenir).
 3. Tipik oyuncu akışı: **Ana menü** → mod seçimi → **Karakter seçimi** → (co-op ise P2 karakter) → **Harita seçimi** → **`main/main.tscn`** (asıl oyun).
 4. Oyunda oyuncu **`player/player.gd`** (karakter sahnesi üzerinden) ile yaratılır; `main/main.gd` spawn, dalga, ortam yöneticilerini kurar.
 
@@ -327,14 +327,22 @@ Bu rehber, kod tabanındaki gerçek yapıya göre yazılmıştır; yeni sistem e
 | `damage_numbers` | String | `"both_on"`, `"player_only"`, `"enemy_only"`, `"both_off"` |
 | `hp_bars` | String | Aynı seçenek kümesi |
 | `locale` | String | Arayüz dili: `LANGUAGE_CATALOG` içindeki `code` (örn. `tr`, `en`, `zh_CN`); `LocalizationManager` yazar/okur. |
+| `pause_on_focus_loss` | bool | Koşu sırasında pencere odağını kaybedince otomatik duraklat (varsayılan açık); **Ayarlar → Oynanış**; `main/main.gd`. |
+| `enemy_high_contrast_outline` | bool | Düşmanlarda sarı siluet/çerçeve (yalnız yeni spawn); **Ayarlar → Görüntü**; `enemy_base.gd` `_setup_visuals()`. |
+| `input_keyboard_overrides` | Dictionary | İsteğe bağlı klavye eşlemesi: eylem adı (`ui_up`, …) → fiziksel tuş kodu (`int`); `core/input_remap.gd`. |
 
-**UI:** `ui/settings.gd` — Sekmeler: Ses, **Dil** (`locale`), Görüntü (`fullscreen`, çözünürlük, VFX), Oynanış (`damage_numbers`, `hp_bars`, `screen_shake`, `player_vfx_opacity`), Profil, Dev.
+**UI:** `ui/settings.gd` — Sekmeler: Ses, **Dil** (`locale`), **Görüntü** (`fullscreen`, çözünürlük, VFX, `enemy_high_contrast_outline`), **Oynanış** (`damage_numbers`, `hp_bars`, `screen_shake`, `pause_on_focus_loss`, `player_vfx_opacity`), **Kontroller** (tuş yeniden atama, `InputRemap`), Profil, Dev. **Tam ekran kısayolu:** `toggle_fullscreen` (F11) → `SaveManager._unhandled_input`.
 
-### Yeni ayar eklerken
+### `InputRemap` (`core/input_remap.gd`)
+
+Oyun başında projedeki `InputMap` anlık görüntüsünü alır; `SaveManager.settings["input_keyboard_overrides"]` ile klavye `InputEventKey` olaylarını listedeki eylemler için uygular (`REMAPPABLE_ACTIONS`). Oyun kolu `InputEventJoypad*` olayları silinmez. Sıfırlama: Ayarlar → Kontroller → “varsayılana dön” veya tam ilerleme sıfırlama (`ui/settings.gd`).
+
+### Yeni ayar / kontrol eklerken
 
 1. `core/save_manager.gd` → `settings` sözlüğüne **varsayılan** değer.
-2. `ui/settings.gd` → İlgili sekmeye `_add_toggle`, `_add_slider` veya `_add_dropdown`.
-3. Oyun mantığında `SaveManager.settings.get("anahtar", varsayılan)` ile oku; değişince `SaveManager.save_game()` (settings sekmesindeki callback’lerde zaten çağrılıyor).
+2. `ui/settings.gd` → doğru sekmeye `_add_toggle` / `_add_slider` / `_add_dropdown` (`_build_*_tab`).
+3. Oyun mantığında `SaveManager.settings.get("anahtar", varsayılan)`; callback’lerde `SaveManager.save_game()`.
+4. Tuş eşlemesi ekleniyorsa: `InputRemap.REMAPPABLE_ACTIONS`, `ui.settings.bind_*` ve `tab_controls` (tüm `LANGUAGE_CATALOG` dilleri); `python locales/check_locale_parity.py`.
 
 ### XP sesi (`pitch_scale`)
 
