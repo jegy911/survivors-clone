@@ -431,38 +431,6 @@
       "ember_fan": {
         "name": "Ember Fan",
         "desc": "Evolved fan: wider arc and piercing ember shards."
-      },
-      "hex_sigil": {
-        "name": "Hex Sigil",
-        "desc": "Runic seal around you: chips enemies and slows them—controller spacing tool."
-      },
-      "binding_circle": {
-        "name": "Binding Circle",
-        "desc": "Evolved sigil: larger seal with stronger slow and damage."
-      },
-      "gravity_anchor": {
-        "name": "Gravity Anchor",
-        "desc": "Pulls nearby foes inward and ticks damage—crowd compression."
-      },
-      "void_lens": {
-        "name": "Void Lens",
-        "desc": "Evolved anchor: nastier pull and bigger effective radius."
-      },
-      "bastion_flail": {
-        "name": "Bastion Flail",
-        "desc": "Short-range sweep with knockback—tank frontline fantasy."
-      },
-      "citadel_flail": {
-        "name": "Citadel Flail",
-        "desc": "Evolved flail: wider arc and heavier hits."
-      },
-      "shield_ram": {
-        "name": "Shield Ram",
-        "desc": "Cone bash in front of you; shoves enemies back."
-      },
-      "fortress_ram": {
-        "name": "Fortress Ram",
-        "desc": "Evolved ram: wider cone and crushing impact."
       }
     },
     "item": {
@@ -521,22 +489,6 @@
       "ember_heart": {
         "name": "Ember Heart",
         "desc": "Fireheart passive that pairs with fan evolutions."
-      },
-      "glyph_charm": {
-        "name": "Glyph Charm",
-        "desc": "Etched runes shave a little damage off every hit."
-      },
-      "resonance_stone": {
-        "name": "Resonance Stone",
-        "desc": "Extends pickup radius for XP and gold."
-      },
-      "rampart_plate": {
-        "name": "Rampart Plate",
-        "desc": "Layered plates tuned for bastion-style builds."
-      },
-      "iron_bulwark": {
-        "name": "Iron Bulwark",
-        "desc": "Thick frontal shielding—flat damage reduction."
       }
     },
     "character": {
@@ -550,7 +502,7 @@
       },
       "vampire": {
         "name": "Vampire",
-        "desc": "Speedy hunter with built-in lifesteal. Aggressive sustain."
+        "desc": "Blood-hungry hunter.\nWeapon: chain (Chain — jumping hits)\nItem: lifesteal (found in-run; pairs with Toxic Chain)\nEvolution: toxic_chain (Toxic Chain)\nUnlock: survive 2 min as Warrior → 175 gold; origin: +10% lifesteal"
       },
       "hunter": {
         "name": "Hunter",
@@ -582,7 +534,23 @@
       },
       "nomad": {
         "name": "Nomad",
-        "desc": "Exile brawler; close-range Fan Blade specialist."
+        "desc": "Exile skirmisher.\nWeapon: fan_blade (Fan Blade — wide close fan)\nItem: ember_heart (Ember Heart — fireheart passive; Ember Fan evolution)\nEvolution: ember_fan (Ember Fan)\nUnlock: 175 total kills → 350 gold; origin: +5 flat damage"
+      },
+      "sigil_warden": {
+        "name": "Sigil Warden",
+        "desc": "Seal and bind specialist.\nWeapon: hex_sigil (Hex Sigil)\nItem: glyph_charm (Glyph Charm)\nEvolution: binding_circle (Binding Circle)\nUnlock: 220 kills → 400 gold; origin: +12% area, -8% speed"
+      },
+      "grav_binder": {
+        "name": "Grav Binder",
+        "desc": "Gravity well expert.\nWeapon: gravity_anchor (Gravity Anchor)\nItem: resonance_stone (Resonance Stone)\nEvolution: void_lens (Void Lens)\nUnlock: survive 6m30s → 430 gold; origin: -12% cooldown, -10% max HP"
+      },
+      "ironclad": {
+        "name": "Ironclad",
+        "desc": "Frontline bulwark.\nWeapon: bastion_flail (Bastion Flail)\nItem: rampart_plate (Rampart Plate)\nEvolution: citadel_flail (Citadel Flail)\nUnlock: kill 1 tank enemy → 480 gold; origin: +3 armor, -10% speed"
+      },
+      "linebreaker": {
+        "name": "Linebreaker",
+        "desc": "Shield-charge linebreaker.\nWeapon: shield_ram (Shield Ram — cone slam)\nItem: iron_bulwark (Iron Bulwark — armor)\nEvolution: fortress_ram (Fortress Ram)\nUnlock: survive 450s → 520 gold; origin: +12% max HP, -6% damage"
       },
       "death_knight": {
         "name": "Death Knight",
@@ -595,22 +563,6 @@
       "omega": {
         "name": "Omega",
         "desc": "Secret: all weapons, 1 HP. For experts and showboaters."
-      },
-      "sigil_warden": {
-        "name": "Sigil Warden",
-        "desc": "Rune-seal controller: Hex Sigil + Glyph Charm; evolve into Binding Circle."
-      },
-      "grav_binder": {
-        "name": "Grav Binder",
-        "desc": "Ruin-tech gravity: Gravity Anchor + Resonance Stone; evolve into Void Lens."
-      },
-      "ironclad": {
-        "name": "Ironclad",
-        "desc": "Frontline tank: Bastion Flail + Rampart Plate; evolve into Citadel Flail."
-      },
-      "linebreaker": {
-        "name": "Linebreaker",
-        "desc": "Shield-ram specialist: Shield Ram + Iron Bulwark; evolve into Fortress Ram."
       }
     },
     "map": {

@@ -431,38 +431,6 @@
       "ember_fan": {
         "name": "余烬扇刃",
         "desc": "进化：更宽扇面与穿透余烬刃片。"
-      },
-      "hex_sigil": {
-        "name": "六印封印",
-        "desc": "周身符文印：伤害并减速，控场向。"
-      },
-      "binding_circle": {
-        "name": "缚印法环",
-        "desc": "进化封印：更大范围，更强减速与伤害。"
-      },
-      "gravity_anchor": {
-        "name": "引力锚",
-        "desc": "将敌人向内牵引并造成持续伤害，压缩怪群。"
-      },
-      "void_lens": {
-        "name": "虚空透镜",
-        "desc": "进化牵引：拉力更强、作用范围更大。"
-      },
-      "bastion_flail": {
-        "name": "堡垒链枷",
-        "desc": "近身横扫并击退，前排坦克风格。"
-      },
-      "citadel_flail": {
-        "name": "城塞链枷",
-        "desc": "进化链枷：更广弧面与更重打击。"
-      },
-      "shield_ram": {
-        "name": "盾冲",
-        "desc": "前方锥形撞击，击退敌人。"
-      },
-      "fortress_ram": {
-        "name": "要塞盾冲",
-        "desc": "进化盾冲：锥形更宽，冲击更重。"
       }
     },
     "item": {
@@ -521,22 +489,6 @@
       "ember_heart": {
         "name": "余烬之心",
         "desc": "与扇刃系进化搭配的火焰心核。"
-      },
-      "glyph_charm": {
-        "name": "符文护符",
-        "desc": "刻印符文，减少每次受到的部分伤害。"
-      },
-      "resonance_stone": {
-        "name": "共鸣石",
-        "desc": "扩大经验与金币的拾取范围。"
-      },
-      "rampart_plate": {
-        "name": "壁垒板甲",
-        "desc": "层叠护板，适合堡垒型构筑。"
-      },
-      "iron_bulwark": {
-        "name": "铁壁",
-        "desc": "厚重盾面，提供固定减伤。"
       }
     },
     "character": {
@@ -550,7 +502,7 @@
       },
       "vampire": {
         "name": "吸血鬼",
-        "desc": "高机动猎手，自带吸血，激进续航。"
+        "desc": "嗜血猎手。\n武器：chain（锁链 — 弹射打击）\n道具：lifesteal（吸血 — 局内获取；配剧毒锁链进化）\n进化：toxic_chain（剧毒锁链）\n解锁：战士存活 2 分钟 → 175 金；起源：吸血 +10%"
       },
       "hunter": {
         "name": "猎人",
@@ -582,7 +534,23 @@
       },
       "nomad": {
         "name": "游牧民",
-        "desc": "流亡战士，擅用近程扇刃。"
+        "desc": "流亡近战游斗者。\n武器：fan_blade（扇刃 — 近程宽扇面）\n道具：ember_heart（余烬之心 — 配余烬扇进化）\n进化：ember_fan（余烬扇）\n解锁：累计击杀 175 → 350 金；起源：+5 平直伤害"
+      },
+      "sigil_warden": {
+        "name": "印记看守",
+        "desc": "封印与束缚。\n武器：hex_sigil（六角印）\n道具：glyph_charm（符文护符）\n进化：binding_circle（束缚环）\n解锁：击杀 220 → 400 金；起源：范围 +12%，移速 -8%"
+      },
+      "grav_binder": {
+        "name": "重力缚者",
+        "desc": "引力场专家。\n武器：gravity_anchor（引力锚）\n道具：resonance_stone（共鸣石）\n进化：void_lens（虚空透镜）\n解锁：存活 6 分 30 秒 → 430 金；起源：冷却 -12%，生命上限 -10%"
+      },
+      "ironclad": {
+        "name": "铁卫",
+        "desc": "前排壁垒。\n武器：bastion_flail（堡垒链枷）\n道具：rampart_plate（壁垒板甲）\n进化：citadel_flail（城塞链枷）\n解锁：击杀 1 坦克敌人 → 480 金；起源：+3 护甲，移速 -10%"
+      },
+      "linebreaker": {
+        "name": "破阵者",
+        "desc": "盾冲破线。\n武器：shield_ram（盾冲 — 锥形撞击）\n道具：iron_bulwark（铁壁）\n进化：fortress_ram（要塞盾冲）\n解锁：存活 450 秒 → 520 金；起源：生命上限 +12%，伤害 -6%"
       },
       "death_knight": {
         "name": "死亡骑士",
@@ -595,22 +563,6 @@
       "omega": {
         "name": "欧米茄",
         "desc": "隐藏：全武器、1 点生命，高手向。"
-      },
-      "sigil_warden": {
-        "name": "印术师",
-        "desc": "符文控场：六印封印 + 符文护符；进化为缚印法环。"
-      },
-      "grav_binder": {
-        "name": "重力缚者",
-        "desc": "废墟引力：引力锚 + 共鸣石；进化为虚空透镜。"
-      },
-      "ironclad": {
-        "name": "铁卫",
-        "desc": "前排坦克：堡垒链枷 + 壁垒板甲；进化为城塞链枷。"
-      },
-      "linebreaker": {
-        "name": "破阵者",
-        "desc": "盾冲专精：盾冲 + 铁壁；进化为要塞盾冲。"
       }
     },
     "map": {

@@ -37,7 +37,7 @@
   "character": {
     "warrior": {"name": "战士", "desc": "均衡战士，额外起始伤害，新手友好。"},
     "mage": {"name": "法师", "desc": "光环开局并提高生命上限，偏控场。"},
-    "vampire": {"name": "吸血鬼", "desc": "高机动猎手，自带吸血，激进续航。"},
+    "vampire": {"name": "吸血鬼", "desc": "嗜血猎手。\n武器：chain（锁链 — 弹射打击）\n道具：lifesteal（吸血 — 局内获取；配剧毒锁链进化）\n进化：toxic_chain（剧毒锁链）\n解锁：战士存活 2 分钟 → 175 金；起源：吸血 +10%"},
     "hunter": {"name": "猎人", "desc": "回旋镖专精，吸血协同。"},
     "stormer": {"name": "风暴使", "desc": "雷电与冷却向玩法。"},
     "frost": {"name": "冰霜", "desc": "减速专家，双倍减速时长，冰球开局。"},
@@ -45,7 +45,11 @@
     "engineer": {"name": "工程师", "desc": "激光与范围加成，偏玻璃炮。"},
     "paladin": {"name": "圣骑士", "desc": "坦度与圣弹开局。"},
     "blood_prince": {"name": "血裔", "desc": "偏 XP 成长，血旋镖主题。"},
-    "nomad": {"name": "游牧民", "desc": "流亡战士，擅用近程扇刃。"},
+    "nomad": {"name": "游牧民", "desc": "流亡近战游斗者。\n武器：fan_blade（扇刃 — 近程宽扇面）\n道具：ember_heart（余烬之心 — 配余烬扇进化）\n进化：ember_fan（余烬扇）\n解锁：累计击杀 175 → 350 金；起源：+5 平直伤害"},
+    "sigil_warden": {"name": "印记看守", "desc": "封印与束缚。\n武器：hex_sigil（六角印）\n道具：glyph_charm（符文护符）\n进化：binding_circle（束缚环）\n解锁：击杀 220 → 400 金；起源：范围 +12%，移速 -8%"},
+    "grav_binder": {"name": "重力缚者", "desc": "引力场专家。\n武器：gravity_anchor（引力锚）\n道具：resonance_stone（共鸣石）\n进化：void_lens（虚空透镜）\n解锁：存活 6 分 30 秒 → 430 金；起源：冷却 -12%，生命上限 -10%"},
+    "ironclad": {"name": "铁卫", "desc": "前排壁垒。\n武器：bastion_flail（堡垒链枷）\n道具：rampart_plate（壁垒板甲）\n进化：citadel_flail（城塞链枷）\n解锁：击杀 1 坦克敌人 → 480 金；起源：+3 护甲，移速 -10%"},
+    "linebreaker": {"name": "破阵者", "desc": "盾冲破线。\n武器：shield_ram（盾冲 — 锥形撞击）\n道具：iron_bulwark（铁壁）\n进化：fortress_ram（要塞盾冲）\n解锁：存活 450 秒 → 520 金；起源：生命上限 +12%，伤害 -6%"},
     "death_knight": {"name": "死亡骑士", "desc": "隐藏：死亡激光开局，极高伤害与苛刻代价。"},
     "chaos": {"name": "混沌", "desc": "隐藏：随机武器开局，纯随机体验。"},
     "omega": {"name": "欧米茄", "desc": "隐藏：全武器、1 点生命，高手向。"}

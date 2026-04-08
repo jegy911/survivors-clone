@@ -96,7 +96,7 @@ Aşağıdaki atamalar **taslak**tır; denge ve co-op destek tasarımı netleşti
 | ironclad | Tam Zırhlı | Tank | Gürz + siper plakası, itme ve ön hat |
 | linebreaker | Hat Kıran | Tank | Kalkan koşusu, koni darbe, demir siper |
 | blood_prince | Kan Prensi | Fighter | Vampir soyundan agresif fighter |
-| nomad | Göçebe | Fighter | Yakın menzil bıçak, mobilite |
+| nomad | Göçebe | Fighter | Yelpaze Bıçak başlangıç; Kor Kalbi koşuda — Kor Yelpazesi evrimi; mobilite |
 | death_knight | Ölüm Şövalyesi | Fighter | Yüksek risk / yüksek ödül burst (özel kurallar) |
 | chaos | Kaos | Özel | Rastgele silah; sınıf dışı fantezi |
 | omega | Omega | Özel | Tüm silahlar / 1 HP; sınıf dışı meydan okuma |

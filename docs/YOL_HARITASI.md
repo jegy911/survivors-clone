@@ -30,7 +30,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 |------|---------|
 | **Yerelleştirme** | `LocalizationManager` autoload; `LANGUAGE_CATALOG` + `locales/tr.json`, `en.json`, `zh_CN.json`; Ayarlar → Dil; ilk kurulumda kayıt yoksa OS dili; `internationalization/locale/fallback` `en`; `check_locale_parity.py` (`en.json` referansı). |
 | **Kayıt / ayarlar** | `SaveManager.settings.locale` ve diğer ayarlar; geçersiz dil kodu düzeltmesi. |
-| **İçerik (örnekler)** | Göçebe (nomad), Yelpaze Bıçak + shard, Kor Kalbi + Kor Yelpazesi evrimi; karakter sırası / `character_order_v2` migrasyonu. |
+| **İçerik (örnekler)** | Göçebe (nomad): Yelpaze Bıçak başlangıç; Kor Kalbi koşuda, Kor Yelpazesi evrimi; karakter sırası / `character_order_v2` migrasyonu. |
 | **Dokümantasyon disiplini** | `GELISTIRICI_REHBERI`, `YOL_HARITASI`, `TASARIM`, erişilebilirlik matrisi, kök `README`, `.cursor/rules/ironfall-docs.mdc`. |
 
 **Not (dil):** Yeni locale dosyası ekleme işi **şimdilik durduruldu**; sıradaki diller `GELISTIRICI_REHBERI.md` içindeki plan tablosunda listelenir.
@@ -41,6 +41,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-07 | **Kahraman `start_item` kaldırıldı** — Tüm `CharacterData.CHARACTERS` için `start_item` boş; yalnız başlangıç silahı. Vampir / Göçebe / dört yeni rol açıklamaları Hat Kıran tarzı bilgi kartı (silah, eşya, evrim, açılış, origin); kodeks `codex_extensions_*` + merge; `lore.md` başlangıç yükü ilkesi. |
 | 2026-04-07 | **4 kahraman + 8 silah + 4 eşya + 4 evrim** — Kontrolör: `sigil_warden` (hex_sigil + glyph_charm → binding_circle), `grav_binder` (gravity_anchor + resonance_stone → void_lens). Tank: `ironclad` (bastion_flail + rampart_plate → citadel_flail), `linebreaker` (shield_ram + iron_bulwark → fortress_ram). `CharacterData` sonda (indeks uyumu); `player.gd` glyph/rampart/iron bulwark zırh + rezonans çekim; sahneler frost/paladin kopyası; `locales` + `CollectionData` + `upgrade_ui` havuzları. |
 | 2026-04-07 | **Kilit ipucu / açıklama** — Büyücü/Vampir `unlock_hint`, Göçebe `description` ve kodeks `nomad` açıklamaları (tr/en/zh_CN + `codex_extensions_*`) satın alma/altın cümlesinden arındırıldı; ücret yalnızca koşul sonrası satın alma butonunda. |
 | 2026-04-07 | **Karakter ilerlemesi** — Başlangıçta yalnızca Savaşçı ücretsiz; Büyücü (50 toplam kill → 💰150) ve Vampir (Savaşçı ile 120 sn hayatta kalma → 💰175) kilit + satın alma; `SaveManager` / tam sıfırlama / devtool “lock_chars” varsayılanı `["warrior"]`; `selected_character_p2` varsayılan `0`. |
@@ -182,5 +183,5 @@ Checklist: `docs/TASARIM.md`.
 
 Ayrıntılı kayıt için yukarıdaki **Tamamlanan sistemler (özet)** ve **Yapılan iş günlüğü** tablolarını kullanın. Burası yalnızca hızlı hatırlatma:
 
-- Göçebe, Yelpaze Bıçak, Kor Kalbi, Kor Yelpazesi evrimi, karakter sırası / kayıt migrasyonu, dokümantasyon ve README tamamlandı (2026-04).
+- Göçebe, Yelpaze Bıçak başlangıç; Kor Kalbi koşuda, Kor Yelpazesi evrimi; karakter sırası / kayıt migrasyonu, dokümantasyon ve README tamamlandı (2026-04).
 - Üç dilli arayüz (`tr` / `en` / `zh_CN`) ve yerelleştirme altyapısı tamamlandı (2026-04-07); ek diller planlı.

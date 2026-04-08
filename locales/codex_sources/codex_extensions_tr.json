@@ -37,7 +37,7 @@
   "character": {
     "warrior": {"name": "Savaşçı", "desc": "Dengeli dövüşçü; ekstra başlangıç hasarı. İlk seçim için ideal."},
     "mage": {"name": "Büyücü", "desc": "Aura ile başlar, ekstra max can. Alan kontrolü oynanışı."},
-    "vampire": {"name": "Vampir", "desc": "Hızlı avcı; gömülü can çalma. Agresif sürdürülebilirlik."},
+    "vampire": {"name": "Vampir", "desc": "Kan içen avcı.\nSilah: chain (Zincir — sıçrayan vuruş)\nEşya: lifesteal (Can Çalma — koşuda toplanır; Zehirli Zincir evrimi)\nEvrim: toxic_chain (Zehirli Zincir)\nAçılış: Savaşçı ile 2 dk hayatta kal → 175 altın; origin: can çalma +%10"},
     "hunter": {"name": "Avcı", "desc": "Bumerang ustası; can çalma sinerjisi."},
     "stormer": {"name": "Fırtına", "desc": "Yıldırım odağı; cooldown bonusları."},
     "frost": {"name": "Buzcu", "desc": "Yavaşlatma uzmanı; çift süre, buz topu başlangıcı."},
@@ -45,7 +45,11 @@
     "engineer": {"name": "Mühendis", "desc": "Lazer ve alan bonusu; cam topa yakın."},
     "paladin": {"name": "Paladin", "desc": "Tank kutsal savaşçı; zırh ve Kutsal Mermi."},
     "blood_prince": {"name": "Kan Prensi", "desc": "XP açgözlüsü; Kan Bumerangı fantezisi."},
-    "nomad": {"name": "Göçebe", "desc": "Sürgün savaşçı; yakın menzilli Yelpaze Bıçak."},
+    "nomad": {"name": "Göçebe", "desc": "Sürgün yakın dövüşçü.\nSilah: fan_blade (Yelpaze Bıçak — geniş yakın fan)\nEşya: ember_heart (Kor Kalbi — kor pasifi; Kor Yelpazesi evrimiyle eşlenir)\nEvrim: ember_fan (Kor Yelpazesi)\nAçılış: 175 düşman öldür → 350 altın; origin: +5 düz hasar"},
+    "sigil_warden": {"name": "Mühür Ustası", "desc": "Mühür ve bağlama.\nSilah: hex_sigil (Altıgön Mühür)\nEşya: glyph_charm (Rün Tılsımı)\nEvrim: binding_circle (Bağlayıcı Halka)\nAçılış: 220 öldürme → 400 altın; origin: alan +%12, hız -%8"},
+    "grav_binder": {"name": "Eğim Bağlayıcı", "desc": "Çekim alanı ustası.\nSilah: gravity_anchor (Çekim Çapası)\nEşya: resonance_stone (Rezonans Taşı)\nEvrim: void_lens (Uçurum Merceği)\nAçılış: 6 dk 30 sn hayatta kal → 430 altın; origin: cooldown -%12, max can -%10"},
+    "ironclad": {"name": "Tam Zırhlı", "desc": "Ön hat siperi.\nSilah: bastion_flail (Kale Gürzü)\nEşya: rampart_plate (Rampa Plakası)\nEvrim: citadel_flail (Hisar Zinciri)\nAçılış: 1 tank öldür → 480 altın; origin: +3 zırh, hız -%10"},
+    "linebreaker": {"name": "Hat Kıran", "desc": "Kalkan hamlesiyle hat yarar.\nSilah: shield_ram (Kalkan Hamlesi — koni darbesi)\nEşya: iron_bulwark (Demir Siper — zırh)\nEvrim: fortress_ram (Kale Sur Koşusu)\nAçılış: 450 sn hayatta kalma → 520 altın; origin: max can +%12, hasar -%6"},
     "death_knight": {"name": "Ölüm Şövalyesi", "desc": "Gizli: Ölüm Lazeri başlangıcı, dev hasar, sert bedeller."},
     "chaos": {"name": "Kaos", "desc": "Gizli: rastgele silahlarla başla—saf varyans koşuları."},
     "omega": {"name": "Omega", "desc": "Gizli: tüm silahlar, 1 can. Uzman ve gösteriş koşuları."}

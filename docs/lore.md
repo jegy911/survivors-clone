@@ -23,6 +23,7 @@ Bu dosya, **oyun evreni ve anlatı** üzerinde bu sohbet ve tasarım sürecinde 
 - **Uyum:** Karakterin silahı, zırhı ve taşıdığı eşyalar aynı dünyadan geliyormuş hissini güçlendirmeli; bir araya gelince “rastgele asset” değil, **aynı çöküş sonrası kültürün parçaları** gibi durmalı.
 - **Kasıtlı tuhaflık:** Bazı kahramanlar veya kombinasyonlar bilinçli olarak alışılmadık görünebilir; bu, lore ile **gerekçelendirildiği sürece** sorun değildir (ör. nadir kalıntı, sapkın rün ustası, tarikat silahı).
 - **Teknoloji–rün ekseni:** Bir öğe ya **Antik Kalıntı** (eski düzen), ya **Rün İşlemeli** (çöküş sonrası bilgi), ya da ikisinin **hibriti** olarak düşünülebilir; yeni içerik eklerken hangi koldan geldiğini netleştirmek faydalıdır.
+- **Başlangıç yükü:** Kahraman seçiminde **yalnızca başlangıç silahı** verilir; imza **eşya** (evrime giden çiftin ikinci parçası) **koşu içinde** level-up / sandık vb. ile toplanır — seçim ekranı ve kodeks metinleri “silah / eşya / evrim” bilgisini anlatı amaçlı sunar.
 
 ---
 
@@ -58,6 +59,11 @@ Bu dosya, **oyun evreni ve anlatı** üzerinde bu sohbet ve tasarım sürecinde 
 - **Tema:** **Kalkan hamlesi** ile hat yaran ağır piyade; koni darbesi (`shield_ram` → `fortress_ram`).
 - **Eşya:** **Demir Siper** — kalın ön siper; düz hasar kesintisi (rampa plakasından ayrı kimlik).
 
+### 3.7 Göçebe (Nomad) — fighter
+
+- **Tema:** Sürgün edilmiş **yakın dövüş** avcısı; çöl / yol teması ile hizalı **yelpaze bıçak** ritmi.
+- **Silah + eşya + evrim (koşu içi):** Başlangıçta yalnızca **Yelpaze Bıçak** (`fan_blade`). **Kor Kalbi** (`ember_heart`) koşuda toplanır; ikisi MAX iken **Kor Yelpazesi** (`ember_fan`) — diğer kahramanlardaki “imza silah + eşya çifti” anlatı çerçevesiyle aynı, fakat **başlangıç yükünde eşya verilmez**.
+
 ---
 
 ## 4. Düşmanlar ve bosslar (çerçeve)
@@ -73,6 +79,7 @@ Bu dosya, **oyun evreni ve anlatı** üzerinde bu sohbet ve tasarım sürecinde 
 |-------|------|
 | 2026-04-07 | İlk taslak: çöküş sonrası dünya, rün + kalıntı teknoloji, Şeytani Kral endgame hedefi; Warrior (Desert Eagle / bullet→weapon notu), Mage (rün cübbesi, fener, aura). |
 | 2026-04-07 | Dört yeni kahraman (kontrolör ×2, tank ×2): Mühür Ustası, Eğim Bağlayıcı, Tam Zırhlı, Hat Kıran — her biri özel silah + eşya + evrim çifti; kod ID’leri `sigil_warden`, `grav_binder`, `ironclad`, `linebreaker`. |
+| 2026-04-07 | **Göçebe (nomad)** — Yelpaze Bıçak + (koşuda) Kor Kalbi → Kor Yelpazesi (`ember_fan`); kahraman bilgi kartı Hat Kıran formatıyla hizalı; **hiçbir kahramanda `start_item` yok** (yalnız başlangıç silahı). |
 
 ---
 

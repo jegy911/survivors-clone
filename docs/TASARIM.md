@@ -51,7 +51,7 @@ Karakter sınıfı ve rol envanteri (oyun dizaynı metni): `docs/KARAKTER_SINIFL
 | engineer | ✅ | `assets/character assets/engineer assets/` |
 | paladin | ✅ | `assets/character assets/paladin assets/` |
 | blood_prince | ✅ | `assets/character assets/bp assets/` |
-| nomad | ❌ | Şu an **savaşçı ile aynı** texture yolları (`warrior assetleri`); Göçebe’ye özel set gerekli. |
+| nomad | ❌ | Şu an **savaşçı ile aynı** texture yolları (`warrior assetleri`); Göçebe’ye özel set gerekli. **Oynanış:** yalnız `fan_blade` başlangıç; `ember_heart` koşuda, `ember_fan` evrimi. |
 | death_knight | ✅ | `assets/character assets/dk assets/` |
 | chaos | ✅ | `assets/character assets/Kaos assets/` |
 | omega | ✅ | `assets/character assets/omega assets/` (`characters/omega/omega.tscn`) |
