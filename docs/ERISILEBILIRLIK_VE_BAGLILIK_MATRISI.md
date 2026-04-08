@@ -3,7 +3,7 @@
 Bu belge, **20 + 20 maddenin** Ironfall kod tabanındaki **Var / Kısmi / Yok** durumunu ve kısa **repo notunu** içerir.  
 Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 
-**Son kod kontrolü:** 2026-04-07 (güncelleme: kodeks / koleksiyon menüsü)
+**Son kod kontrolü:** 2026-04-07 (güncelleme: run HUD / dalga ödülü / level-up önekleri yerelleştirmesi; kodeks / koleksiyon menüsü)
 
 ---
 
@@ -26,11 +26,15 @@ Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 | 13 | Renk körlüğü paleti | **Yok** | Tema/palet sistemi yok. |
 | 14 | Büyük net ikonlar (level-up) | **Yok** | `upgrade_ui` ağırlıklı metin; ikon asset yok. |
 | 15 | Görsel patlama ön uyarısı (exploder) | **Kısmi** | Anında patlama + parçacık; `flash()` boş — ön uyarı blink yok. |
-| 16 | Metin boyutu (global ölçek) | **Yok** | Global font ölçeği yok. *(Çoklu arayüz dili: `LocalizationManager`, `locales` — `tr`/`en`/`zh_CN`; bu satır yalnızca font ölçeğini kapsar.)* |
+| 16 | Metin boyutu (global ölçek) | **Yok** | Global font ölçeği yok. *(Çoklu dil: aşağıdaki **Çoklu dil** bölümü; bu satır yalnızca font ölçeğini kapsar.)* |
 | 17 | Pencere / tam ekran | **Kısmi** | `settings.gd` tam ekran + çözünürlük; isteğe bağlı global F11 `project.godot`’ta doğrulanmalı. |
 | 18 | Fare veya klavye (hibrit hareket) | **Yok** | `player.gd` klavye/joypad; fare pozisyonuna göre hareket yok. |
 | 19 | Lore’u zorlamama / ayrı sekme | **Kısmi** | Uzun lore ekranı yok; ayrı hikaye sekmesi yok. |
 | 20 | Çevrimdışı çalışma | **Var** | `user://save.cfg`; liderlik tablosu yok. |
+
+### Çoklu dil (çapraz — erişilebilirlik)
+
+Arayüz dili **`LocalizationManager`** + `locales/tr.json`, `en.json`, `zh_CN.json` (`LANGUAGE_CATALOG`, Ayarlar → Dil). **Run içi (2026-04-07 itibarıyla `tr()` ile):** `main/main.gd` HUD **dalga sayacı** (`ui.hud.wave_counter`), `main/wave_manager.gd` **dalga ödülü** paneli (`ui.wave_reward.*`), `ui/upgrade_ui.gd` level-up **silah/eşya satır önekleri** (`ui.upgrade_ui.option_weapon_prefix`, `option_item_prefix`). Menü, ayarlar, duraklatma, kodeks, karakter seçimi, oyun sonu, meta upgrade vb. zaten anahtarlanmıştır. **Kısmi:** Bazı yüzen metinler, `wave_manager` içi Reaper / kuşatma / bağışıklık uyarıları ve benzeri run içi string’ler hâlâ sabit metin; ileride aynı locale anahtarlarına taşınabilir (`locales/check_locale_parity.py` ile küme eşitliği korunmalı).
 
 ---
 

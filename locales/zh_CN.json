@@ -165,11 +165,30 @@
       "restart": "🔄 再玩一局",
       "menu": "🏠 主菜单"
     },
+    "hud": {
+      "wave_counter": "波次：%d"
+    },
+    "wave_reward": {
+      "title": "⚡ 完成第 %d 波！",
+      "pick_prompt": "选择一项奖励：",
+      "gold_label": "💰 金币",
+      "gold_desc": "+%d 金币",
+      "heal_label": "💗 治疗",
+      "heal_desc": "恢复 %d%% 最大生命",
+      "item_label": "🛡 被动道具",
+      "item_desc": "随机\n被动道具",
+      "xp_label": "⭐ 经验",
+      "xp_desc": "立即\n连升 2 级",
+      "damage_label": "⚔ 攻击",
+      "damage_desc": "+%d 伤害"
+    },
     "upgrade_ui": {
       "reroll": "🔄 重掷（%d）",
       "skip": "⏭ 跳过（%d）",
       "title_coop": "⭐ %s（%s）— 等级 %d ⭐",
       "title_solo": "⭐ 等级 %d — 选择升级 ⭐",
+      "option_weapon_prefix": "⚔ 武器",
+      "option_item_prefix": "🛡 道具",
       "stat_speed": "移动速度 +20\n提高移动速度",
       "stat_max_hp": "最大生命 +25\n提高生命上限",
       "stat_heal": "立即 +20 生命\n立刻恢复生命",

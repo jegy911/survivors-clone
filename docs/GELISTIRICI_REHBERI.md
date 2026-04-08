@@ -103,7 +103,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 - **`main/main.gd`** → `_get_character_scene(char_id)` içinde `match` ile `res://characters/...` yolu **mutlaka** eklenmeli.
 
 ### Oyun içi uygulama
-- **`player/player.gd`** → `apply_character_bonuses()`: `SaveManager.selected_character` (veya P2) **indeks** ile `CHARACTERS` okunur; `start_weapon` / `start_item` için `add_weapon` / `add_item` çağrılır; `origin_bonus` ve `special` burada işlenir.
+- **`player/player.gd`** → `apply_character_bonuses()`: `SaveManager.selected_character` (veya P2) **indeks** ile `CHARACTERS` okunur; `start_weapon` / `start_item` için `add_weapon` / `add_item` çağrılır; `origin_bonus` ve `special` burada işlenir. **Level-up:** `gain_xp` birden fazla seviye verirse her biri için `main.queue_upgrade(player)` kuyruğa girer (solo ve co-op aynı yol). `get_total_damage()` taban silah hasarına `bullet_damage` (karakter/meta/dalga düz bonusu) ekler.
 
 ### Kayıt ve kilit
 - **`core/save_manager.gd`**

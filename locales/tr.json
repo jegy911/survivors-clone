@@ -165,11 +165,30 @@
       "restart": "🔄 Tekrar Oyna",
       "menu": "🏠 Ana Menü"
     },
+    "hud": {
+      "wave_counter": "Dalga: %d"
+    },
+    "wave_reward": {
+      "title": "⚡ %d. DALGA TAMAMLANDI!",
+      "pick_prompt": "Bir ödül seç:",
+      "gold_label": "💰 Altın",
+      "gold_desc": "+%d altın",
+      "heal_label": "💗 İyileşme",
+      "heal_desc": "Maksimum canının %d%%'ini yenile",
+      "item_label": "🛡 Pasif eşya",
+      "item_desc": "Rastgele\npasif eşya",
+      "xp_label": "⭐ Deneyim",
+      "xp_desc": "Anında\n2 seviye",
+      "damage_label": "⚔ Güç",
+      "damage_desc": "+%d hasar"
+    },
     "upgrade_ui": {
       "reroll": "🔄 Reroll (%d)",
       "skip": "⏭ Skip (%d)",
       "title_coop": "⭐ %s (%s) — LEVEL %d ⭐",
       "title_solo": "⭐ LEVEL %d — SEÇİMİNİ YAP ⭐",
+      "option_weapon_prefix": "⚔ SİLAH",
+      "option_item_prefix": "🛡 EŞYA",
       "stat_speed": "Hareket Hızı +20\nHareket hızını artırır",
       "stat_max_hp": "Max Can +25\nMaksimum canı artırır",
       "stat_heal": "Anında +20 Can\nHemen can yeniler",

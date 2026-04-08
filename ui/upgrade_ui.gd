@@ -181,13 +181,13 @@ func get_upgrade_text(id: String) -> String:
 		var title = tr("ui.upgrade_ui.evolution_pick_title")
 		return title + "\n" + WeaponEvolution.localized_name(id) + "\n" + WeaponEvolution.localized_description(id)
 	
-	match id:
-		"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade":
-			return "⚔ SİLAH\n" + player_ref.get_weapon_description(id)
-		"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart":
-			return "🛡 EŞYA\n" + player_ref.get_item_description(id)
-		_:
-			return "🛡 EŞYA\n" + _stat_upgrade_text(id)
+	if id in weapon_upgrades:
+		return tr("ui.upgrade_ui.option_weapon_prefix") + "\n" + player_ref.get_weapon_description(id)
+	if id in item_upgrades:
+		return tr("ui.upgrade_ui.option_item_prefix") + "\n" + player_ref.get_item_description(id)
+	if id in stat_upgrades:
+		return _stat_upgrade_text(id)
+	return id
 
 func refresh_buttons():
 	var buttons = _option_buttons()

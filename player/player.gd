@@ -1,5 +1,16 @@
 extends CharacterBody2D
 
+## `ui/upgrade_ui.gd` havuzları ile aynı sıra — level-up seçiminde `add_weapon` / `add_item` eşlemesi.
+const _LEVELUP_WEAPON_IDS: PackedStringArray = [
+	"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade",
+	"hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram",
+]
+const _LEVELUP_ITEM_IDS: PackedStringArray = [
+	"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool",
+	"luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart", "glyph_charm", "resonance_stone",
+	"rampart_plate", "iron_bulwark",
+]
+
 var player_id: int = 0
 var BASE_SPEED = 130.0
 var SPEED = 130.0
@@ -467,7 +478,7 @@ func get_total_damage(base_damage: int) -> int:
 	var turbine_bonus = 0
 	if active_items.has("turbine"):
 		turbine_bonus = active_items["turbine"].get_damage_bonus()
-	var dmg = base_damage + category_damage_bonus + momentum_bonus + adrenaline_bonus + turbine_bonus
+	var dmg = base_damage + bullet_damage + category_damage_bonus + momentum_bonus + adrenaline_bonus + turbine_bonus
 	var crit_chance = category_crit_bonus + get_tag_crit_bonus()
 	if active_items.has("crit"):
 		crit_chance += active_items["crit"].crit_chance
@@ -576,33 +587,27 @@ func gain_xp(amount: int):
 		xp_bar.value = xp
 	AudioManager.play_xp()
 	EventBus.xp_gained.emit(amount)
-	if xp >= xp_to_next_level:
-		level_up()
+	while xp >= xp_to_next_level:
+		xp -= xp_to_next_level
+		_apply_one_level_gain()
 
-func level_up():
+	if SaveManager.game_mode != "local_coop":
+		xp_bar.max_value = xp_to_next_level
+		xp_bar.value = xp
+
+func _apply_one_level_gain() -> void:
 	level += 1
 	EventBus.player_leveled_up.emit(level)
-	xp = 0
 	xp_to_next_level = _calc_xp_for_level(level)
-	xp_bar.max_value = xp_to_next_level
-	xp_bar.value = 0
 	gold_earned += 3
 	if SaveManager.game_mode != "local_coop":
 		$CanvasLayer/StatsRow/GoldLabel.text = "💰 " + str(gold_earned)
 	AudioManager.play_levelup()
 	PlayerUiHelpers.spawn_levelup_effect(self)
 	PlayerUiHelpers.spawn_levelup_screen_flash(self)
-	if SaveManager.game_mode == "local_coop":
-		var main = get_tree().get_first_node_in_group("main")
-		if main:
-			main.queue_upgrade(self)
-	else:
-		get_tree().paused = true
-		upgrade_ui = upgrade_ui_scene.instantiate()
-		upgrade_ui.process_mode = Node.PROCESS_MODE_ALWAYS
-		get_tree().root.add_child(upgrade_ui)
-		upgrade_ui.upgrade_chosen.connect(_on_upgrade_chosen)
-		upgrade_ui.show_upgrades(self)
+	var main = get_tree().get_first_node_in_group("main")
+	if main and main.has_method("queue_upgrade"):
+		main.queue_upgrade(self)
 
 func _on_stats_button_pressed() -> void:
 	PlayerUiHelpers.toggle_stats_panel(self)
@@ -612,11 +617,14 @@ func _on_upgrade_chosen(upgrade_id: String):
 		if upgrade_ui:
 			upgrade_ui.queue_free()
 			upgrade_ui = null
-		get_tree().paused = false
 		return
-	
+
 	if upgrade_id in WeaponEvolution.EVOLUTIONS:
 		evolve_weapon(upgrade_id)
+	elif upgrade_id in _LEVELUP_WEAPON_IDS:
+		add_weapon(upgrade_id)
+	elif upgrade_id in _LEVELUP_ITEM_IDS:
+		add_item(upgrade_id)
 	else:
 		match upgrade_id:
 			"speed":
@@ -627,15 +635,10 @@ func _on_upgrade_chosen(upgrade_id: String):
 				update_hp_bar()
 			"heal":
 				heal(20)
-			"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade":
-				add_weapon(upgrade_id)
-			"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart":
-				add_item(upgrade_id)
-	
+
 	if upgrade_ui:
 		upgrade_ui.queue_free()
 		upgrade_ui = null
-	get_tree().paused = false
 
 func get_nearest_enemy():
 	var enemies = EnemyRegistry.get_enemies()

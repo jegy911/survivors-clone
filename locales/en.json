@@ -165,11 +165,30 @@
       "restart": "🔄 Play Again",
       "menu": "🏠 Main Menu"
     },
+    "hud": {
+      "wave_counter": "Wave: %d"
+    },
+    "wave_reward": {
+      "title": "⚡ WAVE %d COMPLETE!",
+      "pick_prompt": "Pick a reward:",
+      "gold_label": "💰 Gold",
+      "gold_desc": "+%d gold",
+      "heal_label": "💗 Heal",
+      "heal_desc": "Restore %d%% max HP",
+      "item_label": "🛡 Passive",
+      "item_desc": "Random\npassive item",
+      "xp_label": "⭐ XP",
+      "xp_desc": "Instant\n2 level-ups",
+      "damage_label": "⚔ Power",
+      "damage_desc": "+%d damage"
+    },
     "upgrade_ui": {
       "reroll": "🔄 Reroll (%d)",
       "skip": "⏭ Skip (%d)",
       "title_coop": "⭐ %s (%s) — LEVEL %d ⭐",
       "title_solo": "⭐ LEVEL %d — CHOOSE YOUR UPGRADE ⭐",
+      "option_weapon_prefix": "⚔ WEAPON",
+      "option_item_prefix": "🛡 ITEM",
       "stat_speed": "Move Speed +20\nIncreases move speed",
       "stat_max_hp": "Max HP +25\nIncreases maximum HP",
       "stat_heal": "Instant +20 HP\nHeals immediately",

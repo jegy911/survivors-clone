@@ -4,7 +4,7 @@ Oyunda **görsel, ses sunumu, UI/ikon ve pazarlama** tarafında yapılması veya
 Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.  
 Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.
 
-**Son güncelleme:** 2026-04-07 (meta UI / rehber hedef notu)
+**Son güncelleme:** 2026-04-07 (karakter görselleri envanteri; run HUD / dalga ödülü yerelleştirmesi)
 
 ---
 
@@ -51,14 +51,14 @@ Karakter sınıfı ve rol envanteri (oyun dizaynı metni): `docs/KARAKTER_SINIFL
 | engineer | ✅ | `assets/character assets/engineer assets/` |
 | paladin | ✅ | `assets/character assets/paladin assets/` |
 | blood_prince | ✅ | `assets/character assets/bp assets/` |
-| nomad | ❌ | Şu an **savaşçı ile aynı** texture yolları (`warrior assetleri`); Göçebe’ye özel set gerekli. **Oynanış:** yalnız `fan_blade` başlangıç; `ember_heart` koşuda, `ember_fan` evrimi. |
+| nomad | ✅ | `assets/character assets/nomad/` — `characters/nomad/nomad.tscn` (idle/walk sprite’lar). |
 | death_knight | ✅ | `assets/character assets/dk assets/` |
 | chaos | ✅ | `assets/character assets/Kaos assets/` |
 | omega | ✅ | `assets/character assets/omega assets/` (`characters/omega/omega.tscn`) |
-| sigil_warden | ⚠️ | Şimdilik **Buzcu ile aynı** Frost asset yolları; özel rün mühür görseli sonra. |
-| grav_binder | ⚠️ | Şimdilik **Buzcu ile aynı** Frost asset yolları; çekim teması için ayrı set hedef. |
-| ironclad | ⚠️ | Şimdilik **Paladin ile aynı** paladin asset yolları; tam zırh varyantı sonra. |
-| linebreaker | ⚠️ | Şimdilik **Paladin ile aynı** paladin asset yolları; kalkan koşusu görseli sonra. |
+| sigil_warden | ✅ | `assets/character assets/sigil_warden assets/` — `characters/sigil_warden/sigil_warden.tscn`. |
+| grav_binder | ✅ | `assets/character assets/grav_binder/` — `characters/grav_binder/grav_binder.tscn`. |
+| ironclad | ✅ | `assets/character assets/ironclad assets/` — `characters/ironclad/ironclad.tscn`. |
+| linebreaker | ✅ | `assets/character assets/linebreaker/` — `characters/linebreaker/linebreaker.tscn`. |
 
 **Teknik not:** `characters/warrior/omega.tscn` savaşçı asset’lerini kullanan yedek/legacy sahne; oyun `characters/omega/omega.tscn` ile spawn ediyor — tasarım envanterinde ana Omega ✅ satırı geçerlidir.
 

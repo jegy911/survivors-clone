@@ -132,7 +132,7 @@ func update_timer_label():
 	else:
 		timer_label.add_theme_color_override("font_color", Color("#8B0000"))
 		timer_label.add_theme_font_size_override("font_size", 24)
-	wave_label.text = "Dalga: " + str(wave_manager.wave_count)
+	wave_label.text = tr("ui.hud.wave_counter") % wave_manager.wave_count
 	
 var main_camera: Camera2D = null
 var coop_hud: CanvasLayer = null
@@ -321,8 +321,6 @@ func _update_camera(delta: float):
 	main_camera.zoom = lerp(main_camera.zoom, Vector2(target_zoom, target_zoom), delta * ZOOM_SPEED)
 
 func queue_upgrade(player: Node):
-	if SaveManager.game_mode != "local_coop":
-		return
 	upgrade_queue.append(player)
 	if not upgrade_processing:
 		_process_next_upgrade()

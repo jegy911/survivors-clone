@@ -142,13 +142,13 @@ func _show_wave_reward():
 	vbox.add_theme_constant_override("separation", 16)
 	panel.add_child(vbox)
 	var title = Label.new()
-	title.text = "⚡ DALGA %d TAMAMLANDI!" % wave_count
+	title.text = tr("ui.wave_reward.title") % wave_count
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 24)
 	title.add_theme_color_override("font_color", Color("#9B59B6"))
 	vbox.add_child(title)
 	var sub = Label.new()
-	sub.text = "Bir ödül seç:"
+	sub.text = tr("ui.wave_reward.pick_prompt")
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sub.add_theme_color_override("font_color", Color("#AAAAAA"))
 	vbox.add_child(sub)
@@ -165,14 +165,15 @@ func _show_wave_reward():
 func _generate_reward_choices() -> Array:
 	var players = get_tree().get_nodes_in_group("player")
 	var player = players[0] if not players.is_empty() else null
+	var gold_amt: int = 12 + wave_count * 4
 	var pool = [
-		{"type": "gold", "amount": 30 + wave_count * 10, "label": "💰 Altın", "desc": "+%d Gold" % (30 + wave_count * 10), "color": "#FFD700"},
-		{"type": "heal", "label": "💗 İyileşme", "desc": "Max HP'nin\n%25'ini yenile", "color": "#27AE60"},
-		{"type": "item", "label": "🛡 Pasif Item", "desc": "Rastgele\npasif item", "color": "#3498DB"},
-		{"type": "xp", "label": "⭐ Deneyim", "desc": "Anında\n+2 Level", "color": "#F39C12"},
+		{"type": "gold", "amount": gold_amt, "label": tr("ui.wave_reward.gold_label"), "desc": tr("ui.wave_reward.gold_desc") % gold_amt, "color": "#FFD700"},
+		{"type": "heal", "label": tr("ui.wave_reward.heal_label"), "desc": tr("ui.wave_reward.heal_desc") % 15, "color": "#27AE60"},
+		{"type": "item", "label": tr("ui.wave_reward.item_label"), "desc": tr("ui.wave_reward.item_desc"), "color": "#3498DB"},
+		{"type": "xp", "label": tr("ui.wave_reward.xp_label"), "desc": tr("ui.wave_reward.xp_desc"), "color": "#F39C12"},
 	]
 	if player and player.get("bullet_damage") != null:
-		pool.append({"type": "damage", "label": "⚔ Güç", "desc": "+10 Hasar", "color": "#E74C3C"})
+		pool.append({"type": "damage", "amount": 5, "label": tr("ui.wave_reward.damage_label"), "desc": tr("ui.wave_reward.damage_desc") % 5, "color": "#E74C3C"})
 	pool.shuffle()
 	return pool.slice(0, 3)
 
@@ -207,7 +208,7 @@ func _on_reward_chosen(choice: Dictionary, overlay: Node):
 			"heal":
 				# Co-op: tüm oyuncuları iyileştir
 				for p in players:
-					var heal = int(p.max_hp * 0.25)
+					var heal = int(p.max_hp * 0.15)
 					p.hp = min(p.hp + heal, p.max_hp)
 				EventBus.player_hp_changed.emit(player.hp, player.max_hp)
 			"item":
@@ -221,7 +222,7 @@ func _on_reward_chosen(choice: Dictionary, overlay: Node):
 			"damage":
 				# Co-op: tüm oyuncular güçlenir
 				for p in players:
-					p.bullet_damage += 10
+					p.bullet_damage += int(choice.get("amount", 5))
 	overlay.queue_free()
 	get_tree().paused = false
 	reward_active = false
