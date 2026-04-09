@@ -176,10 +176,12 @@ Level-up ekranı ağırlıklı **metin**; `upgrade_ui` için **büyük net ikon*
 
 | Alan | Dosya / konum | İkon / layout / tutarlı tema |
 |------|----------------|------------------------------|
-| Ana menü | `ui/main_menu` | ✅ / ❌ |
-| Karakter seçimi (+ P2) | `ui/character_select*` | Dört rol filtresi (`hero_class`); portre / kilit göstergeleri — iyileştirilebilir |
-| Harita / mod | `ui/map_select` | Arena kilit görselleri placeholder |
-| Level-up kartları | `ui/upgrade_ui` | ❌ Büyük ikon seti yok |
+| Açılış ekranı | `ui/intro_splash` | Aynı `main_menu_bg.*` adayı, tint yok (tam parlaklık); yalnızca başta siyah ~5 sn fade; 4–6. sn alttan kalkan “devam” metni (konum `intro_splash.gd` `PROMPT_*`); müzik track 1; tuş/tık/kol → ana menü |
+| Ana menü | `ui/main_menu` | Tam ekran foto: `assets/ui/main_menu_bg.*` (yoksa düz renk + yıldızlar); Mağaza → `shop_menu` iskelet |
+| Mağaza (kozmetik / pet / fragman) | `ui/shop_menu` | ❌ Placeholder sekmeler; satın alma UI yok |
+| Karakter seçimi (+ P2) | `ui/character_select*` + `character_select_preview.gd` | Dört rol filtresi; portre = `idle_left` (yoksa yedek) ilk kare, sabit çerçeve; kilit=siyah; koşul açık=silüet; satın alınmış=tam renk |
+| Harita / mod | `ui/map_select` | Story / fast mod + lanet slider + harita önizlemesi; arena kilitli |
+| Level-up kartları | `ui/upgrade_ui` | Kısmi — Unicode/emoji satır önekleri; büyük sprite ikon seti yok |
 | HUD (kill, altın, çubuklar) | `player` + CanvasLayer | ✅ / ❌ |
 | Oyun sonu | `ui/game_over` | ✅ |
 | Duraklat | `ui/pause_menu` | ✅ / ❌ |
@@ -187,7 +189,7 @@ Level-up ekranı ağırlıklı **metin**; `upgrade_ui` için **büyük net ikon*
 | Ayarlar | `ui/settings` | ✅ |
 | Arayüz dili (çeviri) | `locales/*.json`, `LocalizationManager`, Ayarlar → Dil | ✅ `tr` / `en` / `zh_CN`; silah-eşya kart metinleri hâlâ kod içi (`player.gd` / `upgrade_ui`) — ileride anahtarlanabilir |
 | Hasar sayıları | `effects/damage_number` | ✅ |
-| Global font ölçeği (okunabilirlik) | — | ❌ |
+| Global font ölçeği (okunabilirlik) | `SaveManager.settings["ui_scale"]`, Ayarlar → Görüntü | Kısmi — bazı ekranlarda (`map_select`, `shop_menu`); tüm HUD/menüde zorunlu değil |
 | Otomatik pause (odak kaybı) | — | Davranış yok; UI tasarımı gerektirmez ama ürün kararı |
 
 ---
@@ -208,8 +210,8 @@ Level-up ekranı ağırlıklı **metin**; `upgrade_ui` için **büyük net ikon*
 | Konu | Durum |
 |------|--------|
 | XP toplama (`AudioManager.play_xp`) | ✅ Pentatonik pitch dizisi var |
-| Ardışık toplamada “streak” / sürekli yükselen pitch | ❌ |
-| Level-up / sandık / boss için ayırt edici “ritüel” ses katmanları | Kısmi — sandık animasyonu zayıf olduğundan ses de sınırlı |
+| Ardışık toplamada “streak” / sürekli yükselen pitch | ✅ `AudioManager` `xp_streak` |
+| Level-up / sandık / boss için ayırt edici “ritüel” ses katmanları | Kısmi — sandıkta kısa açılış tween var; ayrı ses katmanı sınırlı |
 
 ---
 

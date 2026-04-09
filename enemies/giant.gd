@@ -38,14 +38,15 @@ func die(killer: Node = null):
 	is_dead = true
 	AudioManager.play_death()
 	_try_drop_gold()
-	if SaveManager.settings.get("show_vfx", true):
-		for i in 16:
+	if SaveManager.is_heavy_vfx_enabled():
+		var gc := SaveManager.get_particle_burst_count(16)
+		for i in gc:
 			var particle = ColorRect.new()
 			particle.size = Vector2(12, 12)
 			particle.color = Color("#8B0000")
 			particle.position = global_position
 			get_parent().add_child(particle)
-			var angle = (float(i) / 16.0) * TAU
+			var angle = (float(i) / float(gc)) * TAU
 			var target = global_position + Vector2(cos(angle), sin(angle)) * randf_range(80, 160)
 			var tween = particle.create_tween()
 			tween.set_parallel(true)

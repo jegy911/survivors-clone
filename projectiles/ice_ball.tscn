@@ -6,6 +6,7 @@
 size = Vector2(14, 14)
 
 [node name="IceBall" type="Area2D" unique_id=1092695693]
+collision_mask = 2
 script = ExtResource("1_xvcnu")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=405882028]

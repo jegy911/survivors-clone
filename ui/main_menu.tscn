@@ -2,34 +2,71 @@
 
 [ext_resource type="Script" uid="uid://dj0uhl06tsmha" path="res://ui/main_menu.gd" id="1_06t4h"]
 
-[node name="MainMenu" type="CanvasLayer" unique_id=461648971]
+[node name="MainMenu" type="CanvasLayer"]
 script = ExtResource("1_06t4h")
 
-[node name="Background" type="ColorRect" parent="." unique_id=895222314]
+[node name="BackgroundBase" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0392157, 0.0392157, 0.0784314, 1)
+
+[node name="BackgroundPhoto" type="TextureRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="BackgroundTint" type="ColorRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0392157, 0.0392157, 0.0784314, 0.52)
+
+[node name="StarsLayer" type="Control" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=587710905]
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="TitleLabel" type="Label" parent="VBoxContainer" unique_id=8641541]
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="GoldLabel" type="Label" parent="VBoxContainer" unique_id=1661461213]
+[node name="GoldLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="StartButton" type="Button" parent="VBoxContainer" unique_id=1249714091]
+[node name="StartButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="UpgradeButton" type="Button" parent="VBoxContainer" unique_id=802178009]
+[node name="UpgradeButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="CollectionButton" type="Button" parent="VBoxContainer" unique_id=2802178009]
+[node name="CollectionButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="SettingsButton" type="Button" parent="VBoxContainer" unique_id=553229284]
+[node name="ShopButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 
-[node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=1259165440]
+[node name="SettingsButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2

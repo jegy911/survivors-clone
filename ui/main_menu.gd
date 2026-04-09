@@ -30,6 +30,7 @@ func _apply_texts():
 		[$VBoxContainer/StartButton, tr("ui.main_menu.play"), Color("#27AE60"), Color("#1E8449")],
 		[$VBoxContainer/UpgradeButton, tr("ui.main_menu.meta"), Color("#8E44AD"), Color("#6C3483")],
 		[$VBoxContainer/CollectionButton, tr("ui.main_menu.collection"), Color("#D68910"), Color("#B7950B")],
+		[$VBoxContainer/ShopButton, tr("ui.main_menu.shop"), Color("#16A085"), Color("#117A65")],
 		[$VBoxContainer/SettingsButton, tr("ui.main_menu.settings"), Color("#2471A3"), Color("#1A5276")],
 		[$VBoxContainer/QuitButton, tr("ui.main_menu.quit"), Color("#922B21"), Color("#7B241C")],
 	]
@@ -53,13 +54,27 @@ func _apply_texts():
 		hover_style.bg_color = config[2]
 		btn.add_theme_stylebox_override("hover", hover_style)
 
+func _apply_main_menu_background() -> void:
+	var photo: TextureRect = $BackgroundPhoto
+	var tint: ColorRect = $BackgroundTint
+	photo.texture = null
+	photo.visible = false
+	tint.visible = false
+	var tex: Texture2D = MainMenuBackground.load_texture()
+	if tex != null:
+		photo.texture = tex
+		photo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		photo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		photo.visible = true
+		tint.visible = true
+
+
 func _build_ui():
 	var screen_size = get_viewport().get_visible_rect().size
 
-	$Background.size = screen_size
-	$Background.color = Color("#0A0A14")
+	_apply_main_menu_background()
 
-	for c in $Background.get_children():
+	for c in $StarsLayer.get_children():
 		c.queue_free()
 
 	for i in 40:
@@ -67,7 +82,7 @@ func _build_ui():
 		star.size = Vector2(randf_range(1, 3), randf_range(1, 3))
 		star.color = Color(1, 1, 1, randf_range(0.2, 0.8))
 		star.position = Vector2(randf_range(0, screen_size.x), randf_range(0, screen_size.y))
-		$Background.add_child(star)
+		$StarsLayer.add_child(star)
 		var st = star.create_tween()
 		st.set_loops()
 		st.tween_property(star, "modulate:a", 0.1, randf_range(1.0, 3.0))
@@ -75,7 +90,7 @@ func _build_ui():
 
 	$VBoxContainer.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	$VBoxContainer.alignment = BoxContainer.ALIGNMENT_CENTER
-	$VBoxContainer.size = Vector2(420, 660)
+	$VBoxContainer.size = Vector2(420, 740)
 	$VBoxContainer.position = screen_size / 2 - $VBoxContainer.size / 2
 	$VBoxContainer.add_theme_constant_override("separation", 14)
 
@@ -122,6 +137,7 @@ func _build_ui():
 		[$VBoxContainer/StartButton, tr("ui.main_menu.play"), Color("#27AE60"), Color("#1E8449")],
 		[$VBoxContainer/UpgradeButton, tr("ui.main_menu.meta"), Color("#8E44AD"), Color("#6C3483")],
 		[$VBoxContainer/CollectionButton, tr("ui.main_menu.collection"), Color("#D68910"), Color("#B7950B")],
+		[$VBoxContainer/ShopButton, tr("ui.main_menu.shop"), Color("#16A085"), Color("#117A65")],
 		[$VBoxContainer/SettingsButton, tr("ui.main_menu.settings"), Color("#2471A3"), Color("#1A5276")],
 		[$VBoxContainer/QuitButton, tr("ui.main_menu.quit"), Color("#922B21"), Color("#7B241C")],
 	]
@@ -151,6 +167,7 @@ func _build_ui():
 	$VBoxContainer/StartButton.pressed.connect(_on_start)
 	$VBoxContainer/UpgradeButton.pressed.connect(_on_upgrades)
 	$VBoxContainer/CollectionButton.pressed.connect(_on_collection)
+	$VBoxContainer/ShopButton.pressed.connect(_on_shop)
 	$VBoxContainer/SettingsButton.pressed.connect(_on_settings)
 	$VBoxContainer/QuitButton.pressed.connect(_on_quit)
 
@@ -162,6 +179,9 @@ func _on_upgrades():
 
 func _on_collection():
 	get_tree().change_scene_to_file("res://ui/collection_menu.tscn")
+
+func _on_shop():
+	get_tree().change_scene_to_file("res://ui/shop_menu.tscn")
 
 func _on_settings():
 	get_tree().change_scene_to_file("res://ui/settings.tscn")

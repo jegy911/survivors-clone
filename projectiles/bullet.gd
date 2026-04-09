@@ -1,5 +1,8 @@
 extends Area2D
 
+const BULLET_COLLISION_LAYER: int = 4
+const BULLET_COLLISION_MASK: int = 2
+
 var speed = 400.0
 var direction = Vector2.ZERO
 var damage = 10
@@ -30,6 +33,8 @@ func _on_area_entered(area: Area2D):
 		_pierce_remaining -= 1
 		return
 	_hit = true
+	# Aynı fizik karesinde bitişik iki düşman alanına çarpınca çift vuruş olmasın diye taramayı kapat
+	_disable_hit_scan()
 	if is_instance_valid(player) and player.get("bounce_timer") != null and player.bounce_timer > 0:
 		var enemies = EnemyRegistry.get_enemies()
 		var next = null
@@ -43,6 +48,7 @@ func _on_area_entered(area: Area2D):
 				next = e
 		if next and best_dist < 300:
 			_hit = false
+			_restore_hit_scan()
 			direction = (next.global_position - global_position).normalized()
 			lifetime = 0.8
 			return
@@ -56,9 +62,18 @@ func _physics_process(delta):
 	if lifetime <= 0:
 		ObjectPool.return_object(self)
 
+func _disable_hit_scan() -> void:
+	collision_layer = 0
+	collision_mask = 0
+
+func _restore_hit_scan() -> void:
+	collision_layer = BULLET_COLLISION_LAYER
+	collision_mask = BULLET_COLLISION_MASK
+
 func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter = null):
 	_hit = false
 	_pierce_remaining = pierce_count
+	_restore_hit_scan()
 	direction = dir
 	damage = dmg
 	armor_piercing = is_armor_piercing
@@ -80,6 +95,7 @@ func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter 
 
 func reset():
 	_hit = false
+	_restore_hit_scan()
 	direction = Vector2.ZERO
 	damage = 10
 	lifetime = 2.0

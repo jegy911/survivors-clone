@@ -5,6 +5,11 @@ var _active_hero_class: String = ""
 var _class_filter_buttons: Dictionary = {}
 var _filter_accent: Color = Color("#2471A3")
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		get_viewport().set_input_as_handled()
+		get_tree().change_scene_to_file("res://ui/character_select.tscn")
+
 func _ready():
 	var vp = get_viewport().get_visible_rect().size
 	$Panel/VBoxContainer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -102,7 +107,7 @@ func build_characters():
 
 func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContainer:
 	var card = PanelContainer.new()
-	card.custom_minimum_size = Vector2(180, 280)
+	card.custom_minimum_size = Vector2(188, 340)
 	card.set_meta("index", i)
 	var card_style = StyleBoxFlat.new()
 	card_style.bg_color = Color("#1A1A2E")
@@ -121,9 +126,8 @@ func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContaine
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	vbox.add_theme_constant_override("separation", 8)
 
-	var char_visual = ColorRect.new()
-	char_visual.custom_minimum_size = Vector2(70, 70)
-	char_visual.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var cid: String = str(char_data["id"])
+	var char_visual: Control
 
 	var name_label = Label.new()
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -135,8 +139,7 @@ func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContaine
 	desc_label.add_theme_font_size_override("font_size", 12)
 
 	if is_taken:
-		# P1 tarafından seçildi
-		char_visual.color = Color(0.1, 0.1, 0.15, 1.0)
+		char_visual = CharacterSelectPreview.make_portrait(cid, "taken", Color(char_data["color"]))
 		name_label.text = char_data["name"]
 		name_label.add_theme_color_override("font_color", Color("#444466"))
 		desc_label.text = tr("ui.character_select.taken_by_p1")
@@ -150,7 +153,7 @@ func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContaine
 		vbox.add_child(desc_label)
 		vbox.add_child(taken_label)
 	else:
-		char_visual.color = Color(char_data["color"])
+		char_visual = CharacterSelectPreview.make_portrait(cid, "full", Color(char_data["color"]))
 		name_label.text = char_data["name"]
 		name_label.add_theme_color_override("font_color", Color(char_data["color"]))
 		desc_label.text = CharacterSelectHelpers.rich_description_unlocked(char_data)

@@ -35,7 +35,7 @@
     "ember_heart": {"name": "Kor Kalbi", "desc": "Yelpaze evrimleriyle eşleşen kor pasifi."}
   },
   "character": {
-    "warrior": {"name": "Savaşçı", "desc": "Dengeli dövüşçü; ekstra başlangıç hasarı. İlk seçim için ideal."},
+    "warrior": {"name": "Savaşçı", "desc": "Dengeli dövüşçü; +5 düz hasar, +8 köken (muharebe alışkanlığı). İyi başlangıç."},
     "mage": {"name": "Büyücü", "desc": "Aura ile başlar, ekstra max can. Alan kontrolü oynanışı."},
     "vampire": {"name": "Vampir", "desc": "Kan içen avcı.\nSilah: chain (Zincir — sıçrayan vuruş)\nEşya: lifesteal (Can Çalma — koşuda toplanır; Zehirli Zincir evrimi)\nEvrim: toxic_chain (Zehirli Zincir)\nAçılış: Savaşçı ile 2 dk hayatta kal → 175 altın; origin: can çalma +%10"},
     "hunter": {"name": "Avcı", "desc": "Bumerang ustası; can çalma sinerjisi."},

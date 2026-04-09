@@ -48,14 +48,15 @@ func explode():
 	for p in enemies_and_player:
 		if p.global_position.distance_to(global_position) < EXPLOSION_RADIUS:
 			p.take_damage(DAMAGE)
-	if SaveManager.settings.get("show_vfx", true):
-		for i in 12:
+	if SaveManager.is_heavy_vfx_enabled():
+		var pc := SaveManager.get_particle_burst_count(12)
+		for i in pc:
 			var particle = ColorRect.new()
 			particle.size = Vector2(10, 10)
 			particle.color = Color("#FF6B00")
 			particle.position = global_position
 			get_parent().add_child(particle)
-			var angle = (float(i) / 12.0) * TAU
+			var angle = (float(i) / float(pc)) * TAU
 			var target = global_position + Vector2(cos(angle), sin(angle)) * randf_range(60, 120)
 			var tween = particle.create_tween()
 			tween.set_parallel(true)

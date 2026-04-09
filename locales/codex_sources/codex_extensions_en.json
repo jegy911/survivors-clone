@@ -35,7 +35,7 @@
     "ember_heart": {"name": "Ember Heart", "desc": "Fireheart passive that pairs with fan evolutions."}
   },
   "character": {
-    "warrior": {"name": "Warrior", "desc": "Balanced fighter with bonus starting damage. Great first pick."},
+    "warrior": {"name": "Warrior", "desc": "Balanced fighter: +5 flat damage and +8 origin (combat habit). Good starter."},
     "mage": {"name": "Mage", "desc": "Aura starter with extra max HP. Area-control mindset."},
     "vampire": {"name": "Vampire", "desc": "Blood-hungry hunter.\nWeapon: chain (Chain — jumping hits)\nItem: lifesteal (found in-run; pairs with Toxic Chain)\nEvolution: toxic_chain (Toxic Chain)\nUnlock: survive 2 min as Warrior → 175 gold; origin: +10% lifesteal"},
     "hunter": {"name": "Hunter", "desc": "Boomerang expert with extra lifesteal synergy."},

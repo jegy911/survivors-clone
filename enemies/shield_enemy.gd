@@ -48,14 +48,15 @@ func take_damage(amount: int, shooter: Node = null):
 func _break_shield():
 	shield_broken = true
 	body.color = Color("#FF4500")
-	if SaveManager.settings.get("show_vfx", true):
-		for i in 8:
+	if SaveManager.is_heavy_vfx_enabled():
+		var sc := SaveManager.get_particle_burst_count(8)
+		for i in sc:
 			var shard = ColorRect.new()
 			shard.size = Vector2(8, 8)
 			shard.color = Color("#4169E1")
 			shard.position = global_position
 			get_parent().add_child(shard)
-			var angle = (float(i) / 8.0) * TAU
+			var angle = (float(i) / float(sc)) * TAU
 			var target = global_position + Vector2(cos(angle), sin(angle)) * randf_range(30, 70)
 			var tween = shard.create_tween()
 			tween.set_parallel(true)

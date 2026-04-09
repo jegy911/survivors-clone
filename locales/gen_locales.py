@@ -19,6 +19,9 @@ ui_tr = {
         "quit": "✕  ÇIKIŞ",
         "omega_unlock": "????? UNLOCKED",
     },
+    "intro_splash": {
+        "press_to_start": "Devam etmek için bir tuşa basın veya tıklayın",
+    },
     "game_mode": {
         "title": "NASIL OYNAMAK İSTİYORSUN?",
         "solo": "👤 SOLO\n\nTek oyuncu\nKlasik mod",
@@ -237,6 +240,9 @@ ui_en = {
         "settings": "⚙  SETTINGS",
         "quit": "✕  QUIT",
         "omega_unlock": "????? UNLOCKED",
+    },
+    "intro_splash": {
+        "press_to_start": "Press any key or click to continue",
     },
     "game_mode": {
         "title": "HOW DO YOU WANT TO PLAY?",

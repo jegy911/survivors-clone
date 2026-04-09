@@ -54,7 +54,7 @@ func _heal_nearby_enemies():
 			enemy.hp = min(enemy.hp + HEAL_AMOUNT, enemy.max_hp)
 			if enemy.has_method("_update_hp_bar"):
 				enemy._update_hp_bar()
-			if SaveManager.settings.get("show_vfx", true):
+			if SaveManager.is_heavy_vfx_enabled():
 				var fx = ColorRect.new()
 				fx.size = Vector2(10, 10)
 				fx.color = Color("#00FF7F")

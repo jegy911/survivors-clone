@@ -11,7 +11,6 @@ var healer_scene = preload("res://enemies/healer.tscn")
 var shield_enemy_scene = preload("res://enemies/shield_enemy.tscn")
 var giant_scene = preload("res://enemies/giant.tscn")
 
-const MAX_ENEMIES = 1200
 const ELITE_CHANCE = 0.15
 
 var main_node: Node = null
@@ -45,6 +44,10 @@ const WAVE_TABLE = {
 
 func initialize(main: Node):
 	main_node = main
+
+
+func get_max_enemies() -> int:
+	return SaveManager.get_max_enemies_cap()
 
 func _get_wave_data(game_timer: float) -> Dictionary:
 	var minute = int(game_timer / 60.0)
@@ -80,13 +83,14 @@ func _pick_from_wave(wave: Dictionary) -> Node:
 func get_current_spawn_interval(game_timer: float) -> float:
 	var wave = _get_wave_data(game_timer)
 	var curse = SaveManager.meta_upgrades.get("curse_level", 0)
-	var total_curse = 1.0 + curse * 0.10
+	var total_curse = (1.0 + curse * 0.10) * SaveManager.get_run_spawn_difficulty_mult()
 	return max(0.15, wave["interval"] / total_curse)
 
 func get_current_min_enemies(game_timer: float) -> int:
 	var wave = _get_wave_data(game_timer)
 	var curse = SaveManager.meta_upgrades.get("curse_level", 0)
-	return wave["min"] + curse * 2
+	var tier = SaveManager.get_run_curse_tier()
+	return wave["min"] + curse * 2 + tier
 
 func get_spawn_outside_screen() -> Vector2:
 	var players = get_tree().get_nodes_in_group("player")
@@ -232,11 +236,12 @@ func spawn_swarm_event(game_timer: float):
 	var from_right = randf() > 0.5
 	var direction = Vector2(-1, 0) if from_right else Vector2(1, 0)
 	var spawn_x = center.x + (900 if from_right else -900)
-	var count = 40 + randi() % 21
+	var count = int((40 + randi() % 21) * SaveManager.get_swarm_event_count_mult())
+	count = maxi(count, 8)
 
 	for i in count:
 		var current_count = EnemyRegistry.get_live_count()
-		if current_count >= MAX_ENEMIES:
+		if current_count >= get_max_enemies():
 			break
 		var enemy = _pick_swarm_scene().instantiate()
 		main_node.add_child(enemy)
@@ -260,12 +265,13 @@ func spawn_encircle_event(game_timer: float):
 		center += p.global_position
 	center /= players.size()
 
-	var count = 16 + randi() % 9
+	var count = int((16 + randi() % 9) * SaveManager.get_encircle_event_count_mult())
+	count = maxi(count, 6)
 	var radius = 650.0
 
 	for i in count:
 		var current_count = EnemyRegistry.get_live_count()
-		if current_count >= MAX_ENEMIES:
+		if current_count >= get_max_enemies():
 			break
 		var angle = (TAU / count) * i
 		var enemy = tank_enemy_scene.instantiate()

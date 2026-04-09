@@ -6,6 +6,23 @@ var weapon_upgrades = ["bullet", "aura", "chain", "boomerang", "lightning", "ice
 var item_upgrades = ["lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart", "glyph_charm", "resonance_stone", "rampart_plate", "iron_bulwark"]
 var stat_upgrades = ["speed", "max_hp", "heal"]
 
+func _leading_icon(id: String, is_evolution: bool) -> String:
+	if is_evolution or WeaponEvolution.EVOLUTIONS.has(id):
+		return "⚡ "
+	if id in stat_upgrades:
+		match id:
+			"speed":
+				return "👟 "
+			"max_hp":
+				return "❤️ "
+			"heal":
+				return "💚 "
+			_:
+				return "✨ "
+	if id in weapon_upgrades or id in item_upgrades:
+		return ""
+	return ""
+
 func _stat_upgrade_text(id: String) -> String:
 	var key_map = {"speed": "stat_speed", "max_hp": "stat_max_hp", "heal": "stat_heal"}
 	var k = key_map.get(id, id)
@@ -33,15 +50,15 @@ func _layout_levelup_panel(n_options: int) -> void:
 	var screen_size = get_viewport().get_visible_rect().size
 	var panel_w = 1000 if n_options >= 4 else 800
 	var btn_w = 190 if n_options >= 4 else 220
-	$Panel.size = Vector2(panel_w, 380)
+	$Panel.size = Vector2(panel_w, 420)
 	$Panel.position = screen_size / 2 - $Panel.size / 2
 	for btn in _option_buttons():
-		btn.custom_minimum_size = Vector2(btn_w, 130)
+		btn.custom_minimum_size = Vector2(btn_w, 150)
 
 
 func _ready():
 	var screen_size = get_viewport().get_visible_rect().size
-	$Panel.size = Vector2(800, 380)
+	$Panel.size = Vector2(800, 420)
 	$Panel.position = screen_size / 2 - $Panel.size / 2
 	
 	var style = StyleBoxFlat.new()
@@ -194,7 +211,8 @@ func refresh_buttons():
 	
 	for i in chosen_upgrades.size():
 		var upgrade = chosen_upgrades[i]
-		buttons[i].text = get_upgrade_text(upgrade["id"])
+		var ic := _leading_icon(upgrade["id"], upgrade.get("is_evolution", false))
+		buttons[i].text = ic + "\n" + get_upgrade_text(upgrade["id"])
 		buttons[i].set_meta("upgrade_id", upgrade["id"])
 		buttons[i].visible = true
 		

@@ -270,6 +270,11 @@ func _build_goruntu_tab(parent: Node):
 		SaveManager.save_game()
 	)
 
+	_add_performance_quality_row(vbox)
+
+	_add_ui_scale_slider_row(vbox)
+	_add_colorblind_dropdown_row(vbox)
+
 	_add_toggle(vbox, tr("ui.settings.enemy_high_contrast_outline"), SaveManager.settings.get("enemy_high_contrast_outline", false), func(val):
 		SaveManager.settings["enemy_high_contrast_outline"] = val
 		SaveManager.save_game()
@@ -352,6 +357,89 @@ func _build_kontrol_tab(parent: Node) -> void:
 		var a := action
 		bind_btn.pressed.connect(func(): _begin_rebind(a, bind_btn))
 		row.add_child(bind_btn)
+
+	var pad_hint := Label.new()
+	pad_hint.text = tr("ui.settings.gamepad_hint")
+	pad_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	pad_hint.add_theme_color_override("font_color", Color("#666688"))
+	pad_hint.add_theme_font_size_override("font_size", 14)
+	outer.add_child(pad_hint)
+
+func _add_performance_quality_row(parent: Node) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 20)
+	parent.add_child(row)
+	var label := Label.new()
+	label.text = tr("ui.settings.performance_quality")
+	label.custom_minimum_size = Vector2(200, 0)
+	label.add_theme_color_override("font_color", Color.WHITE)
+	label.add_theme_font_size_override("font_size", 18)
+	row.add_child(label)
+	var options: Array[String] = ["high", "medium", "low"]
+	var keys: Array[String] = ["perf_quality_high", "perf_quality_medium", "perf_quality_low"]
+	var dropdown := OptionButton.new()
+	dropdown.custom_minimum_size = Vector2(220, 40)
+	for i in options.size():
+		dropdown.add_item(tr("ui.settings." + keys[i]))
+	var cur: String = str(SaveManager.settings.get("performance_quality", "high"))
+	dropdown.selected = options.find(cur) if options.has(cur) else 0
+	dropdown.item_selected.connect(func(idx: int):
+		SaveManager.settings["performance_quality"] = options[idx]
+		SaveManager.save_game()
+	)
+	row.add_child(dropdown)
+
+func _add_ui_scale_slider_row(parent: Node) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 20)
+	parent.add_child(row)
+	var lab := Label.new()
+	lab.text = tr("ui.settings.ui_text_scale")
+	lab.custom_minimum_size = Vector2(200, 0)
+	lab.add_theme_color_override("font_color", Color.WHITE)
+	lab.add_theme_font_size_override("font_size", 18)
+	row.add_child(lab)
+	var slider := HSlider.new()
+	slider.min_value = 0.82
+	slider.max_value = 1.38
+	slider.step = 0.02
+	var cur: float = SaveManager.get_ui_scale()
+	slider.value = cur
+	slider.custom_minimum_size = Vector2(300, 40)
+	row.add_child(slider)
+	var pct := Label.new()
+	pct.custom_minimum_size = Vector2(56, 0)
+	pct.add_theme_color_override("font_color", Color("#AAAAAA"))
+	pct.text = str(int(round(cur * 100))) + "%"
+	row.add_child(pct)
+	slider.value_changed.connect(func(v: float):
+		SaveManager.settings["ui_scale"] = v
+		SaveManager.save_game()
+		pct.text = str(int(round(v * 100))) + "%"
+	)
+
+func _add_colorblind_dropdown_row(parent: Node) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 20)
+	parent.add_child(row)
+	var lab := Label.new()
+	lab.text = tr("ui.settings.colorblind_palette")
+	lab.custom_minimum_size = Vector2(200, 0)
+	lab.add_theme_color_override("font_color", Color.WHITE)
+	lab.add_theme_font_size_override("font_size", 18)
+	row.add_child(lab)
+	var modes: Array[String] = ["none", "friendly"]
+	var ob := OptionButton.new()
+	ob.custom_minimum_size = Vector2(240, 40)
+	ob.add_item(tr("ui.settings.colorblind_none"))
+	ob.add_item(tr("ui.settings.colorblind_friendly"))
+	var cm := SaveManager.get_colorblind_mode()
+	ob.selected = 1 if cm == "friendly" else 0
+	ob.item_selected.connect(func(idx: int):
+		SaveManager.settings["colorblind_palette"] = modes[idx]
+		SaveManager.save_game()
+	)
+	row.add_child(ob)
 
 func _add_dropdown(parent: Node, label_text: String, current_val: String, callback: Callable):
 	var row = HBoxContainer.new()

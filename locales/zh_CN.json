@@ -6,11 +6,15 @@
       "stats": "🎮 %d 次游玩  |  💀 %d 击杀  |  🏆 %d 胜利",
       "gold": "💰 %d 金币",
       "play": "▶  开始游戏",
+      "shop": "🛒  商店",
       "meta": "⬆  永久升级",
       "collection": "📖  图鉴",
       "settings": "⚙  设置",
       "quit": "✕  退出",
       "omega_unlock": "????? 已解锁"
+    },
+    "intro_splash": {
+      "press_to_start": "按任意键或点击以继续"
     },
     "game_mode": {
       "title": "你想怎么玩？",
@@ -25,12 +29,29 @@
       "map_label": "🗺 地图",
       "vs_mode": "🗺 剧情模式\n\n开放地图\n存活 30 分钟！",
       "arena_mode": "⬡ 生存 / 竞技场\n\n波次防守\n🔒 即将推出……",
-      "map1": "🏰 陨落王国\n\n开阔地带\n中世纪遗迹\n存活 30 分钟！",
+      "mode_story": "📖 剧情 — 坚持到死神（约 30 分钟）",
+      "mode_fast": "⚡ 快速局 — 较短对局（约 14 分钟）",
+      "mode_arena": "⬡ 竞技场 — 锁定（即将推出）",
+      "map1": "🏰 陨落王国",
       "map2": "⬡ 地图 2\n\n即将推出……",
       "map3": "⬡ 地图 3\n\n即将推出……",
       "arena1": "⬡ 竞技场 1\n\n即将推出……",
+      "curse_label": "☠ 局内诅咒（难度）",
+      "curse_value": "等级 %d — 0 较缓和，5 极激烈",
+      "desc_story": "经典 Ironfall 节奏。时间到后与死神对决。祝好运！",
+      "desc_fast": "压缩波次与 Boss。死神更早到来，适合 10–15 分钟一局。",
+      "desc_arena": "波次防守竞技场计划在后续更新加入。",
+      "arena_locked_hint": "解锁后竞技场地图会显示在这里。",
       "back": "← 返回",
       "start": "▶ 开始！"
+    },
+    "shop": {
+      "title": "商店",
+      "tab_cosmetics": "外观",
+      "tab_pets": "宠物",
+      "tab_trailers": "预告片",
+      "placeholder": "即将推出 — 外观、宠物与预告片解锁将在此填充。",
+      "back": "← 主菜单"
     },
     "pause": {
       "title": "已暂停",
@@ -56,6 +77,14 @@
       "fullscreen": "全屏（F11）",
       "resolution": "分辨率",
       "vfx": "特效",
+      "performance_quality": "性能预设",
+      "perf_quality_high": "高（默认）",
+      "perf_quality_medium": "中",
+      "perf_quality_low": "低",
+      "ui_text_scale": "界面文字缩放",
+      "colorblind_palette": "色彩辅助",
+      "colorblind_none": "默认配色",
+      "colorblind_friendly": "高可见度经验球（红/绿区分）",
       "damage_numbers": "伤害数字",
       "hp_bars": "生命条",
       "screen_shake": "屏幕震动",
@@ -91,7 +120,8 @@
       "bind_p2_left": "玩家 2 — 左移（本地合作）",
       "bind_p2_right": "玩家 2 — 右移（本地合作）",
       "bind_pause": "暂停 / 菜单返回",
-      "bind_fullscreen": "切换全屏"
+      "bind_fullscreen": "切换全屏",
+      "gamepad_hint": "Xbox / PlayStation 等手柄：移动与方向键使用相同的输入动作（见 项目 → 输入映射）。玩家 1 可用 WASD 或左摇杆。"
     },
     "stats": {
       "total_kills": "⚔ 总击杀",
@@ -157,6 +187,9 @@
         "max_suffix": " (满级)",
         "weapon_upgrade": "⬆ %s → Lv%d",
         "item_upgrade": "⬆ %s → Lv%d",
+        "level_step_weapon": "升级：等级 %d → %d（本选项会升一级）",
+        "level_step_item": "升级：等级 %d → %d（本选项会升一级）",
+        "current_effect_line": "当前数值：%s",
         "new_weapon": "新武器：%s",
         "new_item": "新道具：%s"
       }
@@ -203,8 +236,8 @@
       "skip": "⏭ 跳过（%d）",
       "title_coop": "⭐ %s（%s）— 等级 %d ⭐",
       "title_solo": "⭐ 等级 %d — 选择升级 ⭐",
-      "option_weapon_prefix": "⚔ 武器",
-      "option_item_prefix": "🛡 道具",
+      "option_weapon_prefix": "⚔ 武器 — 点选下方一项",
+      "option_item_prefix": "🛡 道具 — 被动强化",
       "stat_speed": "移动速度 +20\n提高移动速度",
       "stat_max_hp": "最大生命 +25\n提高生命上限",
       "stat_heal": "立即 +20 生命\n立刻恢复生命",
@@ -529,7 +562,7 @@
     "character": {
       "warrior": {
         "name": "战士",
-        "desc": "均衡战士，额外起始伤害，新手友好。"
+        "desc": "均衡战士：+5 固定伤害与 +8 起源（战斗习惯）。适合入门。"
       },
       "mage": {
         "name": "法师",

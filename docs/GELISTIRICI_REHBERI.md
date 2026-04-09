@@ -4,7 +4,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 *(İngilizce projelerde eşdeğeri genelde `ARCHITECTURE.md`, `DEVELOPER_GUIDE.md` veya `docs/CONTRIBUTING.md` olarak adlandırılır.)*
 
 **Motor:** Godot 4.x  
-**Son güncelleme:** 2026-04-07
+**Son güncelleme:** 2026-04-09
 
 ### Dokümantasyonu ne zaman güncellemeliyiz?
 
@@ -25,9 +25,9 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 ## 1. Genel akış (oyun döngüsü)
 
-1. **`project.godot`** → `run/main_scene` ile giriş sahnesi (genelde ana menü).
+1. **`project.godot`** → `run/main_scene` = `res://ui/intro_splash.tscn` (kara overlay ~5 sn; arka plan tint’siz; `AudioManager.play_music(1)`; `ui.intro_splash.press_to_start` 4–6. sn alttan kayma (konum: `intro_splash.gd` `PROMPT_*` sabitleri + `.tscn` yatay offset); tuş / tık / gamepad → `main_menu.tscn`).
 2. **Autoload’lar** (`project.godot` → `[autoload]`): `SaveManager`, `InputRemap`, `LocalizationManager`, `AudioManager`, `ObjectPool`, `EnemyRegistry`, `EventBus`, `AchievementManager` — sahne yüklenmeden önce hazır olurlar (`SaveManager` ve `InputRemap`, `LocalizationManager`’dan önce yüklenir).
-3. Tipik oyuncu akışı: **Ana menü** → mod seçimi → **Karakter seçimi** → (co-op ise P2 karakter) → **Harita seçimi** → **`main/main.tscn`** (asıl oyun).
+3. Tipik oyuncu akışı: **Açılış ekranı** → **Ana menü** → mod seçimi → **Karakter seçimi** → (co-op ise P2 karakter) → **Harita seçimi** → **`main/main.tscn`** (asıl oyun).
 4. Oyunda oyuncu **`player/player.gd`** (karakter sahnesi üzerinden) ile yaratılır; `main/main.gd` spawn, dalga, ortam yöneticilerini kurar.
 
 **Önemli:** Karakter, silah ve eşya kimlikleri çoğunlukla **string ID** (`"warrior"`, `"fan_blade"`, `"ember_heart"`) ile taşınır; tek bir merkezi `.tres` veritabanı yoktur — aynı ID birden fazla dosyada tutarlı olmalıdır.
@@ -192,9 +192,9 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 ## 6. Harita ve mod seçimi
 
-- **`ui/map_select.gd`**: Mod (`vs` / `arena` planı) ve harita butonları; `SaveManager.selected_mode`, `SaveManager.selected_map` atanır; **Başlat** sırasında `register_codex_map(selected_map)` (kodeks). Oyun **`res://main/main.tscn`** ile başlar.
-- Yeni **hikaye haritası**: Burada yeni buton + `selected_map` string ID + `main` veya ortam tarafında bu ID’ye göre sahne/tileset/spawn mantığı (projede harita özel kod `main` ve ilgili manager’larda aranmalı).
-- **Arena**: `map_select` içinde kilitli; mod + `main` dalga mantığı `YOL_HARITASI.md` planı ile genişletilecek.
+- **`ui/map_select.gd`**: Run modu **`SaveManager.settings["run_variant"]`** (`story` / `fast`; `arena` şimdilik kilitli UI); harita listesi + önizleme; **`run_curse_tier`** (0–5) kaydı; **Başlat** → `SaveManager.selected_map` / mod alanları + `register_codex_map`. Süre ve boss ölçeği: `SaveManager.get_run_goal_sec()`, `get_mini_boss_times()`, `get_run_spawn_difficulty_mult()` (`spawn_manager`, `wave_manager`, `main`, `player`).
+- Yeni **hikaye haritası**: Yeni buton + `selected_map` string ID + `main` veya ortam tarafında bu ID’ye göre sahne/tileset/spawn mantığı.
+- **Arena**: `map_select` içinde kilitli; dalga mantığı `YOL_HARITASI.md` planı ile genişletilecek.
 
 ---
 
@@ -202,8 +202,10 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 | Alan | Tipik dosya |
 |------|-------------|
-| Ana menü | `ui/main_menu.gd` / `.tscn` |
-| Karakter seçimi | `ui/character_select.gd`, `character_select_p2.gd` (+ ortak metinler `ui/character_select_helpers.gd`) |
+| Açılış ekranı | `ui/intro_splash.gd` / `.tscn` — `FullRect`; prompt `PROMPT_ANCHOR_*` / `PROMPT_OFF_*` (4–6. sn tween); `MainMenuBackground.load_texture()`; tint yok; siyah overlay ~5 sn; müzik track 1; `ui.intro_splash.press_to_start` |
+| Ana menü | `ui/main_menu.gd` / `.tscn` — arka plan: `BackgroundBase` + isteğe bağlı `BackgroundPhoto` (`MainMenuBackground` / `assets/ui/main_menu_bg.png|.jpg|.webp`) + `BackgroundTint` + `StarsLayer`; `assets/ui/README_MAIN_MENU_BG.txt` |
+| Mağaza (iskelet) | `ui/shop_menu.gd` / `.tscn` |
+| Karakter seçimi | `ui/character_select.gd`, `character_select_p2.gd`, `character_select_helpers.gd`, `character_select_preview.gd` (sabit boy `TextureRect`: `idle_left` ilk kare önbelleği; kilit=siyah kutu, açık+satın alınmamış=silüet, satın alınmış=tam); `game_mode_select.gd` → `warmup_portraits_async`; ESC: P1→`game_mode_select`, P2→`character_select` |
 | Harita | `ui/map_select.gd` |
 | Level-up | `ui/upgrade_ui.gd` |
 | HUD (kill, altın, çubuklar) | `player/player.gd` + `player` sahnesindeki `CanvasLayer` düğümleri |
@@ -322,6 +324,7 @@ Bu rehber, kod tabanındaki gerçek yapıya göre yazılmıştır; yeni sistem e
 | `resolution_x` | int | Pencere genişliği (pencereli mod) |
 | `resolution_y` | int | Pencere yüksekliği |
 | `show_vfx` | bool | Birçok düşman/efektte VFX aç/kapa |
+| `performance_quality` | String | `"high"` / `"medium"` / `"low"` — düşman üst sınırı, sürü/kuşatma yoğunluğu, ağır VFX/partikül (`SaveManager.get_max_enemies_cap()`, `is_heavy_vfx_enabled()`, …) |
 | `screen_shake` | bool | Ekran sarsıntısı |
 | `player_vfx_opacity` | float | Oyuncu tarafı görsel efekt opaklığı çarpanı (0–1); `player.get_player_vfx_opacity()` |
 | `damage_numbers` | String | `"both_on"`, `"player_only"`, `"enemy_only"`, `"both_off"` |
@@ -331,7 +334,7 @@ Bu rehber, kod tabanındaki gerçek yapıya göre yazılmıştır; yeni sistem e
 | `enemy_high_contrast_outline` | bool | Düşmanlarda sarı siluet/çerçeve (yalnız yeni spawn); **Ayarlar → Görüntü**; `enemy_base.gd` `_setup_visuals()`. |
 | `input_keyboard_overrides` | Dictionary | İsteğe bağlı klavye eşlemesi: eylem adı (`ui_up`, …) → fiziksel tuş kodu (`int`); `core/input_remap.gd`. |
 
-**UI:** `ui/settings.gd` — Sekmeler: Ses, **Dil** (`locale`), **Görüntü** (`fullscreen`, çözünürlük, VFX, `enemy_high_contrast_outline`), **Oynanış** (`damage_numbers`, `hp_bars`, `screen_shake`, `pause_on_focus_loss`, `player_vfx_opacity`), **Kontroller** (tuş yeniden atama, `InputRemap`), Profil, Dev. **Tam ekran kısayolu:** `toggle_fullscreen` (F11) → `SaveManager._unhandled_input`.
+**UI:** `ui/settings.gd` — Sekmeler: Ses, **Dil** (`locale`), **Görüntü** (`fullscreen`, çözünürlük, VFX, `performance_quality`, `enemy_high_contrast_outline`), **Oynanış** (`damage_numbers`, `hp_bars`, `screen_shake`, `pause_on_focus_loss`, `player_vfx_opacity`), **Kontroller** (tuş yeniden atama, `InputRemap`), Profil, Dev. **Tam ekran kısayolu:** `toggle_fullscreen` (F11) → `SaveManager._unhandled_input`.
 
 ### `InputRemap` (`core/input_remap.gd`)
 

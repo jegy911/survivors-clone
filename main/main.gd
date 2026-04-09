@@ -91,11 +91,13 @@ func _process(delta):
 	_update_coop_hud()
 	update_timer_label()
 
-	if game_timer >= 900 and AudioManager.current_music == 1:
+	var music_mid: float = SaveManager.get_midpoint_music_sec()
+	if game_timer >= music_mid and AudioManager.current_music == 1:
 		AudioManager.play_music(2)
 
 	# Bağışıklık rotasyonu
-	if game_timer <= 900:
+	var imm_start: float = SaveManager.get_immunity_phase_start_sec()
+	if game_timer <= imm_start:
 		immunity_timer = 0.0
 		current_immunity = ""
 	else:
@@ -127,11 +129,12 @@ func _process(delta):
 	if spawn_timer <= 0:
 		var current_count = EnemyRegistry.get_live_count()
 		var min_enemies = spawn_manager.get_current_min_enemies(game_timer)
-		if current_count < spawn_manager.MAX_ENEMIES:
+		var cap = spawn_manager.get_max_enemies()
+		if current_count < cap:
 			var to_spawn = int(wave_manager.get_spawn_multiplier())
 			if current_count < min_enemies:
 				to_spawn = max(to_spawn, min_enemies - current_count)
-			var can_spawn = min(to_spawn, spawn_manager.MAX_ENEMIES - current_count)
+			var can_spawn = min(to_spawn, cap - current_count)
 			for i in can_spawn:
 				spawn_manager.spawn_random_enemy(game_timer, current_immunity)
 		spawn_timer = spawn_manager.get_current_spawn_interval(game_timer) * wave_manager.get_interval_multiplier()
@@ -142,7 +145,8 @@ func update_timer_label():
 	var minutes = int(game_timer) / 60
 	var seconds = int(game_timer) % 60
 	timer_label.text = "%02d:%02d" % [minutes, seconds]
-	if game_timer < 1800.0:
+	var goal: float = SaveManager.get_run_goal_sec()
+	if game_timer < goal:
 		timer_label.add_theme_color_override("font_color", Color("#FFFFFF"))
 		timer_label.add_theme_font_size_override("font_size", 18)
 	else:

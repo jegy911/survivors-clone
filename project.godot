@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Ironfall"
-run/main_scene="uid://dly1r8qbxxu0s"
+run/main_scene="res://ui/intro_splash.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 
 [audio]

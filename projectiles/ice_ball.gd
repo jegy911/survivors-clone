@@ -27,7 +27,7 @@ func _physics_process(delta):
 				EventBus.on_damage_dealt.emit(player, area, damage)
 			if area.has_method("apply_slow"):
 				area.apply_slow(0.3, 2.0)
-			if SaveManager.settings.get("show_vfx", true):
+			if SaveManager.is_heavy_vfx_enabled():
 				_spawn_freeze_effect()
 			ObjectPool.return_object(self)
 			return

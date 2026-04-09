@@ -6,11 +6,15 @@
       "stats": "🎮 %d Runs  |  💀 %d Kills  |  🏆 %d Wins",
       "gold": "💰 %d Gold",
       "play": "▶  PLAY",
+      "shop": "🛒  SHOP",
       "meta": "⬆  META UPGRADES",
       "collection": "📖  CODEX",
       "settings": "⚙  SETTINGS",
       "quit": "✕  QUIT",
       "omega_unlock": "????? UNLOCKED"
+    },
+    "intro_splash": {
+      "press_to_start": "Press any key or click to continue"
     },
     "game_mode": {
       "title": "HOW DO YOU WANT TO PLAY?",
@@ -25,12 +29,29 @@
       "map_label": "🗺 MAP",
       "vs_mode": "🗺 STORY MODE\n\nOpen map\nSurvive 30 minutes!",
       "arena_mode": "⬡ SURVIVAL/ARENA\n\nWave defense\n🔒 Coming soon...",
-      "map1": "🏰 FALLEN KINGDOM\n\nOpen field\nMedieval ruins\nSurvive 30 minutes!",
+      "mode_story": "📖 Story — survive until Reaper (~30 min)",
+      "mode_fast": "⚡ Fast run — shorter match (~14 min)",
+      "mode_arena": "⬡ Arena — locked (coming soon)",
+      "map1": "🏰 Fallen Kingdom",
       "map2": "⬡ MAP 2\n\nComing soon...",
       "map3": "⬡ MAP 3\n\nComing soon...",
       "arena1": "⬡ ARENA 1\n\nComing soon...",
+      "curse_label": "☠ Run curse (difficulty)",
+      "curse_value": "Tier %d — 0 calmer spawns, 5 intense",
+      "desc_story": "Classic Ironfall pacing. Reach the time limit to face the Reaper. Good luck!",
+      "desc_fast": "Compressed waves and bosses. Reaper arrives sooner — ideal for 10–15 minute sessions.",
+      "desc_arena": "Wave-defense arena is planned for a future update.",
+      "arena_locked_hint": "Arena maps will appear here when unlocked.",
       "back": "← BACK",
       "start": "▶ START!"
+    },
+    "shop": {
+      "title": "SHOP",
+      "tab_cosmetics": "Cosmetics",
+      "tab_pets": "Pets",
+      "tab_trailers": "Trailers",
+      "placeholder": "Coming soon — cosmetics, pets, and trailer unlocks will be filled in here.",
+      "back": "← MAIN MENU"
     },
     "pause": {
       "title": "PAUSED",
@@ -56,6 +77,14 @@
       "fullscreen": "Fullscreen (F11)",
       "resolution": "Resolution",
       "vfx": "VFX Effects",
+      "performance_quality": "Performance preset",
+      "perf_quality_high": "High (default)",
+      "perf_quality_medium": "Medium",
+      "perf_quality_low": "Low",
+      "ui_text_scale": "UI text scale",
+      "colorblind_palette": "Color accessibility",
+      "colorblind_none": "Default colors",
+      "colorblind_friendly": "High-visibility orbs (red/green shift)",
       "damage_numbers": "Damage Numbers",
       "hp_bars": "HP Bars",
       "screen_shake": "Screen Shake",
@@ -91,7 +120,8 @@
       "bind_p2_left": "Player 2 — Move left (co-op)",
       "bind_p2_right": "Player 2 — Move right (co-op)",
       "bind_pause": "Pause / menu back",
-      "bind_fullscreen": "Toggle fullscreen"
+      "bind_fullscreen": "Toggle fullscreen",
+      "gamepad_hint": "Xbox / PlayStation and other controllers: movement uses the same actions as arrow keys (look in Project → Input Map). Player 1 can use either WASD or the left stick."
     },
     "stats": {
       "total_kills": "⚔ Total Kills",
@@ -157,6 +187,9 @@
         "max_suffix": " (MAX)",
         "weapon_upgrade": "⬆ %s → Lv%d",
         "item_upgrade": "⬆ %s → Lv%d",
+        "level_step_weapon": "Upgrade: level %d → %d (this pick levels it up)",
+        "level_step_item": "Upgrade: level %d → %d (this pick levels it up)",
+        "current_effect_line": "Right now: %s",
         "new_weapon": "New weapon: %s",
         "new_item": "New: %s"
       }
@@ -203,8 +236,8 @@
       "skip": "⏭ Skip (%d)",
       "title_coop": "⭐ %s (%s) — LEVEL %d ⭐",
       "title_solo": "⭐ LEVEL %d — CHOOSE YOUR UPGRADE ⭐",
-      "option_weapon_prefix": "⚔ WEAPON",
-      "option_item_prefix": "🛡 ITEM",
+      "option_weapon_prefix": "⚔ WEAPON — tap an option below",
+      "option_item_prefix": "🛡 ITEM — passive upgrade",
       "stat_speed": "Move Speed +20\nIncreases move speed",
       "stat_max_hp": "Max HP +25\nIncreases maximum HP",
       "stat_heal": "Instant +20 HP\nHeals immediately",
@@ -529,7 +562,7 @@
     "character": {
       "warrior": {
         "name": "Warrior",
-        "desc": "Balanced fighter with bonus starting damage. Great first pick."
+        "desc": "Balanced fighter: +5 flat damage and +8 origin (combat habit). Good starter."
       },
       "mage": {
         "name": "Mage",

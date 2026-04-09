@@ -5,6 +5,11 @@ var _active_hero_class: String = ""
 var _class_filter_buttons: Dictionary = {}
 var _filter_accent: Color = Color("#9B59B6")
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		get_viewport().set_input_as_handled()
+		get_tree().change_scene_to_file("res://ui/game_mode_select.tscn")
+
 func _ready():
 	var vp = get_viewport().get_visible_rect().size
 	$Panel/VBoxContainer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -118,7 +123,7 @@ func _get_state(char_id: String) -> String:
 
 func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer:
 	var card = PanelContainer.new()
-	card.custom_minimum_size = Vector2(180, 340)
+	card.custom_minimum_size = Vector2(188, 380)
 	card.set_meta("index", i)
 
 	var card_style = StyleBoxFlat.new()
@@ -138,10 +143,8 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	vbox.add_theme_constant_override("separation", 8)
 
-	# Karakter görseli
-	var char_visual = ColorRect.new()
-	char_visual.custom_minimum_size = Vector2(70, 70)
-	char_visual.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	var cid: String = str(char_data["id"])
+	var char_visual: Control = null
 
 	# İsim etiketi
 	var name_label = Label.new()
@@ -162,7 +165,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 
 	match state:
 		"purchased":
-			char_visual.color = Color(char_data["color"])
+			char_visual = CharacterSelectPreview.make_portrait(cid, "full", Color(char_data["color"]))
 			name_label.text = char_data["name"]
 			name_label.add_theme_color_override("font_color", Color(char_data["color"]))
 			desc_label.text = CharacterSelectHelpers.rich_description_unlocked(char_data)
@@ -177,7 +180,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			vbox.add_child(btn)
 
 		"unlocked":
-			char_visual.color = Color(char_data["color"])
+			char_visual = CharacterSelectPreview.make_portrait(cid, "silhouette", Color(char_data["color"]))
 			name_label.text = char_data["name"]
 			name_label.add_theme_color_override("font_color", Color(char_data["color"]))
 			desc_label.text = CharacterSelectHelpers.rich_description_unlocked(char_data)
@@ -188,7 +191,6 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			var buy_color = Color("#27AE60") if can_afford else Color("#7F8C8D")
 			var btn = _make_button("Satın Al\n💰 " + str(cost), buy_color)
 			btn.disabled = not can_afford
-			var cid = char_data["id"]
 			btn.pressed.connect(func(): _on_purchase(cid))
 			vbox.add_child(char_visual)
 			vbox.add_child(name_label)
@@ -196,7 +198,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			vbox.add_child(btn)
 
 		"locked":
-			char_visual.color = Color(0.1, 0.1, 0.15, 1.0)
+			char_visual = CharacterSelectPreview.make_portrait(cid, "locked", Color(char_data.get("color", "#444466")))
 			name_label.text = "???" if char_data["secret"] else "🔒 " + char_data["name"]
 			name_label.add_theme_color_override("font_color", Color("#444466"))
 			desc_label.text = ""

@@ -244,19 +244,16 @@ func _physics_process(delta):
 	_update_animation(direction)
 
 func _get_input_direction() -> Vector2:
-	var direction = Vector2.ZERO
 	match player_id:
-		0: # P1 — WASD
-			if Input.is_action_pressed("p2_right"): direction.x += 1
-			if Input.is_action_pressed("p2_left"): direction.x -= 1
-			if Input.is_action_pressed("p2_down"): direction.y += 1
-			if Input.is_action_pressed("p2_up"): direction.y -= 1
-		1: # P2 — yön tuşları
-			if Input.is_action_pressed("ui_right"): direction.x += 1
-			if Input.is_action_pressed("ui_left"): direction.x -= 1
-			if Input.is_action_pressed("ui_down"): direction.y += 1
-			if Input.is_action_pressed("ui_up"): direction.y -= 1
-	return direction
+		0:
+			var d := Input.get_vector("p2_left", "p2_right", "p2_up", "p2_down")
+			if d.length_squared() < 0.01:
+				d = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+			return d
+		1:
+			return Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+		_:
+			return Vector2.ZERO
 
 func _update_animation(direction: Vector2):
 	var sprite = get_node_or_null("AnimatedSprite2D")
@@ -548,12 +545,18 @@ func get_weapon_description(type: String) -> String:
 		var w = active_weapons[type]
 		if w.level >= w.max_level:
 			return w.get_description() + tr("ui.player.loadout.max_suffix")
-		return tr("ui.player.loadout.weapon_upgrade") % [w.get_description(), w.level + 1]
-	var name_key := "codex.weapon.%s.name" % type
-	var wname := tr(name_key)
-	if wname == name_key:
+		var name_key := "codex.weapon.%s.name" % type
+		var wname: String = tr(name_key)
+		if wname == name_key or wname.is_empty():
+			wname = str(w.get("weapon_name"))
+		var step: String = tr("ui.player.loadout.level_step_weapon") % [w.level, w.level + 1]
+		var cur: String = tr("ui.player.loadout.current_effect_line") % w.get_description()
+		return wname + "\n" + step + "\n" + cur
+	var name_key_new := "codex.weapon.%s.name" % type
+	var wname_new := tr(name_key_new)
+	if wname_new == name_key_new:
 		return ""
-	var line := tr("ui.player.loadout.new_weapon") % wname
+	var line := tr("ui.player.loadout.new_weapon") % wname_new
 	var desc_key := "codex.weapon.%s.desc" % type
 	var desc := tr(desc_key)
 	if desc != desc_key and not desc.is_empty():
@@ -565,12 +568,18 @@ func get_item_description(type: String) -> String:
 		var i = active_items[type]
 		if i.level >= i.max_level:
 			return i.get_description() + tr("ui.player.loadout.max_suffix")
-		return tr("ui.player.loadout.item_upgrade") % [i.get_description(), i.level + 1]
-	var name_key := "codex.item.%s.name" % type
-	var iname := tr(name_key)
-	if iname == name_key:
+		var name_key := "codex.item.%s.name" % type
+		var iname: String = tr(name_key)
+		if iname == name_key or iname.is_empty():
+			iname = str(i.get("item_name"))
+		var step: String = tr("ui.player.loadout.level_step_item") % [i.level, i.level + 1]
+		var cur: String = tr("ui.player.loadout.current_effect_line") % i.get_description()
+		return iname + "\n" + step + "\n" + cur
+	var name_key_new := "codex.item.%s.name" % type
+	var iname_new := tr(name_key_new)
+	if iname_new == name_key_new:
 		return ""
-	var line := tr("ui.player.loadout.new_item") % iname
+	var line := tr("ui.player.loadout.new_item") % iname_new
 	var desc_key := "codex.item.%s.desc" % type
 	var desc := tr(desc_key)
 	if desc != desc_key and not desc.is_empty():
@@ -578,7 +587,7 @@ func get_item_description(type: String) -> String:
 	return line
 
 func gain_xp(amount: int):
-	var curse_multiplier = 1.0 + SaveManager.meta_upgrades.get("curse_level", 0) * 1.0
+	var curse_multiplier = 1.0 + SaveManager.meta_upgrades.get("curse_level", 0) * 1.0 + SaveManager.get_run_curse_tier() * 0.12
 	var bonus = 1.0 + SaveManager.meta_upgrades["xp_bonus"] * 0.1 + category_xp_bonus + _origin_xp_bonus
 	if shrine_active:
 		bonus *= 3.0
@@ -769,7 +778,7 @@ func _solo_die():
 	SaveManager.add_gold(int(gold_earned / max(1, player_count)))
 	var char_id = CharacterData.CHARACTERS[SaveManager.selected_character]["id"]
 	var game_time = get_tree().get_first_node_in_group("main").game_timer
-	var won = game_time >= 1800.0
+	var won = game_time >= SaveManager.get_run_goal_sec()
 	SaveManager.update_stats_after_game(char_id, kill_count, game_time, evolution_obtained, tank_killed, gold_earned, level - 1, boss_kill_count, total_damage_dealt, chests_opened, active_items.size(), won)
 	AchievementManager.check_after_game(kill_count, game_time)
 	EventBus.player_died.emit()
@@ -781,7 +790,7 @@ func _deferred_die():
 	var go = game_over_scene.instantiate()
 	go.process_mode = Node.PROCESS_MODE_ALWAYS
 	get_tree().root.add_child(go)
-	var won = game_time >= 1800.0
+	var won = game_time >= SaveManager.get_run_goal_sec()
 	go.show_stats(game_time, level, kill_count, gold_earned, won)
 
 func collect_gold(amount: int):
@@ -824,6 +833,8 @@ func _update_screen_shake(delta: float):
 
 
 func _calc_xp_for_level(lvl: int) -> int:
+	if lvl <= 5:
+		return 18 + lvl * 8
 	if lvl <= 20:
 		return 30 + lvl * 10
 	elif lvl <= 40:

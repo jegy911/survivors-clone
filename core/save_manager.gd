@@ -49,6 +49,16 @@ var settings = {
 	"pause_on_focus_loss": true,
 	"enemy_high_contrast_outline": false,
 	"input_keyboard_overrides": {},
+	## "high" | "medium" | "low" — düşman üst sınırı, olay spawn yoğunluğu, VFX/partikül.
+	"performance_quality": "high",
+	## Koşu seçimi (map_select): "story" | "fast" | "arena"
+	"run_variant": "story",
+	## 0–5: koşu başı zorluk / lanet kademesi
+	"run_curse_tier": 0,
+	## Renk körlüğü: "none" | "friendly"
+	"colorblind_palette": "none",
+	## Arayüz metin/ölçek (~0.85–1.35)
+	"ui_scale": 1.0,
 }
 
 # Kilit sistemi
@@ -386,6 +396,126 @@ func is_codex_entry_unlocked(entry: Dictionary) -> bool:
 			return codex_maps.has(id)
 		_:
 			return false
+
+func get_performance_quality() -> String:
+	var q := str(settings.get("performance_quality", "high"))
+	if q != "low" and q != "medium" and q != "high":
+		return "high"
+	return q
+
+
+func get_max_enemies_cap() -> int:
+	match get_performance_quality():
+		"low":
+			return 320
+		"medium":
+			return 650
+		_:
+			return 1200
+
+
+## Patlama / ölüm partikülleri vb.; `show_vfx` kapalıysa veya düşük kalitede kapalı.
+func is_heavy_vfx_enabled() -> bool:
+	if not settings.get("show_vfx", true):
+		return false
+	if get_performance_quality() == "low":
+		return false
+	return true
+
+
+func get_particle_burst_count(base: int) -> int:
+	var m := get_particle_budget_mult()
+	return maxi(1, int(round(float(base) * m)))
+
+
+func get_particle_budget_mult() -> float:
+	match get_performance_quality():
+		"low":
+			return 0.35
+		"medium":
+			return 0.65
+		_:
+			return 1.0
+
+
+func get_swarm_event_count_mult() -> float:
+	match get_performance_quality():
+		"low":
+			return 0.45
+		"medium":
+			return 0.72
+		_:
+			return 1.0
+
+
+func get_encircle_event_count_mult() -> float:
+	match get_performance_quality():
+		"low":
+			return 0.5
+		"medium":
+			return 0.78
+		_:
+			return 1.0
+
+
+const STORY_RUN_GOAL_SEC: float = 1800.0
+const FAST_RUN_GOAL_SEC: float = 840.0
+
+
+func is_fast_run() -> bool:
+	return str(settings.get("run_variant", "story")) == "fast"
+
+
+func get_run_goal_sec() -> float:
+	return FAST_RUN_GOAL_SEC if is_fast_run() else STORY_RUN_GOAL_SEC
+
+
+func get_run_curse_tier() -> int:
+	return clampi(int(settings.get("run_curse_tier", 0)), 0, 5)
+
+
+func get_mini_boss_times() -> Array:
+	if is_fast_run():
+		var f: float = get_run_goal_sec() / STORY_RUN_GOAL_SEC
+		return [int(300 * f), int(600 * f), int(900 * f), int(1200 * f), int(1500 * f)]
+	return [300, 600, 900, 1200, 1500]
+
+
+func get_midpoint_music_sec() -> float:
+	return get_run_goal_sec() * 0.5
+
+
+func get_immunity_phase_start_sec() -> float:
+	return get_run_goal_sec() * 0.5
+
+
+func get_ui_scale() -> float:
+	return clampf(float(settings.get("ui_scale", 1.0)), 0.82, 1.38)
+
+
+func get_colorblind_mode() -> String:
+	var m := str(settings.get("colorblind_palette", "none"))
+	return m if m == "friendly" or m == "none" else "none"
+
+
+func filter_accessibility_orb_color(c: Color) -> Color:
+	if get_colorblind_mode() != "friendly":
+		return c
+	var h := c.h
+	var s := c.s
+	var v := c.v
+	if h < 0.07 or h > 0.92:
+		return Color.from_hsv(0.08, minf(s, 0.88), v)
+	if h > 0.22 and h < 0.48:
+		return Color.from_hsv(0.56, minf(s, 0.88), v)
+	return c
+
+
+## 0 = biraz kolay, 5 = zor; spawn aralığı / min düşman ile çarpılır.
+func get_run_spawn_difficulty_mult() -> float:
+	var t := float(get_run_curse_tier())
+	return lerpf(0.88, 1.26, t / 5.0)
+
 
 func reset_meta_upgrades():
 	for key in meta_upgrades:

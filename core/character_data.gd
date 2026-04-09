@@ -9,10 +9,10 @@ const CHARACTERS = [
 	{
 		"id": "warrior",
 		"name": "Savaşçı",
-		"description": "Güçlü ve dayanıklı.\n+10 başlangıç hasarı.",
+		"description": "Güçlü ve dayanıklı.\n+5 düz hasar; köken +8 (Muharebe alışkanlığı).",
 		"color": "#3498DB",
 		"start_weapon": "bullet",
-		"bonus_damage": 10,
+		"bonus_damage": 5,
 		"bonus_hp": 0,
 		"bonus_speed": 0,
 		"bonus_armor": 0,
@@ -23,7 +23,7 @@ const CHARACTERS = [
 		"cost": 0,
 		"unlock_hint": "",
 		"unlock_condition": {},
-		"origin_bonus": {"type": "damage_flat", "amount": 15, "penalty": "none"},
+		"origin_bonus": {"type": "damage_flat", "amount": 8, "penalty": "none"},
 		"hero_class": "fighter",
 	},
 	# --- Erken oyun — görev + altın (2) ---

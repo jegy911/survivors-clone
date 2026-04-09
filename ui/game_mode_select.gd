@@ -75,6 +75,12 @@ func _ready():
 	back_btn.pressed.connect(_on_back)
 	vbox.add_child(back_btn)
 
+	# Karakter seçim ekranı açılmadan portre dokularını arka planda önbelleğe al (takılmayı azaltır)
+	call_deferred("_warmup_character_portraits")
+
+func _warmup_character_portraits() -> void:
+	await CharacterSelectPreview.warmup_portraits_async(get_tree(), 3)
+
 func _make_btn(text: String, color: Color) -> Button:
 	var btn = Button.new()
 	btn.text = text

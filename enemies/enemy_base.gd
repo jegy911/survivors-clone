@@ -84,7 +84,8 @@ func take_damage(amount: int, shooter: Node = null):
 	hp -= amount
 	# Öfke modu — HP %30'a düşünce
 	var main = get_tree().get_first_node_in_group("main")
-	if not rage_triggered and float(hp) / float(max_hp) <= 0.30 and main and main.game_timer >= 900:
+	var rage_after: float = SaveManager.get_immunity_phase_start_sec()
+	if not rage_triggered and float(hp) / float(max_hp) <= 0.30 and main and main.game_timer >= rage_after:
 		rage_triggered = true
 		BASE_SPEED *= 1.5
 		current_speed = BASE_SPEED
@@ -165,16 +166,17 @@ func die(killer: Node = null):
 					continue
 				if enemy.global_position.distance_to(global_position) < explosion_range:
 					enemy.take_damage(int(player_node.get_total_damage(20)))
-			var fire_flash = ColorRect.new()
-			fire_flash.size = Vector2(200, 200)
-			fire_flash.color = Color("#FF4500")
-			fire_flash.modulate.a = 0.5
-			fire_flash.position = global_position - Vector2(100, 100)
-			get_parent().add_child(fire_flash)
-			var fire_tween = fire_flash.create_tween()
-			fire_tween.tween_property(fire_flash, "modulate:a", 0.0, 0.3)
-			fire_tween.tween_callback(fire_flash.queue_free)
-	if SaveManager.settings.get("show_vfx", true):
+			if SaveManager.is_heavy_vfx_enabled():
+				var fire_flash = ColorRect.new()
+				fire_flash.size = Vector2(200, 200)
+				fire_flash.color = Color("#FF4500")
+				fire_flash.modulate.a = 0.5
+				fire_flash.position = global_position - Vector2(100, 100)
+				get_parent().add_child(fire_flash)
+				var fire_tween = fire_flash.create_tween()
+				fire_tween.tween_property(fire_flash, "modulate:a", 0.0, 0.3)
+				fire_tween.tween_callback(fire_flash.queue_free)
+	if SaveManager.is_heavy_vfx_enabled():
 		_spawn_particles()
 	call_deferred("_try_drop_gold")
 	call_deferred("_try_drop_chest")
@@ -232,13 +234,14 @@ func _try_drop_gold():
 	orb.init(v, global_position)
 
 func _spawn_particles():
-	for i in 6:
+	var n: int = SaveManager.get_particle_burst_count(6)
+	for i in n:
 		var particle = ColorRect.new()
 		particle.size = Vector2(6, 6)
 		particle.color = particle_color
 		particle.position = global_position
 		get_parent().add_child(particle)
-		var angle = (float(i) / 6.0) * TAU
+		var angle = (float(i) / float(n)) * TAU
 		var target = global_position + Vector2(cos(angle), sin(angle)) * randf_range(30, 60)
 		var tween = particle.create_tween()
 		tween.set_parallel(true)
@@ -279,6 +282,7 @@ func _on_death_complete():
 		elif roll < 0.10: # %8 yeşil
 			xp_val = XP_VALUE * 3
 			orb_color = Color("#2ECC71")
+		orb_color = SaveManager.filter_accessibility_orb_color(orb_color)
 		var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
 		orb.init(xp_val, global_position)
 		if orb.get_node_or_null("ColorRect"):

@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://c502y7yjdf6i3"]
+[gd_scene format=3 uid="uid://cblbr0axi3xce"]
 
 [ext_resource type="Script" uid="uid://brj3eip1w0pk5" path="res://player/player.gd" id="1_jbiqt"]
 [ext_resource type="Texture2D" uid="uid://cocovqp5l4xqw" path="res://assets/warrior assetleri/StandIn_Swordsman_v01.png" id="2_rva82"]

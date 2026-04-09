@@ -6,7 +6,7 @@ Godot 4 ile geliştirilen bir hayatta kalma / vampire survivors tarzı proje.
 
 1. [Godot 4.6](https://godotengine.org/) (veya `project.godot` içindeki `config/features` ile uyumlu sürüm) kurulu olsun.
 2. Projeyi Godot’ta **Import / Open** ile aç.
-3. **F5** (Play) veya Editor’dan ana sahneyi çalıştır.
+3. **F5** (Play) veya Editor’dan ana sahneyi çalıştır — önce kısa **açılış ekranı** (arka plan ~5 sn içinde aydınlanır; 4–6. sn arası “devam…” metni alttan kayar (konum `ui/intro_splash.gd` içindeki `PROMPT_*` sabitleri); ardından tuş/tık), sonra ana menü.
 
 ## Dokümantasyon
 
@@ -23,6 +23,10 @@ Godot 4 ile geliştirilen bir hayatta kalma / vampire survivors tarzı proje.
 **Yerelleştirme:** `locales/tr.json`, `en.json`, `zh_CN.json` — `LocalizationManager` + `LANGUAGE_CATALOG`. Anahtar kontrolü: `python locales/check_locale_parity.py` (referans `en.json`). Yeni diller şimdilik plan aşamasında; tablo `GELISTIRICI_REHBERI.md` içinde.
 
 **Tuşlar:** Ana menü / duraklatmadan **Ayarlar → Kontroller** ile P1 ve P2 hareketi, duraklat ve tam ekran için klavye yeniden atama (`InputRemap`, `user://save.cfg` içinde `input_keyboard_overrides`). Oyun kolu eksen ve tuşları projedeki `InputMap` tanımıyla kalır.
+
+**Performans:** **Ayarlar → Görüntü** içinde **Performans ön ayarı** (Yüksek / Orta / Düşük) — düşman üst sınırı, sürü/kuşatma yoğunluğu ve ağır VFX/partikül davranışını değiştirir (`SaveManager.performance_quality`).
+
+**Ana menü arka planı:** İsteğe bağlı tam ekran görsel — `assets/ui/main_menu_bg.png` (veya `.jpg` / `.webp`). Ayrıntı: `assets/ui/README_MAIN_MENU_BG.txt`.
 
 ## Lisans
 

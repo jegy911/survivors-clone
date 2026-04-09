@@ -14,16 +14,20 @@ var siege_cooldown_timer = 0.0
 const SIEGE_DURATION = 120.0
 const SIEGE_COOLDOWN = 60.0
 
-var mini_boss_times = [300, 600, 900, 1200, 1500]
+var mini_boss_times: Array = [300, 600, 900, 1200, 1500]
 var next_mini_boss_index = 0
 
 var main_node: Node = null
 var wave_event_timer: float = 0.0
 const WAVE_EVENT_INTERVAL: float = 180.0
-const WAVE_EVENT_MIN_TIME: float = 120.0
+var _run_goal_sec: float = 1800.0
+var _wave_event_min_time: float = 120.0
 
 func initialize(main: Node):
 	main_node = main
+	_run_goal_sec = SaveManager.get_run_goal_sec()
+	mini_boss_times = SaveManager.get_mini_boss_times()
+	_wave_event_min_time = maxf(72.0, 120.0 * (_run_goal_sec / 1800.0))
 
 func process(delta: float, game_timer: float):
 	# Mini boss kontrolü
@@ -32,16 +36,16 @@ func process(delta: float, game_timer: float):
 			main_node.spawn_manager.spawn_mini_boss(game_timer, next_mini_boss_index)
 			next_mini_boss_index += 1
 
-	# 30. dakikada Reaper modu
-	if game_timer >= 1800 and not reaper_mode:
+	# Reaper — hedef süre (hikâye 30 dk / hızlı ~14 dk)
+	if game_timer >= _run_goal_sec and not reaper_mode:
 		_start_reaper_mode(game_timer)
 
 	# Reaper modunda sürekli spawn
 	if reaper_mode:
 		return
 
-	# 15. dakikadan sonra siege sistemi
-	if game_timer >= 900 and game_timer < 1800:
+	var half_goal: float = _run_goal_sec * 0.5
+	if game_timer >= half_goal and game_timer < _run_goal_sec:
 		if siege_active:
 			siege_timer -= delta
 			if siege_timer <= 0:
@@ -55,7 +59,7 @@ func process(delta: float, game_timer: float):
 				_start_siege_wave()
 				
 	# Wave event sistemi
-	if game_timer >= WAVE_EVENT_MIN_TIME and not reaper_mode and not siege_active:
+	if game_timer >= _wave_event_min_time and not reaper_mode and not siege_active:
 		wave_event_timer += delta
 		if wave_event_timer >= WAVE_EVENT_INTERVAL:
 			wave_event_timer = 0.0

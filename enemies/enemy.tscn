@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bps51vklopc3d"]
 
 [ext_resource type="Script" uid="uid://g1jgmj3ti7eo" path="res://enemies/enemy.gd" id="1_4gyqm"]
-[ext_resource type="Texture2D" uid="uid://cgdkk7x5frnp4" path="res://assets/warrior assetleri/enemy1.png" id="2_7frlh"]
+[ext_resource type="Texture2D" uid="uid://cgdkk7x5frnp4" path="res://assets/enemy assets/enemy1 assets/enemy1.png" id="2_7frlh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4gyqm"]
 size = Vector2(40, 40)
@@ -116,7 +116,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"walk_left",
-"speed": 10.0
+"speed": 14.0
 }]
 
 [node name="Enemy" type="Area2D" unique_id=346134072 groups=["enemies"]]
@@ -138,4 +138,4 @@ color = Color(0.90588236, 0.29803923, 0.23529412, 1)
 scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_ymuxt")
 animation = &"walk_left"
-frame_progress = 0.30523282
+frame_progress = 0.22942202

@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-09 (Ayarlar: Kontroller sekmesi + InputRemap; görüntü/oynanış sekme düzeni)
+**Son güncelleme:** 2026-04-09 (Fast run + lanet; mağaza iskeleti; Görüntü: UI ölçeği + renk erişilebilirliği; level-up emoji önekleri)
 
 ---
 
@@ -41,6 +41,11 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-09 | **Açılış ekranı (intro)** — `intro_splash`: `FullRect` layout; tint yok (foto tam parlaklık); ~5 sn siyah fade; 4–6. sn prompt alttan (ayar: `intro_splash.gd` `PROMPT_*`); `AudioManager.play_music(1)`; `press_to_start` → `main_menu.tscn`; `MainMenuBackground.gd`. |
+| 2026-04-09 | **Ana menü arka plan zemini** — `main_menu.tscn`: foto katmanı + tint + yıldızlar; `assets/ui/main_menu_bg` (png/jpg/webp) + `README_MAIN_MENU_BG.txt`. |
+| 2026-04-09 | **Karakter seçim UX + hız** — Portre: `idle_left` ilk kare + doku önbelleği (SubViewport kaldırıldı); kilit=siyah, unlock+satın değil=silüet, satın=tam; sabit 136² çerçeve; `game_mode_select` arka plan `warmup_portraits_async`; ESC ile P1→oyun modu, P2→P1 seçim. |
+| 2026-04-09 | **Run modu + mağaza + erişilebilirlik** — `map_select`: story/fast, `run_curse_tier` 0–5, harita önizleme; `SaveManager` run süreleri / spawn çarpanı; ana menü **Mağaza** → `ui/shop_menu` (placeholder sekmeler); Ayarlar → Görüntü: `ui_scale`, `colorblind_palette`; `upgrade_ui` emoji satır önekleri; `locales` + matris güncellemesi. |
+| 2026-04-09 | **Performans ön ayarı (erişilebilirlik #6)** — `performance_quality` high/medium/low: `get_max_enemies_cap` (1200/650/320), sürü ve kuşatma olay sayısı çarpanı, `is_heavy_vfx_enabled` (düşükte kapalı) + partikül `get_particle_burst_count`; `spawn_manager.get_max_enemies()`, `main.gd` spawn döngüsü; Ayarlar → Görüntü açılır liste; locale. |
 | 2026-04-09 | **Ayarlar — Kontroller + sekme düzeni** — `InputRemap` autoload; `input_keyboard_overrides` kaydı; Ayarlar → **Kontroller**: P1/P2 yön, duraklat, tam ekran için klavye yeniden atama (oyun kolu olayları korunur); **Görüntü**: `enemy_high_contrast_outline`; **Oynanış**: `pause_on_focus_loss` vb.; tam ilerleme sıfırlamada tuşlar varsayılana; `locales` + matris Tablo 1 satır 18 **Kısmi** notu. |
 | 2026-04-09 | **Erişilebilirlik (matris Tablo 1)** — Pencere odak kaybında otomatik duraklatma (`main.gd` + `pause_on_focus_loss`); F11 tam ekran (`toggle_fullscreen`, `SaveManager.apply_window_mode_from_settings`); isteğe bağlı düşman yüksek kontrast çerçevesi (`enemy_high_contrast_outline` + `enemy_base`); exploder yakınlık nabız uyarısı; `pause_menu_overlay` grubu ile ESC/odak senkronu; locale `tr`/`en`/`zh_CN`. |
 | 2026-04-07 | **Erişilebilirlik matrisi — çoklu dil** — `ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`: Tablo 1 altında **Çoklu dil (çapraz)** bölümü; run HUD / dalga ödülü / level-up önekleri kapsamı + kalan sabit metin notu; üst bilgi “son kod kontrolü” güncellendi. |

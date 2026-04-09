@@ -1,190 +1,260 @@
 extends CanvasLayer
 
-var selected_mode = "vs"
-var selected_map = "vs_map"
-var map_row: HBoxContainer = null
+const MAP_PREVIEW := {
+	"vs_map": "res://assets/zemin/zemin.png",
+}
+const MAP_IDS_VS := ["vs_map"]
 
-func _ready():
-	var screen_size = get_viewport().get_visible_rect().size
-	var bg = ColorRect.new()
+var _variant: String = "story"
+var _map_id: String = "vs_map"
+var _curse_tier: int = 0
+var _map_column: VBoxContainer
+var _preview: TextureRect
+var _desc: RichTextLabel
+var _curse_value: Label
+var _mode_entries: Array = []
+
+
+func _ready() -> void:
+	var s: float = SaveManager.get_ui_scale()
+
+	var bg := ColorRect.new()
 	bg.color = Color("#0A0A14")
 	bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(bg)
-	for i in 30:
-		var star = ColorRect.new()
-		star.size = Vector2(randf_range(1, 2), randf_range(1, 2))
-		star.color = Color(1, 1, 1, randf_range(0.1, 0.5))
-		star.position = Vector2(randf_range(0, screen_size.x), randf_range(0, screen_size.y))
-		bg.add_child(star)
 
-	var panel = PanelContainer.new()
-	panel.custom_minimum_size = Vector2(680, 500)
-	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.position -= Vector2(340, 250)
-	var style = StyleBoxFlat.new()
-	style.bg_color = Color("#0D0D1A")
-	style.border_color = Color("#9B59B6")
-	style.border_width_left = 2
-	style.border_width_right = 2
-	style.border_width_top = 2
-	style.border_width_bottom = 2
-	style.corner_radius_top_left = 16
-	style.corner_radius_top_right = 16
-	style.corner_radius_bottom_left = 16
-	style.corner_radius_bottom_right = 16
-	panel.add_theme_stylebox_override("panel", style)
-	add_child(panel)
+	var root := MarginContainer.new()
+	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	root.add_theme_constant_override("margin_left", int(20 * s))
+	root.add_theme_constant_override("margin_right", int(20 * s))
+	root.add_theme_constant_override("margin_top", int(16 * s))
+	root.add_theme_constant_override("margin_bottom", int(16 * s))
+	add_child(root)
 
-	var vbox = VBoxContainer.new()
-	vbox.name = "VBox"
-	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
-	vbox.add_theme_constant_override("separation", 20)
-	panel.add_child(vbox)
+	var hsplit := HBoxContainer.new()
+	hsplit.add_theme_constant_override("separation", int(24 * s))
+	hsplit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hsplit.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	root.add_child(hsplit)
 
-	var title = Label.new()
+	var left := VBoxContainer.new()
+	left.custom_minimum_size = Vector2(int(300 * s), 0)
+	left.add_theme_constant_override("separation", int(14 * s))
+	hsplit.add_child(left)
+
+	var title := Label.new()
 	title.text = tr("ui.map_select.title")
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 28)
+	title.add_theme_font_size_override("font_size", int(26 * s))
 	title.add_theme_color_override("font_color", Color("#9B59B6"))
-	vbox.add_child(title)
+	left.add_child(title)
 
-	vbox.add_child(HSeparator.new())
+	left.add_child(HSeparator.new())
 
-	# Oyun modu seçimi
-	var mode_label = Label.new()
-	mode_label.text = tr("ui.map_select.mode_label")
-	mode_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	mode_label.add_theme_color_override("font_color", Color("#9B59B6"))
-	mode_label.add_theme_font_size_override("font_size", 16)
-	vbox.add_child(mode_label)
+	var ml := Label.new()
+	ml.text = tr("ui.map_select.mode_label")
+	ml.add_theme_color_override("font_color", Color("#AAAAAA"))
+	ml.add_theme_font_size_override("font_size", int(14 * s))
+	left.add_child(ml)
 
-	var mode_row = HBoxContainer.new()
-	mode_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	mode_row.add_theme_constant_override("separation", 16)
-	vbox.add_child(mode_row)
+	var mode_col := VBoxContainer.new()
+	mode_col.add_theme_constant_override("separation", 8)
+	left.add_child(mode_col)
+	_register_mode_btn(mode_col, "story", "ui.map_select.mode_story", s)
+	_register_mode_btn(mode_col, "fast", "ui.map_select.mode_fast", s)
+	_register_mode_btn(mode_col, "arena", "ui.map_select.mode_arena", s, true)
 
-	var vs_btn = _make_btn(tr("ui.map_select.vs_mode"), Color("#27AE60"), true)
-	var arena_btn = _make_btn(tr("ui.map_select.arena_mode"), Color("#6C3483"), false)
-	arena_btn.disabled = true
-	arena_btn.modulate.a = 0.4
-	vs_btn.pressed.connect(func(): _on_mode_selected("vs", vs_btn, arena_btn))
-	arena_btn.pressed.connect(func(): _on_mode_selected("arena", arena_btn, vs_btn))
-	mode_row.add_child(vs_btn)
-	mode_row.add_child(arena_btn)
+	left.add_child(HSeparator.new())
 
-	vbox.add_child(HSeparator.new())
+	var hl := Label.new()
+	hl.text = tr("ui.map_select.map_label")
+	hl.add_theme_color_override("font_color", Color("#AAAAAA"))
+	hl.add_theme_font_size_override("font_size", int(14 * s))
+	left.add_child(hl)
 
-	# Harita başlığı
-	var map_label = Label.new()
-	map_label.text = tr("ui.map_select.map_label")
-	map_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	map_label.add_theme_color_override("font_color", Color("#9B59B6"))
-	map_label.add_theme_font_size_override("font_size", 16)
-	vbox.add_child(map_label)
+	_map_column = VBoxContainer.new()
+	_map_column.add_theme_constant_override("separation", 8)
+	left.add_child(_map_column)
 
-	# Harita satırı
-	map_row = HBoxContainer.new()
-	map_row.name = "MapRow"
-	map_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	map_row.add_theme_constant_override("separation", 16)
-	vbox.add_child(map_row)
-	_build_maps("vs")
+	left.add_child(HSeparator.new())
 
-	vbox.add_child(HSeparator.new())
+	var cl := Label.new()
+	cl.text = tr("ui.map_select.curse_label")
+	cl.add_theme_color_override("font_color", Color("#AAAAAA"))
+	cl.add_theme_font_size_override("font_size", int(14 * s))
+	left.add_child(cl)
 
-	var btn_row = HBoxContainer.new()
-	btn_row.alignment = BoxContainer.ALIGNMENT_CENTER
-	btn_row.add_theme_constant_override("separation", 20)
-	vbox.add_child(btn_row)
+	_curse_value = Label.new()
+	_curse_value.add_theme_color_override("font_color", Color.WHITE)
+	_curse_value.add_theme_font_size_override("font_size", int(15 * s))
+	left.add_child(_curse_value)
 
-	var back_btn = _make_action_btn(tr("ui.map_select.back"), Color("#922B21"))
-	var play_btn = _make_action_btn(tr("ui.map_select.start"), Color("#1E8449"))
-	back_btn.pressed.connect(_on_back)
-	play_btn.pressed.connect(_on_play)
-	btn_row.add_child(back_btn)
-	btn_row.add_child(play_btn)
+	var curse_slider := HSlider.new()
+	curse_slider.min_value = 0
+	curse_slider.max_value = 5
+	curse_slider.step = 1
+	curse_slider.value = float(SaveManager.settings.get("run_curse_tier", 0))
+	curse_slider.custom_minimum_size = Vector2(int(260 * s), int(28 * s))
+	curse_slider.value_changed.connect(_on_curse_changed)
+	left.add_child(curse_slider)
+	_on_curse_changed(curse_slider.value)
 
-func _build_maps(mode: String):
-	for child in map_row.get_children():
-		child.queue_free()
-	if mode == "vs":
-		var map1 = _make_btn(tr("ui.map_select.map1"), Color("#27AE60"), true)
-		var map2 = _make_btn(tr("ui.map_select.map2"), Color("#6C3483"), false)
-		var map3 = _make_btn(tr("ui.map_select.map3"), Color("#6C3483"), false)
-		map2.disabled = true
-		map2.modulate.a = 0.4
-		map3.disabled = true
-		map3.modulate.a = 0.4
-		map1.pressed.connect(func(): _on_map("vs_map"))
-		selected_map = "vs_map"
-		map_row.add_child(map1)
-		map_row.add_child(map2)
-		map_row.add_child(map3)
+	var btn_row := HBoxContainer.new()
+	btn_row.add_theme_constant_override("separation", 12)
+	left.add_child(btn_row)
+	btn_row.add_child(_action_btn(tr("ui.map_select.back"), Color("#922B21"), s))
+	btn_row.add_child(_action_btn(tr("ui.map_select.start"), Color("#1E8449"), s))
+	btn_row.get_child(0).pressed.connect(_on_back)
+	btn_row.get_child(1).pressed.connect(_on_play)
+
+	var right := VBoxContainer.new()
+	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	right.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	right.add_theme_constant_override("separation", int(12 * s))
+	hsplit.add_child(right)
+
+	_preview = TextureRect.new()
+	_preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_preview.custom_minimum_size = Vector2(int(400 * s), int(280 * s))
+	_preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_preview.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var pnl := PanelContainer.new()
+	pnl.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	pnl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var ps := StyleBoxFlat.new()
+	ps.bg_color = Color("#12121f")
+	ps.border_color = Color("#9B59B6")
+	ps.set_border_width_all(2)
+	ps.set_corner_radius_all(12)
+	pnl.add_theme_stylebox_override("panel", ps)
+	pnl.add_child(_preview)
+	right.add_child(pnl)
+
+	_desc = RichTextLabel.new()
+	_desc.bbcode_enabled = true
+	_desc.fit_content = true
+	_desc.scroll_active = false
+	_desc.custom_minimum_size = Vector2(200, int(80 * s))
+	_desc.add_theme_color_override("default_color", Color("#CCCCCC"))
+	_desc.add_theme_font_size_override("normal_font_size", int(14 * s))
+	right.add_child(_desc)
+
+	_sync_mode_styles()
+	_rebuild_map_buttons()
+	_update_preview()
+
+
+func _register_mode_btn(parent: Node, id: String, tr_key: String, s: float, disabled: bool = false) -> void:
+	var b := Button.new()
+	b.text = tr(tr_key)
+	b.disabled = disabled
+	b.modulate.a = 0.45 if disabled else 1.0
+	b.custom_minimum_size = Vector2(0, int(40 * s))
+	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	b.add_theme_font_size_override("font_size", int(15 * s))
+	_style_list_btn(b, false)
+	b.pressed.connect(func(): _set_variant(id))
+	parent.add_child(b)
+	_mode_entries.append({"id": id, "btn": b})
+
+
+func _style_list_btn(b: Button, sel: bool) -> void:
+	var st := StyleBoxFlat.new()
+	st.bg_color = Color("#3d2a5c") if sel else Color("#1A1A2E")
+	st.set_corner_radius_all(8)
+	b.add_theme_stylebox_override("normal", st)
+	b.add_theme_color_override("font_color", Color.WHITE)
+
+
+func _sync_mode_styles() -> void:
+	for e in _mode_entries:
+		var id: String = str(e["id"])
+		var b: Button = e["btn"]
+		if b.disabled:
+			continue
+		_style_list_btn(b, id == _variant)
+
+
+func _set_variant(id: String) -> void:
+	if id == "arena":
+		return
+	_variant = id
+	_sync_mode_styles()
+	_rebuild_map_buttons()
+	_update_preview()
+
+
+func _rebuild_map_buttons() -> void:
+	for c in _map_column.get_children():
+		c.queue_free()
+	if _variant == "arena":
+		var lb := Label.new()
+		lb.text = tr("ui.map_select.arena_locked_hint")
+		lb.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_map_column.add_child(lb)
+		return
+	for mid in MAP_IDS_VS:
+		var mb := Button.new()
+		mb.text = tr("ui.map_select.map1") if mid == "vs_map" else mid
+		mb.custom_minimum_size = Vector2(0, 36)
+		mb.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		_style_list_btn(mb, mid == _map_id)
+		mb.pressed.connect(_select_map.bind(mid))
+		_map_column.add_child(mb)
+
+
+func _select_map(mid: String) -> void:
+	_map_id = mid
+	_rebuild_map_buttons()
+	_update_preview()
+
+
+func _on_curse_changed(v: float) -> void:
+	_curse_tier = int(round(v))
+	_curse_value.text = tr("ui.map_select.curse_value") % _curse_tier
+
+
+func _update_preview() -> void:
+	var path: String = str(MAP_PREVIEW.get(_map_id, MAP_PREVIEW["vs_map"]))
+	var tex: Texture2D = load(path) as Texture2D
+	_preview.texture = tex
+	var body: String
+	if _variant == "fast":
+		body = tr("ui.map_select.desc_fast")
+	elif _variant == "arena":
+		body = tr("ui.map_select.desc_arena")
 	else:
-		var arena1 = _make_btn(tr("ui.map_select.arena1"), Color("#6C3483"), false)
-		arena1.disabled = true
-		arena1.modulate.a = 0.4
-		map_row.add_child(arena1)
+		body = tr("ui.map_select.desc_story")
+	_desc.text = "[center]" + body + "[/center]"
 
-func _on_mode_selected(mode: String, selected_btn: Button, other_btn: Button):
-	selected_mode = mode
-	# Seçili buton görselini güncelle
-	var sel_style = selected_btn.get_theme_stylebox("normal").duplicate()
-	sel_style.bg_color = Color("#27AE60").darkened(0.2) if mode == "vs" else Color("#6C3483").darkened(0.2)
-	selected_btn.add_theme_stylebox_override("normal", sel_style)
-	_build_maps(mode)
 
-func _make_btn(text: String, color: Color, selected: bool = false) -> Button:
-	var btn = Button.new()
-	btn.text = text
-	btn.custom_minimum_size = Vector2(160, 130)
-	btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	var style = StyleBoxFlat.new()
-	style.bg_color = color.darkened(0.2) if selected else color.darkened(0.5)
-	style.border_color = color
-	style.border_width_left = 2
-	style.border_width_right = 2
-	style.border_width_top = 2
-	style.border_width_bottom = 2
-	style.corner_radius_top_left = 10
-	style.corner_radius_top_right = 10
-	style.corner_radius_bottom_left = 10
-	style.corner_radius_bottom_right = 10
-	btn.add_theme_stylebox_override("normal", style)
-	var hover = style.duplicate()
-	hover.bg_color = color.darkened(0.2)
-	btn.add_theme_stylebox_override("hover", hover)
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.add_theme_font_size_override("font_size", 14)
-	return btn
+func _action_btn(txt: String, bg: Color, s: float) -> Button:
+	var b := Button.new()
+	b.text = txt
+	b.custom_minimum_size = Vector2(int(120 * s), int(44 * s))
+	b.add_theme_font_size_override("font_size", int(15 * s))
+	var st := StyleBoxFlat.new()
+	st.bg_color = bg
+	st.set_corner_radius_all(8)
+	b.add_theme_stylebox_override("normal", st)
+	b.add_theme_color_override("font_color", Color.WHITE)
+	return b
 
-func _make_action_btn(text: String, color: Color) -> Button:
-	var btn = Button.new()
-	btn.text = text
-	btn.custom_minimum_size = Vector2(160, 50)
-	var style = StyleBoxFlat.new()
-	style.bg_color = color
-	style.corner_radius_top_left = 8
-	style.corner_radius_top_right = 8
-	style.corner_radius_bottom_left = 8
-	style.corner_radius_bottom_right = 8
-	btn.add_theme_stylebox_override("normal", style)
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.add_theme_font_size_override("font_size", 16)
-	return btn
 
-func _on_map(map_id: String):
-	selected_map = map_id
-
-func _on_back():
+func _on_back() -> void:
 	if SaveManager.game_mode == "local_coop":
 		get_tree().change_scene_to_file("res://ui/character_select_p2.tscn")
 	else:
 		get_tree().change_scene_to_file("res://ui/character_select.tscn")
 
-func _on_play():
-	SaveManager.selected_mode = selected_mode
-	SaveManager.selected_map = selected_map
-	SaveManager.register_codex_map(selected_map)
+
+func _on_play() -> void:
+	if _variant == "arena":
+		return
+	SaveManager.settings["run_variant"] = _variant
+	SaveManager.settings["run_curse_tier"] = _curse_tier
+	SaveManager.selected_mode = "vs"
+	SaveManager.selected_map = _map_id
+	SaveManager.register_codex_map(_map_id)
 	SaveManager.save_game()
 	get_tree().change_scene_to_file("res://main/main.tscn")

@@ -22,7 +22,22 @@ func _process(_delta):
 		_collect()
 
 func _collect():
+	if collected:
+		return
 	collected = true
+	set_process(false)
+	scale = Vector2.ONE
+	var tw := create_tween()
+	tw.set_parallel(true)
+	tw.tween_property(self, "scale", Vector2(1.35, 1.35), 0.14).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(body, "modulate", Color(1.2, 1.05, 0.7, 1.0), 0.12)
+	tw.set_parallel(false)
+	tw.tween_interval(0.08)
+	tw.tween_property(self, "scale", Vector2(0.05, 0.05), 0.22).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tw.tween_property(body, "modulate:a", 0.0, 0.18)
+	tw.tween_callback(_finish_chest_open)
+
+func _finish_chest_open():
 	if player:
 		player.chests_opened += 1
 	_give_reward()
@@ -33,15 +48,12 @@ func _give_reward():
 		return
 	var roll = randf()
 	if roll < 0.5:
-		# %50 — rastgele passive item ver
 		var all_items = ["armor", "speed_charm", "magnet", "lifesteal", "poison", "shield", "crit", "luck_stone", "ember_heart"]
 		var item_id = all_items[randi() % all_items.size()]
 		player.add_item(item_id)
 	elif roll < 0.80:
-		# %30 — gold
 		player.collect_gold(5 + randi() % 6)
 	else:
-		# %20 — HP heal
 		player.heal(int(player.max_hp * 0.15))
 
 func init(pos: Vector2):

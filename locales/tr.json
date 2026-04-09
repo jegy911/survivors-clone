@@ -6,11 +6,15 @@
       "stats": "🎮 %d Koşu  |  💀 %d Öldürme  |  🏆 %d Kazanma",
       "gold": "💰 %d Altın",
       "play": "▶  OYNA",
+      "shop": "🛒  MAĞAZA",
       "meta": "⬆  META UPGRADES",
       "collection": "📖  KODEKS",
       "settings": "⚙  AYARLAR",
       "quit": "✕  ÇIKIŞ",
       "omega_unlock": "????? UNLOCKED"
+    },
+    "intro_splash": {
+      "press_to_start": "Devam etmek için bir tuşa basın veya tıklayın"
     },
     "game_mode": {
       "title": "NASIL OYNAMAK İSTİYORSUN?",
@@ -25,12 +29,29 @@
       "map_label": "🗺 HARİTA",
       "vs_mode": "🗺 HİKAYE MODU\n\nAçık harita\n30 dakika hayatta kal!",
       "arena_mode": "⬡ SURVIVAL/ARENA\n\nDalga savunma\n🔒 Yakında...",
-      "map1": "🏰 DÜŞMÜŞ KRALLIK\n\nAçık alan\nOrtaçağ kalıntıları\n30 dakika hayatta kal!",
+      "mode_story": "📖 Hikâye — Reaper’a kadar (~30 dk)",
+      "mode_fast": "⚡ Hızlı koşu — kısa maç (~14 dk)",
+      "mode_arena": "⬡ Arena — kilitli (yakında)",
+      "map1": "🏰 Düşmüş Krallık",
       "map2": "⬡ HARİTA 2\n\nYakında...",
       "map3": "⬡ HARİTA 3\n\nYakında...",
       "arena1": "⬡ ARENA 1\n\nYakında...",
+      "curse_label": "☠ Koşu laneti (zorluk)",
+      "curse_value": "Seviye %d — 0 daha sakin, 5 çok yoğun",
+      "desc_story": "Klasik Ironfall temposu. Süre dolunca Reaper ile yüzleşirsin. Bol şans!",
+      "desc_fast": "Sıkıştırılmış dalgalar ve bosslar. Reaper daha erken gelir — 10–15 dakikalık seanslar için ideal.",
+      "desc_arena": "Dalga savunma arenası gelecek bir güncellemede planlanıyor.",
+      "arena_locked_hint": "Arena haritaları açıldığında burada görünecek.",
       "back": "← GERİ",
       "start": "▶ BAŞLAT!"
+    },
+    "shop": {
+      "title": "MAĞAZA",
+      "tab_cosmetics": "Kozmetik",
+      "tab_pets": "Evcil",
+      "tab_trailers": "Fragmanlar",
+      "placeholder": "Yakında — kozmetik, evcil ve fragman kilidi burada doldurulacak.",
+      "back": "← ANA MENÜ"
     },
     "pause": {
       "title": "DURAKLATILDI",
@@ -56,6 +77,14 @@
       "fullscreen": "Tam ekran (F11)",
       "resolution": "Çözünürlük",
       "vfx": "VFX Efektleri",
+      "performance_quality": "Performans ön ayarı",
+      "perf_quality_high": "Yüksek (varsayılan)",
+      "perf_quality_medium": "Orta",
+      "perf_quality_low": "Düşük",
+      "ui_text_scale": "Arayüz metin ölçeği",
+      "colorblind_palette": "Renk erişilebilirliği",
+      "colorblind_none": "Varsayılan renkler",
+      "colorblind_friendly": "Yüksek görünürlük orb’ları (kırmızı/yeşil kaydırma)",
       "damage_numbers": "Hasar Sayıları",
       "hp_bars": "Can Barları",
       "screen_shake": "Ekran Sarsıntısı",
@@ -91,7 +120,8 @@
       "bind_p2_left": "Oyuncu 2 — Sol (co-op)",
       "bind_p2_right": "Oyuncu 2 — Sağ (co-op)",
       "bind_pause": "Duraklat / menü geri",
-      "bind_fullscreen": "Tam ekran aç/kapa"
+      "bind_fullscreen": "Tam ekran aç/kapa",
+      "gamepad_hint": "Xbox / PlayStation ve diğer kollar: hareket, ok tuşlarıyla aynı eylemleri kullanır (Proje → Input Map). Oyuncu 1 WASD veya sol çubuğu kullanabilir."
     },
     "stats": {
       "total_kills": "⚔ Toplam Öldürme",
@@ -157,6 +187,9 @@
         "max_suffix": " (MAX)",
         "weapon_upgrade": "⬆ %s → Lv%d",
         "item_upgrade": "⬆ %s → Lv%d",
+        "level_step_weapon": "Yükseltme: seviye %d → %d (bu seçim bir üst seviye)",
+        "level_step_item": "Yükseltme: seviye %d → %d (bu seçim bir üst seviye)",
+        "current_effect_line": "Şu anki değerler: %s",
         "new_weapon": "Yeni silah: %s",
         "new_item": "Yeni: %s"
       }
@@ -203,8 +236,8 @@
       "skip": "⏭ Skip (%d)",
       "title_coop": "⭐ %s (%s) — LEVEL %d ⭐",
       "title_solo": "⭐ LEVEL %d — SEÇİMİNİ YAP ⭐",
-      "option_weapon_prefix": "⚔ SİLAH",
-      "option_item_prefix": "🛡 EŞYA",
+      "option_weapon_prefix": "⚔ SİLAH — aşağıdan birini seç",
+      "option_item_prefix": "🛡 EŞYA — pasif yükseltme",
       "stat_speed": "Hareket Hızı +20\nHareket hızını artırır",
       "stat_max_hp": "Max Can +25\nMaksimum canı artırır",
       "stat_heal": "Anında +20 Can\nHemen can yeniler",
@@ -529,7 +562,7 @@
     "character": {
       "warrior": {
         "name": "Savaşçı",
-        "desc": "Dengeli dövüşçü; ekstra başlangıç hasarı. İlk seçim için ideal."
+        "desc": "Dengeli dövüşçü; +5 düz hasar, +8 köken (muharebe alışkanlığı). İyi başlangıç."
       },
       "mage": {
         "name": "Büyücü",
