@@ -6,7 +6,7 @@ var _class_filter_buttons: Dictionary = {}
 var _filter_accent: Color = Color("#2471A3")
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
+	if MenuInput.is_menu_back_pressed(event):
 		get_viewport().set_input_as_handled()
 		get_tree().change_scene_to_file("res://ui/character_select.tscn")
 

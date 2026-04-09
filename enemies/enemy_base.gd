@@ -144,11 +144,23 @@ func flash():
 func _get_original_color() -> Color:
 	return body.color if body else Color.WHITE
 
+
+func _notify_enemy_kill_to_player(explicit_killer: Node = null) -> void:
+	var killer_player: Node = explicit_killer
+	if killer_player == null and has_meta("killer"):
+		killer_player = get_meta("killer")
+	if killer_player == null:
+		killer_player = _get_nearest_player()
+	if killer_player != null and killer_player.has_method("on_enemy_killed"):
+		killer_player.on_enemy_killed(global_position)
+
+
 func die(killer: Node = null):
 	if is_dead:
 		return
 	is_dead = true
-	# EventBus.enemy_killed sadece player.on_enemy_killed içinde emit edilir
+	# Kill sayısı hemen (tween / hit-stop beklenmez); HUD ve eşya tetikleri anında güncellenir.
+	_notify_enemy_kill_to_player(killer)
 	AudioManager.play_death()
 # Ateş sinerjisi — evrimi olan silahlar varsa %10 patlama
 	var player_node = get_tree().get_first_node_in_group("player")
@@ -186,6 +198,16 @@ func die(killer: Node = null):
 	tween.tween_property(self, "scale", Vector2(0.0, 0.0), 0.12)
 	tween.tween_callback(_on_death_complete)
 
+func _any_player_can_pickup_cog() -> bool:
+	var tree := get_tree()
+	if tree == null:
+		return false
+	for p in tree.get_nodes_in_group("player"):
+		if p.has_method("can_collect_more_cog_shards") and p.can_collect_more_cog_shards():
+			return true
+	return false
+
+
 func _try_drop_special_pickup():
 	var roll = randf()
 	if roll < 0.005:
@@ -193,9 +215,10 @@ func _try_drop_special_pickup():
 		get_parent().add_child(oath)
 		oath.init(global_position)
 	elif roll < 0.025:
-		var shard = load("res://effects/cog_shard.tscn").instantiate()
-		get_parent().add_child(shard)
-		shard.init(global_position)
+		if _any_player_can_pickup_cog():
+			var shard = load("res://effects/cog_shard.tscn").instantiate()
+			get_parent().add_child(shard)
+			shard.init(global_position)
 	elif roll < 0.037:
 		var pickup
 		if randf() < 0.5:
@@ -264,14 +287,6 @@ func get_codex_id() -> String:
 
 func _on_death_complete():
 	SaveManager.register_codex_discovered(get_codex_id())
-	# Co-op: en yakın oyuncu kill alır
-	var killer = null
-	if has_meta("killer"):
-		killer = get_meta("killer")
-	if killer == null:
-		killer = _get_nearest_player()
-	if killer:
-		killer.on_enemy_killed(global_position)
 	if randf() < XP_DROP_CHANCE:
 		var roll = randf()
 		var xp_val = XP_VALUE

@@ -2,8 +2,15 @@ extends CanvasLayer
 
 signal upgrade_chosen(upgrade_id)
 
-var weapon_upgrades = ["bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade", "hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram"]
-var item_upgrades = ["lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool", "luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart", "glyph_charm", "resonance_stone", "rampart_plate", "iron_bulwark"]
+const WEAPON_UPGRADE_IDS: Array[String] = [
+	"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade",
+	"hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram",
+]
+const ITEM_UPGRADE_IDS: Array[String] = [
+	"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool",
+	"luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart", "glyph_charm", "resonance_stone",
+	"rampart_plate", "iron_bulwark",
+]
 var stat_upgrades = ["speed", "max_hp", "heal"]
 
 func _leading_icon(id: String, is_evolution: bool) -> String:
@@ -19,7 +26,7 @@ func _leading_icon(id: String, is_evolution: bool) -> String:
 				return "💚 "
 			_:
 				return "✨ "
-	if id in weapon_upgrades or id in item_upgrades:
+	if id in WEAPON_UPGRADE_IDS or id in ITEM_UPGRADE_IDS:
 		return ""
 	return ""
 
@@ -135,10 +142,17 @@ func build_pool() -> Array:
 			"is_evolution": true
 		})
 	
+	var prog := has_progression_upgrades(player_ref)
 	for id in stat_upgrades:
+		if id == "max_hp" and not prog:
+			continue
+		if id == "speed" and (not prog or float(player_ref.SPEED) >= float(player_ref.MAX_MOVE_SPEED)):
+			continue
+		if id == "heal" and not prog:
+			continue
 		pool.append({"id": id, "weight": 1.5, "is_evolution": false})
 	
-	for id in weapon_upgrades:
+	for id in WEAPON_UPGRADE_IDS:
 		if player_ref.active_weapons.has(id):
 			var w = player_ref.active_weapons[id]
 			if w.level < w.max_level:
@@ -146,7 +160,7 @@ func build_pool() -> Array:
 		else:
 			if player_ref.can_add_weapon():
 				pool.append({"id": id, "weight": 0.3 + luck * 0.2, "is_evolution": false})
-	for id in item_upgrades:
+	for id in ITEM_UPGRADE_IDS:
 		if player_ref.active_items.has(id):
 			var i = player_ref.active_items[id]
 			if i.level < i.max_level:
@@ -198,9 +212,9 @@ func get_upgrade_text(id: String) -> String:
 		var title = tr("ui.upgrade_ui.evolution_pick_title")
 		return title + "\n" + WeaponEvolution.localized_name(id) + "\n" + WeaponEvolution.localized_description(id)
 	
-	if id in weapon_upgrades:
+	if id in WEAPON_UPGRADE_IDS:
 		return tr("ui.upgrade_ui.option_weapon_prefix") + "\n" + player_ref.get_weapon_description(id)
-	if id in item_upgrades:
+	if id in ITEM_UPGRADE_IDS:
 		return tr("ui.upgrade_ui.option_item_prefix") + "\n" + player_ref.get_item_description(id)
 	if id in stat_upgrades:
 		return _stat_upgrade_text(id)
@@ -261,6 +275,9 @@ func show_upgrades(player):
 	chosen_upgrades = weighted_pick(current_pool, pick_count)
 	if player_ref.get("cog_shard_bonus_active"):
 		player_ref.cog_shard_bonus_active = false
+		player_ref.cog_shard_count = 0
+	if player_ref.has_method("_update_cog_label"):
+		player_ref._update_cog_label()
 	
 	var char_index = SaveManager.selected_character if player_ref.player_id == 0 else SaveManager.selected_character_p2
 	var char_name = CharacterData.CHARACTERS[char_index]["name"]
@@ -304,3 +321,27 @@ func _on_skip():
 	player_ref.gain_xp(int(player_ref.xp_to_next_level * 0.3))
 	upgrade_chosen.emit("skip")
 	visible = false
+
+
+static func has_progression_upgrades(player: Node) -> bool:
+	if player == null or not is_instance_valid(player):
+		return false
+	if not WeaponEvolution.get_available_evolutions(player).is_empty():
+		return true
+	for id in WEAPON_UPGRADE_IDS:
+		if player.active_weapons.has(id):
+			var w = player.active_weapons[id]
+			if w.level < w.max_level:
+				return true
+		else:
+			if player.can_add_weapon():
+				return true
+	for id in ITEM_UPGRADE_IDS:
+		if player.active_items.has(id):
+			var i = player.active_items[id]
+			if i.level < i.max_level:
+				return true
+		else:
+			if player.can_add_item():
+				return true
+	return false

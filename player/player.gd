@@ -14,6 +14,8 @@ const _LEVELUP_ITEM_IDS: PackedStringArray = [
 var player_id: int = 0
 var BASE_SPEED = 130.0
 var SPEED = 130.0
+## Yer hareketi üst sınırı (level / meta / tılsım ile taşmasın).
+const MAX_MOVE_SPEED: float = 300.0
 var hp = 100
 var max_hp = 100
 var bullet_damage = 10
@@ -216,6 +218,7 @@ func apply_character_bonuses():
 		all_weapons.shuffle()
 		for w in all_weapons.slice(0, 3):
 			add_weapon(w)
+	SPEED = minf(float(SPEED), MAX_MOVE_SPEED)
 
 func apply_meta_bonuses():
 	var meta = SaveManager.meta_upgrades
@@ -225,6 +228,7 @@ func apply_meta_bonuses():
 	hp = max_hp
 	bullet_damage += meta["damage_bonus"] * 5
 	SPEED += meta["speed_bonus"] * 10
+	SPEED = minf(float(SPEED), MAX_MOVE_SPEED)
 	
 	# Başlangıç zırhı — take_damage'de kullanılıyor
 	# (armor_bonus direkt orada okunuyor)
@@ -237,9 +241,13 @@ func apply_meta_bonuses():
 	# Revival — oyun başında sıfırla
 	revival_used = false
 
+func get_effective_move_speed() -> float:
+	return minf(float(SPEED), MAX_MOVE_SPEED)
+
+
 func _physics_process(delta):
 	var direction = _get_input_direction()
-	velocity = direction.normalized() * SPEED
+	velocity = direction.normalized() * get_effective_move_speed()
 	move_and_slide()
 	_update_animation(direction)
 
@@ -510,7 +518,9 @@ func on_enemy_killed(enemy_position: Vector2):
 		show_floating_text("COMBO x" + str(combo) + "!", enemy_position + Vector2(randf_range(-30, 30), -80), Color("#FF6B35"))
 	EventBus.enemy_killed.emit(enemy_position)
 	if SaveManager.game_mode != "local_coop":
-		$CanvasLayer/StatsRow/KillLabel.text = "💀 " + str(kill_count)
+		var kl: Node = get_node_or_null("CanvasLayer/StatsRow/KillLabel")
+		if kl:
+			kl.text = "💀 " + str(kill_count)
 
 # YENİ — tank öldürme takibi için
 func on_tank_killed():
@@ -637,7 +647,7 @@ func _on_upgrade_chosen(upgrade_id: String):
 	else:
 		match upgrade_id:
 			"speed":
-				SPEED += 20
+				SPEED = minf(SPEED + 20.0, MAX_MOVE_SPEED)
 			"max_hp":
 				max_hp += 25
 				hp = min(hp + 25, max_hp)
@@ -882,12 +892,37 @@ func set_player_id(id: int):
 	player_id = id
 
 
-func _update_cog_label():
-	var cog_label = get_node_or_null("CanvasLayer/StatsRow/CogLabel")
-	if cog_label:
-		cog_label.text = "⚙ " + str(cog_shard_count) + "/5"
+func can_collect_more_cog_shards() -> bool:
+	return cog_shard_count < 5
 
-func collect_cog_shard():
+
+func apply_empty_level_reward() -> void:
+	heal(20)
+	var gold_amt: int = 25 * (3 if shrine_active else 1)
+	gold_earned += gold_amt
+	EventBus.gold_collected.emit(gold_amt)
+	if SaveManager.game_mode != "local_coop":
+		var gl := get_node_or_null("CanvasLayer/StatsRow/GoldLabel")
+		if gl:
+			gl.text = "💰 " + str(gold_earned)
+	show_floating_text(tr("ui.player.empty_level_reward"), global_position + Vector2(0, -88), Color("#FFD700"), 18)
+	AudioManager.play_levelup()
+
+
+func _update_cog_label() -> void:
+	var cog_label := get_node_or_null("CanvasLayer/StatsRow/CogLabel")
+	if cog_label == null:
+		return
+	cog_label.text = "⚙ " + str(cog_shard_count) + "/5"
+	if cog_shard_count >= 5:
+		cog_label.add_theme_color_override("font_color", Color("#FFD700"))
+	else:
+		cog_label.remove_theme_color_override("font_color")
+
+
+func collect_cog_shard() -> bool:
+	if cog_shard_count >= 5:
+		return false
 	cog_shard_count += 1
 	show_floating_text(
 		"⚙ " + str(cog_shard_count) + "/5",
@@ -896,14 +931,13 @@ func collect_cog_shard():
 	)
 	_update_cog_label()
 	if cog_shard_count >= 5:
-		cog_shard_count = 0
 		cog_shard_bonus_active = true
-		_update_cog_label()
 		show_floating_text(
-			"⚙ DİŞLİ USTASI! +1 SEÇENEK",
+			tr("ui.player.cog_master_ready"),
 			global_position + Vector2(0, -80),
 			Color("#00FFFF"), 22
 		)
+	return true
 func activate_blood_oath():
 	blood_oath_active = true
 	blood_oath_timer = BLOOD_OATH_DURATION

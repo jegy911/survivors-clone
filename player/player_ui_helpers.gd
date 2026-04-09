@@ -123,7 +123,7 @@ static func toggle_stats_panel(player: Node) -> void:
 		[_t("ui.player.stat_crit"), "%d%%" % int((player.category_crit_bonus + crit_item + tag_crit) * 100)],
 		[_t("ui.player.stat_cooldown"), "%d%%" % int((1.0 - player.get_cooldown_multiplier()) * 100)],
 		[_t("ui.player.stat_area"), "%d%%" % int((player.get_area_multiplier() - 1.0) * 100)],
-		[_t("ui.player.stat_speed"), str(int(player.SPEED))],
+		[_t("ui.player.stat_speed"), str(int(player.get_effective_move_speed()))],
 		[_t("ui.player.stat_magnet"), str(int(player.get_magnet_bonus()))],
 		[_t("ui.player.stat_tag_kesici") % tag_counts.get("kesici", 0), ""],
 		[_t("ui.player.stat_tag_patlayici") % tag_counts.get("patlayici", 0), ""],

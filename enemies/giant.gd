@@ -36,6 +36,7 @@ func die(killer: Node = null):
 	if is_dead:
 		return
 	is_dead = true
+	_notify_enemy_kill_to_player(killer)
 	AudioManager.play_death()
 	_try_drop_gold()
 	if SaveManager.is_heavy_vfx_enabled():
@@ -61,13 +62,6 @@ func die(killer: Node = null):
 
 func _on_death_complete():
 	SaveManager.register_codex_discovered(get_codex_id())
-	var killer = null
-	if has_meta("killer"):
-		killer = get_meta("killer")
-	if killer == null:
-		killer = _get_nearest_player()
-	if killer:
-		killer.on_enemy_killed(global_position)
 	if randf() < XP_DROP_CHANCE:
 		for i in 5:
 			var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")

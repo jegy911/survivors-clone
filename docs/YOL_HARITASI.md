@@ -41,6 +41,9 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-09 | **Cog / level-up / veri doc** — Dişli 5’te sınır + sarı etiket, doluyken düşmez; boş progression level-up’ta +20 can / +25 altın (UI yok); max hızda hız kartı yok; `has_progression_upgrades` + `apply_empty_level_reward`; `docs/SILAHLAR_ESYALAR_EVO.md` tabloları. |
+| 2026-04-09 | **Kill HUD + hız tavanı** — `enemy_base`/`giant`/`boss`: öldürme `die()` anında `on_enemy_killed` (tween + hit-stop beklenmez); `main._process` co-op HUD her kare; `player.MAX_MOVE_SPEED` 300 + `get_effective_move_speed()`. |
+| 2026-04-09 | **Menülerde ESC / geri** — `core/menu_input.gd` (`MenuInput.is_menu_back_pressed`): `ui_cancel`, ESC, gamepad B; `game_mode_select`, `map_select`, `shop`, `meta_upgrade`, `collection` (önce seçim temizle), `settings` (rebind varken önce iptal), `pause` (önce iç ayar paneli), `game_over`→ana menü, `intro` (prompt sonrası); karakter seçim P1/P2 güncellendi. |
 | 2026-04-09 | **Açılış ekranı (intro)** — `intro_splash`: `FullRect` layout; tint yok (foto tam parlaklık); ~5 sn siyah fade; 4–6. sn prompt alttan (ayar: `intro_splash.gd` `PROMPT_*`); `AudioManager.play_music(1)`; `press_to_start` → `main_menu.tscn`; `MainMenuBackground.gd`. |
 | 2026-04-09 | **Ana menü arka plan zemini** — `main_menu.tscn`: foto katmanı + tint + yıldızlar; `assets/ui/main_menu_bg` (png/jpg/webp) + `README_MAIN_MENU_BG.txt`. |
 | 2026-04-09 | **Karakter seçim UX + hız** — Portre: `idle_left` ilk kare + doku önbelleği (SubViewport kaldırıldı); kilit=siyah, unlock+satın değil=silüet, satın=tam; sabit 136² çerçeve; `game_mode_select` arka plan `warmup_portraits_async`; ESC ile P1→oyun modu, P2→P1 seçim. |

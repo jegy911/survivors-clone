@@ -217,6 +217,10 @@
     "hud": {
       "wave_counter": "Wave: %d"
     },
+    "player": {
+      "empty_level_reward": "+20 HP  +25 gold\n(no upgrades left)",
+      "cog_master_ready": "⚙ GEAR MASTER! +1 OPTION"
+    },
     "wave_reward": {
       "title": "⚡ WAVE %d COMPLETE!",
       "pick_prompt": "Pick a reward:",

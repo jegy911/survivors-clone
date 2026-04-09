@@ -217,6 +217,10 @@
     "hud": {
       "wave_counter": "Dalga: %d"
     },
+    "player": {
+      "empty_level_reward": "+20 can  +25 altın\n(yükseltme kalmadı)",
+      "cog_master_ready": "⚙ DİŞLİ USTASI! +1 SEÇENEK"
+    },
     "wave_reward": {
       "title": "⚡ %d. DALGA TAMAMLANDI!",
       "pick_prompt": "Bir ödül seç:",

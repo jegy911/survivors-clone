@@ -1,5 +1,7 @@
 extends Node2D
 
+const UpgradeUiScript = preload("res://ui/upgrade_ui.gd")
+
 var spawn_timer = 0.0
 var immunity_timer = 0.0
 var current_immunity = ""
@@ -79,6 +81,8 @@ func _on_window_focus_lost() -> void:
 
 
 func _process(delta):
+	# Hit-stop sırasında da güncelle (kill / can çubuğu takılmasın).
+	_update_coop_hud()
 	if hit_stop_frames > 0:
 		Engine.time_scale = 0.0
 		hit_stop_frames -= 1
@@ -88,7 +92,6 @@ func _process(delta):
 
 	game_timer += delta
 	_update_camera(delta)
-	_update_coop_hud()
 	update_timer_label()
 
 	var music_mid: float = SaveManager.get_midpoint_music_sec()
@@ -351,11 +354,16 @@ func _process_next_upgrade():
 		get_tree().paused = false
 		return
 	upgrade_processing = true
-	get_tree().paused = true
 	var player = upgrade_queue.pop_front()
 	if not is_instance_valid(player):
 		_process_next_upgrade()
 		return
+	if not UpgradeUiScript.has_progression_upgrades(player):
+		if player.has_method("apply_empty_level_reward"):
+			player.apply_empty_level_reward()
+		_process_next_upgrade()
+		return
+	get_tree().paused = true
 	var upgrade_ui = load("res://ui/upgrade_ui.tscn").instantiate()
 	upgrade_ui.process_mode = Node.PROCESS_MODE_ALWAYS
 	get_tree().root.add_child(upgrade_ui)

@@ -26,12 +26,18 @@ func _process(delta):
 		attract_speed = min(attract_speed + 400 * delta, 500)
 		var dir = (nearest.global_position - global_position).normalized()
 		global_position += dir * attract_speed * delta
-	var all_players = get_tree().get_nodes_in_group("player")
+	var all_players := get_tree().get_nodes_in_group("player")
+	var in_range: Array[Node] = []
 	for p in all_players:
-		if global_position.distance_to(p.global_position) < 15:
-			p.collect_cog_shard()
-			queue_free()
-			return
+		if global_position.distance_to(p.global_position) < 15.0:
+			in_range.append(p)
+	for p in in_range:
+		if p.has_method("can_collect_more_cog_shards") and p.can_collect_more_cog_shards():
+			if p.collect_cog_shard():
+				queue_free()
+				return
+	if not in_range.is_empty():
+		queue_free()
 
 func _get_nearest_player() -> Node:
 	var players = get_tree().get_nodes_in_group("player")

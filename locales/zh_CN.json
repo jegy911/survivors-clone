@@ -217,6 +217,10 @@
     "hud": {
       "wave_counter": "波次：%d"
     },
+    "player": {
+      "empty_level_reward": "+20 生命  +25 金币\n（已无升级可选）",
+      "cog_master_ready": "⚙ 齿轮大师！多 1 个选项"
+    },
     "wave_reward": {
       "title": "⚡ 完成第 %d 波！",
       "pick_prompt": "选择一项奖励：",

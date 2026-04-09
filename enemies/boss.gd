@@ -48,13 +48,6 @@ func flash():
 
 func _on_death_complete():
 	SaveManager.register_codex_discovered(get_codex_id())
-	var killer = null
-	if has_meta("killer"):
-		killer = get_meta("killer")
-	if killer == null:
-		killer = _get_nearest_player()
-	if killer:
-		killer.on_enemy_killed(global_position)
 	for i in 20:
 		var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
 		orb.init(XP_VALUE / 20, global_position + Vector2(randf_range(-60, 60), randf_range(-60, 60)))

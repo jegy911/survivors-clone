@@ -124,6 +124,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 ## 4. Silah sistemi
 
 ### Taban
+- **`docs/SILAHLAR_ESYALAR_EVO.md`** — Taban silahlar, evrim silahları ve pasif eşyaların hasar / alan / miktar / cooldown özet tabloları (denge değişince güncelle).
 - **`weapons/weapon_base.gd`** — `WeaponBase`: cooldown, `attack()`, `upgrade()`, `category`, `tag`, `weapon_name`.
 
 ### Yeni silah scripti
@@ -212,7 +213,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 | Oyun sonu / duraklat | `ui/game_over.gd`, `pause_menu.gd` |
 | Meta upgrade | `ui/meta_upgrade.gd` |
 | Koleksiyon (kodeks) | `ui/collection_menu.gd` / `.tscn` |
-| Ayarlar | `ui/settings.gd` (+ sekme stilleri `ui/settings_ui_styles.gd`) |
+| Ayarlar | `ui/settings.gd` (+ sekme stilleri `ui/settings_ui_styles.gd`); ESC/geri: `core/menu_input.gd` (`MenuInput`) + ilgili menülerde `_unhandled_input` |
 
 **Yeni bir Label / buton:** İlgili `.tscn` düğümü + `.gd` içinde `onready` veya `%UniqueName` ile referans.
 

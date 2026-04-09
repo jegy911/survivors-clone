@@ -9,7 +9,7 @@ var _rebind_action: String = ""
 var _rebind_btn: Button = null
 
 func _ready():
-	set_process_unhandled_input(false)
+	set_process_unhandled_input(true)
 	var screen_size = get_viewport().get_visible_rect().size
 	$Background.size = screen_size
 	$Background.color = Color("#0D0D1A")
@@ -21,27 +21,30 @@ func _ready():
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not _rebind_listen:
-		return
-	if event is InputEventKey and event.pressed and not event.is_echo():
-		var e := event as InputEventKey
-		if e.keycode == KEY_ESCAPE or e.physical_keycode == KEY_ESCAPE:
-			_cancel_rebind()
+	if _rebind_listen:
+		if event is InputEventKey and event.pressed and not event.is_echo():
+			var e := event as InputEventKey
+			if e.keycode == KEY_ESCAPE or e.physical_keycode == KEY_ESCAPE:
+				_cancel_rebind()
+				get_viewport().set_input_as_handled()
+				return
+			var pk: Key = e.physical_keycode
+			if pk == KEY_NONE:
+				pk = e.keycode
+			if pk == KEY_NONE:
+				return
+			InputRemap.set_keyboard_binding(_rebind_action, pk)
+			if _rebind_btn:
+				_rebind_btn.text = InputRemap.get_keyboard_binding_display(_rebind_action)
+			_rebind_listen = false
+			_rebind_action = ""
+			_rebind_btn = null
+			set_process_unhandled_input(true)
 			get_viewport().set_input_as_handled()
-			return
-		var pk: Key = e.physical_keycode
-		if pk == KEY_NONE:
-			pk = e.keycode
-		if pk == KEY_NONE:
-			return
-		InputRemap.set_keyboard_binding(_rebind_action, pk)
-		if _rebind_btn:
-			_rebind_btn.text = InputRemap.get_keyboard_binding_display(_rebind_action)
-		_rebind_listen = false
-		_rebind_action = ""
-		_rebind_btn = null
-		set_process_unhandled_input(false)
+		return
+	if MenuInput.is_menu_back_pressed(event):
 		get_viewport().set_input_as_handled()
+		_on_back()
 
 
 func _cancel_rebind() -> void:
@@ -50,7 +53,7 @@ func _cancel_rebind() -> void:
 	_rebind_listen = false
 	_rebind_action = ""
 	_rebind_btn = null
-	set_process_unhandled_input(false)
+	set_process_unhandled_input(true)
 
 
 func _begin_rebind(action: String, btn: Button) -> void:

@@ -308,3 +308,15 @@ func _refresh_detail() -> void:
 
 func _on_back() -> void:
 	get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not MenuInput.is_menu_back_pressed(event):
+		return
+	get_viewport().set_input_as_handled()
+	if not _selected_entry.is_empty():
+		_selected_entry = {}
+		_refresh_grid()
+		_refresh_detail()
+		return
+	_on_back()

@@ -40,6 +40,20 @@ func _ready():
 	$VBoxContainer/SettingsButton.pressed.connect(_on_settings)
 	$VBoxContainer/MainMenuButton.pressed.connect(_on_main_menu)
 
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not MenuInput.is_menu_back_pressed(event):
+		return
+	get_viewport().set_input_as_handled()
+	var settings_panel: Node = get_node_or_null("SettingsPanel")
+	if settings_panel != null and is_instance_valid(settings_panel):
+		settings_panel.queue_free()
+		$VBoxContainer.visible = true
+		$Background.visible = true
+		return
+	_on_resume()
+
+
 func _on_resume():
 	get_tree().paused = false
 	queue_free()

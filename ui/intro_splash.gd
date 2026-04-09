@@ -100,7 +100,10 @@ func _on_prompt_anim_done() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not _awaiting_input:
 		return
-	if event is InputEventKey and event.pressed and not event.echo:
+	if MenuInput.is_menu_back_pressed(event):
+		get_viewport().set_input_as_handled()
+		_go_main_menu()
+	elif event is InputEventKey and event.pressed and not event.echo:
 		get_viewport().set_input_as_handled()
 		_go_main_menu()
 	elif event is InputEventMouseButton and event.pressed:
