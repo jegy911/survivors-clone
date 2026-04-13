@@ -12,7 +12,7 @@ func apply():
 	pass
 
 func get_bonus_radius() -> float:
-	return 80.0 * level
+	return 60.0 * level
 
 func get_description() -> String:
 	return "Mıknatıs Lv" + str(level) + " | +" + str(int(get_bonus_radius())) + " çekim"

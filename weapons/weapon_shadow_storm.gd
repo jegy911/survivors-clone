@@ -10,8 +10,8 @@ func _ready():
 	weapon_name = "Gölge Fırtınası"
 	category = "attack"
 	tag = "patlayici"
-	damage = 35
-	cooldown = 0.6
+	damage = 25
+	cooldown = 0.8
 	max_level = 5
 
 func attack():
@@ -54,7 +54,7 @@ func _chain_lightning(start_enemy: Node):
 				next = e
 		if next == null:
 			break
-		var final_damage = player.get_total_damage(int(damage * 0.6))
+		var final_damage = player.get_total_damage(int(damage * 0.4))
 		next.take_damage(final_damage)
 		EventBus.on_damage_dealt.emit(player, next, final_damage)
 		hit.append(next)
@@ -62,10 +62,10 @@ func _chain_lightning(start_enemy: Node):
 
 func on_upgrade():
 	match level:
-		2: damage = 42; orbit_radius = 90
-		3: cooldown = 0.5; damage = 50
-		4: damage = 60; orbit_radius = 110
-		5: damage = 75; cooldown = 0.4; orbit_radius = 130
+		2: damage = 30; orbit_radius = 90
+		3: damage = 36; cooldown = 0.7
+		4: damage = 44; orbit_radius = 110
+		5: damage = 55; cooldown = 0.5; orbit_radius = 130
 
 func get_description() -> String:
 	return "Gölge Fırtınası Lv" + str(level) + " | " + str(damage) + " hasar | zincir"

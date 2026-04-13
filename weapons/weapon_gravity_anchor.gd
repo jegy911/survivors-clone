@@ -2,7 +2,7 @@ class_name WeaponGravityAnchor
 extends WeaponBase
 
 var radius = 118.0
-var pull_strength = 11.0
+var pull_strength = 10.0
 var hit_cooldowns = {}
 const HIT_INTERVAL = 0.95
 
@@ -11,8 +11,8 @@ func _ready():
 	weapon_name = "Çekim Çapası"
 	tag = "buyu"
 	category = "utility"
-	damage = 9
-	cooldown = 1.15
+	damage = 8
+	cooldown = 1.3
 
 func attack():
 	var effective_radius = radius * player.get_area_multiplier()
@@ -39,19 +39,19 @@ func attack():
 func on_upgrade():
 	match level:
 		2:
-			pull_strength = 13.0
-			damage = 11
+			pull_strength = 12.0
+			damage = 10
 		3:
 			radius = 132.0
-			cooldown = 1.0
+			cooldown = 1.1
 		4:
-			pull_strength = 16.0
-			damage = 14
+			pull_strength = 14.0
+			damage = 13
 		5:
 			radius = 148.0
-			pull_strength = 19.0
-			damage = 17
-			cooldown = 0.88
+			pull_strength = 16.0
+			damage = 16
+			cooldown = 0.95
 
 func get_description() -> String:
 	return "Çekim Çapası Lv" + str(level) + " | " + str(int(radius * player.get_area_multiplier())) + " menzil | çeker + " + str(damage) + " hasar"

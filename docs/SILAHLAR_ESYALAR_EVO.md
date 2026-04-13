@@ -1,143 +1,144 @@
-# Ironfall — Silahlar, eşyalar ve evrimler (veri tabloları)
+# Ironfall — Silahlar, eşyalar ve evrimler (Dengelenmiş)
 
-**Kaynak:** `weapons/weapon_*.gd`, `items/item_*.gd`, `weapons/weapon_evolution.gd`  
+**Kaynak:** `weapons/weapon_*.gd`, `items/item_*.gd`, `weapons/weapon_evolution.gd` — oyun verisi bu dosyalarla senkron; denge güncellemesi PDF “Oyun Dengesi İçin Silah Verileri” ile hizalandı.
+
 **Not:** Oyuncu çarpanları (`get_area_multiplier()`, `get_total_damage()`, `get_cooldown_multiplier()`, `get_effective_multi_attack()`, `get_duration_multiplier()`) tablolardaki **taban** değerleri ölçekler; minimum cooldown silah bazında `WeaponBase.get_effective_cooldown()` ile **≥ 0.15s** altına inmez.
 
 ---
 
 ## 1. Level-up havuzundaki taban silahlar
 
-Sütunlar: **Hasar** = script `damage` (oyuncu bonusları öncesi). **Alan** = yarıçap / menzil / koni gibi geometri (px veya °). **Miktar** = atış başına hedef / projektil / zincir adedi (+ `multi_attack` eklenir). **CD** = `cooldown` (saniye).
+Sütunlar: **Hasar** = script `damage` (oyuncu bonusları öncesi). **Alan** = yarıçap / menzil / koni (px veya °). **Miktar** = atış başına hedef / projektil / zincir (+ `multi_attack`). **CD** = `cooldown` (s).
 
 ### Mermi (`bullet`)
 
 | Lv | Hasar | Alan / menzil | Miktar | CD | Diğer |
 |----|-------|---------------|--------|-----|--------|
-| 1 | 10 | max_range 500 | 1 | 1.2 | En yakın hedeflere mermi |
-| 2 | 12 | 500 | 2 | 1.2 | |
-| 3 | 15 | 500 | 2 | 1.0 | |
-| 4 | 18 | 500 | 3 | 1.0 | |
-| 5 | 25 | 500 | 4 | 0.8 | |
+| 1 | 8 | max_range 500 | 1 | 1.4 | En yakın hedeflere mermi |
+| 2 | 10 | 500 | 2 | 1.4 | |
+| 3 | 12 | 500 | 2 | 1.2 | |
+| 4 | 15 | 500 | 3 | 1.2 | |
+| 5 | 18 | 500 | 4 | 1.0 | |
 
 ### Aura (`aura`)
 
 | Lv | Hasar | Alan (yarıçap) | CD | Diğer |
 |----|-------|----------------|-----|--------|
-| 1 | 15 | 80 | 1.0 | Alan içi hasar; yavaşlatma 0.5 × 1.5s; düşman başına vuruş aralığı 0.8s |
-| 2 | 20 | 100 | 1.0 | |
-| 3 | 25 | 100 | 0.8 | slow 0.4 |
-| 4 | 30 | 130 | 0.8 | |
-| 5 | 40 | 160 | 0.6 | slow 0.3 |
+| 1 | 10 | 80 | 1.2 | Alan hasar; yavaşlatma 0.2 × 1.5s; düşman başına vuruş aralığı 1.0s |
+| 2 | 14 | 100 | 1.2 | |
+| 3 | 18 | 100 | 1.0 | slow 0.25 |
+| 4 | 22 | 120 | 1.0 | |
+| 5 | 28 | 140 | 0.8 | slow 0.3 |
 
 ### Zincir (`chain`)
 
 | Lv | Hasar | Alan (zincir menzili) | Miktar (sekme) | CD | Diğer |
 |----|-------|------------------------|----------------|-----|--------|
-| 1 | 20 | 150 | 3 | 1.5 | Hasar sekmede × bounce_mult (1.2→1.4) |
-| 2 | 25 | 150 | 4 | 1.5 | |
-| 3 | 30 | 200 | 4 | 1.5 | bounce 1.3 |
-| 4 | 35 | 200 | 5 | 1.5 | |
-| 5 | 50 | 250 | 7 | 1.0 | bounce 1.4 |
+| 1 | 15 | 150 | 2 | 1.6 | Sekmede × bounce_mult (1.1→1.2) |
+| 2 | 18 | 150 | 3 | 1.6 | |
+| 3 | 22 | 180 | 3 | 1.5 | bounce 1.15 |
+| 4 | 26 | 180 | 4 | 1.5 | |
+| 5 | 32 | 220 | 5 | 1.2 | bounce 1.2 |
 
 ### Bumerang (`boomerang`)
 
 | Lv | Hasar | Miktar | CD |
 |----|-------|--------|-----|
-| 1 | 18 | 1 | 2.0 |
-| 2 | 22 | 1 | 1.8 |
-| 3 | 26 | 2 | 1.8 |
-| 4 | 32 | 2 | 1.5 |
-| 5 | 40 | 3 | 1.2 |
+| 1 | 14 | 1 | 2.2 |
+| 2 | 18 | 1 | 2.0 |
+| 3 | 22 | 2 | 2.0 |
+| 4 | 26 | 2 | 1.8 |
+| 5 | 32 | 3 | 1.5 |
 
 ### Yıldırım (`lightning`)
 
 | Lv | Hasar | Alan (atlama menzili) | Miktar | CD |
 |----|-------|------------------------|--------|-----|
-| 1 | 25 | 200 | 3 | 2.0 |
-| 2 | 30 | 200 | 4 | 2.0 |
-| 3 | 35 | 250 | 4 | 1.8 |
-| 4 | 42 | 250 | 5 | 1.8 |
-| 5 | 55 | 300 | 7 | 1.5 |
+| 1 | 20 | 200 | 2 | 2.2 |
+| 2 | 25 | 200 | 3 | 2.2 |
+| 3 | 30 | 250 | 3 | 2.0 |
+| 4 | 35 | 250 | 4 | 2.0 |
+| 5 | 45 | 300 | 5 | 1.8 |
 
 ### Buz topu (`ice_ball`)
 
 | Lv | Hasar | Miktar | CD | Diğer |
 |----|-------|--------|-----|--------|
-| 1 | 22 | 1 | 2.0 | Yavaşlatma |
-| 2 | 30 | 1 | 1.8 | |
-| 3 | 38 | 2 | 1.8 | |
-| 4 | 48 | 2 | 1.5 | |
-| 5 | 60 | 3 | 1.2 | |
+| 1 | 18 | 1 | 2.2 | Yavaşlatma |
+| 2 | 24 | 1 | 2.0 | |
+| 3 | 30 | 2 | 2.0 | |
+| 4 | 36 | 2 | 1.8 | |
+| 5 | 45 | 3 | 1.5 | |
 
 ### Gölge (`shadow`)
 
 | Lv | Hasar | Alan (yörünge R) | Orb | CD | Diğer |
 |----|-------|------------------|-----|-----|--------|
-| 1 | 20 | 80 | 1 | 0.5 | orbit_speed 2.0 |
-| 2 | 25 | 80 | 2 | 0.5 | |
-| 3 | 30 | 80 | 2 | 0.5 | orbit_speed 2.5 |
-| 4 | 38 | 80 | 3 | 0.5 | |
-| 5 | 50 | 90 | 4 | 0.5 | orbit_speed 3.0 |
+| 1 | 12 | 80 | 1 | 0.8 | orbit_speed 2.0 |
+| 2 | 16 | 80 | 2 | 0.8 | |
+| 3 | 20 | 80 | 2 | 0.7 | orbit_speed 2.2 |
+| 4 | 25 | 80 | 3 | 0.7 | |
+| 5 | 32 | 90 | 4 | 0.6 | orbit_speed 2.5 |
 
 ### Lazer (`laser`)
 
 | Lv | Hasar | Alan (ışın menzili) | CD |
 |----|-------|----------------------|-----|
-| 1 | 30 | 600 | 1.5 |
-| 2 | 38 | 600 | 1.4 |
-| 3 | 45 | 600 | 1.4 |
-| 4 | 55 | 600 | 1.2 |
-| 5 | 70 | 600 | 1.0 |
+| 1 | 25 | 300 | 1.8 |
+| 2 | 30 | 350 | 1.6 |
+| 3 | 38 | 400 | 1.6 |
+| 4 | 45 | 450 | 1.4 |
+| 5 | 55 | 500 | 1.2 |
 
 ### Yelpaze bıçak (`fan_blade`)
 
 | Lv | Hasar | Alan (menzil / yay °) | Bıçak | CD | Diğer |
 |----|-------|------------------------|-------|-----|--------|
-| 1 | 7 | 175 / 28 | 3 | 1.35 | shard_speed 240, lifetime 0.18 |
-| 2 | 9 | 182 / 32 | 3 | 1.35 | |
-| 3 | 9 | 182 / 32 | 4 | 1.15 | |
-| 4 | 12 | 190 / 36 | 4 | 1.15 | |
-| 5 | 15 | 190 / 36 | 5 | 0.95 | speed 265, lifetime 0.2 |
+| 1 | 6 | 175 / 28 | 3 | 1.4 | shard_speed 240, lifetime 0.18 |
+| 2 | 8 | 182 / 32 | 3 | 1.4 | |
+| 3 | 8 | 182 / 32 | 4 | 1.2 | |
+| 4 | 10 | 190 / 36 | 4 | 1.2 | |
+| 5 | 13 | 190 / 36 | 5 | 1.0 | speed 265, lifetime 0.2 |
 
 ### Altıgön mühür (`hex_sigil`)
 
 | Lv | Hasar | Yarıçap | CD | Yavaşlatma |
 |----|-------|---------|-----|------------|
-| 1 | 11 | 88 | 1.05 | 0.42 × 2.0s |
-| 2 | 14 | 100 | 1.05 | 0.42 × 2.0s |
-| 3 | 14 | 100 | 0.92 | 0.42 × 2.3s |
-| 4 | 17 | 118 | 0.92 | 0.38 × 2.3s |
-| 5 | 21 | 135 | 0.78 | 0.34 × 2.3s |
+| 1 | 9 | 88 | 1.2 | 0.30 × 2.0s |
+| 2 | 12 | 100 | 1.2 | 0.30 × 2.0s |
+| 3 | 12 | 100 | 1.1 | 0.35 × 2.3s |
+| 4 | 15 | 118 | 1.1 | 0.35 × 2.3s |
+| 5 | 18 | 135 | 0.9 | 0.40 × 2.3s |
 
 ### Çekim çapası (`gravity_anchor`)
 
 | Lv | Hasar | Yarıçap | Çekim gücü | CD |
 |----|-------|---------|------------|-----|
-| 1 | 9 | 118 | 11 | 1.15 |
-| 2 | 11 | 118 | 13 | 1.15 |
-| 3 | 11 | 132 | 13 | 1.0 |
-| 4 | 14 | 132 | 16 | 1.0 |
-| 5 | 17 | 148 | 19 | 0.88 |
+| 1 | 8 | 118 | 10 | 1.3 |
+| 2 | 10 | 118 | 12 | 1.3 |
+| 3 | 10 | 132 | 12 | 1.1 |
+| 4 | 13 | 132 | 14 | 1.1 |
+| 5 | 16 | 148 | 16 | 0.95 |
 
 ### Kale gürzü (`bastion_flail`)
 
 | Lv | Hasar | Yarıçap | İtme | CD |
 |----|-------|---------|------|-----|
-| 1 | 22 | 92 | 7 | 1.25 |
-| 2 | 28 | 100 | 7 | 1.25 |
-| 3 | 28 | 100 | 9 | 1.1 |
-| 4 | 34 | 112 | 9 | 1.1 |
-| 5 | 42 | 112 | 11 | 0.95 |
+| 1 | 18 | 92 | 6 | 1.4 |
+| 2 | 22 | 100 | 6 | 1.4 |
+| 3 | 22 | 100 | 8 | 1.2 |
+| 4 | 28 | 112 | 8 | 1.2 |
+| 5 | 35 | 112 | 10 | 1.0 |
 
 ### Kalkan hamlesi (`shield_ram`)
 
 | Lv | Hasar | Koni menzil | Koni ° | CD |
 |----|-------|-------------|--------|-----|
-| 1 | 26 | 108 | 72 | 2.0 |
-| 2 | 32 | 118 | 72 | 2.0 |
-| 3 | 32 | 118 | 80 | 1.75 |
-| 4 | 40 | 128 | 80 | 1.75 |
-| 5 | 50 | 128 | 88 | 1.5 |
+| 1 | 20 | 108 | 72 | 2.2 |
+| 2 | 25 | 118 | 72 | 2.2 |
+| 3 | 25 | 118 | 80 | 1.9 |
+| 4 | 32 | 128 | 80 | 1.9 |
+| 5 | 40 | 128 | 88 | 1.6 |
 
 ---
 
@@ -147,148 +148,146 @@ Sütunlar: **Hasar** = script `damage` (oyuncu bonusları öncesi). **Alan** = y
 
 | Lv | Hasar | Miktar | CD | Diğer |
 |----|-------|--------|-----|--------|
-| 1 | 35 | 3 | 0.8 | Zırh kırma |
-| 2 | 42 | 4 | 0.8 | |
-| 3 | 50 | 4 | 0.7 | |
-| 4 | 60 | 5 | 0.7 | |
-| 5 | 75 | 5 | 0.5 | |
+| 1 | 25 | 3 | 1.0 | Zırh kırma |
+| 2 | 30 | 3 | 1.0 | |
+| 3 | 35 | 4 | 0.9 | |
+| 4 | 42 | 4 | 0.9 | |
+| 5 | 50 | 5 | 0.7 | |
 
 ### Toxic Chain (`toxic_chain`)
 
 | Lv | Hasar | Zincir | Menzil | CD |
 |----|-------|--------|--------|-----|
-| 1 | 20 | 4 | 250 | 1.5 |
-| 2 | 25 | 5 | 250 | 1.5 |
-| 3 | 32 | 5 | 300 | 1.5 |
-| 4 | 40 | 6 | 300 | 1.5 |
-| 5 | 50 | 8 | 350 | 1.5 |
+| 1 | 18 | 4 | 250 | 1.6 |
+| 2 | 22 | 4 | 250 | 1.6 |
+| 3 | 28 | 5 | 300 | 1.5 |
+| 4 | 34 | 5 | 300 | 1.5 |
+| 5 | 42 | 6 | 350 | 1.3 |
 
 ### Death Laser (`death_laser`)
 
 | Lv | Hasar | Menzil | CD | Diğer |
 |----|-------|--------|-----|--------|
-| 1 | 60 | 1200 | 1.0 | Her vuruş kritik (×1.5 hasar) |
-| 2 | 70 | 1200 | 1.0 | |
-| 3 | 85 | 1300 | 1.0 | |
-| 4 | 100 | 1300 | 0.9 | |
-| 5 | 120 | 1500 | 0.8 | |
+| 1 | 40 | 400 | 1.2 | Her vuruş kritik (×1.5 hasar) |
+| 2 | 48 | 450 | 1.2 | |
+| 3 | 55 | 500 | 1.1 | |
+| 4 | 65 | 550 | 1.1 | |
+| 5 | 80 | 600 | 0.9 | |
 
 ### Blood Boomerang (`blood_boomerang`)
 
 | Lv | Hasar | Miktar | CD | Diğer |
 |----|-------|--------|-----|--------|
-| 1 | 30 | 2 | 1.5 | Lifesteal |
-| 2 | 38 | 3 | 1.5 | |
-| 3 | 46 | 3 | 1.2 | |
-| 4 | 56 | 4 | 1.2 | |
-| 5 | 70 | 4 | 1.0 | |
+| 1 | 25 | 2 | 1.8 | Lifesteal |
+| 2 | 30 | 2 | 1.8 | |
+| 3 | 36 | 3 | 1.6 | |
+| 4 | 44 | 3 | 1.6 | |
+| 5 | 55 | 4 | 1.3 | |
 
 ### Storm (`storm`)
 
 | Lv | Hasar | Zincir | Menzil | CD | Diğer |
 |----|-------|--------|--------|-----|--------|
-| 1 | 40 | 3 | 200 | 1.2 | Öldürmede ekstra yıldırım |
-| 2 | 48 | 4 | 200 | 1.2 | |
-| 3 | 58 | 4 | 250 | 1.2 | |
-| 4 | 70 | 5 | 250 | 1.2 | |
-| 5 | 85 | 6 | 300 | 1.2 | |
+| 1 | 30 | 3 | 200 | 1.4 | Öldürmede ekstra yıldırım |
+| 2 | 36 | 3 | 200 | 1.4 | |
+| 3 | 44 | 4 | 250 | 1.3 | |
+| 4 | 52 | 4 | 250 | 1.3 | |
+| 5 | 65 | 5 | 300 | 1.1 | |
 
 ### Gölge fırtınası (`shadow_storm`)
 
 | Lv | Hasar | Yörünge R | CD | Diğer |
 |----|-------|-----------|-----|--------|
-| 1 | 35 | 80 | 0.6 | Gölge pozunda vuruş; ek zincir hasarı ~%60 |
-| 2 | 42 | 90 | 0.6 | |
-| 3 | 50 | 90 | 0.5 | |
-| 4 | 60 | 110 | 0.5 | |
-| 5 | 75 | 130 | 0.4 | |
+| 1 | 25 | 80 | 0.8 | Ek zincir hasarı ~%40 taban hasar |
+| 2 | 30 | 90 | 0.8 | |
+| 3 | 36 | 90 | 0.7 | |
+| 4 | 44 | 110 | 0.7 | |
+| 5 | 55 | 130 | 0.5 | |
 
 ### Buz novası (`frost_nova`)
 
 | Lv | Hasar | Yarıçap | CD | Diğer |
 |----|-------|---------|-----|--------|
-| 1 | 25 | 120 | 2.0 | Dondurma; yansıtma oranı 0.3 |
-| 2 | 32 | 135 | 2.0 | |
-| 3 | 40 | 135 | 1.8 | |
-| 4 | 50 | 150 | 1.8 | reflect 0.4 |
-| 5 | 65 | 175 | 1.5 | |
+| 1 | 20 | 120 | 2.2 | Dondurma; yansıtma 0.2 |
+| 2 | 26 | 135 | 2.2 | |
+| 3 | 32 | 135 | 2.0 | |
+| 4 | 40 | 150 | 2.0 | reflect 0.3 |
+| 5 | 52 | 175 | 1.7 | |
 
 ### Kor yelpazesi (`ember_fan`)
 
 | Lv | Hasar | Bıçak | CD | Menzil | Yay ° | Delici |
 |----|-------|-------|-----|--------|-------|--------|
-| 1 | 12 | 5 | 1.05 | 200 | 40 | 1 |
-| 2 | 15 | 5 | 1.05 | 200 | 44 | 1 |
-| 3 | 15 | 6 | 0.92 | 200 | 44 | 1 |
-| 4 | 19 | 6 | 0.92 | 215 | 44 | 1 |
-| 5 | 24 | 7 | 0.82 | 215 | 44 | 2 |
+| 1 | 10 | 4 | 1.2 | 200 | 40 | 1 |
+| 2 | 12 | 4 | 1.2 | 200 | 44 | 1 |
+| 3 | 12 | 5 | 1.0 | 200 | 44 | 1 |
+| 4 | 15 | 5 | 1.0 | 215 | 44 | 1 |
+| 5 | 19 | 6 | 0.9 | 215 | 44 | 2 |
 
 ### Bağlayıcı halka (`binding_circle`)
 
 | Lv | Hasar | Yarıçap | CD | Yavaşlatma |
 |----|-------|---------|-----|------------|
-| 1 | 19 | 138 | 0.88 | 0.32 × 2.6s |
-| 2 | 24 | 150 | 0.88 | 0.32 × 2.6s |
-| 3 | 24 | 150 | 0.76 | 0.28 × 2.6s |
-| 4 | 30 | 165 | 0.76 | 0.28 × 2.6s |
-| 5 | 38 | 165 | 0.65 | 0.28 × 3.0s |
+| 1 | 15 | 138 | 1.0 | 0.25 × 2.6s |
+| 2 | 18 | 150 | 1.0 | 0.25 × 2.6s |
+| 3 | 18 | 150 | 0.9 | 0.30 × 2.6s |
+| 4 | 22 | 165 | 0.9 | 0.30 × 2.6s |
+| 5 | 28 | 165 | 0.8 | 0.35 × 3.0s |
 
 ### Uçurum merceği (`void_lens`)
 
 | Lv | Hasar | Yarıçap | Çekim gücü | CD |
 |----|-------|---------|------------|-----|
-| 1 | 15 | 158 | 17 | 0.95 |
-| 2 | 19 | 158 | 20 | 0.95 |
-| 3 | 19 | 172 | 20 | 0.82 |
-| 4 | 24 | 172 | 23 | 0.82 |
-| 5 | 30 | 188 | 23 | 0.72 |
+| 1 | 12 | 158 | 14 | 1.1 |
+| 2 | 15 | 158 | 16 | 1.1 |
+| 3 | 15 | 172 | 16 | 0.9 |
+| 4 | 18 | 172 | 18 | 0.9 |
+| 5 | 23 | 188 | 20 | 0.8 |
 
 ### Hisar zinciri (`citadel_flail`)
 
 | Lv | Hasar | Yarıçap | İtme | CD |
 |----|-------|---------|------|-----|
-| 1 | 35 | 128 | 12 | 1.05 |
-| 2 | 42 | 138 | 12 | 1.05 |
-| 3 | 42 | 138 | 14 | 0.92 |
-| 4 | 50 | 150 | 14 | 0.92 |
-| 5 | 60 | 150 | 17 | 0.8 |
+| 1 | 28 | 128 | 10 | 1.2 |
+| 2 | 34 | 138 | 10 | 1.2 |
+| 3 | 34 | 138 | 12 | 1.0 |
+| 4 | 40 | 150 | 12 | 1.0 |
+| 5 | 48 | 150 | 14 | 0.9 |
 
 ### Kale sur koşusu (`fortress_ram`)
 
-| Lv sonu | Hasar | Menzil | Koni ° | CD |
-|---------|-------|--------|--------|-----|
-| 1 | 38 | 142 | 92 | 1.55 |
-| 2 | 46 | 152 | 92 | 1.55 |
-| 3 | 46 | 152 | 92 | 1.38 |
-| 4 | 55 | 165 | 92 | 1.38 |
-| 5 | 68 | 165 | 100 | 1.2 |
+| Lv | Hasar | Menzil | Koni ° | CD |
+|----|-------|--------|--------|-----|
+| 1 | 30 | 142 | 92 | 1.8 |
+| 2 | 36 | 152 | 92 | 1.8 |
+| 3 | 36 | 152 | 92 | 1.5 |
+| 4 | 44 | 165 | 92 | 1.5 |
+| 5 | 54 | 165 | 100 | 1.3 |
 
 ---
 
 ## 3. Pasif eşyalar (`max_level` = 5)
 
-Formüller `level` = 1…5 için `apply()` içinden.
-
-| ID | İsim | Kategori | Seviye başına özet |
-|----|------|----------|---------------------|
-| `lifesteal` | Can çalma | vampire | `steal_percent = 0.05 × level` (hasar → iyileşme) |
-| `armor` | Zırh | defense | `armor_value = 2 × level` (düz hasar azaltma) |
-| `crit` | Kritik | attack | `crit_chance = 0.1 × level`, çarpan 2× |
-| `explosion` | Patlama | attack | Yarıçap `60 + 20×level`, hasar `10×level`, tetik `%50 + (level-1)×10` |
-| `magnet` | Mıknatıs | utility | XP çekim +`80 × level` px |
-| `poison` | Zehir | attack | Tick hasar `3 + 2×(level-1)`, süre `3 + 0.5×(level-1)` s (`duration_multiplier` ile) |
-| `shield` | Kalkan | defense | Absorb `20 + 10×(level-1)`, CD `5 - 0.5×(level-1)` s |
-| `speed_charm` | Hız tılsımı | utility | Kill’de SPEED +`40 + 15×(level-1)` süre `2 + 0.5×(level-1)` s |
-| `blood_pool` | Kan havuzu | vampire | Havuz hasar `8 + 4×(level-1)`, R `60 + 15×(level-1)`, süre `3 + 0.5×(level-1)`, tetik `%40 + 12×(level-1)` |
-| `luck_stone` | Şans taşı | utility | Ek kritik `5% + 3%×(level-1)`, altın/öldürme `1 + (level-1)` |
-| `turbine` | Türbin | utility | Durarak biriken hareket bonusu; max düz hasar `5 + 5×(level-1)` |
-| `steam_armor` | Buharlı zırh | defense | Yenilmezlik `0.8 + 0.2×(level-1)` s, CD `8 - 1×(level-1)` s |
-| `energy_cell` | Enerji hücresi | utility | Şarj aralığı `20 - 3×(level-1)` s, deşarj `3 - 0.4×(level-1)` s; deşarjda tüm silahlar ateş + geçici CD×3 |
-| `ember_heart` | Kor kalbi | vampire | Öldürme iyileşmesi `1 + level` HP |
-| `glyph_charm` | Rün tılsımı | utility | Ward `level` (hasar azaltma, `take_damage` ile) |
-| `resonance_stone` | Rezonans taşı | utility | Pickup yarıçap bonusu `22 + 10×level` |
-| `rampart_plate` | Rampa plakası | defense | Zırh `2 + 2×(level-1)` |
-| `iron_bulwark` | Demir siper | defense | Zırh `3 × level` |
+| ID | İsim | Kategori | Seviye başına özet (dengelenmiş) |
+|----|------|----------|-----------------------------------|
+| `lifesteal` | Can çalma | vampire | `steal_percent = 0.01 × level` (en fazla %5) |
+| `armor` | Zırh | defense | `armor_value = 1.5 × level` |
+| `crit` | Kritik | attack | `crit_chance = 0.04 × level`; kritik çarpanı **1.5×** (+ meta `crit_damage_bonus`) |
+| `explosion` | Patlama | attack | Yarıçap `40 + 15×level`, hasar `8×level`, tetik `%10 + (level-1)×5` |
+| `magnet` | Mıknatıs | utility | XP çekim +`60 × level` px |
+| `poison` | Zehir | attack | Tick `2 + (level-1)`, süre `3 + 0.5×(level-1)` s |
+| `shield` | Kalkan | defense | Absorb `10 + 5×(level-1)`, CD `8 − 0.5×(level-1)` s |
+| `speed_charm` | Hız tılsımı | utility | Kill’de SPEED +`20 + 10×(level-1)`, süre `2 + 0.2×(level-1)` s |
+| `blood_pool` | Kan havuzu | vampire | Hasar `5 + 3×(level-1)`, R `50 + 10×(level-1)`, süre `3 + 0.5×(level-1)`, tetik `%15 + 5×(level-1)` |
+| `luck_stone` | Şans taşı | utility | Ek kritik `2% + 1.5%×(level-1)`; altın/öldürme `round(1 + 0.5×(level-1))` |
+| `turbine` | Türbin | utility | Max düz hasar `3 + 3×(level-1)` (hareket birikimi) |
+| `steam_armor` | Buharlı zırh | defense | Yenilmezlik `0.5 + 0.1×(level-1)` s, CD `10 − 1×(level-1)` s |
+| `energy_cell` | Enerji hücresi | utility | Şarj `25 − 2×(level-1)` s, deşarj `2 − 0.2×(level-1)` s |
+| `ember_heart` | Kor kalbi | vampire | Öldürme: `ceil(0.2 + 0.2×level)` HP (min 1; `heal` int) |
+| `glyph_charm` | Rün tılsımı | utility | Ward `0.5 × level` |
+| `resonance_stone` | Rezonans taşı | utility | Pickup bonusu `15 + 5×level` |
+| `rampart_plate` | Rampa plakası | defense | Zırh `1 + 1.5×(level-1)` |
+| `iron_bulwark` | Demir siper | defense | Zırh `2 × level` |
 
 ---
 
@@ -315,4 +314,4 @@ Formüller `level` = 1…5 için `apply()` içinden.
 
 ## 5. Bakım
 
-Yeni silah / eşya / evrim eklediğinde bu dosyayı güncelle veya otomatik çıktı üreten bir script ekle. Tek doğruluk kaynağı her zaman ilgili `.gd` dosyalarıdır.
+Denge değişince önce ilgili `.gd` dosyalarını güncelle, ardından bu belgedeki tabloları eşleştir.

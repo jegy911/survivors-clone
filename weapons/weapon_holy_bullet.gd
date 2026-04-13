@@ -8,8 +8,8 @@ func _ready():
 	weapon_name = "Holy Bullet"
 	tag = "buyu"
 	category = "attack"
-	damage = 35
-	cooldown = 0.8
+	damage = 25
+	cooldown = 1.0
 	max_level = 5
 
 func attack():
@@ -29,17 +29,17 @@ func attack():
 func on_upgrade():
 	match level:
 		2:
-			damage = 42
-			bullet_count = 4
+			damage = 30
 		3:
-			damage = 50
-			cooldown = 0.7
+			damage = 35
+			bullet_count = 4
+			cooldown = 0.9
 		4:
-			damage = 60
-			bullet_count = 5
+			damage = 42
 		5:
-			damage = 75
-			cooldown = 0.5
+			damage = 50
+			bullet_count = 5
+			cooldown = 0.7
 
 func get_description() -> String:
 	return "Holy Bullet Lv" + str(level) + " | x" + str(bullet_count) + " | " + str(damage) + " hasar"

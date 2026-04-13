@@ -15,8 +15,8 @@ func _ready():
 	super._ready()
 
 func apply():
-	charge_interval = 20.0 - (level - 1) * 3.0
-	discharge_duration = 3.0 - (level - 1) * 0.4
+	charge_interval = 25.0 - (level - 1) * 2.0
+	discharge_duration = 2.0 - (level - 1) * 0.2
 
 func _process(delta):
 	if is_discharged:

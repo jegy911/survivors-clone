@@ -14,8 +14,8 @@ func _ready():
 	super._ready()
 
 func apply():
-	shield_amount = 20 + (level - 1) * 10
-	shield_cooldown = 5.0 - (level - 1) * 0.5
+	shield_amount = 10 + (level - 1) * 5
+	shield_cooldown = 8.0 - (level - 1) * 0.5
 
 func _process(delta):
 	if not shield_active:

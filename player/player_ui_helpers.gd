@@ -7,6 +7,13 @@ static func _t(key: String) -> String:
 	return TranslationServer.translate(StringName(key))
 
 
+static func _stat_tag_row(tr_key: String, count: int) -> Array:
+	var fmt: String = _t(tr_key)
+	if fmt.contains("%d") or fmt.contains("%s"):
+		return [fmt % count, ""]
+	return [fmt + " x" + str(count), ""]
+
+
 static func spawn_levelup_effect(player: Node2D) -> void:
 	var vfx_a: float = player.get_player_vfx_opacity()
 	for i in 5:
@@ -111,24 +118,30 @@ static func toggle_stats_panel(player: Node) -> void:
 	var crit_item: float = 0.0
 	if player.active_items.has("crit"):
 		crit_item = player.active_items["crit"].crit_chance
-	var armor_val: int = SaveManager.meta_upgrades.get("armor_bonus", 0) * 2
+	var armor_val: float = float(SaveManager.meta_upgrades.get("armor_bonus", 0) * 2)
 	if player.active_items.has("armor"):
-		armor_val += player.active_items["armor"].armor_value
+		armor_val += float(player.active_items["armor"].armor_value)
+	if player.active_items.has("glyph_charm"):
+		armor_val += float(player.active_items["glyph_charm"].ward_value)
+	if player.active_items.has("rampart_plate"):
+		armor_val += float(player.active_items["rampart_plate"].armor_value)
+	if player.active_items.has("iron_bulwark"):
+		armor_val += float(player.active_items["iron_bulwark"].armor_value)
 
 	var stats_list: Array = [
 		[_t("ui.player.stat_damage"), str(player.bullet_damage + player.category_damage_bonus + player.momentum_bonus)],
 		[_t("ui.player.stat_hp"), str(player.hp) + "/" + str(player.max_hp)],
-		[_t("ui.player.stat_armor"), str(armor_val)],
-		[_t("ui.player.stat_lifesteal"), "%d%%" % int(lifesteal_pct * 100)],
-		[_t("ui.player.stat_crit"), "%d%%" % int((player.category_crit_bonus + crit_item + tag_crit) * 100)],
-		[_t("ui.player.stat_cooldown"), "%d%%" % int((1.0 - player.get_cooldown_multiplier()) * 100)],
-		[_t("ui.player.stat_area"), "%d%%" % int((player.get_area_multiplier() - 1.0) * 100)],
+		[_t("ui.player.stat_armor"), str(snappedf(armor_val, 0.1))],
+		[_t("ui.player.stat_lifesteal"), str(int(round(lifesteal_pct * 100.0))) + "%"],
+		[_t("ui.player.stat_crit"), str(int(round((player.category_crit_bonus + crit_item + tag_crit) * 100.0))) + "%"],
+		[_t("ui.player.stat_cooldown"), str(int(round((1.0 - player.get_cooldown_multiplier()) * 100.0))) + "%"],
+		[_t("ui.player.stat_area"), str(int(round((player.get_area_multiplier() - 1.0) * 100.0))) + "%"],
 		[_t("ui.player.stat_speed"), str(int(player.get_effective_move_speed()))],
 		[_t("ui.player.stat_magnet"), str(int(player.get_magnet_bonus()))],
-		[_t("ui.player.stat_tag_kesici") % tag_counts.get("kesici", 0), ""],
-		[_t("ui.player.stat_tag_patlayici") % tag_counts.get("patlayici", 0), ""],
-		[_t("ui.player.stat_tag_buyu") % tag_counts.get("buyu", 0), ""],
-		[_t("ui.player.stat_tag_teknolojik") % tag_counts.get("teknolojik", 0), ""],
+		[_stat_tag_row("ui.player.stat_tag_kesici", int(tag_counts.get("kesici", 0)))],
+		[_stat_tag_row("ui.player.stat_tag_patlayici", int(tag_counts.get("patlayici", 0)))],
+		[_stat_tag_row("ui.player.stat_tag_buyu", int(tag_counts.get("buyu", 0)))],
+		[_stat_tag_row("ui.player.stat_tag_teknolojik", int(tag_counts.get("teknolojik", 0)))],
 	]
 	if player.overheal_shield > 0:
 		stats_list.append([_t("ui.player.stat_overheal"), str(player.overheal_shield)])

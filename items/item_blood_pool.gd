@@ -15,10 +15,10 @@ func _ready():
 	super._ready()
 
 func apply():
-	pool_damage = 8 + (level - 1) * 4
-	pool_radius = 60.0 + (level - 1) * 15
+	pool_damage = 5 + (level - 1) * 3
+	pool_radius = 50.0 + (level - 1) * 10.0
 	pool_duration = 3.0 + (level - 1) * 0.5
-	trigger_chance = 0.40 + (level - 1) * 0.12
+	trigger_chance = 0.15 + (level - 1) * 0.05
 
 func on_enemy_killed(position: Vector2):
 	if randf() < trigger_chance:

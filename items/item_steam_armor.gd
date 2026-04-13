@@ -15,8 +15,8 @@ func _ready():
 	super._ready()
 
 func apply():
-	invincible_duration = 0.8 + (level - 1) * 0.2
-	invincible_cooldown = 8.0 - (level - 1) * 1.0
+	invincible_duration = 0.5 + (level - 1) * 0.1
+	invincible_cooldown = 10.0 - (level - 1) * 1.0
 
 func _process(delta):
 	if invincible:

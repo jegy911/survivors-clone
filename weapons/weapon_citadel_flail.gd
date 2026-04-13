@@ -2,17 +2,17 @@ class_name WeaponCitadelFlail
 extends WeaponBase
 
 var radius = 128.0
-var knockback = 12.0
+var knockback = 10.0
 var hit_cooldowns = {}
-const HIT_INTERVAL = 0.65
+const HIT_INTERVAL = 0.75
 
 func _ready():
 	super._ready()
 	weapon_name = "Hisar Zinciri"
 	tag = "ezici"
 	category = "attack"
-	damage = 35
-	cooldown = 1.05
+	damage = 28
+	cooldown = 1.2
 
 func attack():
 	var effective_radius = radius * player.get_area_multiplier()
@@ -38,18 +38,18 @@ func attack():
 func on_upgrade():
 	match level:
 		2:
-			damage = 42
+			damage = 34
 			radius = 138.0
 		3:
-			knockback = 14.0
-			cooldown = 0.92
+			knockback = 12.0
+			cooldown = 1.0
 		4:
-			damage = 50
+			damage = 40
 			radius = 150.0
 		5:
-			damage = 60
-			knockback = 17.0
-			cooldown = 0.8
+			damage = 48
+			knockback = 14.0
+			cooldown = 0.9
 
 func get_description() -> String:
 	return "Hisar Zinciri Lv" + str(level) + " | " + str(int(radius * player.get_area_multiplier())) + " alan | " + str(damage) + " hasar | güçlü itme"

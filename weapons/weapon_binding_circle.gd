@@ -2,7 +2,7 @@ class_name WeaponBindingCircle
 extends WeaponBase
 
 var radius = 138.0
-var slow_factor = 0.32
+var slow_factor = 0.25
 var slow_duration = 2.6
 var hit_cooldowns = {}
 const HIT_INTERVAL = 0.72
@@ -12,8 +12,8 @@ func _ready():
 	weapon_name = "Bağlayıcı Halka"
 	tag = "buyu"
 	category = "utility"
-	damage = 19
-	cooldown = 0.88
+	damage = 15
+	cooldown = 1.0
 
 func attack():
 	var effective_radius = radius * player.get_area_multiplier()
@@ -38,18 +38,19 @@ func attack():
 func on_upgrade():
 	match level:
 		2:
-			damage = 24
+			damage = 18
 			radius = 150.0
 		3:
-			cooldown = 0.76
-			slow_factor = 0.28
+			cooldown = 0.9
+			slow_factor = 0.30
 		4:
-			damage = 30
+			damage = 22
 			radius = 165.0
 		5:
-			damage = 38
-			cooldown = 0.65
+			damage = 28
+			cooldown = 0.8
 			slow_duration = 3.0
+			slow_factor = 0.35
 
 func get_description() -> String:
 	return "Bağlayıcı Halka Lv" + str(level) + " | " + str(int(radius * player.get_area_multiplier())) + " alan | " + str(damage) + " hasar | güçlü yavaşlatma"

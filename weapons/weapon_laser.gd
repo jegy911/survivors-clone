@@ -1,15 +1,15 @@
 class_name WeaponLaser
 extends WeaponBase
 
-var laser_range = 600.0
+var laser_range = 300.0
 
 func _ready():
 	super._ready()
 	weapon_name = "Lazer"
 	tag = "teknolojik"
 	category = "attack"
-	damage = 30
-	cooldown = 1.5
+	damage = 25
+	cooldown = 1.8
 
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
@@ -67,18 +67,20 @@ func _spawn_laser_beam(dir: Vector2, range_val: float):
 func on_upgrade():
 	match level:
 		2:
-			damage = 38
-			cooldown = 1.4
+			damage = 30
+			laser_range = 350.0
+			cooldown = 1.6
 		3:
-			laser_range = 700.0
-			damage = 45
+			damage = 38
+			laser_range = 400.0
 		4:
-			damage = 55
-			cooldown = 1.2
+			damage = 45
+			laser_range = 450.0
+			cooldown = 1.4
 		5:
-			laser_range = 800.0
-			damage = 70
-			cooldown = 1.0
+			damage = 55
+			laser_range = 500.0
+			cooldown = 1.2
 
 func get_description() -> String:
 	return "Lazer Lv" + str(level) + " | " + str(int(laser_range * player.get_area_multiplier())) + " menzil | " + str(damage) + " hasar"

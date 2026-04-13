@@ -9,8 +9,8 @@ func _ready():
 	weapon_name = "Mermi"
 	tag = "kesici"
 	category = "attack"
-	damage = 10
-	cooldown = 1.2
+	damage = 8
+	cooldown = 1.4
 
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
@@ -43,17 +43,17 @@ func on_upgrade():
 	match level:
 		2:
 			bullet_count = 2
-			damage = 12
+			damage = 10
 		3:
-			cooldown = 1.0
-			damage = 15
+			cooldown = 1.2
+			damage = 12
 		4:
 			bullet_count = 3
-			damage = 18
+			damage = 15
 		5:
 			bullet_count = 4
-			damage = 25
-			cooldown = 0.8
+			damage = 18
+			cooldown = 1.0
 
 func get_description() -> String:
 	return "Mermi Lv" + str(level) + " | x" + str(bullet_count + get_effective_multi_attack()) + " mermi | " + str(damage) + " hasar"

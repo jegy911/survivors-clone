@@ -80,6 +80,22 @@ func _on_window_focus_lost() -> void:
 	tree.paused = true
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if not MenuInput.is_menu_back_pressed(event):
+		return
+	var tree := get_tree()
+	if tree == null or tree.paused:
+		return
+	if tree.get_first_node_in_group("pause_menu_overlay"):
+		return
+	if wave_manager != null and wave_manager.reward_active:
+		return
+	get_viewport().set_input_as_handled()
+	tree.paused = true
+	var pm := preload("res://ui/pause_menu.tscn").instantiate()
+	tree.root.add_child(pm)
+
+
 func _process(delta):
 	# Hit-stop sırasında da güncelle (kill / can çubuğu takılmasın).
 	_update_coop_hud()

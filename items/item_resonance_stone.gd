@@ -12,7 +12,7 @@ func _ready():
 	super._ready()
 
 func apply():
-	pickup_bonus = 22 + level * 10
+	pickup_bonus = 15 + level * 5
 
 func get_pickup_bonus() -> float:
 	return float(pickup_bonus)

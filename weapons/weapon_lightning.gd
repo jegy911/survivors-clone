@@ -1,7 +1,7 @@
 class_name WeaponLightning
 extends WeaponBase
 
-var chain_count = 3
+var chain_count = 2
 var chain_range = 200.0
 
 func _ready():
@@ -9,8 +9,8 @@ func _ready():
 	weapon_name = "Yıldırım"
 	tag = "patlayici"
 	category = "attack"
-	damage = 25
-	cooldown = 2.0
+	damage = 20
+	cooldown = 2.2
 
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
@@ -64,19 +64,19 @@ func _spawn_lightning(pos: Vector2):
 func on_upgrade():
 	match level:
 		2:
-			chain_count = 4
-			damage = 30
+			chain_count = 3
+			damage = 25
 		3:
-			cooldown = 1.8
-			damage = 35
+			damage = 30
+			cooldown = 2.0
 			chain_range = 250.0
 		4:
-			chain_count = 5
-			damage = 42
+			chain_count = 4
+			damage = 35
 		5:
-			chain_count = 7
-			damage = 55
-			cooldown = 1.5
+			chain_count = 5
+			damage = 45
+			cooldown = 1.8
 			chain_range = 300.0
 
 func get_description() -> String:

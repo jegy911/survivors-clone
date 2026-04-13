@@ -15,9 +15,9 @@ func _ready():
 	super._ready()
 
 func apply():
-	explosion_radius = 60.0 + (20.0 * level)
-	explosion_damage = 10 * level
-	trigger_chance = 0.50 + (level - 1) * 0.10
+	explosion_radius = 40.0 + (15.0 * level)
+	explosion_damage = 8 * level
+	trigger_chance = 0.10 + (level - 1) * 0.05
 
 func on_enemy_killed(position: Vector2):
 	if randf() >= trigger_chance:

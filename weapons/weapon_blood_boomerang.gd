@@ -8,8 +8,8 @@ func _ready():
 	weapon_name = "Blood Boomerang"
 	tag = "kesici"
 	category = "vampire"
-	damage = 30
-	cooldown = 1.5
+	damage = 25
+	cooldown = 1.8
 	max_level = 5
 
 func attack():
@@ -30,17 +30,17 @@ func attack():
 func on_upgrade():
 	match level:
 		2:
-			damage = 38
-			boomerang_count = 3
+			damage = 30
 		3:
-			damage = 46
-			cooldown = 1.2
+			damage = 36
+			boomerang_count = 3
+			cooldown = 1.6
 		4:
-			damage = 56
-			boomerang_count = 4
+			damage = 44
 		5:
-			damage = 70
-			cooldown = 1.0
+			damage = 55
+			boomerang_count = 4
+			cooldown = 1.3
 
 func get_description() -> String:
 	return "Blood Boomerang Lv" + str(level) + " | x" + str(boomerang_count) + " | " + str(damage) + " hasar"

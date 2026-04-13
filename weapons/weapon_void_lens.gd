@@ -2,7 +2,7 @@ class_name WeaponVoidLens
 extends WeaponBase
 
 var radius = 158.0
-var pull_strength = 17.0
+var pull_strength = 14.0
 var hit_cooldowns = {}
 const HIT_INTERVAL = 0.78
 
@@ -11,8 +11,8 @@ func _ready():
 	weapon_name = "Uçurum Merceği"
 	tag = "buyu"
 	category = "utility"
-	damage = 15
-	cooldown = 0.95
+	damage = 12
+	cooldown = 1.1
 
 func attack():
 	var effective_radius = radius * player.get_area_multiplier()
@@ -39,18 +39,19 @@ func attack():
 func on_upgrade():
 	match level:
 		2:
-			damage = 19
-			pull_strength = 20.0
+			damage = 15
+			pull_strength = 16.0
 		3:
 			radius = 172.0
-			cooldown = 0.82
+			cooldown = 0.9
 		4:
-			damage = 24
-			pull_strength = 23.0
+			damage = 18
+			pull_strength = 18.0
 		5:
-			damage = 30
+			damage = 23
 			radius = 188.0
-			cooldown = 0.72
+			pull_strength = 20.0
+			cooldown = 0.8
 
 func get_description() -> String:
 	return "Uçurum Merceği Lv" + str(level) + " | " + str(int(radius * player.get_area_multiplier())) + " menzil | güçlü çekim + " + str(damage) + " hasar"

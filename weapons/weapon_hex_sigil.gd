@@ -2,7 +2,7 @@ class_name WeaponHexSigil
 extends WeaponBase
 
 var radius = 88.0
-var slow_factor = 0.42
+var slow_factor = 0.30
 var slow_duration = 2.0
 var hit_cooldowns = {}
 const HIT_INTERVAL = 0.85
@@ -12,8 +12,8 @@ func _ready():
 	weapon_name = "Altıgön Mühür"
 	tag = "buyu"
 	category = "utility"
-	damage = 11
-	cooldown = 1.05
+	damage = 9
+	cooldown = 1.2
 
 func attack():
 	var effective_radius = radius * player.get_area_multiplier()
@@ -39,19 +39,19 @@ func on_upgrade():
 	match level:
 		2:
 			radius = 100.0
-			damage = 14
+			damage = 12
 		3:
-			cooldown = 0.92
+			cooldown = 1.1
 			slow_duration = 2.3
+			slow_factor = 0.35
 		4:
 			radius = 118.0
-			damage = 17
-			slow_factor = 0.38
+			damage = 15
 		5:
 			radius = 135.0
-			damage = 21
-			cooldown = 0.78
-			slow_factor = 0.34
+			damage = 18
+			cooldown = 0.9
+			slow_factor = 0.40
 
 func get_description() -> String:
 	return "Altıgön Mühür Lv" + str(level) + " | " + str(int(radius * player.get_area_multiplier())) + " alan | " + str(damage) + " hasar | yavaşlatır"

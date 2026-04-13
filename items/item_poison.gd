@@ -1,7 +1,7 @@
 class_name ItemPoison
 extends PassiveItem
 
-var poison_damage = 3
+var poison_damage = 2
 var poison_duration = 3.0
 
 func _ready():
@@ -12,7 +12,7 @@ func _ready():
 	super._ready()
 
 func apply():
-	poison_damage = 3 + (level - 1) * 2
+	poison_damage = 2 + (level - 1)
 	poison_duration = 3.0 + (level - 1) * 0.5
 
 func on_damage_dealt(_player: Node, enemy: Node, _damage: int):

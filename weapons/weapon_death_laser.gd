@@ -1,15 +1,15 @@
 class_name WeaponDeathLaser
 extends WeaponBase
 
-var laser_range = 1200.0
+var laser_range = 400.0
 
 func _ready():
 	super._ready()
 	weapon_name = "Death Laser"
 	tag = "teknolojik"
 	category = "attack"
-	damage = 60
-	cooldown = 1.0
+	damage = 40
+	cooldown = 1.2
 	max_level = 5
 
 func attack():
@@ -31,7 +31,7 @@ func attack():
 			continue
 		var dot = dir.dot(to_enemy.normalized())
 		if dot > 0.90:
-			var final_damage = player.get_total_damage(int(damage * 1.5)) # %50 kritik bonus
+			var final_damage = player.get_total_damage(int(damage * 1.5)) # ×1.5 kritik
 			enemy.take_damage(final_damage, player)
 			EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 	
@@ -52,10 +52,10 @@ func _spawn_laser_beam(dir: Vector2):
 
 func on_upgrade():
 	match level:
-		2: damage = 70; cooldown = 1.0
-		3: damage = 85; laser_range = 1300.0
-		4: damage = 100; cooldown = 0.9
-		5: damage = 120; laser_range = 1500.0; cooldown = 0.8
+		2: damage = 48; laser_range = 450.0
+		3: damage = 55; laser_range = 500.0; cooldown = 1.1
+		4: damage = 65; laser_range = 550.0
+		5: damage = 80; laser_range = 600.0; cooldown = 0.9
 
 func get_description() -> String:
 	return "Death Laser Lv" + str(level) + " | " + str(damage) + " hasar (KRİTİK)"

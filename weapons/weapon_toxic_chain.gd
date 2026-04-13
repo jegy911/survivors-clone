@@ -9,8 +9,8 @@ func _ready():
 	weapon_name = "Toxic Chain"
 	tag = "patlayici"
 	category = "attack"
-	damage = 20
-	cooldown = 1.5
+	damage = 18
+	cooldown = 1.6
 	max_level = 5
 
 func attack():
@@ -63,18 +63,19 @@ func _spawn_lightning(pos: Vector2):
 func on_upgrade():
 	match level:
 		2:
-			damage = 25
-			chain_count = 5
+			damage = 22
 		3:
-			damage = 32
+			damage = 28
+			chain_count = 5
 			chain_range = 300.0
+			cooldown = 1.5
 		4:
-			damage = 40
-			chain_count = 6
+			damage = 34
 		5:
-			damage = 50
-			chain_count = 8
+			damage = 42
+			chain_count = 6
 			chain_range = 350.0
+			cooldown = 1.3
 
 func get_description() -> String:
 	return "Toxic Chain Lv" + str(level) + " | x" + str(chain_count) + " zincir | " + str(damage) + " hasar"

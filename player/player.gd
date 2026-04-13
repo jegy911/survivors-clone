@@ -71,9 +71,7 @@ var recent_kill_times: Array = []
 
 var upgrade_ui_scene = preload("res://ui/upgrade_ui.tscn")
 var game_over_scene = preload("res://ui/game_over.tscn")
-var pause_menu_scene = preload("res://ui/pause_menu.tscn")
 var upgrade_ui = null
-var pause_menu = null
 
 var active_weapons = {}
 var active_items = {}
@@ -149,19 +147,6 @@ func _ready():
 	EventBus.player_damaged.connect(_on_player_damaged)
 	EventBus.boss_spawned.connect(_on_boss_spawned)
 	_ready_damage_tracking()
-
-func _input(event):
-	if event.is_action_pressed("ui_cancel"):
-		if get_tree().paused:
-			for n in get_tree().get_nodes_in_group("pause_menu_overlay"):
-				n.queue_free()
-			pause_menu = null
-			get_tree().paused = false
-		else:
-			get_tree().paused = true
-			pause_menu = pause_menu_scene.instantiate()
-			pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS
-			get_tree().root.add_child(pause_menu)
 
 func apply_character_bonuses():
 	var char_index = SaveManager.selected_character if player_id == 0 else SaveManager.selected_character_p2
@@ -487,9 +472,13 @@ func get_total_damage(base_damage: int) -> int:
 	var crit_chance = category_crit_bonus + get_tag_crit_bonus()
 	if active_items.has("crit"):
 		crit_chance += active_items["crit"].crit_chance
+	if active_items.has("luck_stone"):
+		crit_chance += active_items["luck_stone"].get_crit_bonus()
 	if randf() < crit_chance:
-		# Kritik çarpanı: 2.0 + crit_damage_bonus * 0.25
-		var crit_multiplier = 2.0 + SaveManager.meta_upgrades.get("crit_damage_bonus", 0) * 0.25
+		var meta_crit = SaveManager.meta_upgrades.get("crit_damage_bonus", 0) * 0.25
+		var crit_multiplier = 2.0 + meta_crit
+		if active_items.has("crit"):
+			crit_multiplier = active_items["crit"].crit_multiplier + meta_crit
 		dmg = int(dmg * crit_multiplier)
 		EventBus.hit_stop_requested.emit(2)
 		show_floating_text(tr("ui.player.crit_floating"), global_position + Vector2(0, -70), Color("#FFD700"), 28)

@@ -41,6 +41,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-09 | **Silah / eşya denge geçişi** — PDF “Oyun Dengesi İçin Silah Verileri” ile tüm taban + evrim silahları + pasif eşya formülleri; lazer menzil 300→500 zirve, Death Laser 400→600; kritik eşya 1.5× + `player.get_total_damage`; `SILAHLAR_ESYALAR_EVO.md` güncellendi. |
 | 2026-04-09 | **Cog / level-up / veri doc** — Dişli 5’te sınır + sarı etiket, doluyken düşmez; boş progression level-up’ta +20 can / +25 altın (UI yok); max hızda hız kartı yok; `has_progression_upgrades` + `apply_empty_level_reward`; `docs/SILAHLAR_ESYALAR_EVO.md` tabloları. |
 | 2026-04-09 | **Kill HUD + hız tavanı** — `enemy_base`/`giant`/`boss`: öldürme `die()` anında `on_enemy_killed` (tween + hit-stop beklenmez); `main._process` co-op HUD her kare; `player.MAX_MOVE_SPEED` 300 + `get_effective_move_speed()`. |
 | 2026-04-09 | **Menülerde ESC / geri** — `core/menu_input.gd` (`MenuInput.is_menu_back_pressed`): `ui_cancel`, ESC, gamepad B; `game_mode_select`, `map_select`, `shop`, `meta_upgrade`, `collection` (önce seçim temizle), `settings` (rebind varken önce iptal), `pause` (önce iç ayar paneli), `game_over`→ana menü, `intro` (prompt sonrası); karakter seçim P1/P2 güncellendi. |

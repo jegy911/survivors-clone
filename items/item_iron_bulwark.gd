@@ -11,7 +11,7 @@ func _ready():
 	super._ready()
 
 func apply():
-	armor_value = 3 * level
+	armor_value = 2 * level
 
 func get_description() -> String:
 	return "Demir Siper Lv" + str(level) + " | -" + str(armor_value) + " hasar"

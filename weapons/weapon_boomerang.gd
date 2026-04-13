@@ -8,8 +8,8 @@ func _ready():
 	weapon_name = "Bumerang"
 	tag = "kesici"
 	category = "attack"
-	damage = 18
-	cooldown = 2.0
+	damage = 14
+	cooldown = 2.2
 
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
@@ -28,10 +28,10 @@ func attack():
 
 func on_upgrade():
 	match level:
-		2: damage = 22; cooldown = 1.8
-		3: boomerang_count = 2; damage = 26
-		4: damage = 32; cooldown = 1.5
-		5: boomerang_count = 3; damage = 40; cooldown = 1.2
+		2: damage = 18; cooldown = 2.0
+		3: boomerang_count = 2; damage = 22; cooldown = 2.0
+		4: damage = 26; cooldown = 1.8
+		5: boomerang_count = 3; damage = 32; cooldown = 1.5
 
 func get_description() -> String:
 	return "Bumerang Lv" + str(level) + " | x" + str(boomerang_count + get_effective_multi_attack()) + " | " + str(damage) + " hasar"

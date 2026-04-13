@@ -9,8 +9,8 @@ func _ready():
 	weapon_name = "Kale Sur Koşusu"
 	tag = "ezici"
 	category = "defense"
-	damage = 38
-	cooldown = 1.55
+	damage = 30
+	cooldown = 1.8
 
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
@@ -47,16 +47,16 @@ func attack():
 func on_upgrade():
 	match level:
 		2:
-			damage = 46
+			damage = 36
 			ram_range = 152.0
 		3:
-			cooldown = 1.38
+			cooldown = 1.5
 		4:
-			damage = 55
+			damage = 44
 			ram_range = 165.0
 		5:
-			damage = 68
-			cooldown = 1.2
+			damage = 54
+			cooldown = 1.3
 			cone_degrees = 100.0
 
 func get_description() -> String:

@@ -10,8 +10,8 @@ func _ready():
 	weapon_name = "Storm"
 	tag = "patlayici"
 	category = "attack"
-	damage = 40
-	cooldown = 1.2
+	damage = 30
+	cooldown = 1.4
 	max_level = 5
 
 func attack():
@@ -70,10 +70,10 @@ func _spawn_flash(pos: Vector2):
 
 func on_upgrade():
 	match level:
-		2: damage = 48; chain_count = 4
-		3: damage = 58; chain_range = 250.0
-		4: damage = 70; chain_count = 5
-		5: damage = 85; chain_count = 6; chain_range = 300.0
+		2: damage = 36
+		3: damage = 44; chain_count = 4; chain_range = 250.0; cooldown = 1.3
+		4: damage = 52
+		5: damage = 65; chain_count = 5; chain_range = 300.0; cooldown = 1.1
 
 func get_description() -> String:
 	return "Storm Lv" + str(level) + " | x" + str(chain_count) + " zincir | " + str(damage) + " hasar"

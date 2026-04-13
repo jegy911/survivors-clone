@@ -12,8 +12,8 @@ func _ready():
 	super._ready()
 
 func apply():
-	crit_bonus = 0.05 + (level - 1) * 0.03
-	gold_bonus = 1 + (level - 1)
+	crit_bonus = 0.02 + (level - 1) * 0.015
+	gold_bonus = int(round(1.0 + 0.5 * (level - 1)))
 
 func get_crit_bonus() -> float:
 	return crit_bonus

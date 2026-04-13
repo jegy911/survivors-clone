@@ -2,17 +2,17 @@ class_name WeaponAura
 extends WeaponBase
 
 var radius = 80.0
-var slow_factor = 0.5
+var slow_factor = 0.2
 var hit_cooldowns = {}
-const HIT_INTERVAL = 0.8
+const HIT_INTERVAL = 1.0
 
 func _ready():
 	super._ready()
 	weapon_name = "Aura"
 	tag = "patlayici"
 	category = "attack"
-	damage = 15
-	cooldown = 1.0
+	damage = 10
+	cooldown = 1.2
 
 func attack():
 	var effective_radius = radius * player.get_area_multiplier()
@@ -39,18 +39,18 @@ func on_upgrade():
 	match level:
 		2:
 			radius = 100.0
-			damage = 20
+			damage = 14
 		3:
-			cooldown = 0.8
-			damage = 25
-			slow_factor = 0.4
+			cooldown = 1.0
+			damage = 18
+			slow_factor = 0.25
 		4:
-			radius = 130.0
-			damage = 30
+			radius = 120.0
+			damage = 22
 		5:
-			radius = 160.0
-			damage = 40
-			cooldown = 0.6
+			radius = 140.0
+			damage = 28
+			cooldown = 0.8
 			slow_factor = 0.3
 
 func get_description() -> String:

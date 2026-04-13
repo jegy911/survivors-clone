@@ -2,15 +2,15 @@ class_name WeaponFrostNova
 extends WeaponBase
 
 var nova_radius = 120.0
-var reflect_damage = 0.3
+var reflect_damage = 0.2
 
 func _ready():
 	super._ready()
 	weapon_name = "Buz Novas"
 	category = "defense"
 	tag = "buyu"
-	damage = 25
-	cooldown = 2.0
+	damage = 20
+	cooldown = 2.2
 	max_level = 5
 
 func attack():
@@ -37,10 +37,10 @@ func attack():
 
 func on_upgrade():
 	match level:
-		2: damage = 32; nova_radius = 135
-		3: cooldown = 1.8; damage = 40
-		4: nova_radius = 150; damage = 50; reflect_damage = 0.4
-		5: damage = 65; cooldown = 1.5; nova_radius = 175
+		2: damage = 26; nova_radius = 135
+		3: damage = 32; cooldown = 2.0
+		4: damage = 40; nova_radius = 150; reflect_damage = 0.3
+		5: damage = 52; cooldown = 1.7; nova_radius = 175
 
 func get_description() -> String:
 	return "Buz Novas Lv" + str(level) + " | " + str(int(nova_radius * player.get_area_multiplier())) + " alan | dondurma"

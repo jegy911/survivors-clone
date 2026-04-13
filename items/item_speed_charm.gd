@@ -1,7 +1,7 @@
 class_name ItemSpeedCharm
 extends PassiveItem
 
-var speed_bonus = 40
+var speed_bonus = 20
 var speed_duration = 2.0
 var is_boosted = false
 var boost_timer = 0.0
@@ -14,8 +14,8 @@ func _ready():
 	super._ready()
 
 func apply():
-	speed_bonus = 40 + (level - 1) * 15
-	speed_duration = 2.0 + (level - 1) * 0.5
+	speed_bonus = 20 + (level - 1) * 10
+	speed_duration = 2.0 + (level - 1) * 0.2
 
 func _process(delta):
 	if is_boosted:

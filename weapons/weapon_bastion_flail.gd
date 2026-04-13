@@ -2,7 +2,7 @@ class_name WeaponBastionFlail
 extends WeaponBase
 
 var radius = 92.0
-var knockback = 7.0
+var knockback = 6.0
 var hit_cooldowns = {}
 const HIT_INTERVAL = 0.75
 
@@ -11,8 +11,8 @@ func _ready():
 	weapon_name = "Kale Gürzü"
 	tag = "ezici"
 	category = "attack"
-	damage = 22
-	cooldown = 1.25
+	damage = 18
+	cooldown = 1.4
 
 func attack():
 	var effective_radius = radius * player.get_area_multiplier()
@@ -38,18 +38,18 @@ func attack():
 func on_upgrade():
 	match level:
 		2:
-			damage = 28
+			damage = 22
 			radius = 100.0
 		3:
-			knockback = 9.0
-			cooldown = 1.1
+			knockback = 8.0
+			cooldown = 1.2
 		4:
-			damage = 34
+			damage = 28
 			radius = 112.0
 		5:
-			damage = 42
-			knockback = 11.0
-			cooldown = 0.95
+			damage = 35
+			knockback = 10.0
+			cooldown = 1.0
 
 func get_description() -> String:
 	return "Kale Gürzü Lv" + str(level) + " | " + str(int(radius * player.get_area_multiplier())) + " alan | " + str(damage) + " hasar | itme"

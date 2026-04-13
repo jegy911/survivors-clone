@@ -24,7 +24,7 @@ func _process(delta):
 		move_timer = min(move_timer + delta, 3.0)
 	else:
 		move_timer = max(move_timer - delta * 2.0, 0.0)
-	var max_bonus = 5 + (level - 1) * 5
+	var max_bonus = 3 + (level - 1) * 3
 	var new_bonus = int((move_timer / 3.0) * max_bonus)
 	if new_bonus != damage_bonus:
 		damage_bonus = new_bonus
@@ -33,4 +33,4 @@ func get_damage_bonus() -> int:
 	return damage_bonus
 
 func get_description() -> String:
-	return "Türbin Lv" + str(level) + "\nHareket edince +" + str(5 + (level-1)*5) + " hasar (max)"
+	return "Türbin Lv" + str(level) + "\nHareket edince +" + str(3 + (level-1)*3) + " hasar (max)"

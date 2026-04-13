@@ -12,8 +12,8 @@ func _ready():
 	weapon_name = "Gölge"
 	tag = "kesici"
 	category = "attack"
-	damage = 20
-	cooldown = 0.5
+	damage = 12
+	cooldown = 0.8
 	call_deferred("_spawn_orbs")
 
 func _spawn_orbs():
@@ -73,21 +73,23 @@ func _process(delta):
 func on_upgrade():
 	match level:
 		2:
-			damage = 25
+			damage = 16
 			orb_count = 2
 			_spawn_orbs()
 		3:
-			orbit_speed = 2.5
-			damage = 30
+			orbit_speed = 2.2
+			damage = 20
+			cooldown = 0.7
 		4:
 			orb_count = 3
-			damage = 38
+			damage = 25
 			_spawn_orbs()
 		5:
 			orb_count = 4
-			damage = 50
-			orbit_speed = 3.0
+			damage = 32
+			orbit_speed = 2.5
 			orbit_radius = 90.0
+			cooldown = 0.6
 			_spawn_orbs()
 
 func get_description() -> String:

@@ -1,17 +1,17 @@
 class_name WeaponChain
 extends WeaponBase
 
-var chain_count = 3
+var chain_count = 2
 var chain_range = 150.0
-var bounce_multiplier = 1.2
+var bounce_multiplier = 1.1
 
 func _ready():
 	super._ready()
 	weapon_name = "Zincir"
 	tag = "kesici"
 	category = "attack"
-	damage = 20
-	cooldown = 1.5
+	damage = 15
+	cooldown = 1.6
 
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
@@ -56,21 +56,22 @@ func attack():
 func on_upgrade():
 	match level:
 		2:
-			chain_count = 4
-			damage = 25
+			chain_count = 3
+			damage = 18
 		3:
-			chain_range = 200.0
-			damage = 30
-			bounce_multiplier = 1.3
+			chain_range = 180.0
+			damage = 22
+			cooldown = 1.5
+			bounce_multiplier = 1.15
 		4:
-			chain_count = 5
-			damage = 35
+			chain_count = 4
+			damage = 26
 		5:
-			chain_count = 7
-			chain_range = 250.0
-			damage = 50
-			cooldown = 1.0
-			bounce_multiplier = 1.4
+			chain_count = 5
+			damage = 32
+			chain_range = 220.0
+			cooldown = 1.2
+			bounce_multiplier = 1.2
 
 func get_description() -> String:
 	return "Zincir Lv" + str(level) + " | " + str(chain_count + get_effective_multi_attack()) + " zincir | " + str(damage) + " hasar"

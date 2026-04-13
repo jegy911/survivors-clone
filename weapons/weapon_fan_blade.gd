@@ -12,8 +12,8 @@ func _ready():
 	weapon_name = "Yelpaze Bıçak"
 	tag = "kesici"
 	category = "attack"
-	damage = 7
-	cooldown = 1.35
+	damage = 6
+	cooldown = 1.4
 
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
@@ -49,20 +49,20 @@ func attack():
 func on_upgrade():
 	match level:
 		2:
-			damage = 9
+			damage = 8
 			spread_degrees = 32.0
 			fire_range = 182.0
 		3:
 			blade_count = 4
-			cooldown = 1.15
+			cooldown = 1.2
 		4:
-			damage = 12
+			damage = 10
 			spread_degrees = 36.0
 			fire_range = 190.0
 		5:
 			blade_count = 5
-			damage = 15
-			cooldown = 0.95
+			damage = 13
+			cooldown = 1.0
 			shard_speed = 265.0
 			shard_lifetime = 0.2
 

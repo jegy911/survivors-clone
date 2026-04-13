@@ -8,8 +8,8 @@ func _ready():
 	weapon_name = "Buz Topu"
 	tag = "buyu"
 	category = "defense"
-	damage = 22
-	cooldown = 2.0
+	damage = 18
+	cooldown = 2.2
 
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
@@ -27,10 +27,10 @@ func attack():
 
 func on_upgrade():
 	match level:
-		2: damage = 30; cooldown = 1.8
-		3: ball_count = 2; damage = 38
-		4: damage = 48; cooldown = 1.5
-		5: ball_count = 3; damage = 60; cooldown = 1.2
+		2: damage = 24; cooldown = 2.0
+		3: ball_count = 2; damage = 30; cooldown = 2.0
+		4: damage = 36; cooldown = 1.8
+		5: ball_count = 3; damage = 45; cooldown = 1.5
 
 func get_description() -> String:
 	return "Buz Topu Lv" + str(level) + " | x" + str(ball_count) + " | " + str(damage) + " hasar | yavaşlatır"

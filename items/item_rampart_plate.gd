@@ -1,7 +1,7 @@
 class_name ItemRampartPlate
 extends PassiveItem
 
-var armor_value = 0
+var armor_value = 0.0
 
 func _ready():
 	item_name = "Rampa Plakası"
@@ -11,7 +11,7 @@ func _ready():
 	super._ready()
 
 func apply():
-	armor_value = 2 + (level - 1) * 2
+	armor_value = 1.0 + (level - 1) * 1.5
 
 func get_description() -> String:
-	return "Rampa Plakası Lv" + str(level) + " | -" + str(armor_value) + " hasar"
+	return "Rampa Plakası Lv" + str(level) + " | -" + str(snappedf(armor_value, 0.1)) + " hasar"

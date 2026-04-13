@@ -1,7 +1,7 @@
 class_name WeaponEmberFan
 extends WeaponBase
 
-var blade_count = 5
+var blade_count = 4
 var spread_degrees = 40.0
 var fire_range = 200.0
 var shard_speed = 300.0
@@ -13,8 +13,8 @@ func _ready():
 	weapon_name = "Kor Yelpazesi"
 	tag = "kesici"
 	category = "attack"
-	damage = 12
-	cooldown = 1.05
+	damage = 10
+	cooldown = 1.2
 	max_level = 5
 
 func attack():
@@ -59,19 +59,19 @@ func attack():
 func on_upgrade():
 	match level:
 		2:
-			damage = 15
+			damage = 12
 			spread_degrees = 44.0
 		3:
-			blade_count = 6
-			cooldown = 0.92
+			blade_count = 5
+			cooldown = 1.0
 		4:
-			damage = 19
+			damage = 15
 			fire_range = 215.0
 		5:
-			blade_count = 7
-			damage = 24
+			blade_count = 6
+			damage = 19
 			pierce = 2
-			cooldown = 0.82
+			cooldown = 0.9
 
 func get_description() -> String:
 	return "Kor Yelpazesi Lv" + str(level) + " | x" + str(blade_count + get_effective_multi_attack()) + " | " + str(damage) + " hasar | delici"
