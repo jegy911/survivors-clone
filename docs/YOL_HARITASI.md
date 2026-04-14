@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-15 (YAPILACAKLAR_TOPLU.md: yedi doküman birleşik checklist)
+**Son güncelleme:** 2026-04-15 (`YAPILACAKLAR_TOPLU` iş akışı: sil + kaynakta tik; P0 karakter satırı güncellendi)
 
 ---
 
@@ -16,7 +16,7 @@ Aşağıdaki sıra **öneridir**: P0 → hızlı kullanıcı kazanımı; P4 → 
 | Konu | Not |
 |------|-----|
 | **Run içi sabit metin** | `main.gd`, `wave_manager.gd` vb. dalga / uyarı / yüzen metinlerde hâlâ Türkçe veya `tr()` dışı string; dil İngilizce olsa da karışık görünür. Matris: `ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md` § çoklu dil. |
-| **Karakter seçimi kalan metin** | Kart isimleri `codex.character.*.name` ile düzeldi; **kilit ipucu** (`unlock_hint` `CharacterData`), P2 **«Seç» / «Hazır»**, bazı butonlar kod içi Türkçe — `locales` + anahtar. |
+| **Karakter seçimi kalan metin** | **Kilit ipucu** (`unlock_hint` `CharacterData`), P2 **«Seç» / «Hazır»**, bazı butonlar kod içi Türkçe — `locales` + anahtar. *(Kart isimleri: `codex.character.*.name` — tamam.)* |
 | **Debug çıktıları** | `audio_manager.gd` `print` (SFX bus); `save_manager.gd` `print` — yayın öncesi `OS.is_debug_build()` veya log seviyesine alınmalı. |
 | **Mağaza / placeholder** | `shop_menu` sekmeleri placeholder; oyuncu beklentisi yönetimi veya “yakında” metni. |
 
@@ -144,6 +144,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-15 | **`YAPILACAKLAR_TOPLU` iş akışı** — Liste = yalnız açık iş; bitince satır sil, kaynakta tik; `[ ]` kaldırıldı; `GELISTIRICI` / `README` / P0 karakter satırı güncellendi. |
 | 2026-04-15 | **YAPILACAKLAR_TOPLU.md** — Yedi ana dokümandaki yapılacaklar tek `.md` checklist; `README.md` tablo linki. |
 | 2026-04-15 | **Proje incelemesi (audit)** — `YOL_HARITASI.md`: P0–P4 öncelikli plan (locale kalanları, `get_nodes_in_group`, liste tekrarı, perf, bakım). |
 | 2026-04-14 | **Karakter seçim isimleri + zincir opaklık** — Kartlarda `CharacterSelectHelpers.character_display_name` → `codex.character.*.name` (dil ayarına uyum); zincir segmenti daha opak (renk, RGB boost, daha uzun solma). |

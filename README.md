@@ -19,7 +19,7 @@ Godot 4 ile geliştirilen bir hayatta kalma / vampire survivors tarzı proje.
 | [docs/TASARIM.md](docs/TASARIM.md) | Görsel / ikon / UI / ses / yayın envanteri (✅/❌) |
 | [docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md](docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md) | Erişilebilirlik + bağlılık (20+20), Var/Kısmi/Yok |
 | [docs/KARAKTER_SINIFLARI_VE_TASARIM.md](docs/KARAKTER_SINIFLARI_VE_TASARIM.md) | Karakter sınıfları (Controller / Fighter / Mage / Tank), co-op destek vizyonu, kahraman taslak tablosu |
-| [docs/YAPILACAKLAR_TOPLU.md](docs/YAPILACAKLAR_TOPLU.md) | Yedi ana dokümandaki yapılacakların tek sayfada birleştirilmiş listesi |
+| [docs/YAPILACAKLAR_TOPLU.md](docs/YAPILACAKLAR_TOPLU.md) | Açık işlerin düz listesi; biten satır silinir, kaynak `.md` içinde tiklenir |
 
 **Yerelleştirme:** `locales/tr.json`, `en.json`, `zh_CN.json` — `LocalizationManager` + `LANGUAGE_CATALOG`. Anahtar kontrolü: `python locales/check_locale_parity.py` (referans `en.json`). Yeni diller şimdilik plan aşamasında; tablo `GELISTIRICI_REHBERI.md` içinde.
 
