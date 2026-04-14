@@ -3,7 +3,61 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-14 (Karakter seçim isimleri locale; zincir opaklık; günün değişiklik özeti)
+**Son güncelleme:** 2026-04-15 (Proje incelemesi — öncelikli audit bölümü)
+
+---
+
+## Proje incelemesi — öncelikli plan (audit)
+
+Aşağıdaki sıra **öneridir**: P0 → hızlı kullanıcı kazanımı; P4 → uzun vadeli bakım. Ayrıntılı teknik borç tablosu yukarıda **«Teknik borç / refaktör ve optimizasyon»** ile çakışan maddeler orada tutulur; burada ürün + kod kokusu genişletilir.
+
+### P0 — Gözle görülür tutarsızlıklar / hızlı düzeltme
+
+| Konu | Not |
+|------|-----|
+| **Run içi sabit metin** | `main.gd`, `wave_manager.gd` vb. dalga / uyarı / yüzen metinlerde hâlâ Türkçe veya `tr()` dışı string; dil İngilizce olsa da karışık görünür. Matris: `ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md` § çoklu dil. |
+| **Karakter seçimi kalan metin** | Kart isimleri `codex.character.*.name` ile düzeldi; **kilit ipucu** (`unlock_hint` `CharacterData`), P2 **«Seç» / «Hazır»**, bazı butonlar kod içi Türkçe — `locales` + anahtar. |
+| **Debug çıktıları** | `audio_manager.gd` `print` (SFX bus); `save_manager.gd` `print` — yayın öncesi `OS.is_debug_build()` veya log seviyesine alınmalı. |
+| **Mağaza / placeholder** | `shop_menu` sekmeleri placeholder; oyuncu beklentisi yönetimi veya “yakında” metni. |
+
+### P1 — Ürün açıkları (YOL’daki [ ] maddeleriyle örtüşür)
+
+| Konu | Not |
+|------|-----|
+| **Öğretici** | İlk saniye güveni (matris #11 **Kısmi**); ayrı tutorial sahnesi yok. |
+| **Co-op giriş** | İkinci oyuncu giriş haritası **Kısmi** (matris #2). |
+| **Evrim + kodeks** | Evrim derinleştirme tablosu `[ ]`; kodekste ayrı **Evrim** sekmesi yok. |
+| **Sınıf → oyun** | Kahraman `hero_class` metin olarak var; **oyun dengesine bağlama** `[ ]`. |
+| **Bağlam belgesi** | `survivors_clone_context.md` (veya eşdeğeri) yok — yeni geliştirici / AI için özet. |
+| **Arena / lore / rehber** | Uzun vadeli YOL maddeleri; şu an odak dışı olabilir. |
+
+### P2 — Refaktör / tekrarlayan kod / isim borcu
+
+| Konu | Not |
+|------|-----|
+| **`get_nodes_in_group("player")`** | `main`, `spawn_manager`, `wave_manager`, `environment_manager`, orb’lar, düşmanlar… çok çağrı; co-op ve AI için **tek kaynak** (ör. `main` oyuncu dizisi veya hafif `PlayerRegistry`) düşünülebilir. |
+| **`get_nodes_in_group("player_bullets")`** | Birkaç efekt; havuz / layer ile hizalama. |
+| **Silah / level-up listeleri** | `upgrade_ui.gd` `WEAPON_UPGRADE_IDS`, `player.gd` `_LEVELUP_WEAPON_IDS`, `collection_data` / kodeks — **yeni silah** eklerken çok dosya; tek veri kaynağı veya doğrulama script’i (teknik borç tablosu). |
+| **`boomerang` vs `hunter_axe`** | ID `boomerang`, sahne `hunter_axe.tscn` — isimlendirme borcu; dokümantasyon + olası gelecekte rename. |
+| **Sabit 600 px** | `weapon_lightning` + `main` co-op mesafesi — ortak sabit. |
+| **`player.gd` boyutu** | 900+ satır; zaten `player_ui_helpers` vb. — mantık bloklarına bölme devam edebilir. |
+| **`upgrade_ui.get_upgrade_text`** | Uzun `match`; yeni silah/eşya eklerken unutulma riski — tablo sürücülü veya `codex` fallback. |
+
+### P3 — Optimizasyon (ölçüm sonrası)
+
+| Konu | Not |
+|------|-----|
+| **Düşman sürüsü** | `EnemyRegistry` tüm liste taraması; yıldırım / zincir menzilinde O(n) her vuruş; sürü 600+ iken profil → **mesafe ızgarası** veya seyrek güncelleme. |
+| **ObjectPool** | Havuz boyutları varsayılan; yoğun bolt / mermi için ayar + belge. |
+| **Partikül / VFX** | `performance_quality` düşükte kısmen kapatılıyor; ağır sahnelerde sayım tavanı gözden geçirilebilir. |
+
+### P4 — Bakım, kalite, süreç
+
+| Konu | Not |
+|------|-----|
+| **Commit / asset** | `git status`: takip edilmeyen `assets/projectiles/`, `weapons/scenes/` vb. tek commit’te toplanmalı. |
+| **CI** | İsteğe bağlı: Godot `--headless` export veya `check_locale_parity.py` + sahne varlığı script’i. |
+| **TODO yok** | Kodda `TODO/FIXME` etiketi yok; yine de yukarıdaki maddeler yol haritası görevi görür. |
 
 ---
 
@@ -90,6 +144,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-15 | **Proje incelemesi (audit)** — `YOL_HARITASI.md`: P0–P4 öncelikli plan (locale kalanları, `get_nodes_in_group`, liste tekrarı, perf, bakım). |
 | 2026-04-14 | **Karakter seçim isimleri + zincir opaklık** — Kartlarda `CharacterSelectHelpers.character_display_name` → `codex.character.*.name` (dil ayarına uyum); zincir segmenti daha opak (renk, RGB boost, daha uzun solma). |
 | 2026-04-14 | **Zincir VFX Sprite2D** — `spawn_chain_segment`: Line2D yerine dönen `chain.png` segmenti (oyuncu→düşman→sıçrama); `weapon_chain.tscn` üstü sprite gizli (yalnız uçuş segmenti). |
 | 2026-04-14 | **Dokümantasyon — oturum kapanışı** — `YOL_HARITASI`: «Son oturum — el sıkışma» + «Teknik borç / refaktör» tabloları; `Acil` bölümüne commit/`??` hatırlatması; `GELISTIRICI_REHBERI` §4 oturumlar arası devam bağlantısı. |

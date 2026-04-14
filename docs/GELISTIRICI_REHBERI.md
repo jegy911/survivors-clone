@@ -4,7 +4,9 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 *(İngilizce projelerde eşdeğeri genelde `ARCHITECTURE.md`, `DEVELOPER_GUIDE.md` veya `docs/CONTRIBUTING.md` olarak adlandırılır.)*
 
 **Motor:** Godot 4.x  
-**Son güncelleme:** 2026-04-14
+**Son güncelleme:** 2026-04-15
+
+**Öncelikli plan (audit):** Ürün açıkları, bug / locale kalanları, refaktör ve optimizasyon maddelerinin sıralı özeti → **`docs/YOL_HARITASI.md`** başındaki **«Proje incelemesi — öncelikli plan (audit)»** (P0–P4).
 
 ### Dokümantasyonu ne zaman güncellemeliyiz?
 
