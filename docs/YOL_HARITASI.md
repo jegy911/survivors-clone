@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-15 (Proje incelemesi — öncelikli audit bölümü)
+**Son güncelleme:** 2026-04-15 (YAPILACAKLAR_TOPLU.md: yedi doküman birleşik checklist)
 
 ---
 
@@ -144,6 +144,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-15 | **YAPILACAKLAR_TOPLU.md** — Yedi ana dokümandaki yapılacaklar tek `.md` checklist; `README.md` tablo linki. |
 | 2026-04-15 | **Proje incelemesi (audit)** — `YOL_HARITASI.md`: P0–P4 öncelikli plan (locale kalanları, `get_nodes_in_group`, liste tekrarı, perf, bakım). |
 | 2026-04-14 | **Karakter seçim isimleri + zincir opaklık** — Kartlarda `CharacterSelectHelpers.character_display_name` → `codex.character.*.name` (dil ayarına uyum); zincir segmenti daha opak (renk, RGB boost, daha uzun solma). |
 | 2026-04-14 | **Zincir VFX Sprite2D** — `spawn_chain_segment`: Line2D yerine dönen `chain.png` segmenti (oyuncu→düşman→sıçrama); `weapon_chain.tscn` üstü sprite gizli (yalnız uçuş segmenti). |

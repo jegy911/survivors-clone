@@ -6,7 +6,8 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 **Motor:** Godot 4.x  
 **Son güncelleme:** 2026-04-15
 
-**Öncelikli plan (audit):** Ürün açıkları, bug / locale kalanları, refaktör ve optimizasyon maddelerinin sıralı özeti → **`docs/YOL_HARITASI.md`** başındaki **«Proje incelemesi — öncelikli plan (audit)»** (P0–P4).
+**Öncelikli plan (audit):** Ürün açıkları, bug / locale kalanları, refaktör ve optimizasyon maddelerinin sıralı özeti → **`docs/YOL_HARITASI.md`** başındaki **«Proje incelemesi — öncelikli plan (audit)»** (P0–P4).  
+**Tek sayfa yapılacaklar:** Yedi ana dokümanın checkbox birleşimi → **`docs/YAPILACAKLAR_TOPLU.md`**.
 
 ### Dokümantasyonu ne zaman güncellemeliyiz?
 
