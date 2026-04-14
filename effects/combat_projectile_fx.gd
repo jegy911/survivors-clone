@@ -3,6 +3,14 @@ class_name CombatProjectileFx
 
 const LIGHTNING_HIT_FX := preload("res://effects/lightning_hit_fx.tscn")
 const TEX_CHAIN := preload("res://assets/projectiles/chain/chain.png")
+## `true`: zincir halkaları dokunun **genişliği** boyunca (+X yönü); `false`: **yükseklik** boyunca (dikey PNG için).
+const CHAIN_TEX_LINKS_ALONG_WIDTH := true
+## Doku yüksekliğine göre kalınlık çarpanı (genişlik `mesafe` ile otomatik uzar).
+const CHAIN_SEGMENT_THICKNESS := 0.22
+## Renk çarpanı (1 = değişmez); >1 biraz daha “dolu” görünür.
+const CHAIN_MODULATE_RGB_BOOST := 1.12
+## Solma: daha uzun süre tam opak kalır.
+const CHAIN_FADE_DURATION_SEC := 0.42
 
 
 static func spawn_lightning_style_flash(
@@ -18,7 +26,7 @@ static func spawn_lightning_style_flash(
 		fx.call("run", player, style)
 
 
-## İki nokta arasında dokulu zincir çizgisi (kısa ömürlü).
+## İki nokta arasında `chain.png`: ortada, yönü segmente göre döner, X ölçeği mesafeyi kaplar.
 static func spawn_chain_segment(
 	parent: Node,
 	from_global: Vector2,
@@ -26,27 +34,35 @@ static func spawn_chain_segment(
 	player: Node2D,
 	tint: Color
 ) -> void:
-	var line := Line2D.new()
-	line.texture = TEX_CHAIN
-	## TILE için UV tekrarı; aksi halde doku tek renk / boş görünebilir.
-	line.texture_repeat = CanvasItem.TEXTURE_REPEAT_ENABLED
-	line.texture_mode = Line2D.LINE_TEXTURE_TILE
-	line.width = 16.0
-	line.joint_mode = Line2D.LINE_JOINT_ROUND
-	line.begin_cap_mode = Line2D.LINE_CAP_ROUND
-	line.end_cap_mode = Line2D.LINE_CAP_ROUND
-	## Doku renkleri çarpılır; koyu çizgi yerine zincir PNG’si görünsün.
-	line.default_color = Color.WHITE
+	var seg: Vector2 = to_global - from_global
+	var dist: float = seg.length()
+	if dist < 3.0:
+		return
+	var spr := Sprite2D.new()
+	spr.texture = TEX_CHAIN
+	spr.centered = true
+	spr.z_index = 120
+	spr.z_as_relative = false
 	var vfx_a := 1.0
 	if player and player.has_method("get_player_vfx_opacity"):
 		vfx_a = player.get_player_vfx_opacity()
-	line.modulate = Color(tint.r, tint.g, tint.b, tint.a * vfx_a)
-	line.z_index = 120
-	line.z_as_relative = false
-	parent.add_child(line)
-	line.global_position = from_global
-	line.add_point(Vector2.ZERO)
-	line.add_point(to_global - from_global)
-	var tw := line.create_tween()
-	tw.tween_property(line, "modulate:a", 0.0, 0.24)
-	tw.tween_callback(line.queue_free)
+	var a0: float = minf(1.0, tint.a * vfx_a)
+	spr.modulate = Color(
+		minf(1.0, tint.r * CHAIN_MODULATE_RGB_BOOST),
+		minf(1.0, tint.g * CHAIN_MODULATE_RGB_BOOST),
+		minf(1.0, tint.b * CHAIN_MODULATE_RGB_BOOST),
+		a0
+	)
+	parent.add_child(spr)
+	spr.global_position = from_global.lerp(to_global, 0.5)
+	if CHAIN_TEX_LINKS_ALONG_WIDTH:
+		var w: float = maxf(float(TEX_CHAIN.get_width()), 1.0)
+		spr.rotation = seg.angle()
+		spr.scale = Vector2(dist / w, CHAIN_SEGMENT_THICKNESS)
+	else:
+		var h: float = maxf(float(TEX_CHAIN.get_height()), 1.0)
+		spr.rotation = seg.angle() - PI * 0.5
+		spr.scale = Vector2(CHAIN_SEGMENT_THICKNESS, dist / h)
+	var tw := spr.create_tween()
+	tw.tween_property(spr, "modulate:a", 0.0, CHAIN_FADE_DURATION_SEC)
+	tw.tween_callback(spr.queue_free)

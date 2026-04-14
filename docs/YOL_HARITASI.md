@@ -3,7 +3,24 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-14 (Oturum kapanışı: el sıkışma + teknik borç tablosu; silah sahneleri / yıldırım–zincir / commit notu)
+**Son güncelleme:** 2026-04-14 (Karakter seçim isimleri locale; zincir opaklık; günün değişiklik özeti)
+
+---
+
+## 2026-04-14 — Günün değişiklikleri (debug / geri sarma notu)
+
+Bugün toplu dokunuşlar yapıldı; olası regresyonlarda buradan iz sür:
+
+- **Silah sahneleri:** `weapons/scenes/weapon_<id>.tscn` (çoğu silah); `PlayerLoadoutRegistry.create_weapon` sahne önceliği.
+- **Balta:** `projectiles/boomerang.gd|.tscn` silindi → `hunter_axe.tscn` / `hunter_axe.gd`; silah ID `boomerang` korundu.
+- **Yeni dosyalar:** `effects/combat_projectile_fx.gd`, `lightning_hit_fx.*`, `lightning_bolt.*`, `ObjectPool` ile bolt; `tools/` (ör. `gen_weapon_scenes.py`).
+- **Asset:** `assets/projectiles/` (aura, axe, chain, lightning) — commit öncesi `git status` ile `??` kontrol.
+- **Aura:** `weapon_aura.gd` ölçek / `super._process`, `aura_outer_*` sabitleri.
+- **Zincir:** `weapon_chain` sıralı vuruş + gecikme; VFX önce Line2D TILE, sonra **Sprite2D** segment + `chain.png` (yön + uzunluk); renk / solma / `CHAIN_*` sabitleri `combat_projectile_fx.gd`.
+- **Yıldırım:** `weapon_lightning` + `lightning_bolt` (gökten iniş, dikey sprite), `STRIKE_MAX_DIST_FROM_PLAYER` 600, `weapon_lightning.tscn` üst sprite kaldırıldı/gizlendi.
+- **Locale / UI:** `ui.player` çift anahtar birleştirme; level-up metinleri; **karakter kartı isimleri** artık `codex.character.<id>.name` (`CharacterSelectHelpers.character_display_name`).
+- **Meta / kayıt:** `start_level_bonus` clamp, `SaveManager` normalizasyon; kahraman ID kaydı (`selected_character_id` vb.).
+- **Kalan Türkçe sabitler (bilinçli):** `CharacterData` içi `name` / `unlock_hint` (Türkçe veri); seçim ekranında isim düzeltildi, kilit ipucu ve bazı butonlar (`Seç`, `Satın Al`…) hâlâ kod/locale karışık olabilir — ayrı tur.
 
 ---
 
@@ -17,7 +34,7 @@ Bir sonraki oturumda **“kaldığımız yerden devam”** için özet:
 | **Balta** | `projectiles/boomerang.*` kaldırıldı → **`projectiles/hunter_axe.tscn`** / `hunter_axe.gd`. Kayıtlı silah kimliği hâlâ `boomerang` / `blood_boomerang` (metinler “Balta”). |
 | **Asset’ler** | `assets/projectiles/` (aura, axe, chain, lightning). Çalışma ağacında bazıları **henüz commit’lenmemiş** olabilir (`git status` → `??`) — bir commit’te toplanmalı. |
 | **Yıldırım** | `lightning_bolt` (ObjectPool): kamera üstünden iniş, sprite **dikey** (`Sprite2D.rotation = 0`), `weapon_lightning.tscn` üzerinde yıldırım ikonu yok; hedef **`STRIKE_MAX_DIST_FROM_PLAYER` = 600 px** (görünür alan hissi; `main.gd` co-op `MAX_PLAYER_DISTANCE` ile aynı tavan fikri). |
-| **Zincir** | `CombatProjectileFx.spawn_chain_segment`: `chain.png` + Line2D **`texture_repeat`** + TILE. |
+| **Zincir** | `CombatProjectileFx.spawn_chain_segment`: `chain.png` ile **Sprite2D** segment (konum ortada, `rotation` segment yönü, `scale.x` = mesafe). |
 
 **Sonraki adım (insan):** Tüm değişiklikleri gözden geçirip `??` dosyaları dâhil **tek veya birkaç anlamlı commit**; aşağıdaki teknik borçlar zorunlu değil.
 
@@ -30,7 +47,7 @@ Bir sonraki oturumda **“kaldığımız yerden devam”** için özet:
 | Alan | Öneri |
 |------|--------|
 | **600 px tek kaynak** | `weapon_lightning.gd` `STRIKE_MAX_DIST_FROM_PLAYER` ile `main.gd` `MAX_PLAYER_DISTANCE` ortak sabitte (`core/` autoload veya küçük `balance_constants.gd`) birleştirilebilir. |
-| **Silah sahnesi sprite politikası** | `weapon_chain` ikon görünür, `weapon_bullet` / `weapon_lightning` gizli — istenen UX’e göre şablon + `tools/gen_weapon_scenes.py` notu netleştirilebilir. |
+| **Silah sahnesi sprite politikası** | `weapon_chain.tscn` üstü sprite gizli (zincir VFX segmentte); diğer silahlarda şablon tutarlılığı + `tools/gen_weapon_scenes.py` notu. |
 | **Yıldırım bolt hareketi** | Şu an `move_toward(hedef)` ile hafif çapraz iz mümkün; tam dik iniş için hedef X sabitlenip yalnızca Y indirilebilir. |
 | **ObjectPool** | `lightning_bolt` havuz boyutu / eşzamanlı vuruş sayısı oynanışa göre ayar; kısa not `GELISTIRICI_REHBERI` veya kod yorumu. |
 | **`EnemyRegistry` + menzil** | Tüm liste üzerinden mesafe; sürü çok büyürse profil → ızgara / seyrek güncelleme değerlendirilir. |
@@ -73,6 +90,8 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-14 | **Karakter seçim isimleri + zincir opaklık** — Kartlarda `CharacterSelectHelpers.character_display_name` → `codex.character.*.name` (dil ayarına uyum); zincir segmenti daha opak (renk, RGB boost, daha uzun solma). |
+| 2026-04-14 | **Zincir VFX Sprite2D** — `spawn_chain_segment`: Line2D yerine dönen `chain.png` segmenti (oyuncu→düşman→sıçrama); `weapon_chain.tscn` üstü sprite gizli (yalnız uçuş segmenti). |
 | 2026-04-14 | **Dokümantasyon — oturum kapanışı** — `YOL_HARITASI`: «Son oturum — el sıkışma» + «Teknik borç / refaktör» tabloları; `Acil` bölümüne commit/`??` hatırlatması; `GELISTIRICI_REHBERI` §4 oturumlar arası devam bağlantısı. |
 | 2026-04-14 | **Yıldırım menzil tavanı** — `weapon_lightning`: yalnızca oyuncudan ≤600 px içindeki düşmanlar hedef (ilk vuruş + zincir sıçraması); ekran dışı görünmez vuruş yok. |
 | 2026-04-14 | **Zincir doku + yıldırım görselliği** — `spawn_chain_segment`: Line2D `texture_repeat` ile `chain.png` TILE görünür; `lightning_bolt` spawn kamera üstü + hedefe düşüş (oyuncu→düşman süzülme yok); `weapon_lightning.tscn` yıldırım sprite kaldırıldı. |

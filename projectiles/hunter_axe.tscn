@@ -1,18 +1,18 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene format=3 uid="uid://b7nuphq33ph2r"]
 
-[ext_resource type="Script" path="res://projectiles/hunter_axe.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/projectiles/axe/boomerang.png" id="2_axe"]
+[ext_resource type="Script" uid="uid://buv045ngmhg7b" path="res://projectiles/hunter_axe.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://t8nqroislp4w" path="res://assets/projectiles/axe/boomerang.png" id="2_axe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_axe"]
 size = Vector2(28, 14)
 
-[node name="HunterAxe" type="Area2D"]
+[node name="HunterAxe" type="Area2D" unique_id=125599175]
 collision_mask = 2
 script = ExtResource("1_script")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.07, 0.07)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1860488583]
+scale = Vector2(0.14, 0.14)
 texture = ExtResource("2_axe")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=568951468]
 shape = SubResource("RectangleShape2D_axe")

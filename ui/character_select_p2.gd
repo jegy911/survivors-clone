@@ -140,7 +140,7 @@ func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContaine
 
 	if is_taken:
 		char_visual = CharacterSelectPreview.make_portrait(cid, "taken", Color(char_data["color"]))
-		name_label.text = char_data["name"]
+		name_label.text = CharacterSelectHelpers.character_display_name(cid)
 		name_label.add_theme_color_override("font_color", Color("#444466"))
 		desc_label.text = tr("ui.character_select.taken_by_p1")
 		desc_label.add_theme_color_override("font_color", Color("#444466"))
@@ -154,7 +154,7 @@ func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContaine
 		vbox.add_child(taken_label)
 	else:
 		char_visual = CharacterSelectPreview.make_portrait(cid, "full", Color(char_data["color"]))
-		name_label.text = char_data["name"]
+		name_label.text = CharacterSelectHelpers.character_display_name(cid)
 		name_label.add_theme_color_override("font_color", Color(char_data["color"]))
 		desc_label.text = CharacterSelectHelpers.rich_description_unlocked(char_data)
 		desc_label.add_theme_color_override("font_color", Color("#B0B0B0"))

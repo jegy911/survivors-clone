@@ -166,7 +166,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 	match state:
 		"purchased":
 			char_visual = CharacterSelectPreview.make_portrait(cid, "full", Color(char_data["color"]))
-			name_label.text = char_data["name"]
+			name_label.text = CharacterSelectHelpers.character_display_name(cid)
 			name_label.add_theme_color_override("font_color", Color(char_data["color"]))
 			desc_label.text = CharacterSelectHelpers.rich_description_unlocked(char_data)
 			desc_label.add_theme_color_override("font_color", Color("#B0B0B0"))
@@ -181,7 +181,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 
 		"unlocked":
 			char_visual = CharacterSelectPreview.make_portrait(cid, "silhouette", Color(char_data["color"]))
-			name_label.text = char_data["name"]
+			name_label.text = CharacterSelectHelpers.character_display_name(cid)
 			name_label.add_theme_color_override("font_color", Color(char_data["color"]))
 			desc_label.text = CharacterSelectHelpers.rich_description_unlocked(char_data)
 			desc_label.add_theme_color_override("font_color", Color("#666666"))
@@ -199,7 +199,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 
 		"locked":
 			char_visual = CharacterSelectPreview.make_portrait(cid, "locked", Color(char_data.get("color", "#444466")))
-			name_label.text = "???" if char_data["secret"] else "🔒 " + char_data["name"]
+			name_label.text = "???" if char_data["secret"] else "🔒 " + CharacterSelectHelpers.character_display_name(cid)
 			name_label.add_theme_color_override("font_color", Color("#444466"))
 			desc_label.text = ""
 

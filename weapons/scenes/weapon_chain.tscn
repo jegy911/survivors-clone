@@ -25,6 +25,5 @@ offset_bottom = 40.0
 color = Color(0.45, 0.85, 1, 0.18)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1786379039]
-rotation = -3.1415927
-scale = Vector2(0.1, 0.1)
+visible = false
 texture = ExtResource("2_n744s")

@@ -23,6 +23,14 @@ static func item_display_name(item_id: String) -> String:
 	return item_id if t == k else t
 
 
+static func character_display_name(char_id: String) -> String:
+	if char_id.is_empty():
+		return ""
+	var k := "codex.character.%s.name" % char_id
+	var t := _t(k)
+	return char_id if t == k else t
+
+
 static func rich_description_unlocked(char_data: Dictionary) -> String:
 	var parts: Array = []
 	if char_data["start_weapon"] != "":

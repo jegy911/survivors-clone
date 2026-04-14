@@ -91,7 +91,7 @@ Her düşman `.tscn` içinde **`AnimatedSprite2D`** + atlas / spritesheet ile **
 |----------|----------------|----------------------------------------|
 | bullet | ✅ | `projectiles/bullet.gd` — `player_vfx_opacity` → ColorRect/Sprite2D `modulate.a` |
 | aura | ✅ | `assets/projectiles/aura/aura.png` — oyuncuya bağlı halka (`weapon_aura.gd` → `AuraWeaponRing`) |
-| chain | ✅ | `assets/projectiles/chain/chain.png` — `CombatProjectileFx.spawn_chain_segment` (`weapon_chain.gd`) |
+| chain | ✅ | `assets/projectiles/chain/chain.png` — `CombatProjectileFx.spawn_chain_segment` (Sprite2D segment, `weapon_chain.gd`) |
 | boomerang | ✅ | `assets/projectiles/axe/boomerang.png` + `projectiles/hunter_axe.tscn` (Sprite2D; oyun içi ID: `boomerang`) |
 | lightning | ✅ | Vuruş: `projectiles/lightning_bolt.tscn` (ObjectPool; kamera üstünden hedefe dikey iniş, mermi gibi isabet + `lightning_hit_fx`). Storm / Toxic Chain yalnızca `lightning_hit_fx` + renk. |
 | ice_ball | ✅ | `projectiles/ice_ball.tscn` |

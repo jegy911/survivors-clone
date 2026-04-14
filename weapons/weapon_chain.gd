@@ -63,8 +63,9 @@ func _run_chain_sequence(enemies: Array) -> void:
 		nearest.take_damage(final_damage)
 		EventBus.on_damage_dealt.emit(player, nearest, final_damage)
 		hit_enemies.append(nearest)
-		var green_intensity: float = 0.4 + (float(i) / float(maxi(effective_chain, 1))) * 0.6
-		var seg_color := Color(0.2, green_intensity, 0.35)
+		var green_intensity: float = 0.45 + (float(i) / float(maxi(effective_chain, 1))) * 0.55
+		## Tam opak segment; VFX biraz daha parlak (saydam hissi azalır).
+		var seg_color := Color(0.28, green_intensity, 0.48, 1.0)
 		CombatProjectileFx.spawn_chain_segment(
 			player.get_parent(), current_pos, nearest.global_position, player, seg_color
 		)
