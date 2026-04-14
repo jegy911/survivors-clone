@@ -8,6 +8,9 @@ var selected_map = "vs_map"
 var selected_character = 0
 var game_mode: String = "solo"  # "solo", "local_coop", "online_coop"
 var selected_character_p2: int = 0
+## Karakter listesi sırası değişse bile doğru kahraman; boşsa indeksten türetilir.
+var selected_character_id: String = "warrior"
+var selected_character_p2_id: String = "warrior"
 var meta_upgrades = {
 	"max_hp_bonus": 0,
 	"damage_bonus": 0,
@@ -119,10 +122,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 func save_game():
+	_normalize_meta_upgrades()
 	var config = ConfigFile.new()
 	config.set_value("player", "gold", gold)
 	config.set_value("player", "selected_character", selected_character)
 	config.set_value("player", "selected_character_p2", selected_character_p2)
+	config.set_value("player", "selected_character_id", selected_character_id)
+	config.set_value("player", "selected_character_p2_id", selected_character_p2_id)
 	for key in meta_upgrades:
 		config.set_value("upgrades", key, meta_upgrades[key])
 	for key in settings:
@@ -168,8 +174,12 @@ func load_game():
 		selected_character_p2 = _remap_character_index_after_order_change(selected_character_p2)
 	selected_character = clampi(selected_character, 0, CharacterData.CHARACTERS.size() - 1)
 	selected_character_p2 = clampi(selected_character_p2, 0, CharacterData.CHARACTERS.size() - 1)
+	selected_character_id = str(config.get_value("player", "selected_character_id", ""))
+	selected_character_p2_id = str(config.get_value("player", "selected_character_p2_id", ""))
+	_reconcile_selected_characters_from_storage()
 	for key in meta_upgrades:
 		meta_upgrades[key] = config.get_value("upgrades", key, 0)
+	_normalize_meta_upgrades()
 	for key in settings:
 		settings[key] = config.get_value("settings", key, settings[key])
 	total_kills = config.get_value("unlock", "total_kills", 0)
@@ -208,6 +218,12 @@ func spend_gold(amount: int) -> bool:
 	gold -= amount
 	save_game()
 	return true
+
+func _normalize_meta_upgrades() -> void:
+	for key in meta_upgrades:
+		var cap: int = get_max_rank(key)
+		meta_upgrades[key] = clampi(int(meta_upgrades[key]), 0, cap)
+
 
 func get_max_rank(key: String) -> int:
 	match key:
@@ -292,6 +308,68 @@ func _remap_character_index_after_order_change(old_index: int) -> int:
 		if CharacterData.CHARACTERS[i]["id"] == cid:
 			return i
 	return clampi(old_index, 0, CharacterData.CHARACTERS.size() - 1)
+
+
+func _reconcile_selected_characters_from_storage() -> void:
+	var n: int = CharacterData.CHARACTERS.size()
+	if n <= 0:
+		return
+	selected_character = clampi(selected_character, 0, n - 1)
+	selected_character_p2 = clampi(selected_character_p2, 0, n - 1)
+	# P1: geçerli ID yoksa mevcut indeksten türet; varsa indeksi ID ile eşitle
+	if selected_character_id.is_empty() or CharacterData.get_character_index_by_id(selected_character_id) < 0:
+		selected_character_id = str(CharacterData.CHARACTERS[selected_character]["id"])
+	else:
+		var i1: int = CharacterData.get_character_index_by_id(selected_character_id)
+		if i1 >= 0:
+			selected_character = i1
+		else:
+			selected_character_id = str(CharacterData.CHARACTERS[0]["id"])
+			selected_character = 0
+	# P2
+	if selected_character_p2_id.is_empty() or CharacterData.get_character_index_by_id(selected_character_p2_id) < 0:
+		selected_character_p2_id = str(CharacterData.CHARACTERS[selected_character_p2]["id"])
+	else:
+		var i2: int = CharacterData.get_character_index_by_id(selected_character_p2_id)
+		if i2 >= 0:
+			selected_character_p2 = i2
+		else:
+			selected_character_p2_id = str(CharacterData.CHARACTERS[0]["id"])
+			selected_character_p2 = 0
+
+
+func get_character_index_for_player(player_id: int) -> int:
+	var n: int = CharacterData.CHARACTERS.size()
+	if n <= 0:
+		return 0
+	var cid: String = selected_character_p2_id if player_id == 1 else selected_character_id
+	var by_id: int = CharacterData.get_character_index_by_id(cid)
+	if by_id >= 0:
+		return by_id
+	var idx: int = selected_character_p2 if player_id == 1 else selected_character
+	return clampi(idx, 0, n - 1)
+
+
+func set_selected_character_p1_index(index: int) -> void:
+	var n: int = CharacterData.CHARACTERS.size()
+	if n <= 0:
+		return
+	selected_character = clampi(index, 0, n - 1)
+	selected_character_id = str(CharacterData.CHARACTERS[selected_character]["id"])
+
+
+func set_selected_character_p2_index(index: int) -> void:
+	var n: int = CharacterData.CHARACTERS.size()
+	if n <= 0:
+		return
+	selected_character_p2 = clampi(index, 0, n - 1)
+	selected_character_p2_id = str(CharacterData.CHARACTERS[selected_character_p2]["id"])
+
+
+func get_character_id_for_player(player_id: int) -> String:
+	var i: int = get_character_index_for_player(player_id)
+	return str(CharacterData.CHARACTERS[i]["id"])
+
 
 func check_and_unlock_characters(char_id: String, run_kills: int, survival_time: float):
 	for char_data in CharacterData.CHARACTERS:

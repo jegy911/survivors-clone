@@ -36,7 +36,7 @@ const WEAPON_ENTRIES: Array = [
 	{"id": "bullet", "tab": TAB_WEAPON, "emoji": "🎯", "accent": "#BDC3C7"},
 	{"id": "aura", "tab": TAB_WEAPON, "emoji": "⭕", "accent": "#9B59B6"},
 	{"id": "chain", "tab": TAB_WEAPON, "emoji": "🔗", "accent": "#3498DB"},
-	{"id": "boomerang", "tab": TAB_WEAPON, "emoji": "🪃", "accent": "#27AE60"},
+	{"id": "boomerang", "tab": TAB_WEAPON, "emoji": "🪓", "accent": "#27AE60"},
 	{"id": "lightning", "tab": TAB_WEAPON, "emoji": "⚡", "accent": "#F1C40F"},
 	{"id": "ice_ball", "tab": TAB_WEAPON, "emoji": "❄", "accent": "#00BFFF"},
 	{"id": "shadow", "tab": TAB_WEAPON, "emoji": "👤", "accent": "#8E44AD"},

@@ -187,12 +187,17 @@
         "max_suffix": " (满级)",
         "weapon_upgrade": "⬆ %s → Lv%d",
         "item_upgrade": "⬆ %s → Lv%d",
-        "level_step_weapon": "升级：等级 %d → %d（本选项会升一级）",
-        "level_step_item": "升级：等级 %d → %d（本选项会升一级）",
+        "level_step_weapon": "升级：等级 {0} → {1}（本选项会升一级）",
+        "level_step_item": "升级：等级 {0} → {1}（本选项会升一级）",
         "current_effect_line": "当前数值：%s",
+        "current_effect_prefix": "当前数值：\n",
         "new_weapon": "新武器：%s",
-        "new_item": "新道具：%s"
-      }
+        "new_weapon_prefix": "新武器：",
+        "new_item": "新道具：%s",
+        "new_item_prefix": "新道具："
+      },
+      "empty_level_reward": "+20 生命  +25 金币\n（已无升级可选）",
+      "cog_master_ready": "⚙ 齿轮大师！多 1 个选项"
     },
     "meta_screen": {
       "title": "永久升级",
@@ -216,10 +221,6 @@
     },
     "hud": {
       "wave_counter": "波次：%d"
-    },
-    "player": {
-      "empty_level_reward": "+20 生命  +25 金币\n（已无升级可选）",
-      "cog_master_ready": "⚙ 齿轮大师！多 1 个选项"
     },
     "wave_reward": {
       "title": "⚡ 完成第 %d 波！",
@@ -262,8 +263,8 @@
         "desc": "激光 + 暴击 → 死亡激光\n每次命中必暴击，射程 ×2"
       },
       "blood_boomerang": {
-        "name": "鲜血回旋镖",
-        "desc": "回旋镖 + 吸血 → 鲜血回旋镖\n命中时吸取生命"
+        "name": "鲜血飞斧",
+        "desc": "飞斧 + 吸血 → 鲜血飞斧\n命中时吸取生命"
       },
       "storm": {
         "name": "风暴",
@@ -449,8 +450,8 @@
         "desc": "在敌人之间跳跃，适合密集尸潮。"
       },
       "boomerang": {
-        "name": "回旋镖",
-        "desc": "飞出后折返，惩罚追你的怪群。"
+        "name": "飞斧",
+        "desc": "掷出后折返，惩罚追你的怪群。"
       },
       "lightning": {
         "name": "雷击",
@@ -472,6 +473,22 @@
         "name": "扇刃",
         "desc": "宽近战扇面，贴脸收割。"
       },
+      "hex_sigil": {
+        "name": "六角印",
+        "desc": "地面印记，诅咒与控场。"
+      },
+      "gravity_anchor": {
+        "name": "引力锚",
+        "desc": "将敌人拉入伤害引力井。"
+      },
+      "bastion_flail": {
+        "name": "堡垒链枷",
+        "desc": "旋转链枷带击退，稳住前排。"
+      },
+      "shield_ram": {
+        "name": "盾冲",
+        "desc": "锥形盾冲，直线爆发伤害。"
+      },
       "holy_bullet": {
         "name": "圣弹",
         "desc": "进化：更高伤害并破甲。"
@@ -485,7 +502,7 @@
         "desc": "进化：段段暴击，射程极远。"
       },
       "blood_boomerang": {
-        "name": "血旋镖",
+        "name": "鲜血飞斧",
         "desc": "进化：命中吸血。"
       },
       "storm": {
@@ -561,6 +578,22 @@
       "ember_heart": {
         "name": "余烬之心",
         "desc": "与扇刃系进化搭配的火焰心核。"
+      },
+      "glyph_charm": {
+        "name": "符文护符",
+        "desc": "护符与印记协同，配印记系进化。"
+      },
+      "resonance_stone": {
+        "name": "共鸣石",
+        "desc": "拾取与牵引范围，配引力系进化。"
+      },
+      "rampart_plate": {
+        "name": "壁垒板甲",
+        "desc": "厚重护甲片，配链枷系进化。"
+      },
+      "iron_bulwark": {
+        "name": "铁壁",
+        "desc": "铁壁型防御被动，配盾冲系进化。"
       }
     },
     "character": {
@@ -578,7 +611,7 @@
       },
       "hunter": {
         "name": "猎人",
-        "desc": "回旋镖专精，吸血协同。"
+        "desc": "飞斧专精，吸血协同。"
       },
       "stormer": {
         "name": "风暴使",
@@ -602,7 +635,7 @@
       },
       "blood_prince": {
         "name": "血裔",
-        "desc": "偏 XP 成长，血旋镖主题。"
+        "desc": "偏 XP 成长，鲜血飞斧主题。"
       },
       "nomad": {
         "name": "游牧民",
@@ -727,7 +760,7 @@
     },
     "start_level_bonus": {
       "name": "📈 起始等级",
-      "desc": "开局等级 +1\n（满级：+3 级）"
+      "desc": "至少 1 级：开局从 2 级开始（净 +1）。\n2–3 级目前相同（后续会加额外奖励）。"
     },
     "reroll_bonus": {
       "name": "🔄 额外重掷",

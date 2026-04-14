@@ -238,7 +238,7 @@ func _on_select(index: int):
 	_update_selection_borders()
 	$Panel/VBoxContainer/ActionRow/PlayButton.disabled = false
 	if SaveManager.game_mode == "local_coop":
-		SaveManager.selected_character = selected_index
+		SaveManager.set_selected_character_p1_index(selected_index)
 		SaveManager.save_game()
 		get_tree().change_scene_to_file("res://ui/character_select_p2.tscn")
 
@@ -271,7 +271,7 @@ func _on_purchase(char_id: String):
 func _on_play():
 	if selected_index < 0:
 		return
-	SaveManager.selected_character = selected_index
+	SaveManager.set_selected_character_p1_index(selected_index)
 	SaveManager.save_game()
 	if SaveManager.game_mode == "local_coop":
 		get_tree().change_scene_to_file("res://ui/character_select_p2.tscn")

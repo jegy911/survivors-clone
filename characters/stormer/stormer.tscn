@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://brj3eip1w0pk5" path="res://player/player.gd" id="1_30xju"]
 [ext_resource type="Texture2D" uid="uid://8kipxitkq7pk" path="res://assets/character assets/stormer assets/spritesheet (188880).png" id="2_jixas"]
+[ext_resource type="Texture2D" uid="uid://u61lfv4nyypy" path="res://assets/character assets/stormer assets/stormidlesag.png" id="3_30xju"]
 [ext_resource type="Texture2D" uid="uid://ks0jpnqkgab5" path="res://assets/character assets/stormer assets/spritesheet (1666).png" id="3_ghgpx"]
 [ext_resource type="Texture2D" uid="uid://dtugkw7sg3n7l" path="res://assets/character assets/stormer assets/stormwalksag.png" id="4_30xju"]
 
@@ -10,6 +11,10 @@ size = Vector2(34, 63)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aavsa"]
 atlas = ExtResource("2_jixas")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lp6t1"]
+atlas = ExtResource("3_30xju")
 region = Rect2(0, 0, 512, 512)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t3xs4"]
@@ -662,7 +667,10 @@ animations = [{
 "name": &"idle_left",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lp6t1")
+}],
 "loop": true,
 "name": &"idle_right",
 "speed": 5.0

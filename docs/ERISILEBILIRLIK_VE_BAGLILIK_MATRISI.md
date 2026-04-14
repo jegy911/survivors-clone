@@ -3,7 +3,7 @@
 Bu belge, **20 + 20 maddenin** Ironfall kod tabanındaki **Var / Kısmi / Yok** durumunu ve kısa **repo notunu** içerir.  
 Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 
-**Son kod kontrolü:** 2026-04-09 (güncelleme: `ui_scale` + `colorblind_palette` (Görüntü); `upgrade_ui` emoji önekleri; fast run / lanet / mağaza iskeleti; önceki maddeler)
+**Son kod kontrolü:** 2026-04-14 (güncelleme: aura / zincir / yıldırım / balta projeksiyon dokuları + `CombatProjectileFx`; önceki maddeler)
 
 ---
 
@@ -14,7 +14,7 @@ Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 | 1 | Oto-ateş | **Var** | `weapons/weapon_base.gd` — `_process` içinde timer → `attack()`. |
 | 2 | Tek çubuk kontrol | **Kısmi** | Solo: `player.gd` WASD/ok. Local co-op: ikinci giriş haritası gerekir. |
 | 3 | Anında restart | **Var** | `ui/game_over.gd` — tekrar oyna, havuz sıfırlama, `character_select`. |
-| 4 | Görsel karmaşa (oyuncu efekt opaklığı) | **Var** | `SaveManager.settings["player_vfx_opacity"]` (0–1); `ui/settings.gd` + `pause_menu` kaydırıcı; `player.get_player_vfx_opacity()` — level-up halkası/flash, trail, co-op downed; silah VFX (`weapon_lightning`, `laser`, `death_laser`, `storm`, `toxic_chain`, `frost_nova`, `shadow_storm`, `shadow`); `projectiles/bullet`, `boomerang`, `ice_ball` (donma), `fan_blade_shard`; `item_blood_pool`, `item_steam_armor` buhar rengi. |
+| 4 | Görsel karmaşa (oyuncu efekt opaklığı) | **Var** | `SaveManager.settings["player_vfx_opacity"]` (0–1); `ui/settings.gd` + `pause_menu` kaydırıcı; `player.get_player_vfx_opacity()` — level-up halkası/flash, trail, co-op downed; silah VFX (`weapon_lightning`, `laser`, `death_laser`, `storm`, `toxic_chain`, `frost_nova`, `shadow_storm`, `shadow`, `weapon_aura` halka); `effects/combat_projectile_fx.gd` (yıldırım sprite + zincir çizgisi); `projectiles/bullet`, `hunter_axe` (Sprite2D), `lightning_bolt`, `ice_ball` (donma), `fan_blade_shard`; `item_blood_pool`, `item_steam_armor` buhar rengi. |
 | 5 | Yüksek kontrast düşman (outline) | **Var** | `SaveManager.settings["enemy_high_contrast_outline"]` (isteğe bağlı; **Ayarlar → Görüntü**); `enemy_base.gd` `_setup_visuals()` → `AnimatedSprite2D` sarı siluet + görünür `ColorRect` düşmanlarda offset; yalnız yeni spawn. |
 | 6 | Düşük donanım | **Kısmi** | `SaveManager.settings["performance_quality"]` **Düşük / Orta / Yüksek** (`get_max_enemies_cap`, olay spawn çarpanı, `is_heavy_vfx_enabled` / partikül); **Ayarlar → Görüntü**. Ayrı `ObjectPool`. Resmî benchmark raporu yok. |
 | 7 | Manyetik toplama | **Var** | `xp_orb.gd`, `gold_orb.gd`, `player.get_magnet_bonus()`, item magnet. |

@@ -57,16 +57,7 @@ func _find_next(current: Node, hit: Array):
 	return nearest
 
 func _spawn_flash(pos: Vector2):
-	var flash = ColorRect.new()
-	flash.size = Vector2(14, 14)
-	flash.color = Color("#00BFFF")
-	flash.position = pos - Vector2(7, 7)
-	flash.modulate.a = player.get_player_vfx_opacity() if player else 1.0
-	player.get_parent().add_child(flash)
-	
-	var tween = flash.create_tween()
-	tween.tween_property(flash, "modulate:a", 0.0, 0.2)
-	tween.tween_callback(flash.queue_free)
+	CombatProjectileFx.spawn_lightning_style_flash(player.get_parent(), pos, player, &"storm")
 
 func on_upgrade():
 	match level:

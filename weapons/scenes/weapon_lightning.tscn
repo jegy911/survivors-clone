@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://cshx62gjyjp08"]
+
+[ext_resource type="Script" uid="uid://j0d7ns7k8we3" path="res://weapons/weapon_lightning.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7pwff"]
+size = Vector2(40, 147)
+
+[node name="WeaponLightning" type="Area2D" unique_id=1586485655]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=232858828]
+position = Vector2(0, -1.5)
+shape = SubResource("RectangleShape2D_7pwff")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1179661097]
+visible = false
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.45, 0.85, 1, 0.18)

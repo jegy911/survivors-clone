@@ -1,10 +1,19 @@
 class_name WeaponAura
 extends WeaponBase
 
+const TEX_AURA := preload("res://assets/projectiles/aura/aura.png")
+
+## Doku üzerinde merkez → **dış hasar çemberi** uzaklığı (piksel). 0 = aşağıdaki faktörle otomatik (doku kutusu × faktör).
+## Aura PNG’si büyük şeffaf kenarlıysa, `aura_outer_radius_texels` ile elle piksel vermek en doğrusu.
+@export var aura_outer_radius_texels: float = 0.0
+## `aura_outer_radius_texels == 0` iken: dış çember yarıçapı ≈ `max(w,h) * 0.5 * bu faktör`. **<1** = halka büyür (hasar kenarına yaklaşır); meta alan çarpanı zaten `get_area_multiplier()` ile hem hasar hem görselde aynı.
+@export var aura_outer_texel_auto_factor: float = 0.88
+
 var radius = 80.0
 var slow_factor = 0.2
 var hit_cooldowns = {}
 const HIT_INTERVAL = 1.0
+var _ring: Sprite2D
 
 func _ready():
 	super._ready()
@@ -13,9 +22,51 @@ func _ready():
 	category = "attack"
 	damage = 10
 	cooldown = 1.2
+	call_deferred("_ensure_ring_visual")
+
+func _ensure_ring_visual() -> void:
+	if _ring != null or player == null:
+		return
+	_ring = Sprite2D.new()
+	_ring.name = "AuraWeaponRing"
+	_ring.texture = TEX_AURA
+	_ring.centered = true
+	_ring.z_index = -2
+	player.add_child(_ring)
+	_sync_ring_visual()
+
+func _aura_effective_radius() -> float:
+	return radius * float(player.get_area_multiplier())
+
+
+func _sync_ring_visual() -> void:
+	if _ring == null or player == null:
+		return
+	var eff_r: float = _aura_effective_radius()
+	var tex := _ring.texture
+	if tex == null:
+		return
+	var d: float = maxf(float(tex.get_width()), float(tex.get_height()))
+	var outer_texels: float = (
+		aura_outer_radius_texels
+		if aura_outer_radius_texels > 0.001
+		else d * 0.5 * clampf(aura_outer_texel_auto_factor, 0.2, 1.5)
+	)
+	var s: float = eff_r / maxf(outer_texels, 0.001)
+	_ring.scale = Vector2(s, s)
+	_ring.global_position = player.global_position
+	var vfx_a: float = 1.0
+	if player.has_method("get_player_vfx_opacity"):
+		vfx_a = float(player.get_player_vfx_opacity())
+	# Daha okunaklı halka (önceki ~0.42 çok soluktu)
+	_ring.modulate = Color(1.05, 1.02, 1.12, 0.72 * vfx_a)
+
+func _process(delta: float) -> void:
+	super._process(delta)
+	_sync_ring_visual()
 
 func attack():
-	var effective_radius = radius * player.get_area_multiplier()
+	var effective_radius: float = _aura_effective_radius()
 	var enemies = EnemyRegistry.get_enemies()
 	# Hit cooldown'ları temizle
 	for key in hit_cooldowns.keys():

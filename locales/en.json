@@ -187,12 +187,17 @@
         "max_suffix": " (MAX)",
         "weapon_upgrade": "⬆ %s → Lv%d",
         "item_upgrade": "⬆ %s → Lv%d",
-        "level_step_weapon": "Upgrade: level %d → %d (this pick levels it up)",
-        "level_step_item": "Upgrade: level %d → %d (this pick levels it up)",
+        "level_step_weapon": "Upgrade: level {0} → {1} (this pick levels it up)",
+        "level_step_item": "Upgrade: level {0} → {1} (this pick levels it up)",
         "current_effect_line": "Right now: %s",
+        "current_effect_prefix": "Right now:\n",
         "new_weapon": "New weapon: %s",
-        "new_item": "New: %s"
-      }
+        "new_weapon_prefix": "New weapon: ",
+        "new_item": "New: %s",
+        "new_item_prefix": "New: "
+      },
+      "empty_level_reward": "+20 HP  +25 gold\n(no upgrades left)",
+      "cog_master_ready": "⚙ GEAR MASTER! +1 OPTION"
     },
     "meta_screen": {
       "title": "META UPGRADES",
@@ -216,10 +221,6 @@
     },
     "hud": {
       "wave_counter": "Wave: %d"
-    },
-    "player": {
-      "empty_level_reward": "+20 HP  +25 gold\n(no upgrades left)",
-      "cog_master_ready": "⚙ GEAR MASTER! +1 OPTION"
     },
     "wave_reward": {
       "title": "⚡ WAVE %d COMPLETE!",
@@ -262,8 +263,8 @@
         "desc": "Laser + Crit → Death Laser\nEvery hit is critical, 2× range"
       },
       "blood_boomerang": {
-        "name": "Blood Boomerang",
-        "desc": "Boomerang + Lifesteal → Blood Boomerang\nSteals HP on hit"
+        "name": "Blood Axe",
+        "desc": "Axe + Lifesteal → Blood Axe\nSteals HP on hit"
       },
       "storm": {
         "name": "Storm",
@@ -449,8 +450,8 @@
         "desc": "Bouncing lightning chain between targets. Great for clumped waves."
       },
       "boomerang": {
-        "name": "Boomerang",
-        "desc": "Returns to you after a sweep. Punishes packs that chase you."
+        "name": "Axe",
+        "desc": "Thrown axe that sweeps out and returns. Punishes packs that chase you."
       },
       "lightning": {
         "name": "Lightning",
@@ -472,6 +473,22 @@
         "name": "Fan Blade",
         "desc": "Wide melee fan of blades. Shreds anything in your face."
       },
+      "hex_sigil": {
+        "name": "Hex Sigil",
+        "desc": "Ground sigils that curse and zone enemies."
+      },
+      "gravity_anchor": {
+        "name": "Gravity Anchor",
+        "desc": "Pulls enemies into a damaging gravity well."
+      },
+      "bastion_flail": {
+        "name": "Bastion Flail",
+        "desc": "Spinning flail with knockback—hold the frontline."
+      },
+      "shield_ram": {
+        "name": "Shield Ram",
+        "desc": "Cone shield charge—burst damage in a line."
+      },
       "holy_bullet": {
         "name": "Holy Bullet",
         "desc": "Evolved bullet: bonus damage and armor break."
@@ -485,8 +502,8 @@
         "desc": "Evolved laser: crits on every tick with extreme reach."
       },
       "blood_boomerang": {
-        "name": "Blood Boomerang",
-        "desc": "Evolved boomerang: steals life on each hit."
+        "name": "Blood Axe",
+        "desc": "Evolved axe: steals life on each hit."
       },
       "storm": {
         "name": "Storm",
@@ -561,6 +578,22 @@
       "ember_heart": {
         "name": "Ember Heart",
         "desc": "Fireheart passive that pairs with fan evolutions."
+      },
+      "glyph_charm": {
+        "name": "Glyph Charm",
+        "desc": "Ward and glyph synergy—pairs with sigil evolutions."
+      },
+      "resonance_stone": {
+        "name": "Resonance Stone",
+        "desc": "Pickup and pull radius—pairs with gravity evolutions."
+      },
+      "rampart_plate": {
+        "name": "Rampart Plate",
+        "desc": "Heavy armor plate—pairs with flail evolutions."
+      },
+      "iron_bulwark": {
+        "name": "Iron Bulwark",
+        "desc": "Iron defense passive—pairs with shield ram evolutions."
       }
     },
     "character": {
@@ -578,7 +611,7 @@
       },
       "hunter": {
         "name": "Hunter",
-        "desc": "Boomerang expert with extra lifesteal synergy."
+        "desc": "Axe thrower with extra lifesteal synergy."
       },
       "stormer": {
         "name": "Stormer",
@@ -602,7 +635,7 @@
       },
       "blood_prince": {
         "name": "Blood Prince",
-        "desc": "XP-hungry noble with Blood Boomerang fantasy."
+        "desc": "XP-hungry noble with Blood Axe fantasy."
       },
       "nomad": {
         "name": "Nomad",
@@ -727,7 +760,7 @@
     },
     "start_level_bonus": {
       "name": "📈 Starting Level",
-      "desc": "+1 level at start\n(max rank: +3 levels)"
+      "desc": "With at least 1 rank: begin the run at level 2 (+1 net).\nRanks 2–3 are the same for now (extra reward planned later)."
     },
     "reroll_bonus": {
       "name": "🔄 Extra Reroll",

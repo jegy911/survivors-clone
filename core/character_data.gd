@@ -72,7 +72,7 @@ const CHARACTERS = [
 	{
 		"id": "hunter",
 		"name": "Avcı",
-		"description": "Bumerang ustası.\n+%15 can çalma.",
+		"description": "Balta ustası.\n+%15 can çalma.",
 		"color": "#27AE60",
 		"start_weapon": "boomerang",
 		"bonus_damage": 0,
@@ -192,7 +192,7 @@ const CHARACTERS = [
 	{
 		"id": "blood_prince",
 		"name": "Kan Prensi",
-		"description": "Vampirin mirasçısı.\nXP +%20, Blood Boomerang ile başlar.",
+		"description": "Vampirin mirasçısı.\nXP +%20, Kan Baltası ile başlar.",
 		"color": "#C0392B",
 		"start_weapon": "blood_boomerang",
 		"bonus_damage": 5,
@@ -374,6 +374,13 @@ const CHARACTERS = [
 		"hero_class": "tank",
 	},
 ]
+
+static func get_character_index_by_id(char_id: String) -> int:
+	for i in CHARACTERS.size():
+		if str(CHARACTERS[i].get("id", "")) == char_id:
+			return i
+	return -1
+
 
 ## `main.gd` karakter sahnesi yolu eşlemesi (tek kaynak).
 const CHARACTER_SCENE_BY_ID: Dictionary = {

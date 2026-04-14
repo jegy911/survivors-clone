@@ -90,10 +90,10 @@ Her düşman `.tscn` içinde **`AnimatedSprite2D`** + atlas / spritesheet ile **
 | Silah ID | Oyunda mantık | Final VFX / okunaklı mermi görselleri |
 |----------|----------------|----------------------------------------|
 | bullet | ✅ | `projectiles/bullet.gd` — `player_vfx_opacity` → ColorRect/Sprite2D `modulate.a` |
-| aura | ✅ / ❌ | Alan efekti; yoğunlukta “kendi efektlerim” ayrımı yok |
-| chain | ✅ / ❌ | |
-| boomerang | ✅ | `projectiles/boomerang.tscn` |
-| lightning | ✅ / ❌ | |
+| aura | ✅ | `assets/projectiles/aura/aura.png` — oyuncuya bağlı halka (`weapon_aura.gd` → `AuraWeaponRing`) |
+| chain | ✅ | `assets/projectiles/chain/chain.png` — `CombatProjectileFx.spawn_chain_segment` (`weapon_chain.gd`) |
+| boomerang | ✅ | `assets/projectiles/axe/boomerang.png` + `projectiles/hunter_axe.tscn` (Sprite2D; oyun içi ID: `boomerang`) |
+| lightning | ✅ | Vuruş: `projectiles/lightning_bolt.tscn` (ObjectPool; kamera üstünden hedefe dikey iniş, mermi gibi isabet + `lightning_hit_fx`). Storm / Toxic Chain yalnızca `lightning_hit_fx` + renk. |
 | ice_ball | ✅ | `projectiles/ice_ball.tscn` |
 | shadow | ✅ / ❌ | |
 | laser | ✅ / ❌ | |
@@ -165,7 +165,7 @@ Level-up ekranı ağırlıklı **metin**; `upgrade_ui` için **büyük net ikon*
 | Sahne | Final sanat |
 |-------|----------------|
 | bullet.tscn | ✅ / ❌ |
-| boomerang.tscn | ✅ / ❌ |
+| hunter_axe.tscn | ✅ | Avcı baltası (ObjectPool); Sprite2D + `assets/projectiles/axe/boomerang.png` |
 | ice_ball.tscn | ✅ / ❌ |
 | fan_blade_shard.tscn | ❌ | Polygon2D geçici |
 | enemy_bullet.tscn | ✅ / ❌ |

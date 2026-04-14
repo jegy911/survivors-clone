@@ -47,7 +47,7 @@ func _load_player():
 		_spawn_player(1, Vector2(60, 0))
 
 func _spawn_player(id: int, offset: Vector2):
-	var char_index = SaveManager.selected_character if id == 0 else SaveManager.selected_character_p2
+	var char_index: int = SaveManager.get_character_index_for_player(id)
 	var char_id = CharacterData.CHARACTERS[char_index]["id"]
 	var scene_path = _get_character_scene(char_id)
 	var player_scene = load(scene_path)

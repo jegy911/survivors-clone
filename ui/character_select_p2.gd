@@ -225,6 +225,6 @@ func _on_back():
 func _on_play():
 	if selected_index < 0:
 		return
-	SaveManager.selected_character_p2 = selected_index
+	SaveManager.set_selected_character_p2_index(selected_index)
 	SaveManager.save_game()
 	get_tree().change_scene_to_file("res://ui/map_select.tscn")

@@ -1,5 +1,5 @@
 class_name WeaponBase
-extends Node
+extends Area2D
 
 var damage = 10
 var cooldown = 1.0
@@ -11,7 +11,11 @@ var weapon_name = "Silah"
 var category = "attack"
 var tag = "none"
 
-func _ready():
+func _ready() -> void:
+	collision_layer = 0
+	collision_mask = 0
+	monitoring = false
+	monitorable = false
 	player = get_parent()
 
 func _process(delta):

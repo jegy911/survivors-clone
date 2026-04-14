@@ -213,9 +213,9 @@ func get_upgrade_text(id: String) -> String:
 		return title + "\n" + WeaponEvolution.localized_name(id) + "\n" + WeaponEvolution.localized_description(id)
 	
 	if id in WEAPON_UPGRADE_IDS:
-		return tr("ui.upgrade_ui.option_weapon_prefix") + "\n" + player_ref.get_weapon_description(id)
+		return player_ref.get_weapon_description(id)
 	if id in ITEM_UPGRADE_IDS:
-		return tr("ui.upgrade_ui.option_item_prefix") + "\n" + player_ref.get_item_description(id)
+		return player_ref.get_item_description(id)
 	if id in stat_upgrades:
 		return _stat_upgrade_text(id)
 	return id
@@ -279,7 +279,7 @@ func show_upgrades(player):
 	if player_ref.has_method("_update_cog_label"):
 		player_ref._update_cog_label()
 	
-	var char_index = SaveManager.selected_character if player_ref.player_id == 0 else SaveManager.selected_character_p2
+	var char_index: int = SaveManager.get_character_index_for_player(player_ref.player_id)
 	var char_name = CharacterData.CHARACTERS[char_index]["name"]
 	var player_label = "P1" if player_ref.player_id == 0 else "P2"
 	if SaveManager.game_mode == "local_coop":

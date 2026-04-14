@@ -156,8 +156,8 @@ ui_tr = {
             "desc": "Lazer + Kritik → Ölüm Lazeri\nHer vuruş kritik, menzil 2x",
         },
         "blood_boomerang": {
-            "name": "Kan Bumerangı",
-            "desc": "Bumerang + Can Çalma → Kan Bumerangı\nVurdukça can çalar",
+            "name": "Kan Baltası",
+            "desc": "Balta + Can Çalma → Kan Baltası\nVurdukça can çalar",
         },
         "storm": {
             "name": "Fırtına",
@@ -222,7 +222,7 @@ meta_tr = {
     "magnet_bonus": {"name": "🧲 Mıknatıs", "desc": "XP/gold çekim menzili +15\n(max rank: +75 menzil)"},
     "gold_bonus": {"name": "💰 Altın Bonusu", "desc": "Düşmandan +1 altın per rank\n(max rank: +5 altın)"},
     "growth_bonus": {"name": "📦 Altın Çarpanı", "desc": "Kazanılan altın +%15 per rank\n(max rank: +%75 altın)"},
-    "start_level_bonus": {"name": "📈 Başlangıç Seviyesi", "desc": "Oyun başında +1 level\n(max rank: +3 level)"},
+    "start_level_bonus": {"name": "📈 Başlangıç Seviyesi", "desc": "En az 1 rank: koşuya 2. seviyede başla (+1 net).\nRank 2–3 şimdilik aynı (ileride ek ödül planlanıyor)."},
     "reroll_bonus": {"name": "🔄 Ekstra Reroll", "desc": "Level up'ta +1 reroll hakkı\n(max rank: +3 reroll)"},
     "skip_bonus": {"name": "⏭ Ekstra Skip", "desc": "Level up'ta +1 skip hakkı\n(max rank: +3 skip)"},
     "speed_bonus": {"name": "👟 Hareket Hızı", "desc": "Hareket hızı +10 per rank\n(max rank: +50 hız)"},
@@ -374,8 +374,8 @@ ui_en = {
             "desc": "Laser + Crit → Death Laser\nEvery hit is critical, 2× range",
         },
         "blood_boomerang": {
-            "name": "Blood Boomerang",
-            "desc": "Boomerang + Lifesteal → Blood Boomerang\nSteals HP on hit",
+            "name": "Blood Axe",
+            "desc": "Axe + Lifesteal → Blood Axe\nSteals HP on hit",
         },
         "storm": {
             "name": "Storm",
@@ -440,7 +440,7 @@ meta_en = {
     "magnet_bonus": {"name": "🧲 Magnet", "desc": "XP/gold pickup range +15\n(max rank: +75 range)"},
     "gold_bonus": {"name": "💰 Gold Bonus", "desc": "+1 gold per enemy per rank\n(max rank: +5 gold)"},
     "growth_bonus": {"name": "📦 Gold Multiplier", "desc": "Gold earned +15% per rank\n(max rank: +75% gold)"},
-    "start_level_bonus": {"name": "📈 Starting Level", "desc": "+1 level at start\n(max rank: +3 levels)"},
+    "start_level_bonus": {"name": "📈 Starting Level", "desc": "With at least 1 rank: begin the run at level 2 (+1 net).\nRanks 2–3 are the same for now (extra reward planned later)."},
     "reroll_bonus": {"name": "🔄 Extra Reroll", "desc": "+1 reroll on level up\n(max rank: +3 rerolls)"},
     "skip_bonus": {"name": "⏭ Extra Skip", "desc": "+1 skip on level up\n(max rank: +3 skips)"},
     "speed_bonus": {"name": "👟 Move Speed", "desc": "Move speed +10 per rank\n(max rank: +50 speed)"},

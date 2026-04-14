@@ -655,6 +655,8 @@ func _on_reset_full():
 	SaveManager.gold = 0
 	SaveManager.selected_character = 0
 	SaveManager.selected_character_p2 = 0
+	SaveManager.selected_character_id = "warrior"
+	SaveManager.selected_character_p2_id = "warrior"
 	for key in SaveManager.meta_upgrades:
 		SaveManager.meta_upgrades[key] = 0
 	SaveManager.total_kills = 0

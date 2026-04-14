@@ -23,8 +23,8 @@ const EVOLUTIONS = {
 	"blood_boomerang": {
 		"requires_weapons": ["boomerang"],
 		"requires_items": ["lifesteal"],
-		"name": "Blood Boomerang",
-		"description": "Bumerang + Can Çalma → Kan Bumerangı\nVurdukça can çalar"
+		"name": "Kan Baltası",
+		"description": "Balta + Can Çalma → Kan Baltası\nVurdukça can çalar"
 	},
 	"storm": {
 		"requires_weapons": ["lightning"],

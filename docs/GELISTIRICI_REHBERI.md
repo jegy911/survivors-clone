@@ -4,7 +4,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 *(İngilizce projelerde eşdeğeri genelde `ARCHITECTURE.md`, `DEVELOPER_GUIDE.md` veya `docs/CONTRIBUTING.md` olarak adlandırılır.)*
 
 **Motor:** Godot 4.x  
-**Son güncelleme:** 2026-04-09
+**Son güncelleme:** 2026-04-14
 
 ### Dokümantasyonu ne zaman güncellemeliyiz?
 
@@ -103,7 +103,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 - **`main/main.gd`** → `_get_character_scene(char_id)` içinde `match` ile `res://characters/...` yolu **mutlaka** eklenmeli.
 
 ### Oyun içi uygulama
-- **`player/player.gd`** → `apply_character_bonuses()`: `SaveManager.selected_character` (veya P2) **indeks** ile `CHARACTERS` okunur; `start_weapon` / `start_item` için `add_weapon` / `add_item` çağrılır; `origin_bonus` ve `special` burada işlenir. **Level-up:** `gain_xp` birden fazla seviye verirse her biri için `main.queue_upgrade(player)` kuyruğa girer (solo ve co-op aynı yol). `get_total_damage()` taban silah hasarına `bullet_damage` (karakter/meta/dalga düz bonusu) ekler.
+- **`player/player.gd`** → `apply_character_bonuses()`: `SaveManager.get_character_index_for_player(player_id)` ile `CHARACTERS` okunur (kahraman **`selected_character_id`** / **`selected_character_p2_id`** üzerinden tutarlıdır); `start_weapon` / `start_item` için `add_weapon` / `add_item` çağrılır; `origin_bonus` ve `special` burada işlenir. **Level-up:** `gain_xp` birden fazla seviye verirse her biri için `main.queue_upgrade(player)` kuyruğa girer (solo ve co-op aynı yol). `get_total_damage()` taban silah hasarına `bullet_damage` (karakter/meta/dalga düz bonusu) ekler.
 
 ### Kayıt ve kilit
 - **`core/save_manager.gd`**
@@ -114,24 +114,29 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
   - `purchase_character(char_id)`: Hem `unlocked` hem yeterli altın gerekir.
 
 ### UI
+- **`locales/*.json`**: `ui` altında **aynı anahtar iki kez** (ör. iki `"player"`) kullanma — JSON son değeri kabul eder; önceki blok (ör. `loadout`, istat metinleri) sessizce kaybolur ve `tr()` anahtarı döner → level-up’ta `%` format hatası / boş açıklama.
 - **`ui/character_select.gd`** / **`ui/character_select_p2.gd`**: Kartlar `CHARACTERS` sırasına göre üretilir; sınıf filtresi (`hero_class`); P2’de P1’in karakteri filtre dışı kalsa da kartı görünür (alınamaz). `_get_weapon_name` / `_get_item_name` yeni ID’ler için güncellenmeli.
 
-### Dikkat: indeks kaydı
-- `selected_character` sayısal **indeks** olarak saklanır. `CHARACTERS` sırası değişirse eski kayıtlar yanlış karaktere işaret edebilir. Projede buna yönelik **`character_order_v2`** ile geçmiş sıra → ID → yeni indeks taşıması kullanılmıştır; benzer büyük sıra değişikliklerinde aynı mantık veya **ID tabanlı seçim** düşünülmeli.
+### Dikkat: indeks + kimlik kaydı
+- `selected_character` / `selected_character_p2` hâlâ **indeks** olarak kaydedilir (UI uyumu); ayrıca `selected_character_id` / `selected_character_p2_id` (**kahraman `id` string**) saklanır. Oyun ve spawn `SaveManager.get_character_index_for_player()` ile önce ID’den indeks çözer; seçim ekranı `set_selected_character_p1_index` / `p2` ile ikisini birlikte günceller. Eski kayıtlarda yalnızca indeks varsa `load_game` sonunda `_reconcile_selected_characters_from_storage()` ID’yi indeksten doldurur.
 
 ---
 
 ## 4. Silah sistemi
 
+### Oturumlar arası devam noktası
+
+Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARITASI.md`** içindeki **«Son oturum — el sıkışma (2026-04-14)»** ve **«Teknik borç / refaktör ve optimizasyon»** bölümleri — bir sonraki çalışmada oradan devam etmek yeterli.
+
 ### Taban
 - **`docs/SILAHLAR_ESYALAR_EVO.md`** — Taban silahlar, evrim silahları ve pasif eşyaların hasar / alan / miktar / cooldown özet tabloları (denge değişince güncelle).
-- **`weapons/weapon_base.gd`** — `WeaponBase`: cooldown, `attack()`, `upgrade()`, `category`, `tag`, `weapon_name`.
+- **`weapons/weapon_base.gd`** — `WeaponBase`: cooldown, `attack()`, `upgrade()`, `category`, `tag`, `weapon_name`; kök düğüm **`Area2D`** (çarpışma katmanı/maske 0, `monitoring` kapalı — yalnızca editör yerleşimi / isteğe bağlı çarpışma için).
 
 ### Yeni silah scripti
 - `weapons/weapon_<isim>.gd`, tercihen **`class_name Weapon...`** (Godot global sınıf).
 
 ### Oyuncuya bağlama
-- **`core/player_loadout_registry.gd`** — `PlayerLoadoutRegistry.WEAPON_SCRIPT_BY_ID`: string ID → `preload` script; `create_weapon(id)`.
+- **`core/player_loadout_registry.gd`** — `PlayerLoadoutRegistry.WEAPON_SCRIPT_BY_ID`: string ID → `preload` script; `create_weapon(id)` önce **`weapons/scenes/weapon_<id>.tscn`** varsa `instantiate()`, yoksa `script.new()` (mantık düğümü). Şablon sahneler: kök `Area2D` + `CollisionShape2D` + (isteğe bağlı) `ColorRect` + `Sprite2D` — görseli Godot’da düzenlemek için. **Dünyadaki mermi / balta / buz topu** ayrı: `projectiles/*.tscn` (çoğu `Area2D` + çarpışma + sprite); ObjectPool ile spawn — `bullet.tscn` ile `weapon_bullet.gd` aynı şey değildir.
 - **`player/player.gd`**
   - `add_weapon(type: String)` → `PlayerLoadoutRegistry.create_weapon(type)`.
   - `_on_upgrade_chosen` → yeni silah ID’si bu sözlükte ve `upgrade_ui` havuzunda olmalı.
@@ -155,6 +160,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 ### Özel davranışlar
 - **Kaos** karakteri: `apply_character_bonuses` içinde `random_weapons` listesine yeni taban silah eklenmeli.
 - **Projectile + ObjectPool**: Sahne yolu `ObjectPool.get_object(...)` ile alınır; `reset()` havuza dönüşte çağrılır (bkz. `projectiles/bullet.gd`, `fan_blade_shard.gd`).
+- **Taban projeksiyon / silah VFX dokuları** (`assets/projectiles/`): Aura halkası `weapon_aura.gd` (oyuncuya `AuraWeaponRing`); hasar yarıçapı ile dış hizası için silah kökünde **`aura_outer_radius_texels`** / **`aura_outer_texel_auto_factor`** (0 pikselde otomatik dış yarıçap ≈ doku × 0,5 × faktör; meta alan `get_area_multiplier()` ile hem hasar hem halka). Zincir segmenti `CombatProjectileFx.spawn_chain_segment` (`effects/combat_projectile_fx.gd`, `weapon_chain.gd`; sıçrama arası **`chain_step_delay_sec`**; Line2D `chain.png` için **`texture_repeat = TEXTURE_REPEAT_ENABLED`** + `LINE_TEXTURE_TILE`); yıldırım sahnesi **`effects/lightning_hit_fx.tscn`** (+ `lightning_hit_fx.gd`): editördeki `texture` / `scale` korunur, `run()` yalnızca renk / süre uygular; `CombatProjectileFx.spawn_lightning_style_flash` (`weapon_storm.gd`, `weapon_toxic_chain.gd`); yıldırım **silah vuruşu** `projectiles/lightning_bolt.tscn` (ObjectPool; görsel: kamera üst çizgisinde hedef X’inde spawn, düşüş; isabet `lightning_hit_fx`; `weapons/scenes/weapon_lightning.tscn` oyuncu üstü sprite yok; hedef havuzu `STRIKE_MAX_DIST_FROM_PLAYER` 600 px); savrulan balta `projectiles/hunter_axe.tscn` + `assets/projectiles/axe/boomerang.png`. **Not:** Kayıtlı silah kimliği hâlâ `boomerang`; oyuncuya dönük metinlerde “Balta” / “Axe” (`locales`, kodeks). Yeniden üretilebilir silah sahneleri: `python tools/gen_weapon_scenes.py`.
 
 ---
 

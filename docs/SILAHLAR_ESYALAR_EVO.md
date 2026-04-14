@@ -40,7 +40,9 @@ Sütunlar: **Hasar** = script `damage` (oyuncu bonusları öncesi). **Alan** = y
 | 4 | 26 | 180 | 4 | 1.5 | |
 | 5 | 32 | 220 | 5 | 1.2 | bounce 1.2 |
 
-### Bumerang (`boomerang`)
+### Balta (`boomerang` — oyuncu metinlerinde Balta / Axe)
+
+Projeksiyon sahnesi: `projectiles/hunter_axe.tscn` (ObjectPool).
 
 | Lv | Hasar | Miktar | CD |
 |----|-------|--------|-----|
@@ -51,6 +53,8 @@ Sütunlar: **Hasar** = script `damage` (oyuncu bonusları öncesi). **Alan** = y
 | 5 | 32 | 3 | 1.5 |
 
 ### Yıldırım (`lightning`)
+
+Projeksiyon: `projectiles/lightning_bolt.tscn` (uçuş + isabet); Storm / Toxic Chain yalnızca `lightning_hit_fx`.
 
 | Lv | Hasar | Alan (atlama menzili) | Miktar | CD |
 |----|-------|------------------------|--------|-----|
@@ -174,7 +178,7 @@ Sütunlar: **Hasar** = script `damage` (oyuncu bonusları öncesi). **Alan** = y
 | 4 | 65 | 550 | 1.1 | |
 | 5 | 80 | 600 | 0.9 | |
 
-### Blood Boomerang (`blood_boomerang`)
+### Kan Baltası / Blood Axe (`blood_boomerang`)
 
 | Lv | Hasar | Miktar | CD | Diğer |
 |----|-------|--------|-----|--------|

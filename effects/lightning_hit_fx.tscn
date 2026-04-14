@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://6syeais5chh1"]
+
+[ext_resource type="Script" uid="uid://nhxviddyhejx" path="res://effects/lightning_hit_fx.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://blmp50nwxslr4" path="res://assets/projectiles/lightning/lightning.png" id="2_tex"]
+
+[node name="LightningHitFx" type="Sprite2D" unique_id=1217545570]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_tex")
+script = ExtResource("1_script")

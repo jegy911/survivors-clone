@@ -85,7 +85,7 @@ Aşağıdaki atamalar **taslak**tır; denge ve co-op destek tasarımı netleşti
 | warrior | Savaşçı | Fighter | Yakın / sürekli çatışma, düz hasar ve dayanıklılık eğilimi |
 | mage | Büyücü | Mage | Alan hasarı, aura başlangıcı |
 | vampire | Vampir | Fighter | Yakın zincir, can çalma, bruiser |
-| hunter | Avcı | Fighter | Fiziksel projectile, menzil orta |
+| hunter | Avcı | Fighter | Savrulan balta (ID: `boomerang`), menzil orta |
 | stormer | Fırtına | Mage | Yetenek hızı / şimşek, burst eğilimi |
 | frost | Buzcu | Controller | Yavaşlatma / CC odaklı |
 | sigil_warden | Mühür Ustası | Controller | Rün mühürü, alan yavaşlatma + bağlayıcı evrim |

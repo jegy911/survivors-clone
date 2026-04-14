@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://rmbir8emngpq"]
+
+[ext_resource type="Script" uid="uid://r4ea1yrehvnu" path="res://weapons/weapon_chain.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cry1x8btan1oq" path="res://assets/projectiles/chain/chain.png" id="2_n744s"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_placeholder"]
+radius = 28.0
+
+[node name="WeaponChain" type="Area2D" unique_id=1234602870]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1708611225]
+shape = SubResource("CircleShape2D_placeholder")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=437529163]
+visible = false
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.45, 0.85, 1, 0.18)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1786379039]
+rotation = -3.1415927
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_n744s")

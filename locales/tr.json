@@ -187,12 +187,17 @@
         "max_suffix": " (MAX)",
         "weapon_upgrade": "⬆ %s → Lv%d",
         "item_upgrade": "⬆ %s → Lv%d",
-        "level_step_weapon": "Yükseltme: seviye %d → %d (bu seçim bir üst seviye)",
-        "level_step_item": "Yükseltme: seviye %d → %d (bu seçim bir üst seviye)",
+        "level_step_weapon": "Yükseltme: seviye {0} → {1} (bu seçim bir üst seviye)",
+        "level_step_item": "Yükseltme: seviye {0} → {1} (bu seçim bir üst seviye)",
         "current_effect_line": "Şu anki değerler: %s",
+        "current_effect_prefix": "Şu anki değerler:\n",
         "new_weapon": "Yeni silah: %s",
-        "new_item": "Yeni: %s"
-      }
+        "new_weapon_prefix": "Yeni silah: ",
+        "new_item": "Yeni: %s",
+        "new_item_prefix": "Yeni: "
+      },
+      "empty_level_reward": "+20 can  +25 altın\n(yükseltme kalmadı)",
+      "cog_master_ready": "⚙ DİŞLİ USTASI! +1 SEÇENEK"
     },
     "meta_screen": {
       "title": "META UPGRADES",
@@ -216,10 +221,6 @@
     },
     "hud": {
       "wave_counter": "Dalga: %d"
-    },
-    "player": {
-      "empty_level_reward": "+20 can  +25 altın\n(yükseltme kalmadı)",
-      "cog_master_ready": "⚙ DİŞLİ USTASI! +1 SEÇENEK"
     },
     "wave_reward": {
       "title": "⚡ %d. DALGA TAMAMLANDI!",
@@ -262,8 +263,8 @@
         "desc": "Lazer + Kritik → Ölüm Lazeri\nHer vuruş kritik, menzil 2x"
       },
       "blood_boomerang": {
-        "name": "Kan Bumerangı",
-        "desc": "Bumerang + Can Çalma → Kan Bumerangı\nVurdukça can çalar"
+        "name": "Kan Baltası",
+        "desc": "Balta + Can Çalma → Kan Baltası\nVurdukça can çalar"
       },
       "storm": {
         "name": "Fırtına",
@@ -449,8 +450,8 @@
         "desc": "Hedefler arasında sıçrayan zincir. Kalabalık dalgalarda güçlü."
       },
       "boomerang": {
-        "name": "Bumerang",
-        "desc": "Geri döner; peşinden gelen sürülere ceza keser."
+        "name": "Balta",
+        "desc": "Savrulup geri döner; peşinden gelen sürülere ceza keser."
       },
       "lightning": {
         "name": "Yıldırım",
@@ -472,6 +473,22 @@
         "name": "Yelpaze Bıçak",
         "desc": "Geniş yakın fan. Yüzüne yapışan her şeyi doğrar."
       },
+      "hex_sigil": {
+        "name": "Altıgön Mühür",
+        "desc": "Yerde mühürler; lanet ve alan kontrolü."
+      },
+      "gravity_anchor": {
+        "name": "Çekim Çapası",
+        "desc": "Düşmanları hasarlı çekim kuyusuna çeker."
+      },
+      "bastion_flail": {
+        "name": "Kale Gürzü",
+        "desc": "Dönen gürz + itme; ön hattı tutar."
+      },
+      "shield_ram": {
+        "name": "Kalkan Hamlesi",
+        "desc": "Koni kalkan koşusu; çizgide patlama hasarı."
+      },
       "holy_bullet": {
         "name": "Kutsal Mermi",
         "desc": "Evrim: ekstra hasar ve zırh kırma."
@@ -485,7 +502,7 @@
         "desc": "Evrim: her tik kritik, dev menzil."
       },
       "blood_boomerang": {
-        "name": "Kan Bumerangı",
+        "name": "Kan Baltası",
         "desc": "Evrim: vuruş başına can çalar."
       },
       "storm": {
@@ -561,6 +578,22 @@
       "ember_heart": {
         "name": "Kor Kalbi",
         "desc": "Yelpaze evrimleriyle eşleşen kor pasifi."
+      },
+      "glyph_charm": {
+        "name": "Rün Tılsımı",
+        "desc": "Koruma ve rün sinerjisi; mühür evrimleriyle uyumlu."
+      },
+      "resonance_stone": {
+        "name": "Rezonans Taşı",
+        "desc": "Toplama ve çekim menzili; çekim evrimleriyle uyumlu."
+      },
+      "rampart_plate": {
+        "name": "Rampa Plakası",
+        "desc": "Ağır zırh plakası; gürz evrimleriyle uyumlu."
+      },
+      "iron_bulwark": {
+        "name": "Demir Siper",
+        "desc": "Demir savunma pasifi; kalkan koşusu evrimleriyle uyumlu."
       }
     },
     "character": {
@@ -578,7 +611,7 @@
       },
       "hunter": {
         "name": "Avcı",
-        "desc": "Bumerang ustası; can çalma sinerjisi."
+        "desc": "Balta ustası; can çalma sinerjisi."
       },
       "stormer": {
         "name": "Fırtına",
@@ -602,7 +635,7 @@
       },
       "blood_prince": {
         "name": "Kan Prensi",
-        "desc": "XP açgözlüsü; Kan Bumerangı fantezisi."
+        "desc": "XP açgözlüsü; Kan Baltası fantezisi."
       },
       "nomad": {
         "name": "Göçebe",
@@ -727,7 +760,7 @@
     },
     "start_level_bonus": {
       "name": "📈 Başlangıç Seviyesi",
-      "desc": "Oyun başında +1 level\n(max rank: +3 level)"
+      "desc": "En az 1 rank: koşuya 2. seviyede başla (+1 net).\nRank 2–3 şimdilik aynı (ileride ek ödül planlanıyor)."
     },
     "reroll_bonus": {
       "name": "🔄 Ekstra Reroll",

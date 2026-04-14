@@ -149,7 +149,7 @@ func _ready():
 	_ready_damage_tracking()
 
 func apply_character_bonuses():
-	var char_index = SaveManager.selected_character if player_id == 0 else SaveManager.selected_character_p2
+	var char_index: int = SaveManager.get_character_index_for_player(player_id)
 	var char_data = CharacterData.CHARACTERS[char_index]
 	_body_base_color = Color(char_data["color"])
 	body.color = _body_base_color
@@ -218,8 +218,12 @@ func apply_meta_bonuses():
 	# Başlangıç zırhı — take_damage'de kullanılıyor
 	# (armor_bonus direkt orada okunuyor)
 	
-	# Başlangıç seviyesi
-	for i in meta["start_level_bonus"]:
+	# Başlangıç seviyesi: meta rank en fazla 3 satın alınır; **oyunda en fazla +1 net level** (Lv2’de başla) — rank 2–3 ileride XP vb. ile genişletilebilir.
+	const START_LEVEL_META_CAP: int = 3
+	const START_LEVEL_MAX_GRANTED: int = 1
+	var raw_sl: int = clampi(int(meta.get("start_level_bonus", 0)), 0, START_LEVEL_META_CAP)
+	var granted: int = mini(raw_sl, START_LEVEL_MAX_GRANTED)
+	for _i in range(granted):
 		level += 1
 		xp_to_next_level = _calc_xp_for_level(level)
 	
@@ -539,6 +543,18 @@ func get_magnet_bonus() -> float:
 		bonus += active_items["resonance_stone"].get_pickup_bonus()
 	return bonus
 
+
+func _format_loadout_level_step(translation_key: String, from_lv: int, to_lv: int) -> String:
+	var tpl: String = tr(translation_key)
+	if tpl == translation_key or tpl.is_empty():
+		return "Lv " + str(from_lv) + " → " + str(to_lv)
+	if tpl.contains("{0}") and tpl.contains("{1}"):
+		return tpl.format([from_lv, to_lv])
+	if tpl.count("%d") >= 2:
+		return tpl % [from_lv, to_lv]
+	return "Lv " + str(from_lv) + " → " + str(to_lv)
+
+
 func get_weapon_description(type: String) -> String:
 	if active_weapons.has(type):
 		var w = active_weapons[type]
@@ -548,14 +564,15 @@ func get_weapon_description(type: String) -> String:
 		var wname: String = tr(name_key)
 		if wname == name_key or wname.is_empty():
 			wname = str(w.get("weapon_name"))
-		var step: String = tr("ui.player.loadout.level_step_weapon") % [w.level, w.level + 1]
-		var cur: String = tr("ui.player.loadout.current_effect_line") % w.get_description()
+		var step: String = _format_loadout_level_step("ui.player.loadout.level_step_weapon", w.level, w.level + 1)
+		# get_description() içinde "%15" gibi diziler sprintf ile çakışmasın diye % kullanmıyoruz
+		var cur: String = tr("ui.player.loadout.current_effect_prefix") + w.get_description()
 		return wname + "\n" + step + "\n" + cur
 	var name_key_new := "codex.weapon.%s.name" % type
 	var wname_new := tr(name_key_new)
-	if wname_new == name_key_new:
-		return ""
-	var line := tr("ui.player.loadout.new_weapon") % wname_new
+	if wname_new == name_key_new or wname_new.is_empty():
+		wname_new = str(type).replace("_", " ").capitalize()
+	var line: String = tr("ui.player.loadout.new_weapon_prefix") + wname_new
 	var desc_key := "codex.weapon.%s.desc" % type
 	var desc := tr(desc_key)
 	if desc != desc_key and not desc.is_empty():
@@ -571,14 +588,14 @@ func get_item_description(type: String) -> String:
 		var iname: String = tr(name_key)
 		if iname == name_key or iname.is_empty():
 			iname = str(i.get("item_name"))
-		var step: String = tr("ui.player.loadout.level_step_item") % [i.level, i.level + 1]
-		var cur: String = tr("ui.player.loadout.current_effect_line") % i.get_description()
+		var step: String = _format_loadout_level_step("ui.player.loadout.level_step_item", i.level, i.level + 1)
+		var cur: String = tr("ui.player.loadout.current_effect_prefix") + i.get_description()
 		return iname + "\n" + step + "\n" + cur
 	var name_key_new := "codex.item.%s.name" % type
 	var iname_new := tr(name_key_new)
-	if iname_new == name_key_new:
-		return ""
-	var line := tr("ui.player.loadout.new_item") % iname_new
+	if iname_new == name_key_new or iname_new.is_empty():
+		iname_new = str(type).replace("_", " ").capitalize()
+	var line: String = tr("ui.player.loadout.new_item_prefix") + iname_new
 	var desc_key := "codex.item.%s.desc" % type
 	var desc := tr(desc_key)
 	if desc != desc_key and not desc.is_empty():
@@ -775,7 +792,7 @@ func _check_all_downed():
 func _solo_die():
 	var player_count = get_tree().get_nodes_in_group("player").size()
 	SaveManager.add_gold(int(gold_earned / max(1, player_count)))
-	var char_id = CharacterData.CHARACTERS[SaveManager.selected_character]["id"]
+	var char_id: String = SaveManager.get_character_id_for_player(player_id)
 	var game_time = get_tree().get_first_node_in_group("main").game_timer
 	var won = game_time >= SaveManager.get_run_goal_sec()
 	SaveManager.update_stats_after_game(char_id, kill_count, game_time, evolution_obtained, tank_killed, gold_earned, level - 1, boss_kill_count, total_damage_dealt, chests_opened, active_items.size(), won)

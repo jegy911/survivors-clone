@@ -53,6 +53,11 @@ const ITEM_SCRIPT_BY_ID: Dictionary = {
 
 
 static func create_weapon(type_id: String) -> Node:
+	var scene_path := "res://weapons/scenes/weapon_%s.tscn" % type_id
+	if ResourceLoader.exists(scene_path):
+		var packed: Resource = load(scene_path)
+		if packed is PackedScene:
+			return (packed as PackedScene).instantiate()
 	var scr: Variant = WEAPON_SCRIPT_BY_ID.get(type_id)
 	if scr == null:
 		return null

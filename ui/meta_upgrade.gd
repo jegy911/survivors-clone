@@ -24,7 +24,7 @@ var upgrade_defs = [
 	{"id": "magnet_bonus", "name": "🧲 Mıknatıs", "desc": "XP/gold çekim menzili +15\n(max rank: +75 menzil)", "max_level": 5, "category": "progress"},
 	{"id": "gold_bonus", "name": "💰 Altın Bonusu", "desc": "Düşmandan +1 altın per rank\n(max rank: +5 altın)", "max_level": 5, "category": "progress"},
 	{"id": "growth_bonus", "name": "📦 Altın Çarpanı", "desc": "Kazanılan altın +%15 per rank\n(max rank: +%75 altın)", "max_level": 5, "category": "progress"},
-	{"id": "start_level_bonus", "name": "📈 Başlangıç Seviyesi", "desc": "Oyun başında +1 level\n(max rank: +3 level)", "max_level": 3, "category": "progress"},
+	{"id": "start_level_bonus", "name": "📈 Başlangıç Seviyesi", "desc": "En az 1 rank: koşuya 2. seviyede başla (+1 net).\nRank 2–3 şimdilik aynı (ileride ek ödül planlanıyor).", "max_level": 3, "category": "progress"},
 	{"id": "reroll_bonus", "name": "🔄 Ekstra Reroll", "desc": "Level up'ta +1 reroll hakkı\n(max rank: +3 reroll)", "max_level": 3, "category": "progress"},
 	{"id": "skip_bonus", "name": "⏭ Ekstra Skip", "desc": "Level up'ta +1 skip hakkı\n(max rank: +3 skip)", "max_level": 3, "category": "progress"},
 

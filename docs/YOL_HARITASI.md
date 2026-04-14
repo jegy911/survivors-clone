@@ -3,7 +3,39 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-09 (Fast run + lanet; mağaza iskeleti; Görüntü: UI ölçeği + renk erişilebilirliği; level-up emoji önekleri)
+**Son güncelleme:** 2026-04-14 (Oturum kapanışı: el sıkışma + teknik borç tablosu; silah sahneleri / yıldırım–zincir / commit notu)
+
+---
+
+## Son oturum — el sıkışma (2026-04-14)
+
+Bir sonraki oturumda **“kaldığımız yerden devam”** için özet:
+
+| Konu | Durum |
+|------|--------|
+| **Silah sahneleri** | `PlayerLoadoutRegistry.create_weapon`: önce `weapons/scenes/weapon_<id>.tscn` (25 sahne), yoksa `weapon_*.gd` script düğümü. Mantık `weapons/`, dünya vuruşu `projectiles/` + ObjectPool. |
+| **Balta** | `projectiles/boomerang.*` kaldırıldı → **`projectiles/hunter_axe.tscn`** / `hunter_axe.gd`. Kayıtlı silah kimliği hâlâ `boomerang` / `blood_boomerang` (metinler “Balta”). |
+| **Asset’ler** | `assets/projectiles/` (aura, axe, chain, lightning). Çalışma ağacında bazıları **henüz commit’lenmemiş** olabilir (`git status` → `??`) — bir commit’te toplanmalı. |
+| **Yıldırım** | `lightning_bolt` (ObjectPool): kamera üstünden iniş, sprite **dikey** (`Sprite2D.rotation = 0`), `weapon_lightning.tscn` üzerinde yıldırım ikonu yok; hedef **`STRIKE_MAX_DIST_FROM_PLAYER` = 600 px** (görünür alan hissi; `main.gd` co-op `MAX_PLAYER_DISTANCE` ile aynı tavan fikri). |
+| **Zincir** | `CombatProjectileFx.spawn_chain_segment`: `chain.png` + Line2D **`texture_repeat`** + TILE. |
+
+**Sonraki adım (insan):** Tüm değişiklikleri gözden geçirip `??` dosyaları dâhil **tek veya birkaç anlamlı commit**; aşağıdaki teknik borçlar zorunlu değil.
+
+---
+
+## Teknik borç / refaktör ve optimizasyon
+
+*(Öncelik serbest; bir sonraki seanslarda seç–al.)*
+
+| Alan | Öneri |
+|------|--------|
+| **600 px tek kaynak** | `weapon_lightning.gd` `STRIKE_MAX_DIST_FROM_PLAYER` ile `main.gd` `MAX_PLAYER_DISTANCE` ortak sabitte (`core/` autoload veya küçük `balance_constants.gd`) birleştirilebilir. |
+| **Silah sahnesi sprite politikası** | `weapon_chain` ikon görünür, `weapon_bullet` / `weapon_lightning` gizli — istenen UX’e göre şablon + `tools/gen_weapon_scenes.py` notu netleştirilebilir. |
+| **Yıldırım bolt hareketi** | Şu an `move_toward(hedef)` ile hafif çapraz iz mümkün; tam dik iniş için hedef X sabitlenip yalnızca Y indirilebilir. |
+| **ObjectPool** | `lightning_bolt` havuz boyutu / eşzamanlı vuruş sayısı oynanışa göre ayar; kısa not `GELISTIRICI_REHBERI` veya kod yorumu. |
+| **`EnemyRegistry` + menzil** | Tüm liste üzerinden mesafe; sürü çok büyürse profil → ızgara / seyrek güncelleme değerlendirilir. |
+| **Doğrulama aracı** | `WEAPON_SCRIPT_BY_ID` anahtarları için eşleşen `weapons/scenes/weapon_<id>.tscn` varlığını kontrol eden küçük script (CI opsiyonel). |
+| **Bağlam belgesi** | Aşağıdaki plan tablosunda `[ ]` kalan **`survivors_clone_context.md`** (autoload / akış özeti). |
 
 ---
 
@@ -41,6 +73,14 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-14 | **Dokümantasyon — oturum kapanışı** — `YOL_HARITASI`: «Son oturum — el sıkışma» + «Teknik borç / refaktör» tabloları; `Acil` bölümüne commit/`??` hatırlatması; `GELISTIRICI_REHBERI` §4 oturumlar arası devam bağlantısı. |
+| 2026-04-14 | **Yıldırım menzil tavanı** — `weapon_lightning`: yalnızca oyuncudan ≤600 px içindeki düşmanlar hedef (ilk vuruş + zincir sıçraması); ekran dışı görünmez vuruş yok. |
+| 2026-04-14 | **Zincir doku + yıldırım görselliği** — `spawn_chain_segment`: Line2D `texture_repeat` ile `chain.png` TILE görünür; `lightning_bolt` spawn kamera üstü + hedefe düşüş (oyuncu→düşman süzülme yok); `weapon_lightning.tscn` yıldırım sprite kaldırıldı. |
+| 2026-04-14 | **Başlangıç level + yıldırım bolt + balta sahnesi + zincir** — `start_level_bonus` en fazla +1 net level (Lv2); `lightning_bolt.tscn` / ObjectPool; `boomerang` projeksiyonu `hunter_axe.tscn`; zincir Line2D beyaz × renk + TILE; level-up silah/eşya üst önek kaldırıldı; aura `aura_outer_texel_auto_factor`. |
+| 2026-04-14 | **Locale `ui.player` birleştirme + meta clamp** — `en`/`tr`/`zh_CN`: çift `"player"` anahtarı yüzünden `loadout.*` çevirileri eziliyordu (level-up `%` hatası + boş açıklama); `SaveManager._normalize_meta_upgrades` + oyunda `start_level_bonus` üst sınırı 3 (dev max 10 → ilk level-up L12 bug’ı). |
+| 2026-04-14 | **Silah sahne şablonu + aura/zincir/yıldırım** — `WeaponBase` → `Area2D`; `weapons/scenes/weapon_*.tscn` (CollisionShape2D + ColorRect + Sprite2D), `create_weapon` sahne önceliği; aura `aura_outer_radius_texels` ile hasar yarıçapına göre ölçek; zincir `chain_step_delay_sec` + Line2D görünürlük; `lightning_hit_fx` editör `texture`/`scale` korunur; `tools/gen_weapon_scenes.py`. |
+| 2026-04-14 | **Aura düzeltmesi + projeksiyon + kahraman ID + yıldırım tscn** — Aura `super._process` (tekrar hasar), halka daha parlak; `assets/projectiles/`; `SaveManager.selected_character_id` / `get_character_index_for_player`; `effects/lightning_hit_fx.tscn`; balta isimlendirmesi / `TASARIM` / matris / `SILAHLAR_ESYALAR_EVO` (önceki tur). |
+| 2026-04-14 | **Level-up metni + silah sahne ayrımı** — `player.gd` loadout metninde `%` / yüzde çakışması (prefix birleştirme); geçici `weapons/scenes` sarmalayıcıları kaldırılmıştı; silah mantığı `weapon_*.gd`, dünya mermisi `projectiles/*.tscn`. |
 | 2026-04-09 | **Silah / eşya denge geçişi** — PDF “Oyun Dengesi İçin Silah Verileri” ile tüm taban + evrim silahları + pasif eşya formülleri; lazer menzil 300→500 zirve, Death Laser 400→600; kritik eşya 1.5× + `player.get_total_damage`; `SILAHLAR_ESYALAR_EVO.md` güncellendi. |
 | 2026-04-09 | **Cog / level-up / veri doc** — Dişli 5’te sınır + sarı etiket, doluyken düşmez; boş progression level-up’ta +20 can / +25 altın (UI yok); max hızda hız kartı yok; `has_progression_upgrades` + `apply_empty_level_reward`; `docs/SILAHLAR_ESYALAR_EVO.md` tabloları. |
 | 2026-04-09 | **Kill HUD + hız tavanı** — `enemy_base`/`giant`/`boss`: öldürme `die()` anında `on_enemy_killed` (tween + hit-stop beklenmez); `main._process` co-op HUD her kare; `player.MAX_MOVE_SPEED` 300 + `get_effective_move_speed()`. |
@@ -96,7 +136,7 @@ Teknik ayar anahtarları: `GELISTIRICI_REHBERI.md` §15.
 
 ### Acil — Yarım kalan veya kısa vadede bitirilecek işler
 
-*(Boş: acil işler buraya eklenir.)*
+*(2026-04-14: açık **acil kod işi** yok.)* **Repo:** `git status` ile `??` kalan `assets/projectiles/`, `weapons/scenes/`, `tools/`, yeni `effects/` / `projectiles/` dosyalarını ve silinen `boomerang` yollarını içeren diff’i commit’lemek sıradaki pratik adım.
 
 ---
 
