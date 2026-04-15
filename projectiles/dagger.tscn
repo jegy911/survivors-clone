@@ -1,26 +1,29 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://btph8g7c73jk0"]
 
-[ext_resource type="Script" path="res://projectiles/bullet.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/projectiles/bullet/indir.png" id="2_tex"]
+[ext_resource type="Script" uid="uid://c4fbw344c8cg8" path="res://projectiles/bullet.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dyxlbjigrxyab" path="res://assets/projectiles/dagger/spritesheet (18).png" id="2_5d4qv"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_dagger"]
-radius = 6.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5d4qv"]
+size = Vector2(15, 3.333334)
 
-[node name="Dagger" type="Area2D"]
+[node name="Dagger" type="Area2D" unique_id=139266366]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_script")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_dagger")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=942652413]
+position = Vector2(0.5000006, 0)
+scale = Vector2(4, 4)
+shape = SubResource("RectangleShape2D_5d4qv")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=152331722]
 visible = false
 offset_left = -5.0
 offset_top = -3.0
 offset_right = 5.0
 offset_bottom = 3.0
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.022, 0.055)
-texture = ExtResource("2_tex")
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1762630369]
+rotation = 0.4537856
+scale = Vector2(0.09, 0.09)
+texture = ExtResource("2_5d4qv")

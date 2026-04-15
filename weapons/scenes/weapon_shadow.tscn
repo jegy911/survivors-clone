@@ -1,22 +1,23 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://bwtb1dcpaagsq"]
 
-[ext_resource type="Script" path="res://weapons/weapon_shadow.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://dmxyrixv5bx7u" path="res://weapons/weapon_shadow.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bm72yg2pguka" path="res://assets/projectiles/shadow/spritesheet (17).png" id="2_dumpc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_placeholder"]
 radius = 28.0
 
-[node name="WeaponShadow" type="Area2D"]
+[node name="WeaponShadow" type="Area2D" unique_id=370794719]
 collision_layer = 0
 collision_mask = 0
 monitoring = false
 monitorable = false
 script = ExtResource("1_script")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1128866260]
+scale = Vector2(0.7, 0.7)
 shape = SubResource("CircleShape2D_placeholder")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 0
+[node name="ColorRect" type="ColorRect" parent="." unique_id=730681729]
 visible = false
 offset_left = -40.0
 offset_top = -40.0
@@ -24,5 +25,6 @@ offset_right = 40.0
 offset_bottom = 40.0
 color = Color(0.45, 0.85, 1, 0.18)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-visible = false
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=410090806]
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("2_dumpc")
