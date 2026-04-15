@@ -7,6 +7,9 @@ var orbs = []
 var hit_cooldowns = {}
 const HIT_INTERVAL = 0.5
 
+## Sahnedeki `OrbSpriteTemplate` — görünmez şablon; her yörünge küresi için duplicate edilir (karakter üstünde değil, etrafta döner).
+@onready var _orb_sprite_template: Sprite2D = $OrbSpriteTemplate
+
 func _ready():
 	super._ready()
 	weapon_name = "Gölge"
@@ -14,6 +17,8 @@ func _ready():
 	category = "attack"
 	damage = 12
 	cooldown = 0.8
+	if _orb_sprite_template:
+		_orb_sprite_template.visible = false
 	call_deferred("_spawn_orbs")
 
 func _spawn_orbs():
@@ -23,13 +28,21 @@ func _spawn_orbs():
 	orbs.clear()
 	
 	var effective_count = orb_count + get_effective_multi_attack()
+	var vfx_a: float = player.get_player_vfx_opacity() if player else 1.0
 	for i in effective_count:
 		var orb = Node2D.new()
-		var visual = ColorRect.new()
-		visual.size = Vector2(14, 14)
-		visual.color = Color("#9B59B6")
-		visual.position = Vector2(-7, -7)
-		visual.modulate.a = player.get_player_vfx_opacity() if player else 1.0
+		var visual: CanvasItem
+		if _orb_sprite_template:
+			visual = _orb_sprite_template.duplicate() as CanvasItem
+			visual.visible = true
+			visual.modulate.a = vfx_a
+		else:
+			var cr := ColorRect.new()
+			cr.size = Vector2(14, 14)
+			cr.color = Color("#9B59B6")
+			cr.position = Vector2(-7, -7)
+			cr.modulate.a = vfx_a
+			visual = cr
 		orb.add_child(visual)
 		player.get_parent().call_deferred("add_child", orb)
 		orbs.append(orb)

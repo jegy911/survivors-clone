@@ -25,6 +25,6 @@ offset_right = 40.0
 offset_bottom = 40.0
 color = Color(0.45, 0.85, 1, 0.18)
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=410090806]
+[node name="OrbSpriteTemplate" type="Sprite2D" parent="." unique_id=410090806]
 scale = Vector2(0.12, 0.12)
 texture = ExtResource("2_dumpc")
