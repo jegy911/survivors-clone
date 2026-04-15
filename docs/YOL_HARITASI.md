@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-15 (`YAPILACAKLAR_TOPLU` iş akışı: sil + kaynakta tik; P0 karakter satırı güncellendi)
+**Son güncelleme:** 2026-04-16 (kahraman `.tscn` / boş anim frame disiplini; `en`-only locale dondurması; `dusk` paketi)
 
 ---
 
@@ -29,7 +29,7 @@ Aşağıdaki sıra **öneridir**: P0 → hızlı kullanıcı kazanımı; P4 → 
 | **Evrim + kodeks** | Evrim derinleştirme tablosu `[ ]`; kodekste ayrı **Evrim** sekmesi yok. |
 | **Sınıf → oyun** | Kahraman `hero_class` metin olarak var; **oyun dengesine bağlama** `[ ]`. |
 | **Bağlam belgesi** | `survivors_clone_context.md` (veya eşdeğeri) yok — yeni geliştirici / AI için özet. |
-| **Arena / lore / rehber** | Uzun vadeli YOL maddeleri; şu an odak dışı olabilir. |
+| **Arena / lore / rehber** | Arena: `map_select` + `run_variant` **arena** ile kısa hedef süre (10 dk) oynanabilir; ayrı harita / dalga savunma paketi hâlâ plan. Lore/rehber uzun vadeli. |
 
 ### P2 — Refaktör / tekrarlayan kod / isim borcu
 
@@ -144,6 +144,8 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-14 | **`dusk_striker` kahramanı** — Fighter, başlangıç `dagger` (ikiz hançer, mermiden düşük taban toplam hasar, ~1,28 s CD) + `night_vial` (Gece Şişesi; hafif XP/altın çekim yarıçapı); evrim `veil_daggers` (`dagger` MAX + `night_vial` MAX). Açılış: Arena’da kazanarak ve kadroda `shadow_walker`; **380** altın; oyuncu sahnesi `characters/dusk/dusk.tscn`. **Arena v0:** `ARENA_RUN_GOAL_SEC` 600, `map_select` oynanabilir. |
+| 2026-04-16 | **Kahraman sahne disiplini + dil dondurması** — Yeni kahraman: kendi `.tscn`; kopya sahnede `AnimatedSprite2D` animasyon adları kalır, frame’ler boşaltılır (`dusk` uygulandı). Rutin locale: yalnız `en` + `codex_extensions_en`; `tr` / `zh_CN` raf — `GELISTIRICI` + `ironfall-docs.mdc`. |
 | 2026-04-15 | **`YAPILACAKLAR_TOPLU` iş akışı** — Liste = yalnız açık iş; bitince satır sil, kaynakta tik; `[ ]` kaldırıldı; `GELISTIRICI` / `README` / P0 karakter satırı güncellendi. |
 | 2026-04-15 | **YAPILACAKLAR_TOPLU.md** — Yedi ana dokümandaki yapılacaklar tek `.md` checklist; `README.md` tablo linki. |
 | 2026-04-15 | **Proje incelemesi (audit)** — `YOL_HARITASI.md`: P0–P4 öncelikli plan (locale kalanları, `get_nodes_in_group`, liste tekrarı, perf, bakım). |
@@ -245,7 +247,7 @@ Paralel envanter: `docs/TASARIM.md`.
 ### Uzun vadeli — Oyun derinliği
 
 - [ ] **Lore** — Hikaye, boss, harita metinleri (metin/envanter: `docs/TASARIM.md`).
-- [ ] **Arena modu** — Dalga, zorluk, ödül (`map_select` ile uyumlu).
+- [ ] **Arena modu (tam)** — Ayrı arena haritası, dalga savunma ritmi, ödül ekonomisi; `map_select` ile genişletme. *(v0: `run_variant` **arena**, `SaveManager.ARENA_RUN_GOAL_SEC` ≈ 10 dk, `vs_map`; `dusk` açılış bayrağı — günlük 2026-04-14.)*
 
 ---
 

@@ -4,7 +4,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 *(İngilizce projelerde eşdeğeri genelde `ARCHITECTURE.md`, `DEVELOPER_GUIDE.md` veya `docs/CONTRIBUTING.md` olarak adlandırılır.)*
 
 **Motor:** Godot 4.x  
-**Son güncelleme:** 2026-04-15
+**Son güncelleme:** 2026-04-16
 
 **Öncelikli plan (audit):** Ürün açıkları, bug / locale kalanları, refaktör ve optimizasyon maddelerinin sıralı özeti → **`docs/YOL_HARITASI.md`** başındaki **«Proje incelemesi — öncelikli plan (audit)»** (P0–P4).  
 **Tek sayfa yapılacaklar:** [x] **`docs/YAPILACAKLAR_TOPLU.md`** — yalnızca açık işler listelenir; madde bitince oradan **silinir**, kaynak dokümanda **[x]** / güncelleme yapılır (iş akışı dosya başında).
@@ -18,7 +18,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 3. **`docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`** — Erişilebilirlik veya bağlılık maddelerinden birinin **Var/Kısmi/Yok** durumu kodda değiştiyse ilgili tablo satırını güncelle.
 4. **`docs/TASARIM.md`** — Envanterdeki bir madde teslim edildiyse veya yeni kalem eklendiyse ilgili satırları güncelle.
 5. **`docs/KARAKTER_SINIFLARI_VE_TASARIM.md`** — Karakter **sınıfı**, co-op destek vizyonu veya sınıf–kahraman tablosu değiştiyse güncelle.
-6. **`locales/*.json`** — Yeni metin veya anahtar: katalogdaki **tüm** dil dosyalarına aynı anahtarı ekleyin; `python locales/check_locale_parity.py` ile `en.json` referansına göre anahtar eşitliğini doğrulayın.
+6. **`locales/en.json`** (+ gerekirse **`locales/codex_sources/codex_extensions_en.json`**) — Rutin geliştirmede yeni metin **yalnızca İngilizce** dosyalara eklenir (`tr` / `zh_CN` donduruldu — ayrıntı § «Yerelleştirme»). Tam dil turunda tüm `locales/*.json` + `check_locale_parity.py` disiplinine dönülür.
 7. **`README.md`** — Kurulum / çalıştırma / repo yapısı değiştiyse ana sayfayı güncelle.
 8. **`docs/lore.md`** — Evren, karakter ve düşman anlatısı netleştikçe veya yeni içerik lore ile bağlanacaksa ilgili bölümü güncelle.
 
@@ -57,7 +57,8 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 - **Ayar:** `SaveManager.settings["locale"]` — geçerli `code`; `ui/settings.tscn` **Dil** sekmesi `LANGUAGE_CATALOG` ile doldurulur; `LocalizationManager.set_locale()`.
 - **İlk oyun açılışı:** `user://save.cfg` yoksa dil, `OS.get_locale()` ile kataloga eşlenir; eşleşmezse `en`. Seçim kayda yazılır.
 - **Eksik çeviri:** `internationalization/locale/fallback` (`en`); yeni dil dosyasında boş anahtar bırakılmamalı — `python locales/check_locale_parity.py` ile tüm `locales/*.json` dosyalarının `en.json` ile anahtar eşitliği kontrol edilir (çıkış kodu 1 = fark var).
-- **Yeni metin:** Tüm mevcut locale dosyalarına aynı anahtarı ekleyin; gerekirse `locales/gen_locales.py` ile `tr`/`en` üretimi (isteğe bağlı).
+- **Geliştirme dönemi — dil dondurması (2026):** Yeni metin ve anahtarlar **yalnızca** `locales/en.json` ve `locales/codex_sources/codex_extensions_en.json` içinde güncellenir. **`tr.json`**, **`zh_CN.json`**, **`codex_extensions_tr.json`**, **`codex_extensions_zh_CN.json`** şimdilik **raf** (ikinci emre / tam yerelleştirme turuna kadar rutin güncelleme yok; mevcut halleriyle kalır). Bu süreçte parity script bilinçli olarak `en` ile fark gösterebilir; dil turunda tekrar hizalanır.
+- **Yeni metin (tam dil turu / eski disiplin):** Tüm mevcut locale dosyalarına aynı anahtarı ekleyin; gerekirse `locales/gen_locales.py` ile `tr`/`en` üretimi (isteğe bağlı).
 
 #### Mevcut diller (repo)
 
@@ -96,7 +97,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 - **Sınıf çerçevesi** (Controller, Fighter, Mage, Tank), co-op destek vizyonu ve mevcut kahramanların **taslak** sınıf eşlemesi: **`docs/KARAKTER_SINIFLARI_VE_TASARIM.md`**. Kodda rol etiketi: `CharacterData.CHARACTERS[].hero_class`; tasarım tablosu ile senkron tutulmalıdır.
 
 ### Veri
-- **`core/character_data.gd`** — `CharacterData.CHARACTERS` dizisi: her eleman bir sözlük (`id`, `name`, `description`, `color`, `start_weapon`, `start_item`, bonuslar, `locked`, `secret`, `cost`, `unlock_hint`, `unlock_condition`, `origin_bonus`, `special`, `hero_class` — tasarım rolü: `tank` / `fighter` / `mage` / `controller` / `special`; seçim filtresi sırası: `HERO_CLASS_FILTER_IDS`). **`start_item` şu an tüm kahramanlarda boş** — başlangıçta yalnızca `start_weapon`; imza eşya koşu içinde toplanır (`description` / kodeks metinleri bilgi amaçlı “silah / eşya / evrim” satırlarını taşır). Karakter sahne yolu: `CharacterData.CHARACTER_SCENE_BY_ID` + `get_character_scene_path(char_id)` (`main/main.gd` oyuncu spawn).
+- **`core/character_data.gd`** — `CharacterData.CHARACTERS` dizisi: her eleman bir sözlük (`id`, `name`, `description`, `color`, `start_weapon`, `start_item`, bonuslar, `locked`, `secret`, `cost`, `unlock_hint`, `unlock_condition`, `origin_bonus`, `special`, `hero_class` — tasarım rolü: `tank` / `fighter` / `mage` / `controller` / `special`; seçim filtresi sırası: `HERO_CLASS_FILTER_IDS`). **Çoğu kahramanda `start_item` boş** — başlangıçta yalnızca `start_weapon`; imza pasif çoğunlukla koşuda toplanır. **İstisna:** `dusk` → `night_vial` (Gece Şişesi; hafif çekim yarıçapı + `veil_daggers` evrim yolu). `description` / kodeks metinleri “silah / eşya / evrim” satırlarını taşır. Karakter sahne yolu: `CharacterData.CHARACTER_SCENE_BY_ID` + `get_character_scene_path(char_id)` (`main/main.gd` oyuncu spawn).
 
 ### Sahne
 - **`characters/<id>/<id>.tscn`** — Çoğunlukla `CharacterBody2D` + `player/player.gd`; her karakter kendi klasöründe tutulur.
@@ -111,14 +112,15 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 ### Kayıt ve kilit
 - **`core/save_manager.gd`**
   - `unlocked_characters`: Koşul sağlandı mı (ör. toplam kill)?
+  - `arena_cleared_as_shadow_walker`: Arena koşusunu kazanırken kadroda `shadow_walker` var mıydı? (`dusk_striker` `unlock_condition`: `arena_win_shadow_walker`)
   - `purchased_characters`: Altınla satın alındı mı?
   - **Yeni oyuncu varsayılanı:** Yalnızca `warrior` hem açık hem satın alınmış sayılır; `mage` / `vampire` `character_data` içindeki `unlock_condition` + `cost` ile açılır (mevcut kayıt dosyaları değişmez).
-  - `check_and_unlock_characters()`: `unlock_condition` tiplerini `character_data` ile eşleştirir.
+  - `check_and_unlock_characters()`: `unlock_condition` tiplerini `character_data` ile eşleştirir (ör. `arena_win_shadow_walker` → `arena_cleared_as_shadow_walker` bayrağı; `update_stats_after_game` içinde Arena + kazanma + kadroda `shadow_walker` iken set edilir).
   - `purchase_character(char_id)`: Hem `unlocked` hem yeterli altın gerekir.
 
 ### UI
 - **`locales/*.json`**: `ui` altında **aynı anahtar iki kez** (ör. iki `"player"`) kullanma — JSON son değeri kabul eder; önceki blok (ör. `loadout`, istat metinleri) sessizce kaybolur ve `tr()` anahtarı döner → level-up’ta `%` format hatası / boş açıklama.
-- **`ui/character_select.gd`** / **`ui/character_select_p2.gd`**: Kartlar `CHARACTERS` sırasına göre üretilir; sınıf filtresi (`hero_class`); P2’de P1’in karakteri filtre dışı kalsa da kartı görünür (alınamaz). **Görünen kahraman adı** `CharacterSelectHelpers.character_display_name(id)` → `codex.character.<id>.name` (dil dosyası); `CharacterData.CHARACTERS[].name` yalnızca veri / Türkçe taslak. `_get_weapon_name` / `_get_item_name` yeni ID’ler için güncellenmeli.
+- **`ui/character_select.gd`** / **`ui/character_select_p2.gd`**: Kartlar `CHARACTERS` sırasına göre üretilir; sınıf filtresi (`hero_class`); P2’de P1’in karakteri filtre dışı kalsa da kartı görünür (alınamaz). **Görünen kahraman adı** `CharacterSelectHelpers.character_display_name(id)` → `codex.character.<id>.name`; **başlangıç silahı / eşya satırı** `CharacterSelectHelpers.weapon_display_name` / `item_display_name` → `codex.weapon.<id>.name` / `codex.item.<id>.name` (dil dosyası). `CharacterData.CHARACTERS[].name` yalnızca veri / Türkçe taslak.
 
 ### Dikkat: indeks + kimlik kaydı
 - `selected_character` / `selected_character_p2` hâlâ **indeks** olarak kaydedilir (UI uyumu); ayrıca `selected_character_id` / `selected_character_p2_id` (**kahraman `id` string**) saklanır. Oyun ve spawn `SaveManager.get_character_index_for_player()` ile önce ID’den indeks çözer; seçim ekranı `set_selected_character_p1_index` / `p2` ile ikisini birlikte günceller. Eski kayıtlarda yalnızca indeks varsa `load_game` sonunda `_reconcile_selected_characters_from_storage()` ID’yi indeksten doldurur.
@@ -194,15 +196,15 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 - **`SaveManager`**: `codex_discovered` (düşman/boss), `codex_weapons`, `codex_items`, `codex_maps`; `is_codex_entry_unlocked(entry)` tek doğrulama; `register_codex_*` aileleri. **Tüm ilerlemeyi sıfırla** dört kodeks dizisini de temizler.
 - **Keşif tetikleyicileri:** düşman ölümü `enemy_base` / `boss` / `giant`; silah ve eşya ilk alımda **`player/player.gd`** `add_weapon` / `add_item`; harita **`ui/map_select.gd`** oyun başlatırken `register_codex_map`; kahramanlar **`unlocked_characters`** (kilit açılmadan kart gizli).
 - **Yeni düşman:** `.tscn` + `ENEMY_ENTRIES`/`BOSS_ENTRIES` + `codex.<id>.name/desc` (düşman/boss düz anahtar).
-- **Yeni silah / eşya / harita:** `WEAPON_ENTRIES` / `ITEM_ENTRIES` / `MAP_ENTRIES` + üç dilde `codex.<weapon|item|map>.<id>.name/desc`. Toplu ek için **`locales/codex_sources/codex_extensions_{en,tr,zh_CN}.json`** düzenle → `python locales/merge_codex_extensions.py` (çıktı `locales/*.json` içindeki `codex` altına yazar; `check_locale_parity.py` yalnızca kök `*.json` dosyalarını karşılaştırır).
-- **Yeni kahraman:** `CharacterData`’ya ekle; `codex.character.<id>` metinleri üç dilde.
+- **Yeni silah / eşya / harita:** `WEAPON_ENTRIES` / `ITEM_ENTRIES` / `MAP_ENTRIES` + `codex.<weapon|item|map>.<id>.name/desc` — **dil dondurması sırasında** yalnızca `codex_extensions_en.json` → `merge_codex_extensions.py` ile `en.json`’a birleştir; `tr` / `zh_CN` şimdilik elleme. (Tam dil turunda yine `{en,tr,zh_CN}` akışı.)
+- **Yeni kahraman:** `CharacterData`’ya ekle; `codex.character.<id>` — dondurma sırasında **`codex_extensions_en.json`** (ve `en.json` birleşimi); diğer diller raf.
 - **UI:** `ui/collection_menu.gd` — üstte 6 sekme (`ui.collection_menu.tab_*`); ana menü **`ui/main_menu.gd`** → Kodeks.
 
 ---
 
 ## 6. Harita ve mod seçimi
 
-- **`ui/map_select.gd`**: Run modu **`SaveManager.settings["run_variant"]`** (`story` / `fast`; `arena` şimdilik kilitli UI); harita listesi + önizleme; **`run_curse_tier`** (0–5) kaydı; **Başlat** → `SaveManager.selected_map` / mod alanları + `register_codex_map`. Süre ve boss ölçeği: `SaveManager.get_run_goal_sec()`, `get_mini_boss_times()`, `get_run_spawn_difficulty_mult()` (`spawn_manager`, `wave_manager`, `main`, `player`).
+- **`ui/map_select.gd`**: Run modu **`SaveManager.settings["run_variant"]`** (`story` / `fast` / **`arena`** — kısa hedef süre `SaveManager.ARENA_RUN_GOAL_SEC`); harita listesi + önizleme; **`run_curse_tier`** (0–5) kaydı; **Başlat** → `SaveManager.selected_map` / mod alanları + `register_codex_map`. Süre ve boss ölçeği: `SaveManager.get_run_goal_sec()`, `get_mini_boss_times()`, `get_run_spawn_difficulty_mult()` (`spawn_manager`, `wave_manager`, `main`, `player`).
 - Yeni **hikaye haritası**: Yeni buton + `selected_map` string ID + `main` veya ortam tarafında bu ID’ye göre sahne/tileset/spawn mantığı.
 - **Arena**: `map_select` içinde kilitli; dalga mantığı `YOL_HARITASI.md` planı ile genişletilecek.
 
@@ -255,12 +257,25 @@ Yeni orb kodu için başlangıç: `xp_orb.gd` / `gold_orb.gd` ve `.tscn` şablon
 
 ## 9. Checklist: yeni karakter
 
+**Tam kahraman paketi (önerilen):** İmza kahraman isteniyorsa tek seferde **taban silah + (isteğe bağlı) başlangıç pasifi + silah evrimi** tasarlanmalı; pasif **evrim için gerekli** olsa da tek başına **faydalı ama abartısız** kalmalı (§11 + `weapon_evolution.gd`). Gerekli dosyalar: silah için §10, eşya için §11, evrim için §12 (veya mevcut evrime bağlama).
+
+**Kapanış çıktısı (zorunlu alışkanlık):** Kahraman ekleme veya loadout metni güncellemesi bittiğinde, sohbetin **sonunda** kullanıcıya tek blok halinde **bilgi kartı** ver — sıra sabit:
+
+1. **karakter adı:** `id` — görünen ad (örn. `ironclad` — Tam Zırhlı)  
+2. **karakter classı:** `hero_class` (örn. `fighter`)  
+3. **silah:** `start_weapon` (kısa ad — bir satırlık özet; örn. `bastion_flail` (Kale Gürzü — alan + itme))  
+4. **eşya:** `start_item` veya yoksa `—` (örn. `rampart_plate` (Rampa Plakası — zırh))  
+5. **evrim silahı:** evrim sonucu ID veya `—` (örn. `citadel_flail` (Hisar Zinciri))
+
+Oyun içi uzun `description` / `codex.character.<id>` metni (Açılış, origin vb.) veride ayrıca kalabilir; sohbet özeti bu beş satırlık şablondur. Yerelleştirme güncellemesi yalnızca `en` + `codex_extensions_en` (bkz. § «Yerelleştirme» — dil dondurması).
+
 1. `core/character_data.gd` — yeni sözlük (ID benzersiz, `hero_class` zorunlu: `tank` / `fighter` / `mage` / `controller` / `special`).
-2. `characters/<id>/<id>.tscn` — sahne (script `player.gd` uyumu).
+2. `characters/<id>/<id>.tscn` — sahne (script `player.gd` uyumu). **Her kahramanın kendi `.tscn` dosyası zorunlu**; başka kahramanın dosya yolunu `CHARACTER_SCENE_BY_ID` ile paylaşma. Başlangıç için başka sahneden kopya alındıysa: `AnimatedSprite2D` → **SpriteFrames** içinde **animasyon adları** (`idle_left`, `idle_right`, `walk_left`, `walk_right` vb.) kalsın, her animasyondaki **frame** girişlerini sil (boş `frames` listesi); böylece yinelenen atlas / yüzlerce `SubResource` taşınmaz — görseli sonra `dusk` örneği gibi bu sahneye eklersin.
 3. `core/character_data.gd` — `CHARACTER_SCENE_BY_ID` + `get_character_scene_path` (yeni `id` → `.tscn` yolu).
-4. Gerekirse `save_manager.gd` — varsayılan kilit/purchase (çoğu karakter sadece veri + koşul ile gelir).
-5. `locales/*.json` — `ui.character_select.special.*` (kartlarda `special` alanı için) ve kodeks kahraman metinleri.
-6. `CHARACTERS` sırası değişecekse: kayıtlı indeks migrasyonu veya ID tabanlı seçim.
+4. Gerekirse `save_manager.gd` — varsayılan kilit/purchase (çoğu karakter sadece veri + koşul ile gelir); **yeni `unlock_condition["type"]`** ise `check_and_unlock_characters` `match` kolu + gerekirse kalıcı alan (`save_game` / `load_game`).
+5. `locales/en.json` + `locales/codex_sources/codex_extensions_en.json` — `codex.character.<id>`; `ui.character_select.special.*` yalnızca `special` doluysa. (`tr` / `zh_CN` / diğer `codex_extensions_*` rutin güncellenmez — dil dondurması.)
+6. `core/collection_data.gd` — `_char_emoji` (kodeks grid).
+7. `CHARACTERS` sırası değişecekse: `SaveManager.OLD_CHARACTER_ORDER` sonuna `id` ekle; kayıtlı indeks migrasyonu veya ID tabanlı seçim.
 
 ---
 
@@ -268,11 +283,12 @@ Yeni orb kodu için başlangıç: `xp_orb.gd` / `gold_orb.gd` ve `.tscn` şablon
 
 1. `weapons/weapon_*.gd` + `class_name`.
 2. `core/player_loadout_registry.gd` — `WEAPON_SCRIPT_BY_ID` içine aynı string ID.
-3. `player/player.gd` — `_on_upgrade_chosen` `match` listesi (veya havuz); açıklama `codex` + `ui.player.loadout` ile gelir.
-4. `ui/upgrade_ui.gd` — `weapon_upgrades`, `get_upgrade_text`.
+3. `player/player.gd` — `_LEVELUP_WEAPON_IDS` (ve Kaos için `random_weapons` listesi); açıklama `get_weapon_description` → `codex`.
+4. `ui/upgrade_ui.gd` — `WEAPON_UPGRADE_IDS`, `get_upgrade_text`.
 5. Varsa projectile: `projectiles/*.tscn` + script, `ObjectPool` uyumu; hedef seçiminde tercihen `EnemyRegistry.get_enemies()`.
 6. Kaos: `apply_character_bonuses` içindeki `random_weapons` listesi.
-7. `locales/*.json` — `codex.weapon.<id>.name/desc` (üç dil).
+7. `core/collection_data.gd` — `WEAPON_ENTRIES` (kodeks sekmesi).
+8. `locales/en.json` + `locales/codex_sources/codex_extensions_en.json` — `codex.weapon.<id>.name/desc` (dil dondurması: yalnız İngilizce dosyalar).
 
 ---
 
@@ -294,7 +310,7 @@ Yeni orb kodu için başlangıç: `xp_orb.gd` / `gold_orb.gd` ve `.tscn` şablon
 3. `core/player_loadout_registry.gd` — `WEAPON_SCRIPT_BY_ID` içine evrim silahı ID’si (örn. `ember_fan`).
 4. `player/player.gd` — `_on_upgrade_chosen` `match` listesinde evrim ID’si (gerekirse).
 5. `codex` + `ui.evolution_defs` / `get_weapon_description` (gerekirse).
-6. `locales/tr.json`, `en.json`, `zh_CN.json` — `ui.evolution_defs.<evo_id>` (`name`, `desc`); mümkünse `gen_locales.py` (tr/en).
+6. `locales/en.json` — `ui.evolution_defs.<evo_id>` (`name`, `desc`); `codex_extensions_en.json` gerekirse. (`tr` / `zh_CN` donduruldu.)
 
 ---
 

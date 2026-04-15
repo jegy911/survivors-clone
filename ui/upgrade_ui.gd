@@ -3,13 +3,13 @@ extends CanvasLayer
 signal upgrade_chosen(upgrade_id)
 
 const WEAPON_UPGRADE_IDS: Array[String] = [
-	"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade",
+	"bullet", "dagger", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade",
 	"hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram",
 ]
 const ITEM_UPGRADE_IDS: Array[String] = [
 	"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool",
 	"luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart", "glyph_charm", "resonance_stone",
-	"rampart_plate", "iron_bulwark",
+	"rampart_plate", "iron_bulwark", "night_vial",
 ]
 var stat_upgrades = ["speed", "max_hp", "heal"]
 

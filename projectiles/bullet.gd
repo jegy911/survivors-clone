@@ -96,6 +96,7 @@ func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter 
 func reset():
 	_hit = false
 	_restore_hit_scan()
+	pierce_count = 0
 	direction = Vector2.ZERO
 	damage = 10
 	lifetime = 2.0

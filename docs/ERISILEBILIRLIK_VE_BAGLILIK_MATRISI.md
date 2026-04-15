@@ -3,7 +3,7 @@
 Bu belge, **20 + 20 maddenin** Ironfall kod tabanındaki **Var / Kısmi / Yok** durumunu ve kısa **repo notunu** içerir.  
 Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 
-**Son kod kontrolü:** 2026-04-14 (güncelleme: aura / zincir / yıldırım / balta projeksiyon dokuları + `CombatProjectileFx`; önceki maddeler)
+**Son kod kontrolü:** 2026-04-14 (güncelleme: Arena `run_variant` + `dusk` / `dagger` / `night_vial` / `veil_daggers`; önceki: aura / zincir / yıldırım / balta + `CombatProjectileFx`)
 
 ---
 
@@ -18,7 +18,7 @@ Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 | 5 | Yüksek kontrast düşman (outline) | **Var** | `SaveManager.settings["enemy_high_contrast_outline"]` (isteğe bağlı; **Ayarlar → Görüntü**); `enemy_base.gd` `_setup_visuals()` → `AnimatedSprite2D` sarı siluet + görünür `ColorRect` düşmanlarda offset; yalnız yeni spawn. |
 | 6 | Düşük donanım | **Kısmi** | `SaveManager.settings["performance_quality"]` **Düşük / Orta / Yüksek** (`get_max_enemies_cap`, olay spawn çarpanı, `is_heavy_vfx_enabled` / partikül); **Ayarlar → Görüntü**. Ayrı `ObjectPool`. Resmî benchmark raporu yok. |
 | 7 | Manyetik toplama | **Var** | `xp_orb.gd`, `gold_orb.gd`, `player.get_magnet_bonus()`, item magnet. |
-| 8 | Kısa oyun döngüsü | **Var** | `SaveManager.run_variant` story / fast (`is_fast_run()`, `get_run_goal_sec()` ~1800s / ~840s); `map_select` + dalga/boss ölçeklemesi `wave_manager` / `spawn_manager`. |
+| 8 | Kısa oyun döngüsü | **Var** | `SaveManager.settings["run_variant"]` story / fast / **arena** (`is_fast_run()`, `is_arena_run()`, `get_run_goal_sec()` ~1800s / ~840s / **~600s arena**); `map_select` + dalga/boss ölçeklemesi `wave_manager` / `spawn_manager`. |
 | 9 | Ekran sarsıntısı kapatma | **Var** | `settings["screen_shake"]`, `player.gd` / `EventBus`. |
 | 10 | Hasar sayılarını gizleme | **Var** | `damage_numbers` enum; `settings.gd` + `enemy_base` / `player`. |
 | 11 | Öğretici / güvenli ilk saniyeler | **Kısmi** | Ayrı tutorial sahnesi yok; dalga doğrudan başlıyor. |
@@ -59,7 +59,7 @@ Arayüz dili **`LocalizationManager`** + `locales/tr.json`, `en.json`, `zh_CN.js
 | 15 | Çevre değişimi (zamanla renk/tempo) | **Yok** | Zamanla global renk/müzik tempo değişimi yok. |
 | 16 | Gizli kilitler | **Var** | `AchievementManager`, Omega kodu `main_menu`, `character_data` unlock. |
 | 17 | Kombo / katliam UI | **Var** | `player.gd` `recent_kill_times`, COMBO metni. |
-| 18 | Farklı harita geometrileri | **Kısmi** | `map_select` çoğunlukla tek aktif harita; arena kilitli. |
+| 18 | Farklı harita geometrileri | **Kısmi** | `map_select` çoğunlukla tek aktif harita (`vs_map`); **arena** modu aynı haritada kısa süre hedefiyle oynanır, ayrı arena geometrisi yok. |
 | 19 | Kozmetik ödüller | **Kısmi** | Ana menü → **`ui/shop_menu`** iskelet (kozmetik / pet / fragman sekmeleri, placeholder); satın alma / unlock yok. |
 | 20 | Net final / hedef süre | **Kısmi** | Hedef süre `get_run_goal_sec()` (story ~1800s, fast ~840s) + HUD; 20. dk tek fazlı ayrı final boss yok. |
 

@@ -64,6 +64,12 @@ Bu dosya, **oyun evreni ve anlatı** üzerinde bu sohbet ve tasarım sürecinde 
 - **Tema:** Sürgün edilmiş **yakın dövüş** avcısı; çöl / yol teması ile hizalı **yelpaze bıçak** ritmi.
 - **Silah + eşya + evrim (koşu içi):** Başlangıçta yalnızca **Yelpaze Bıçak** (`fan_blade`). **Kor Kalbi** (`ember_heart`) koşuda toplanır; ikisi MAX iken **Kor Yelpazesi** (`ember_fan`) — diğer kahramanlardaki “imza silah + eşya çifti” anlatı çerçevesiyle aynı, fakat **başlangıç yükünde eşya verilmez**.
 
+### 3.8 Alacakaranlık Hançeri (`dusk_striker`) — fighter
+
+- **Tema:** Gölge Yürüyücü ile aynı “sessiz av” hattında; fakat silah **çift fırlatılabilir hançer** (`dagger`) — hafif, hızlı ritimli antik/hibrit bıçaklar. Arena’da Gölge Yürüyücü ile kanıtlanmış cesaret, loncada **Alacakaranlık Hançeri** unvanını açar (oyun: kısa Arena koşusunu kazanma + satın alma).
+- **Kart özeti (`CharacterData` / kodeks ile uyumlu):** Silah `dagger` (İkiz Hançer); başlangıç eşyası **Gece Şişesi** (`night_vial`) — hafif XP/altın çekim yarıçapı (evrim olmadan da rahatlatır); evrim **Peçe Hançerleri** (`veil_daggers`): `dagger` + `night_vial` ikisi MAX; açılış Arena + Gölge Yürüyücü + **380** altın; köken hız / max can — `core/character_data.gd`, `codex.character.dusk`.
+- **Sahne:** Oyuncu kökü `res://characters/dusk/dusk.tscn` (Gölge Yürüyücü’nden ayrı dosya). `AnimatedSprite2D` animasyon **isimleri** korunur; **frame** listeleri boş — dusk’a özel sprite/atlas eklendiğinde doldurulur.
+
 ---
 
 ## 4. Düşmanlar ve bosslar (çerçeve)
@@ -80,6 +86,7 @@ Bu dosya, **oyun evreni ve anlatı** üzerinde bu sohbet ve tasarım sürecinde 
 | 2026-04-07 | İlk taslak: çöküş sonrası dünya, rün + kalıntı teknoloji, Şeytani Kral endgame hedefi; Warrior (Desert Eagle / bullet→weapon notu), Mage (rün cübbesi, fener, aura). |
 | 2026-04-07 | Dört yeni kahraman (kontrolör ×2, tank ×2): Mühür Ustası, Eğim Bağlayıcı, Tam Zırhlı, Hat Kıran — her biri özel silah + eşya + evrim çifti; kod ID’leri `sigil_warden`, `grav_binder`, `ironclad`, `linebreaker`. |
 | 2026-04-07 | **Göçebe (nomad)** — Yelpaze Bıçak + (koşuda) Kor Kalbi → Kor Yelpazesi (`ember_fan`); kahraman bilgi kartı Hat Kıran formatıyla hizalı; **hiçbir kahramanda `start_item` yok** (yalnız başlangıç silahı). |
+| 2026-04-14 | **Alacakaranlık Hançeri (`dusk`)** — İkiz hançer menzili; başlangıç pasifi `night_vial` (Gece Şişesi); evrim `veil_daggers` (Peçe Hançerleri); Gölge Yürüyücü ile Arena zaferi sonrası lonca onayı + altın; oyuncu sahnesi `characters/dusk/dusk.tscn` (animasyon isimleri var, sprite frame’leri sonra). |
 
 ---
 

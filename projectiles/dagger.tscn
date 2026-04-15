@@ -1,0 +1,26 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://projectiles/bullet.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/projectiles/bullet/indir.png" id="2_tex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dagger"]
+radius = 6.0
+
+[node name="Dagger" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_dagger")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+offset_left = -5.0
+offset_top = -3.0
+offset_right = 5.0
+offset_bottom = 3.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.022, 0.055)
+texture = ExtResource("2_tex")

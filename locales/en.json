@@ -31,7 +31,7 @@
       "arena_mode": "⬡ SURVIVAL/ARENA\n\nWave defense\n🔒 Coming soon...",
       "mode_story": "📖 Story — survive until Reaper (~30 min)",
       "mode_fast": "⚡ Fast run — shorter match (~14 min)",
-      "mode_arena": "⬡ Arena — locked (coming soon)",
+      "mode_arena": "⬡ Arena — ~10 min goal, survive to count as a win",
       "map1": "🏰 Fallen Kingdom",
       "map2": "⬡ MAP 2\n\nComing soon...",
       "map3": "⬡ MAP 3\n\nComing soon...",
@@ -40,8 +40,8 @@
       "curse_value": "Tier %d — 0 calmer spawns, 5 intense",
       "desc_story": "Classic Ironfall pacing. Reach the time limit to face the Reaper. Good luck!",
       "desc_fast": "Compressed waves and bosses. Reaper arrives sooner — ideal for 10–15 minute sessions.",
-      "desc_arena": "Wave-defense arena is planned for a future update.",
-      "arena_locked_hint": "Arena maps will appear here when unlocked.",
+      "desc_arena": "Same map with a shorter time goal (~10 min). After the timer, your run counts as won on the death screen; winning once as Shadow Walker unlocks the Dusk Striker purchase path.",
+      "arena_locked_hint": "Pick Arena in the mode column; the map list matches Story (Fallen Kingdom).",
       "back": "← BACK",
       "start": "▶ START!"
     },
@@ -297,6 +297,10 @@
       "fortress_ram": {
         "name": "Fortress Ram",
         "desc": "Shield Ram (MAX) + Iron Bulwark (MAX) → Fortress Ram\nWider cone, wall-breaker pressure."
+      },
+      "veil_daggers": {
+        "name": "Veil Daggers",
+        "desc": "Twin Daggers (MAX) + Night Vial (MAX) → Veil Daggers\nMore blades, pierce hits, slightly longer reach."
       }
     },
     "devtools": {
@@ -441,6 +445,14 @@
         "name": "Bullet",
         "desc": "Straightforward ranged shots. Your bread-and-butter pressure tool."
       },
+      "dagger": {
+        "name": "Twin Daggers",
+        "desc": "Thin thrown blades to the nearest foes in order. Starts with two projectiles; lower damage per wave than Bullet, slightly faster cadence."
+      },
+      "veil_daggers": {
+        "name": "Veil Daggers",
+        "desc": "Evolved form: more targets per volley, piercing hits, longer reach; completes the Night Vial pairing."
+      },
       "aura": {
         "name": "Aura",
         "desc": "Damage zone that follows you. Own the space around your character."
@@ -543,6 +555,10 @@
         "name": "Magnet",
         "desc": "Pulls XP and gold farther. Less running, more killing."
       },
+      "night_vial": {
+        "name": "Night Vial",
+        "desc": "Small pickup radius bonus for XP and gold. Mild comfort on its own; pairs with Twin Daggers for the Veil Daggers evolution."
+      },
       "poison": {
         "name": "Poison",
         "desc": "DoT that ticks enemies down. Synergizes with chain evolutions."
@@ -624,6 +640,10 @@
       "shadow_walker": {
         "name": "Shadow Walker",
         "desc": "High-speed assassin with shadow orbs."
+      },
+      "dusk_striker": {
+        "name": "Dusk Striker",
+        "desc": "Twin-dagger skirmisher; Shadow Walker–paced mobility.\n\nWeapon: dagger (Twin Daggers — thin throws to nearest foes in order; starts with two, lower base damage per volley than a single Bullet shot, slightly shorter cooldown)\nItem: night_vial (Night Vial — small XP/gold pickup radius; mild alone, still useful off-build)\nEvolution: veil_daggers (Veil Daggers — Twin Daggers MAX + Night Vial MAX; more blades, pierce, longer reach)\nUnlock: Win an Arena run (reach the time goal) with Shadow Walker on your roster → unlock → 380 gold; origin: +22% speed, −18% max HP"
       },
       "engineer": {
         "name": "Engineer",

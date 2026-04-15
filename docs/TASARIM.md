@@ -47,7 +47,8 @@ Karakter sınıfı ve rol envanteri (oyun dizaynı metni): `docs/KARAKTER_SINIFL
 | hunter | ✅ | `assets/character assets/hunter assets/` |
 | stormer | ✅ | `assets/character assets/stormer assets/` |
 | frost | ✅ | `assets/character assets/Frost assets/` |
-| shadow_walker | ✅ | `assets/character assets/sw assets/` |
+| shadow_walker | ✅ | `assets/character assets/sw assets/` — `characters/shadow_walker/shadow_walker.tscn` |
+| dusk | ❌ | `characters/dusk/dusk.tscn` — animasyon slotları var, **frame** yok (dusk özel sprite gelene kadar). |
 | engineer | ✅ | `assets/character assets/engineer assets/` |
 | paladin | ✅ | `assets/character assets/paladin assets/` |
 | blood_prince | ✅ | `assets/character assets/bp assets/` |
@@ -90,6 +91,7 @@ Her düşman `.tscn` içinde **`AnimatedSprite2D`** + atlas / spritesheet ile **
 | Silah ID | Oyunda mantık | Final VFX / okunaklı mermi görselleri |
 |----------|----------------|----------------------------------------|
 | bullet | ✅ | `projectiles/bullet.gd` — `player_vfx_opacity` → ColorRect/Sprite2D `modulate.a` |
+| dagger | ✅ | `projectiles/dagger.tscn` — `bullet.gd` ile aynı mantık; ince sprite ölçeği (ikiz atış `weapon_dagger.gd`) |
 | aura | ✅ | `assets/projectiles/aura/aura.png` — oyuncuya bağlı halka (`weapon_aura.gd` → `AuraWeaponRing`) |
 | chain | ✅ | `assets/projectiles/chain/chain.png` — `CombatProjectileFx.spawn_chain_segment` (Sprite2D segment, `weapon_chain.gd`) |
 | boomerang | ✅ | `assets/projectiles/axe/boomerang.png` + `projectiles/hunter_axe.tscn` (Sprite2D; oyun içi ID: `boomerang`) |
@@ -99,7 +101,7 @@ Her düşman `.tscn` içinde **`AnimatedSprite2D`** + atlas / spritesheet ile **
 | laser | ✅ / ❌ | |
 | holy_bullet | ✅ / ❌ | Evrim hedefi: `holy_bullet` |
 | fan_blade | ❌ | Shard: `Polygon2D` — final bıçak / parça sprite’ı yok |
-| toxic_chain, death_laser, blood_boomerang, storm, shadow_storm, frost_nova, ember_fan | ✅ / ❌ | Çoğu mevcut; **pasif ikonları ve level-up kart görselleri** ayrı bölümde |
+| toxic_chain, death_laser, blood_boomerang, storm, shadow_storm, frost_nova, ember_fan, veil_daggers | ✅ / ❌ | Çoğu mevcut; **pasif ikonları ve level-up kart görselleri** ayrı bölümde |
 
 *(“✅ / ❌” = çalışıyor ancak final sanat / ayarlanabilir opaklık / palet uyumu eksik olabilir.)*
 
@@ -120,6 +122,7 @@ Level-up kartı ve yüzen evrim bildirimi metinleri: `locales/*.json` → `ui.ev
 | shadow_storm | ❌ |
 | frost_nova | ❌ |
 | ember_fan | ❌ |
+| veil_daggers | ❌ |
 
 ---
 
@@ -143,6 +146,7 @@ Level-up ekranı ağırlıklı **metin**; `upgrade_ui` için **büyük net ikon*
 | steam_armor | ❌ |
 | energy_cell | ❌ |
 | ember_heart | ❌ |
+| night_vial | ❌ |
 
 `items/item_vampire.gd` — oyunda bağlı değil (yalnızca dosya); ikon ihtiyacı yok.
 
@@ -165,6 +169,7 @@ Level-up ekranı ağırlıklı **metin**; `upgrade_ui` için **büyük net ikon*
 | Sahne | Final sanat |
 |-------|----------------|
 | bullet.tscn | ✅ / ❌ |
+| dagger.tscn | ✅ / ❌ | İnce `Sprite2D` + `bullet.gd` (ObjectPool) |
 | hunter_axe.tscn | ✅ | Avcı baltası (ObjectPool); Sprite2D + `assets/projectiles/axe/boomerang.png` |
 | ice_ball.tscn | ✅ / ❌ |
 | fan_blade_shard.tscn | ❌ | Polygon2D geçici |

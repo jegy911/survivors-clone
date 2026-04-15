@@ -4,6 +4,7 @@ extends RefCounted
 
 const WEAPON_SCRIPT_BY_ID: Dictionary = {
 	"bullet": preload("res://weapons/weapon_bullet.gd"),
+	"dagger": preload("res://weapons/weapon_dagger.gd"),
 	"aura": preload("res://weapons/weapon_aura.gd"),
 	"chain": preload("res://weapons/weapon_chain.gd"),
 	"boomerang": preload("res://weapons/weapon_boomerang.gd"),
@@ -28,6 +29,7 @@ const WEAPON_SCRIPT_BY_ID: Dictionary = {
 	"citadel_flail": preload("res://weapons/weapon_citadel_flail.gd"),
 	"shield_ram": preload("res://weapons/weapon_shield_ram.gd"),
 	"fortress_ram": preload("res://weapons/weapon_fortress_ram.gd"),
+	"veil_daggers": preload("res://weapons/weapon_veil_daggers.gd"),
 }
 
 const ITEM_SCRIPT_BY_ID: Dictionary = {
@@ -49,6 +51,7 @@ const ITEM_SCRIPT_BY_ID: Dictionary = {
 	"resonance_stone": preload("res://items/item_resonance_stone.gd"),
 	"rampart_plate": preload("res://items/item_rampart_plate.gd"),
 	"iron_bulwark": preload("res://items/item_iron_bulwark.gd"),
+	"night_vial": preload("res://items/item_night_vial.gd"),
 }
 
 

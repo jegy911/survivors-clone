@@ -4,7 +4,7 @@ Oyuncunun **kendine güveni**, takımda **rolünü bilmesi** ve yeni kahramanlar
 Kod envanteri (`core/character_data.gd`, sahneler): `docs/GELISTIRICI_REHBERI.md` §3.  
 Görsel envanter: `docs/TASARIM.md`.
 
-**Son güncelleme:** 2026-04-07 (4 yeni kahraman: kontrolör ×2, tank ×2)
+**Son güncelleme:** 2026-04-14 (`dusk` — fighter, ikiz hançer + Gece Şişesi + Peçe Hançerleri evrimi; Arena + Gölge Yürüyücü açılış koşulu)
 
 ---
 
@@ -91,6 +91,7 @@ Aşağıdaki atamalar **taslak**tır; denge ve co-op destek tasarımı netleşti
 | sigil_warden | Mühür Ustası | Controller | Rün mühürü, alan yavaşlatma + bağlayıcı evrim |
 | grav_binder | Eğim Bağlayıcı | Controller | Çekim alanı, kalabalık sıkıştırma + rezonans |
 | shadow_walker | Gölge Yürüyücü | Fighter | Mobilite + gölge hasarı, assassin-fighter |
+| dusk_striker | Alacakaranlık Hançeri | Fighter | İkiz hançer + Gece Şişesi (çekim yarıçapı); Peçe Hançerleri evrimi; Arena + Shadow Walker açılışı |
 | engineer | Mühendis | Mage | Lazer / alan, yetenek konumlandırma |
 | paladin | Paladin | Tank | Zırh, kutsal mermi, ön saflar |
 | ironclad | Tam Zırhlı | Tank | Gürz + siper plakası, itme ve ön hat |
@@ -106,7 +107,7 @@ Aşağıdaki atamalar **taslak**tır; denge ve co-op destek tasarımı netleşti
 | Sınıf | Adet (taslak) | Kimlikler |
 |-------|-----------------|-----------|
 | Controller | 3 | frost, sigil_warden, grav_binder |
-| Fighter | 7 | warrior, vampire, hunter, shadow_walker, blood_prince, nomad, death_knight |
+| Fighter | 8 | warrior, vampire, hunter, shadow_walker, blood_prince, nomad, death_knight, dusk_striker |
 | Mage | 3 | mage, stormer, engineer |
 | Tank | 3 | paladin, ironclad, linebreaker |
 | Özel | 2 | chaos, omega |

@@ -1,6 +1,7 @@
 {
   "weapon": {
     "bullet": {"name": "Mermi", "desc": "Düz menzilli atışlar. Temel baskı silahın."},
+    "dagger": {"name": "İkiz Hançer", "desc": "En yakın düşmanlara sırayla ince fırlatılabilir bıçaklar. Tabanda iki adet; tek mermiye göre toplam hasar daha düşük, bekleme süresi biraz daha kısa."},
     "aura": {"name": "Aura", "desc": "Karakterinin etrafında hasar alanı. Alanı sen kontrol edersin."},
     "chain": {"name": "Zincir", "desc": "Hedefler arasında sıçrayan zincir. Kalabalık dalgalarda güçlü."},
     "boomerang": {"name": "Balta", "desc": "Savrulup geri döner; peşinden gelen sürülere ceza keser."},
@@ -16,7 +17,8 @@
     "storm": {"name": "Fırtına", "desc": "Evrim: öldürmede ekstra yıldırım."},
     "shadow_storm": {"name": "Gölge Fırtınası", "desc": "Evrim: gölge vuruşları yıldırım zinciri tetikleyebilir."},
     "frost_nova": {"name": "Buz Novası", "desc": "Evrim: vuruşta alan dondurma + yansıtma oyunu."},
-    "ember_fan": {"name": "Kor Yelpazesi", "desc": "Evrim: daha geniş yay ve delici kor parçaları."}
+    "ember_fan": {"name": "Kor Yelpazesi", "desc": "Evrim: daha geniş yay ve delici kor parçaları."},
+    "veil_daggers": {"name": "Peçe Hançerleri", "desc": "Evrim: daha çok hedefe hançer, delerek ikinci isabet, biraz daha uzun menzil; Gece Şişesi ile birlikte tamamlanır."}
   },
   "item": {
     "lifesteal": {"name": "Can Çalma", "desc": "Hasar verirken iyileş. Uzun kavgada stabilite."},
@@ -32,7 +34,8 @@
     "turbine": {"name": "Türbin", "desc": "Cooldown ve alan build’leriyle sinerji."},
     "steam_armor": {"name": "Buharlı Zırh", "desc": "Buhar temalı ek savunma."},
     "energy_cell": {"name": "Enerji Hücresi", "desc": "Sürekli ateş ve cooldown toparlamasına güç verir."},
-    "ember_heart": {"name": "Kor Kalbi", "desc": "Yelpaze evrimleriyle eşleşen kor pasifi."}
+    "ember_heart": {"name": "Kor Kalbi", "desc": "Yelpaze evrimleriyle eşleşen kor pasifi."},
+    "night_vial": {"name": "Gece Şişesi", "desc": "Küçük XP ve altın çekim yarıçapı bonusu. Tek başına hafif rahatlık; İkiz Hançer evrimi (Peçe Hançerleri) için eşlik eder."}
   },
   "character": {
     "warrior": {"name": "Savaşçı", "desc": "Dengeli dövüşçü; +5 düz hasar, +8 köken (muharebe alışkanlığı). İyi başlangıç."},
@@ -42,6 +45,7 @@
     "stormer": {"name": "Fırtına", "desc": "Yıldırım odağı; cooldown bonusları."},
     "frost": {"name": "Buzcu", "desc": "Yavaşlatma uzmanı; çift süre, buz topu başlangıcı."},
     "shadow_walker": {"name": "Gölge Yürüyücü", "desc": "Yüksek hızlı suikastçı; gölge küreleri."},
+    "dusk_striker": {"name": "Alacakaranlık Hançeri", "desc": "İkiz hançer suikastçısı; Gölge Yürüyücü ritminde mobilite.\n\nSilah: dagger (İkiz Hançer — yakındaki düşmanlara sırayla ince fırlatma; tabanda iki adet, toplam taban hasar tek mermi vuruşunun altında, bekleme süresi mermiden kısa)\nEşya: night_vial (Gece Şişesi — küçük XP/altın çekim yarıçapı; tek başına hafif rahatlık, başka build’lerde de iş görür)\nEvrim: veil_daggers (Peçe Hançerleri — İkiz Hançer MAX + Gece Şişesi MAX; daha çok hançer, delme, biraz daha uzun menzil)\nAçılış: Gölge Yürüyücü ile Arena’da hedef sürede kazan → kilit açılır → 380 altın; origin_bonus: hız +%22, max can -%18"},
     "engineer": {"name": "Mühendis", "desc": "Lazer ve alan bonusu; cam topa yakın."},
     "paladin": {"name": "Paladin", "desc": "Tank kutsal savaşçı; zırh ve Kutsal Mermi."},
     "blood_prince": {"name": "Kan Prensi", "desc": "XP açgözlüsü; Kan Baltası fantezisi."},

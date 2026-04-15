@@ -61,7 +61,7 @@ func _ready() -> void:
 	left.add_child(mode_col)
 	_register_mode_btn(mode_col, "story", "ui.map_select.mode_story", s)
 	_register_mode_btn(mode_col, "fast", "ui.map_select.mode_fast", s)
-	_register_mode_btn(mode_col, "arena", "ui.map_select.mode_arena", s, true)
+	_register_mode_btn(mode_col, "arena", "ui.map_select.mode_arena", s, false)
 
 	left.add_child(HSeparator.new())
 
@@ -176,8 +176,6 @@ func _sync_mode_styles() -> void:
 
 
 func _set_variant(id: String) -> void:
-	if id == "arena":
-		return
 	_variant = id
 	_sync_mode_styles()
 	_rebuild_map_buttons()
@@ -187,12 +185,6 @@ func _set_variant(id: String) -> void:
 func _rebuild_map_buttons() -> void:
 	for c in _map_column.get_children():
 		c.queue_free()
-	if _variant == "arena":
-		var lb := Label.new()
-		lb.text = tr("ui.map_select.arena_locked_hint")
-		lb.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		_map_column.add_child(lb)
-		return
 	for mid in MAP_IDS_VS:
 		var mb := Button.new()
 		mb.text = tr("ui.map_select.map1") if mid == "vs_map" else mid
@@ -255,9 +247,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_play() -> void:
-	if _variant == "arena":
-		return
-	SaveManager.settings["run_variant"] = _variant
+	SaveManager.settings["run_variant"] = "arena" if _variant == "arena" else _variant
 	SaveManager.settings["run_curse_tier"] = _curse_tier
 	SaveManager.selected_mode = "vs"
 	SaveManager.selected_map = _map_id

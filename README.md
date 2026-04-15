@@ -8,6 +8,18 @@ Godot 4 ile geliştirilen bir hayatta kalma / vampire survivors tarzı proje.
 2. Projeyi Godot’ta **Import / Open** ile aç.
 3. **F5** (Play) veya Editor’dan ana sahneyi çalıştır — önce kısa **açılış ekranı** (arka plan ~5 sn içinde aydınlanır; 4–6. sn arası “devam…” metni alttan kayar (konum `ui/intro_splash.gd` içindeki `PROMPT_*` sabitleri); ardından tuş/tık), sonra ana menü.
 
+## Koşu modları (`SaveManager.settings["run_variant"]`)
+
+Harita seçiminde (`ui/map_select.tscn` → `map_select.gd`) üç mod vardır; süre hedefi `SaveManager.get_run_goal_sec()` ile gelir:
+
+| Mod | Süre hedefi (yaklaşık) | Not |
+|-----|-------------------------|-----|
+| **story** | ~30 dk | Klasik koşu; Reaper öncesi hedef süre. |
+| **fast** | ~14 dk | Sıkıştırılmış dalga/boss ölçeği. |
+| **arena** | ~10 dk (`ARENA_RUN_GOAL_SEC` = 600) | Aynı **vs_map** üzerinde kısa maç; hedef süreye ulaşıp koşuyu **kazanmış** saymak için oyun sonu istatistiğinde `won` kullanılır. **Alacakaranlık Hançeri** (`dusk_striker`) açılışı: bu modda en az bir kez kazanırken kadroda **Gölge Yürüyücü** (`shadow_walker`) olmalı; kayıt bayrağı `arena_cleared_as_shadow_walker` (`save_manager.gd`). |
+
+Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapons/scenes/weapon_dagger.tscn`, `projectiles/dagger.tscn`; level-up havuzları `player.gd` / `upgrade_ui.gd` ile senkron.
+
 ## Dokümantasyon
 
 İçerik veya mimari değişikliklerinde **`docs/GELISTIRICI_REHBERI.md`**, **`docs/YOL_HARITASI.md`**, gerekiyorsa **`docs/TASARIM.md`** ve karakter rolü / sınıfı değiştiyse **`docs/KARAKTER_SINIFLARI_VE_TASARIM.md`** ile **erişilebilirlik matrisini** güncel tutmayı unutmayın (ayrıntı: `.cursor/rules/ironfall-docs.mdc`).

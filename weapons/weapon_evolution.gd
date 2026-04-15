@@ -74,6 +74,12 @@ const EVOLUTIONS = {
 		"name": "Kale Sur Koşusu",
 		"description": "Kalkan Hamlesi + Demir Siper → Kale Sur Koşusu\nGeniş koni, sur gibi baskı"
 	},
+	"veil_daggers": {
+		"requires_weapons": ["dagger"],
+		"requires_items": ["night_vial"],
+		"name": "Peçe Hançerleri",
+		"description": "İkiz Hançer (MAX) + Gece Şişesi (MAX) → Peçe Hançerleri\nDaha çok bıçak, delme ve biraz daha uzun menzil"
+	},
 }
 
 static func _meets_weapon_requirements(player, evo: Dictionary) -> bool:

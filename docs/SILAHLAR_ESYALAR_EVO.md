@@ -20,6 +20,18 @@ Sütunlar: **Hasar** = script `damage` (oyuncu bonusları öncesi). **Alan** = y
 | 4 | 15 | 500 | 3 | 1.2 | |
 | 5 | 18 | 500 | 4 | 1.0 | |
 
+### İkiz Hançer (`dagger`)
+
+Projeksiyon: `projectiles/dagger.tscn` (`bullet.gd`, ObjectPool). Tasarım hedefi: tabanda **iki** vuruş × düşük `damage` (tek mermi Lv1 toplamına göre ~yarı toplam), **CD** mermiden kısa.
+
+| Lv | Hasar (hançer başına) | Alan / menzil | Miktar | CD | Diğer |
+|----|------------------------|---------------|--------|-----|--------|
+| 1 | 5 | max_range 500 | 2 | 1.28 | En yakın hedeflere sırayla |
+| 2 | 6 | 500 | 3 | 1.28 | |
+| 3 | 7 | 500 | 3 | 1.12 | |
+| 4 | 8 | 500 | 4 | 1.12 | |
+| 5 | 9 | 500 | 5 | 0.95 | |
+
 ### Aura (`aura`)
 
 | Lv | Hasar | Alan (yarıçap) | CD | Diğer |
@@ -228,6 +240,18 @@ Projeksiyon: `projectiles/lightning_bolt.tscn` (uçuş + isabet); Storm / Toxic 
 | 4 | 15 | 5 | 1.0 | 215 | 44 | 1 |
 | 5 | 19 | 6 | 0.9 | 215 | 44 | 2 |
 
+### Peçe Hançerleri (`veil_daggers`)
+
+Projeksiyon: `projectiles/dagger.tscn` (`bullet.gd`); yakın hedefe sırayla; taban menzil **520** px (taban `dagger` 500’den biraz uzun); `multi_attack` hançer sayısına eklenir. **Delme:** `pierce_count` projeksiyonda (Lv5’te 2).
+
+| Lv | Hasar (hançer) | Hançer (taban) | Menzil | CD | Delme |
+|----|-----------------|----------------|--------|-----|--------|
+| 1 | 6 | 3 | 520 | 1.18 | 1 |
+| 2 | 7 | 4 | 520 | 1.18 | 1 |
+| 3 | 8 | 4 | 520 | 1.02 | 1 |
+| 4 | 9 | 5 | 520 | 1.02 | 1 |
+| 5 | 10 | 5 | 520 | 0.90 | 2 |
+
 ### Bağlayıcı halka (`binding_circle`)
 
 | Lv | Hasar | Yarıçap | CD | Yavaşlatma |
@@ -292,6 +316,7 @@ Projeksiyon: `projectiles/lightning_bolt.tscn` (uçuş + isabet); Storm / Toxic 
 | `resonance_stone` | Rezonans taşı | utility | Pickup bonusu `15 + 5×level` |
 | `rampart_plate` | Rampa plakası | defense | Zırh `1 + 1.5×(level-1)` |
 | `iron_bulwark` | Demir siper | defense | Zırh `2 × level` |
+| `night_vial` | Gece şişesi | utility | XP/altın çekim yarıçapı `pickup_bonus = 4 + 4×level` px (Lv1–5: 8, 12, 16, 20, 24); Mıknatıs / Rezonans’tan düşük tutulur |
 
 ---
 
@@ -311,6 +336,7 @@ Projeksiyon: `projectiles/lightning_bolt.tscn` (uçuş + isabet); Storm / Toxic 
 | `void_lens` | `gravity_anchor` | `resonance_stone` |
 | `citadel_flail` | `bastion_flail` | `rampart_plate` |
 | `fortress_ram` | `shield_ram` | `iron_bulwark` |
+| `veil_daggers` | `dagger` | `night_vial` |
 
 `Blood Oath` aktifken gerekli silah seviyesi yarıya yuvarlanır (`weapon_evolution.gd`).
 

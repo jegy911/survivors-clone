@@ -80,6 +80,8 @@ var total_items_collected: int = 0
 var total_deaths: int = 0
 var killed_tank: bool = false
 var evolution_obtained: bool = false
+## Arena koşusunu (hedef sürede kazanarak) en az bir kez Gölge Yürüyücü ile tamamladı mı — `dusk_striker` açılışı.
+var arena_cleared_as_shadow_walker: bool = false
 var unique_chars_played: Array = []
 var unlocked_achievements: Array = []
 var unlocked_characters: Array = ["warrior"]
@@ -95,7 +97,7 @@ const CHARACTER_ORDER_V2_KEY = "character_order_v2"
 const OLD_CHARACTER_ORDER: Array[String] = [
 	"warrior", "mage", "vampire", "hunter", "stormer", "frost", "shadow_walker",
 	"engineer", "paladin", "blood_prince", "death_knight", "chaos", "omega", "nomad",
-	"sigil_warden", "grav_binder", "ironclad", "linebreaker",
+	"sigil_warden", "grav_binder", "ironclad", "linebreaker", "dusk_striker",
 ]
 
 func _ready():
@@ -148,6 +150,7 @@ func save_game():
 	config.set_value("stats", "total_deaths", total_deaths)
 	config.set_value("unlock", "killed_tank", killed_tank)
 	config.set_value("unlock", "evolution_obtained", evolution_obtained)
+	config.set_value("unlock", "arena_cleared_as_shadow_walker", arena_cleared_as_shadow_walker)
 	config.set_value("unlock", "unique_chars_played", unique_chars_played)
 	config.set_value("unlock", "unlocked_characters", unlocked_characters)
 	config.set_value("unlock", "unlocked_achievements", unlocked_achievements)
@@ -197,6 +200,7 @@ func load_game():
 	total_deaths = config.get_value("stats", "total_deaths", 0)
 	killed_tank = config.get_value("unlock", "killed_tank", false)
 	evolution_obtained = config.get_value("unlock", "evolution_obtained", false)
+	arena_cleared_as_shadow_walker = config.get_value("unlock", "arena_cleared_as_shadow_walker", false)
 	unique_chars_played = config.get_value("unlock", "unique_chars_played", [])
 	unlocked_characters = config.get_value("unlock", "unlocked_characters", ["warrior"])
 	unlocked_achievements = config.get_value("unlock", "unlocked_achievements", [])
@@ -298,6 +302,8 @@ func update_stats_after_game(char_id: String, kills: int, survival_time: float, 
 		killed_tank = true
 	if not unique_chars_played.has(char_id):
 		unique_chars_played.append(char_id)
+	if won and str(settings.get("run_variant", "story")) == "arena" and _run_roster_has_shadow_walker():
+		arena_cleared_as_shadow_walker = true
 	check_and_unlock_characters(char_id, kills, survival_time)
 	save_game()
 
@@ -371,6 +377,14 @@ func get_character_id_for_player(player_id: int) -> String:
 	return str(CharacterData.CHARACTERS[i]["id"])
 
 
+func _run_roster_has_shadow_walker() -> bool:
+	if get_character_id_for_player(0) == "shadow_walker":
+		return true
+	if game_mode == "local_coop" and get_character_id_for_player(1) == "shadow_walker":
+		return true
+	return false
+
+
 func check_and_unlock_characters(char_id: String, run_kills: int, survival_time: float):
 	for char_data in CharacterData.CHARACTERS:
 		var cid = char_data["id"]
@@ -395,6 +409,8 @@ func check_and_unlock_characters(char_id: String, run_kills: int, survival_time:
 				unlocked = run_kills >= cond["amount"]
 			"survive_as":
 				unlocked = (char_id == cond["character"] and survival_time >= cond["amount"])
+			"arena_win_shadow_walker":
+				unlocked = arena_cleared_as_shadow_walker
 		if unlocked:
 			unlocked_characters.append(cid)
 
@@ -538,13 +554,20 @@ func get_encircle_event_count_mult() -> float:
 
 const STORY_RUN_GOAL_SEC: float = 1800.0
 const FAST_RUN_GOAL_SEC: float = 840.0
+const ARENA_RUN_GOAL_SEC: float = 600.0
 
 
 func is_fast_run() -> bool:
 	return str(settings.get("run_variant", "story")) == "fast"
 
 
+func is_arena_run() -> bool:
+	return str(settings.get("run_variant", "story")) == "arena"
+
+
 func get_run_goal_sec() -> float:
+	if is_arena_run():
+		return ARENA_RUN_GOAL_SEC
 	return FAST_RUN_GOAL_SEC if is_fast_run() else STORY_RUN_GOAL_SEC
 
 
@@ -553,7 +576,7 @@ func get_run_curse_tier() -> int:
 
 
 func get_mini_boss_times() -> Array:
-	if is_fast_run():
+	if is_fast_run() or is_arena_run():
 		var f: float = get_run_goal_sec() / STORY_RUN_GOAL_SEC
 		return [int(300 * f), int(600 * f), int(900 * f), int(1200 * f), int(1500 * f)]
 	return [300, 600, 900, 1200, 1500]

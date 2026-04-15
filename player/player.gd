@@ -2,13 +2,13 @@ extends CharacterBody2D
 
 ## `ui/upgrade_ui.gd` havuzları ile aynı sıra — level-up seçiminde `add_weapon` / `add_item` eşlemesi.
 const _LEVELUP_WEAPON_IDS: PackedStringArray = [
-	"bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade",
+	"bullet", "dagger", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade",
 	"hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram",
 ]
 const _LEVELUP_ITEM_IDS: PackedStringArray = [
 	"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool",
 	"luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart", "glyph_charm", "resonance_stone",
-	"rampart_plate", "iron_bulwark",
+	"rampart_plate", "iron_bulwark", "night_vial",
 ]
 
 var player_id: int = 0
@@ -199,7 +199,7 @@ func apply_character_bonuses():
 	elif special == "damage_double":
 		bullet_damage *= 2
 	elif special == "random_weapons":
-		var all_weapons = ["bullet", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade", "hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram"]
+		var all_weapons = ["bullet", "dagger", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade", "hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram"]
 		all_weapons.shuffle()
 		for w in all_weapons.slice(0, 3):
 			add_weapon(w)
@@ -252,23 +252,36 @@ func _get_input_direction() -> Vector2:
 		_:
 			return Vector2.ZERO
 
+func _try_play_sprite_anim(sprite: AnimatedSprite2D, anim_name: StringName) -> void:
+	var sf: SpriteFrames = sprite.sprite_frames
+	if sf == null:
+		return
+	if not sf.has_animation(anim_name):
+		return
+	if sf.get_frame_count(anim_name) < 1:
+		sprite.visible = false
+		return
+	sprite.visible = true
+	sprite.play(anim_name)
+
+
 func _update_animation(direction: Vector2):
 	var sprite = get_node_or_null("AnimatedSprite2D")
 	if sprite == null:
 		return
 	if direction == Vector2.ZERO:
-		if sprite.animation == "walk_left":
-			sprite.play("idle_left")
+		if sprite.animation == &"walk_left":
+			_try_play_sprite_anim(sprite, &"idle_left")
 			sprite.flip_h = false
-		elif sprite.animation == "walk_right":
-			sprite.play("idle_right")
+		elif sprite.animation == &"walk_right":
+			_try_play_sprite_anim(sprite, &"idle_right")
 			sprite.flip_h = false
 	else:
 		if direction.x >= 0:
-			sprite.play("walk_right")
+			_try_play_sprite_anim(sprite, &"walk_right")
 			sprite.flip_h = false
 		else:
-			sprite.play("walk_left")
+			_try_play_sprite_anim(sprite, &"walk_left")
 			sprite.flip_h = false
 
 func _process(delta):
@@ -541,6 +554,8 @@ func get_magnet_bonus() -> float:
 		bonus += active_items["magnet"].get_bonus_radius()
 	if active_items.has("resonance_stone"):
 		bonus += active_items["resonance_stone"].get_pickup_bonus()
+	if active_items.has("night_vial"):
+		bonus += active_items["night_vial"].get_pickup_bonus()
 	return bonus
 
 

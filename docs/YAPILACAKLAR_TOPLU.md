@@ -15,7 +15,7 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 - Evrim sistemi derinleştirme (kombinasyonlar, denge, UI, kenar durumlar).
 - Bağlam belgesi: `survivors_clone_context.md` (autoload / akış özeti).
 - Lore — hikâye, boss, harita metinleri (`TASARIM.md` ile).
-- Arena modu — dalga, zorluk, ödül (`map_select` uyumu).
+- Arena modu (**tam** paket) — ayrı arena haritası, dalga savunma ritmi, ödül ekonomisi. *(v0 hazır: `map_select` + `run_variant` **arena** + ~10 dk hedef + `dusk` açılış koşulu — `YOL_HARITASI` günlük 2026-04-14.)*
 - P2P / co-op destek kahramanları (takım buff mekaniği).
 - Sınıfın oyuna bağlanması (`CharacterData` / UI / denge).
 - Mevcut kahramanların sınıfa göre stat hizalaması.
@@ -38,8 +38,8 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 ## `docs/GELISTIRICI_REHBERI.md`
 
 - Yeni diller: `ru`, `es`, `pt_BR`, `ja`, `de`, `fr`, `ko`, `pl`, `uk` (tablo + `LANGUAGE_CATALOG` + `locales/<code>.json`).
-- Arena: `map_select` kilitli; dalga mantığı YOL planı ile genişletilecek.
-- Yeni silah: `character_select` `_get_weapon_name` / `_get_item_name` uyumu.
+- Arena (**tam**): ayrı harita / dalga savunma / ödül — v0 sonrası genişletme. *(v0: `map_select` oynanabilir arena; `SaveManager.is_arena_run()` / `ARENA_RUN_GOAL_SEC`.)*
+- Yeni silah / kahraman başlangıç silahı: `CharacterSelectHelpers.weapon_display_name` → `codex.weapon.<id>.name`; ayrıca `PlayerLoadoutRegistry`, `upgrade_ui` / `player` havuz dizileri, `collection_data.WEAPON_ENTRIES`, `locales` + `codex_extensions_*`.
 - Orb/pickup checklist: co-op P1/P2 toplama davranışı yeni orb türlerinde netleştirilmeli.
 - Matris / TASARIM senkronu (erişilebilirlik satırı değişince).
 

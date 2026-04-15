@@ -48,7 +48,7 @@ func _give_reward():
 		return
 	var roll = randf()
 	if roll < 0.5:
-		var all_items = ["armor", "speed_charm", "magnet", "lifesteal", "poison", "shield", "crit", "luck_stone", "ember_heart"]
+		var all_items = ["armor", "speed_charm", "magnet", "lifesteal", "poison", "shield", "crit", "luck_stone", "ember_heart", "night_vial"]
 		var item_id = all_items[randi() % all_items.size()]
 		player.add_item(item_id)
 	elif roll < 0.80:
