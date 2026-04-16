@@ -27,6 +27,10 @@ func _on_area_entered(area: Area2D):
 	if area.is_in_group("player"):
 		return
 	area.take_damage(damage, player if is_instance_valid(player) else null)
+	if armor_piercing:
+		var par_hit: Node = get_parent()
+		if par_hit:
+			CombatProjectileFx.spawn_hit_sparks(par_hit, area.global_position, player, Color("#FFF2A0"), 10, 40.0, 0.2)
 	if is_instance_valid(player):
 		EventBus.on_damage_dealt.emit(player, area, damage)
 	if _pierce_remaining > 0:

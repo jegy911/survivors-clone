@@ -33,4 +33,8 @@ func get_damage_bonus() -> int:
 	return damage_bonus
 
 func get_description() -> String:
-	return "Türbin Lv" + str(level) + "\nHareket edince +" + str(3 + (level-1)*3) + " hasar (max)"
+	return tr("ui.upgrade_ui.stats.loadout_items.turbine") % [
+		level,
+		damage_bonus,
+		3 + (level - 1) * 3,
+	]

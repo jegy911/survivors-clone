@@ -73,6 +73,9 @@ func _process(delta):
 				var final_damage = player.get_total_damage(damage)
 				enemy.take_damage(final_damage, player)
 				EventBus.on_damage_dealt.emit(player, enemy, final_damage)
+				var par: Node = player.get_parent()
+				if par:
+					CombatProjectileFx.spawn_hit_sparks(par, enemy.global_position, player, Color("#C56BFF"), 10, 36.0, 0.19)
 				hit_cooldowns[enemy_id] = HIT_INTERVAL
 	for i in orbs.size():
 		if not is_instance_valid(orbs[i]):
@@ -106,7 +109,12 @@ func on_upgrade():
 			_spawn_orbs()
 
 func get_description() -> String:
-	return "Gölge Lv" + str(level) + " | " + str(orb_count + get_effective_multi_attack()) + " orb | " + str(damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.shadow") % [
+		level,
+		orb_count + get_effective_multi_attack(),
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]
 
 func _exit_tree():
 	for orb in orbs:

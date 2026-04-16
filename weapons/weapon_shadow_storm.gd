@@ -68,4 +68,9 @@ func on_upgrade():
 		5: damage = 55; cooldown = 0.5; orbit_radius = 130
 
 func get_description() -> String:
-	return "Gölge Fırtınası Lv" + str(level) + " | " + str(damage) + " hasar | zincir"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.shadow_storm") % [
+		level,
+		damage,
+		int(orbit_radius * player.get_area_multiplier()),
+		snappedf(get_effective_cooldown(), 0.01),
+	]

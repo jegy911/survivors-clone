@@ -33,4 +33,9 @@ func on_upgrade():
 		5: ball_count = 3; damage = 45; cooldown = 1.5
 
 func get_description() -> String:
-	return "Buz Topu Lv" + str(level) + " | x" + str(ball_count) + " | " + str(damage) + " hasar | yavaşlatır"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.ice_ball") % [
+		level,
+		ball_count,
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

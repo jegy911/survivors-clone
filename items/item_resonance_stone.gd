@@ -18,4 +18,4 @@ func get_pickup_bonus() -> float:
 	return float(pickup_bonus)
 
 func get_description() -> String:
-	return "Rezonans Taşı Lv" + str(level) + "\n+" + str(pickup_bonus) + " çekim yarıçapı"
+	return tr("ui.upgrade_ui.stats.resonance_stone_desc") % [level, pickup_bonus]

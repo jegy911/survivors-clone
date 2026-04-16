@@ -3,7 +3,7 @@
 Bu belge, **20 + 20 maddenin** Ironfall kod tabanındaki **Var / Kısmi / Yok** durumunu ve kısa **repo notunu** içerir.  
 Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 
-**Son kod kontrolü:** 2026-04-16 (güncelleme: `upgrade_ui` üç panel + envanter `tooltip_text`; önceki: Arena `run_variant` + `dusk` / `dagger` / `night_vial` / `veil_daggers`)
+**Son kod kontrolü:** 2026-04-16 (`ui.alerts` / `ui.game` run metinleri; karakter seçimi `ui.character_select.unlock` + `btn_*`; `upgrade_ui` üç panel + envanter `tooltip_text`; Arena `run_variant` + `dusk` vb.)
 
 ---
 
@@ -34,7 +34,7 @@ Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 
 ### Çoklu dil (çapraz — erişilebilirlik)
 
-Arayüz dili **`LocalizationManager`** + `locales/tr.json`, `en.json`, `zh_CN.json` (`LANGUAGE_CATALOG`, Ayarlar → Dil). **Run içi (2026-04-07 itibarıyla `tr()` ile):** `main/main.gd` HUD **dalga sayacı** (`ui.hud.wave_counter`), `main/wave_manager.gd` **dalga ödülü** paneli (`ui.wave_reward.*`), `ui/upgrade_ui.gd` level-up **kabuk metinleri** (`ui.upgrade_ui.*`, `en.json` — 2026-04-16 genişletme; `option_weapon_prefix` / `option_item_prefix` hâlâ dosyada). Menü, ayarlar, duraklatma, kodeks, karakter seçimi, oyun sonu, meta upgrade vb. zaten anahtarlanmıştır. **Kısmi:** Bazı yüzen metinler, `wave_manager` içi Reaper / kuşatma / bağışıklık uyarıları ve benzeri run içi string’ler hâlâ sabit metin; ileride aynı locale anahtarlarına taşınabilir (`locales/check_locale_parity.py` ile küme eşitliği korunmalı).
+Arayüz dili **`LocalizationManager`** + `locales/tr.json`, `en.json`, `zh_CN.json` (`LANGUAGE_CATALOG`, Ayarlar → Dil). **Run içi (`tr()`):** `main/main.gd` HUD **dalga sayacı** (`ui.hud.wave_counter`), immunity / co-op satırları (`ui.alerts.immunity_rotation`, `ui.game.level_format` / `kill_format`); `main/wave_manager.gd` **dalga ödülü** (`ui.wave_reward.*`) + yüzen uyarılar (`ui.alerts.*`); `main/spawn_manager.gd` olay uyarıları (`ui.alerts.*`); `ui/upgrade_ui.gd` **kabuk** (`ui.upgrade_ui.*`). Menü, ayarlar, duraklatma, kodeks, karakter seçimi (ipucu + butonlar `ui.character_select.*`), oyun sonu, meta upgrade vb. anahtarlanmıştır. **Not (2026-04-16):** Yukarıdaki run içi yüzen metinler ui.alerts.* ile anahtarlandı; yeni metinler rutinde en.json only.
 
 ---
 
@@ -54,7 +54,7 @@ Arayüz dili **`LocalizationManager`** + `locales/tr.json`, `en.json`, `zh_CN.js
 | 10 | Beklenmedik boss | **Var** | `wave_manager.gd` `mini_boss_times`. |
 | 11 | Koleksiyon / bestiary | **Var** | `core/collection_data.gd`, `SaveManager.codex_discovered`, ölümde `register_codex_discovered` (`enemy_base`, `boss`); `ui/collection_menu.tscn`; ana menü; `locales` `codex.*`. |
 | 12 | Sayılar büyür (oyun sonu) | **Var** | `game_over.gd`. |
-| 13 | Zorluk kademeleri (run başı) | **Var** | `SaveManager.settings["run_curse_tier"]` 0–5; `map_select` kaydırıcı; `spawn_manager` min düşman / spawn çarpanı. |
+| 13 | Zorluk kademeleri (run başı) | **Var** | `SaveManager.settings["run_curse_tier"]` 0–5; `map_select` kaydırıcı; `spawn_manager`: kademe başına **+%10 HP**, **+%5 hız**, spawn aralığı **÷(1+0,10×tier)** (meta `curse_level` ile çarpılır); mini boss / Reaper / sürü / çemberde de uygulanır (**2026-04-18**). |
 | 14 | Risk / ödül | **Var** | `shrine_of_risk.gd`, shrine XP çarpanı. |
 | 15 | Çevre değişimi (zamanla renk/tempo) | **Yok** | Zamanla global renk/müzik tempo değişimi yok. |
 | 16 | Gizli kilitler | **Var** | `AchievementManager`, Omega kodu `main_menu`, `character_data` unlock. |

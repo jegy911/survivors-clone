@@ -98,4 +98,10 @@ func on_upgrade():
 			bounce_multiplier = 1.2
 
 func get_description() -> String:
-	return "Zincir Lv" + str(level) + " | " + str(chain_count + get_effective_multi_attack()) + " zincir | " + str(damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.chain") % [
+		level,
+		chain_count + get_effective_multi_attack(),
+		damage,
+		int(chain_range * player.get_area_multiplier()),
+		snappedf(get_effective_cooldown(), 0.01),
+	]

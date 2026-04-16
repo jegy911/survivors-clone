@@ -42,4 +42,9 @@ func on_upgrade():
 			cooldown = 0.7
 
 func get_description() -> String:
-	return "Holy Bullet Lv" + str(level) + " | x" + str(bullet_count) + " | " + str(damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.holy_bullet") % [
+		level,
+		bullet_count,
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

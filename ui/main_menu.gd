@@ -24,6 +24,13 @@ func _apply_texts():
 		var kills = SaveManager.total_kills
 		stats_label.text = tr("ui.main_menu.stats") % [runs, kills, wins]
 
+	var wt = $VBoxContainer.get_node_or_null("WorldInfoTitleLabel")
+	if wt:
+		wt.text = tr("ui.main_menu.world_info_title")
+	var wb = $VBoxContainer.get_node_or_null("WorldInfoBodyLabel")
+	if wb:
+		wb.text = tr("ui.main_menu.world_info_body")
+
 	$VBoxContainer/GoldLabel.text = tr("ui.main_menu.gold") % SaveManager.gold
 
 	var button_configs = [
@@ -129,6 +136,27 @@ func _build_ui():
 	$VBoxContainer/GoldLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	$VBoxContainer/GoldLabel.add_theme_color_override("font_color", Color("#FFD700"))
 	$VBoxContainer/GoldLabel.add_theme_font_size_override("font_size", 20)
+
+	var gold_idx: int = $VBoxContainer/GoldLabel.get_index()
+	if $VBoxContainer.get_node_or_null("WorldInfoTitleLabel") == null:
+		var world_title := Label.new()
+		world_title.name = "WorldInfoTitleLabel"
+		world_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		world_title.add_theme_font_size_override("font_size", 13)
+		world_title.add_theme_color_override("font_color", Color("#8899BB"))
+		world_title.text = tr("ui.main_menu.world_info_title")
+		$VBoxContainer.add_child(world_title)
+		$VBoxContainer.move_child(world_title, gold_idx + 1)
+		var world_body := Label.new()
+		world_body.name = "WorldInfoBodyLabel"
+		world_body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		world_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		world_body.custom_minimum_size = Vector2(480, 0)
+		world_body.add_theme_font_size_override("font_size", 11)
+		world_body.add_theme_color_override("font_color", Color("#5C5C78"))
+		world_body.text = tr("ui.main_menu.world_info_body")
+		$VBoxContainer.add_child(world_body)
+		$VBoxContainer.move_child(world_body, gold_idx + 2)
 
 	if not AudioManager.music_player.playing:
 		AudioManager.play_music(1)

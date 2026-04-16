@@ -52,4 +52,9 @@ func on_upgrade():
 			cooldown = 1.0
 
 func get_description() -> String:
-	return "Kale Gürzü Lv" + str(level) + " | " + str(int(radius * player.get_area_multiplier())) + " alan | " + str(damage) + " hasar | itme"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.bastion_flail") % [
+		level,
+		int(radius * player.get_area_multiplier()),
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

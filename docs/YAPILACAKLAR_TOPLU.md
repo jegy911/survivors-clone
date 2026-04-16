@@ -12,12 +12,12 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 
 ## `docs/YOL_HARITASI.md`
 
-- Evrim sistemi derinleştirme (kombinasyonlar, denge, UI, kenar durumlar).
+- Evrim sistemi derinleştirme (kombinasyonlar, denge, UI, kenar durumlar). *(2026-04-17: `death_laser` / `frost_nova` tarifeleri `weapon_evolution.gd` + Frost Nova yansıtma; kalan: kodeks evrim sekmesi, genel denge.)*
 - Bağlam belgesi: `survivors_clone_context.md` (autoload / akış özeti).
-- Lore — hikâye, boss, harita metinleri (`TASARIM.md` ile).
-- Arena modu (**tam** paket) — ayrı arena haritası, dalga savunma ritmi, ödül ekonomisi. *(v0 hazır: `map_select` + `run_variant` **arena** + ~10 dk hedef + `dusk` açılış koşulu — `YOL_HARITASI` günlük 2026-04-14.)*
+- Lore — hikâye, boss, harita metinleri (`TASARIM.md` ile). *(2026-04-18: `lore.md` özeti + Çöküş → ana menü + kodeks `en.json` “World” metinleri.)*
+- Arena modu (**tam** paket) — ayrı arena haritası, dalga savunma ritmi, ödül ekonomisi. *(v0: `map_select` + `run_variant` **arena** + ~10 dk; **2026-04-18** `wave_manager` + `spawn_manager` arena tempo cilası.)*
 - P2P / co-op destek kahramanları (takım buff mekaniği).
-- Sınıfın oyuna bağlanması (`CharacterData` / UI / denge).
+- Sınıfın **denge/oynanışa** bağlanması (`hero_class` → çarpanlar vb.) — seçim kartı: `hero_class` + `codex.character.*.role` (`en.json`) **2026-04-17** ile tasarım tablosuyla hizalı.
 - Mevcut kahramanların sınıfa göre stat hizalaması.
 - Profil genişlemesi (takma ad, ikon, çerçeve, arka plan).
 - Hesap / seviye sistemi.
@@ -27,10 +27,9 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 - Sağlam rehber kaynağı (UI + metin).
 - Koleksiyonda evrim bölümü / sekmesi.
 - İleride idle/görev ↔ rehber bağlantısı.
-- Oyun içi sözlük (cooldown, area, …).
 - Genel rehberlik önceliği (UX + metin).
 - Acil: `git` `??` asset/sahne dosyalarını anlamlı commit(ler) ile topla.
-- **Proje incelemesi (audit) P0:** run içi sabit metin → locale; karakter seçimi **kilit ipucu + P2 butonları** locale; `audio_manager` / `save_manager` `print` temizliği; mağaza placeholder beklentisi.
+- **Proje incelemesi (audit) P0 (kalan):** `shop_menu` placeholder beklentisi / oyuncu beklentisi yönetimi.
 - **Audit P2–P4 + teknik borç:** `get_nodes_in_group("player")` / `player_bullets`; silah listeleri tek kaynak; `boomerang`/`hunter_axe` isim; 600 px tek sabit; `player.gd` bölme; `get_upgrade_text` tablolaştırma; `EnemyRegistry` menzil/profil; ObjectPool; ağır VFX; CI isteğe bağlı; yıldırım tam dikey; silah–tscn doğrulama script’i; silah sahne sprite politikası. *(Ayrıntı tablolar: `YOL_HARITASI` «Proje incelemesi» + «Teknik borç».)*
 
 ---
@@ -40,7 +39,7 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 - Yeni diller: `ru`, `es`, `pt_BR`, `ja`, `de`, `fr`, `ko`, `pl`, `uk` (tablo + `LANGUAGE_CATALOG` + `locales/<code>.json`).
 - Arena (**tam**): ayrı harita / dalga savunma / ödül — v0 sonrası genişletme. *(v0: `map_select` oynanabilir arena; `SaveManager.is_arena_run()` / `ARENA_RUN_GOAL_SEC`.)*
 - Yeni silah / kahraman başlangıç silahı: `CharacterSelectHelpers.weapon_display_name` → `codex.weapon.<id>.name`; ayrıca `PlayerLoadoutRegistry`, `upgrade_ui` / `player` havuz dizileri, `collection_data.WEAPON_ENTRIES`, `locales` + `codex_extensions_*`.
-- Orb/pickup checklist: co-op P1/P2 toplama davranışı yeni orb türlerinde netleştirilmeli.
+- Orb/pickup checklist: co-op P1/P2 toplama davranışı yeni orb türlerinde netleştirilmeli. *(Night Vial / Rezonans px + `get_magnet_bonus` toplamsal sıra **2026-04-18** `player.gd` + `SILAHLAR_ESYALAR_EVO` ile hizalı.)*
 - Matris / TASARIM senkronu (erişilebilirlik satırı değişince).
 
 ---
@@ -57,7 +56,7 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 - #16 `ui_scale`: tüm menü/HUD’da zorunlu uygulama.
 - #18 Fare ile hareket (klavye remap var).
 - #19 Lore: uzun ekran / ayrı hikâye sekmesi.
-- Çoklu dil çapraz: yüzen metinler, `wave_manager` Reaper/kuşatma/bağışıklık vb. sabit string → `locales`.
+- **Tamamlandı (2026-04-18) — çoklu dil / run UI:** yüzen uyarılar, level-up loadout (`loadout_weapons` / `loadout_items`), evrim tarifleri (`weapon_evolution` → `ui.evolution_defs.*`); yeni metin rutini **yalnız `en.json`** + `tr()`. *(İleride yeni özellik: aynı rutin + matris §çoklu dil.)*
 
 **Tablo 2**
 
@@ -72,17 +71,15 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 
 - Meta UI: profil, hesap/rank (YOL ile örtüşür).
 - Kodeks evrim sekmesi; oyun içi sözlük; idle görev menüsü.
-- `shadow` / `laser` / `holy_bullet` vb. final VFX/okunabilirlik (`✅/❌` satırları).
+- `shadow` / `laser` / `holy_bullet` vb. **final** sprite / kart sanatı (`TASARIM` tablo). *(2026-04-18: vuruş okunabilirliği — `CombatProjectileFx.spawn_hit_sparks` + silah/lazer/holy mermi cilası.)*
 - `fan_blade` / `fan_blade_shard`: final sprite (Polygon2D yerine).
 - Evrim silahları ayrı görsel kimlik.
 - Pasif eşya ikonları.
 - XP orb, gold orb, sandık: spritesheet / ritüel görsel.
 - Dünya objeleri: tutarlı stil polish.
 - `bullet` / `ice_ball` / `enemy_bullet` / HUD / pause / meta: final pass.
-- **Kalan:** `player` loadout / silah `get_description()` satırlarında kod içi (çoğu Türkçe) metin → aşamalı locale; **yapıldı (kabuk):** `upgrade_ui` üç panel başlıkları / slot / nadirlik / meta özet `en.json` `ui.upgrade_ui.*`.
 - Harita görselleri; arena ortamı; zamanla değişen ortam rengi; geometri çeşitliliği.
 - Ses: level-up / sandık / boss ritüel katmanları.
-- Lore sunumu menüde.
 - Steam: fragman, mağaza görseli, EA stratejisi.
 
 ---

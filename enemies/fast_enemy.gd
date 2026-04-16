@@ -25,7 +25,7 @@ func _process(delta):
 	_update_enemy_direction()
 	damage_cooldown -= delta
 	if global_position.distance_to(player.global_position) < 35 and damage_cooldown <= 0:
-		player.take_damage(DAMAGE)
+		player.take_damage(DAMAGE, self)
 		damage_cooldown = 0.8
 
 func flash():

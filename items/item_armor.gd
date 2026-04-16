@@ -14,4 +14,4 @@ func apply():
 	armor_value = 1.5 * level
 
 func get_description() -> String:
-	return "Zırh Lv" + str(level) + " | -" + str(snappedf(armor_value, 0.1)) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_items.armor") % [level, snappedf(armor_value, 0.1)]

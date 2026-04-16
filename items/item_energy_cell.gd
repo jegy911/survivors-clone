@@ -64,4 +64,8 @@ func _restore_weapons():
 	)
 
 func get_description() -> String:
-	return "Enerji Hücresi Lv" + str(level) + "\nHer " + str(charge_interval) + "sn ateş + " + str(discharge_duration) + "sn yavaş"
+	return tr("ui.upgrade_ui.stats.loadout_items.energy_cell") % [
+		level,
+		snappedf(charge_interval, 0.1),
+		snappedf(discharge_duration, 0.1),
+	]

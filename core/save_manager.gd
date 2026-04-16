@@ -1,17 +1,17 @@
 extends Node
 
-const SAVE_PATH = "user://save.cfg"
+const SAVE_PATH: String = "user://save.cfg"
 
-var gold = 0
-var selected_mode = "vs"
-var selected_map = "vs_map"
-var selected_character = 0
+var gold: int = 0
+var selected_mode: String = "vs"
+var selected_map: String = "vs_map"
+var selected_character: int = 0
 var game_mode: String = "solo"  # "solo", "local_coop", "online_coop"
 var selected_character_p2: int = 0
 ## Karakter listesi sırası değişse bile doğru kahraman; boşsa indeksten türetilir.
 var selected_character_id: String = "warrior"
 var selected_character_p2_id: String = "warrior"
-var meta_upgrades = {
+var meta_upgrades: Dictionary = {
 	"max_hp_bonus": 0,
 	"damage_bonus": 0,
 	"speed_bonus": 0,
@@ -38,7 +38,7 @@ var meta_upgrades = {
 	"weapon_slot_bonus": 0,
 	"item_slot_bonus": 0,
 }
-var settings = {
+var settings: Dictionary = {
 	"master_volume": 1.0,
 	"sfx_volume": 1.0,
 	"music_volume": 1.0,
@@ -102,7 +102,7 @@ const OLD_CHARACTER_ORDER: Array[String] = [
 	"sigil_warden", "grav_binder", "ironclad", "linebreaker", "dusk_striker",
 ]
 
-func _ready():
+func _ready() -> void:
 	load_game()
 	set_process_unhandled_input(true)
 
@@ -125,7 +125,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if get_viewport():
 			get_viewport().set_input_as_handled()
 
-func save_game():
+func save_game() -> void:
 	_normalize_meta_upgrades()
 	var config = ConfigFile.new()
 	config.set_value("player", "gold", gold)
@@ -164,12 +164,13 @@ func save_game():
 	config.set_value("player", CHARACTER_ORDER_V2_KEY, true)
 	var err = config.save(SAVE_PATH)
 	if err != OK:
-		print("SaveManager: Kayıt başarısız! Hata kodu: ", err)
+		push_warning("SaveManager: save failed (code %d)" % err)
 
-func load_game():
+func load_game() -> void:
 	var config = ConfigFile.new()
 	if config.load(SAVE_PATH) != OK:
-		print("SaveManager: Kayıt dosyası bulunamadı, varsayılan değerler kullanılıyor.")
+		if OS.is_debug_build():
+			push_warning("SaveManager: no save file; using defaults.")
 		return
 	gold = config.get_value("player", "gold", 0)
 	selected_character = config.get_value("player", "selected_character", 0)
@@ -213,7 +214,7 @@ func load_game():
 	codex_maps = config.get_value("unlock", "codex_maps", [])
 	apply_window_mode_from_settings()
 
-func add_gold(amount: int):
+func add_gold(amount: int) -> void:
 	var bonus = 1.0 + meta_upgrades["growth_bonus"] * 0.15
 	gold += int(amount * bonus)
 	save_game()
@@ -285,7 +286,7 @@ func _get_total_bought() -> int:
 		total += meta_upgrades[key]
 	return total
 
-func update_stats_after_game(char_id: String, kills: int, survival_time: float, got_evolution: bool, got_tank_kill: bool, gold: int = 0, xp_levels: int = 0, bosses: int = 0, damage: int = 0, chests: int = 0, items: int = 0, won: bool = false):
+func update_stats_after_game(char_id: String, kills: int, survival_time: float, got_evolution: bool, got_tank_kill: bool, gold: int = 0, xp_levels: int = 0, bosses: int = 0, damage: int = 0, chests: int = 0, items: int = 0, won: bool = false) -> void:
 	total_kills += kills
 	total_runs += 1
 	total_deaths += 1
@@ -391,7 +392,7 @@ func _run_roster_has_shadow_walker() -> bool:
 	return false
 
 
-func check_and_unlock_characters(char_id: String, run_kills: int, survival_time: float):
+func check_and_unlock_characters(char_id: String, run_kills: int, survival_time: float) -> void:
 	for char_data in CharacterData.CHARACTERS:
 		var cid = char_data["id"]
 		if unlocked_characters.has(cid):
@@ -494,6 +495,8 @@ func is_codex_entry_unlocked(entry: Dictionary) -> bool:
 			return unlocked_characters.has(id)
 		"map":
 			return codex_maps.has(id)
+		"glossary":
+			return true
 		_:
 			return false
 
@@ -618,13 +621,12 @@ func filter_accessibility_orb_color(c: Color) -> Color:
 	return c
 
 
-## 0 = biraz kolay, 5 = zor; spawn aralığı / min düşman ile çarpılır.
+## Run curse tier (0–5): spawn interval divisor +`10%` per tier (`spawn_manager`); meta `curse_level` ayrıca +`10%`/rank ekler.
 func get_run_spawn_difficulty_mult() -> float:
-	var t := float(get_run_curse_tier())
-	return lerpf(0.88, 1.26, t / 5.0)
+	return 1.0 + 0.10 * float(get_run_curse_tier())
 
 
-func reset_meta_upgrades():
+func reset_meta_upgrades() -> void:
 	for key in meta_upgrades:
 		meta_upgrades[key] = 0
 	save_game()

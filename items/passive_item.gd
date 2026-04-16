@@ -32,4 +32,4 @@ func upgrade():
 	return true
 
 func get_description() -> String:
-	return item_name + " Lv" + str(level)
+	return tr("ui.upgrade_ui.stats.loadout_items.generic_level") % [item_name, level]

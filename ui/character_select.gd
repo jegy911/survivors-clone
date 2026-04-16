@@ -171,7 +171,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			desc_label.text = CharacterSelectHelpers.rich_description_unlocked(char_data)
 			desc_label.add_theme_color_override("font_color", Color("#B0B0B0"))
 
-			var btn = _make_button("Seç", Color("#3498DB"))
+			var btn = _make_button(tr("ui.character_select.btn_select"), Color("#3498DB"))
 			var idx = i
 			btn.pressed.connect(func(): _on_select(idx))
 			vbox.add_child(char_visual)
@@ -189,7 +189,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			var cost = char_data["cost"]
 			var can_afford = SaveManager.gold >= cost
 			var buy_color = Color("#27AE60") if can_afford else Color("#7F8C8D")
-			var btn = _make_button("Satın Al\n💰 " + str(cost), buy_color)
+			var btn = _make_button(tr("ui.character_select.btn_buy") % int(cost), buy_color)
 			btn.disabled = not can_afford
 			btn.pressed.connect(func(): _on_purchase(cid))
 			vbox.add_child(char_visual)
@@ -203,7 +203,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			name_label.add_theme_color_override("font_color", Color("#444466"))
 			desc_label.text = ""
 
-			bottom.text = "🔒 " + char_data.get("unlock_hint", "???")
+			bottom.text = CharacterSelectHelpers.localized_unlock_hint(char_data)
 			bottom.add_theme_color_override("font_color", Color("#555577"))
 			vbox.add_child(char_visual)
 			vbox.add_child(name_label)

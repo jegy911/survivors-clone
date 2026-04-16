@@ -69,4 +69,10 @@ func on_upgrade():
 			cooldown = 1.3
 
 func get_description() -> String:
-	return "Toxic Chain Lv" + str(level) + " | x" + str(chain_count) + " zincir | " + str(damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.toxic_chain") % [
+		level,
+		chain_count,
+		damage,
+		int(chain_range * player.get_area_multiplier()),
+		snappedf(get_effective_cooldown(), 0.01),
+	]

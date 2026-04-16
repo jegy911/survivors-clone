@@ -36,4 +36,8 @@ func absorb_damage(amount: int) -> int:
 	return amount
 
 func get_description() -> String:
-	return "Kalkan Lv" + str(level) + "\n" + str(shield_amount) + " hasar absorbe | " + str(shield_cooldown) + "sn"
+	return tr("ui.upgrade_ui.stats.loadout_items.shield") % [
+		level,
+		shield_amount,
+		snappedf(shield_cooldown, 0.1),
+	]

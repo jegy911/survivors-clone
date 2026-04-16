@@ -1,35 +1,49 @@
 extends Node
 
-var wave_count = 0
-var wave_timer = 0.0
-var wave_interval = 60.0
-var reward_active = false
+var wave_count: int = 0
+var wave_timer: float = 0.0
+var wave_interval: float = 60.0
+var reward_active: bool = false
 
-var reaper_mode = false
-var reaper_count = 0
+var reaper_mode: bool = false
+var reaper_count: int = 0
 
-var siege_active = false
-var siege_timer = 0.0
-var siege_cooldown_timer = 0.0
+var siege_active: bool = false
+var siege_timer: float = 0.0
+var siege_cooldown_timer: float = 0.0
 const SIEGE_DURATION = 120.0
 const SIEGE_COOLDOWN = 60.0
 
 var mini_boss_times: Array = [300, 600, 900, 1200, 1500]
-var next_mini_boss_index = 0
+var next_mini_boss_index: int = 0
 
 var main_node: Node = null
 var wave_event_timer: float = 0.0
-const WAVE_EVENT_INTERVAL: float = 180.0
+## Normal / fast story pacing; arena uses shorter cadence (tuned in `initialize`).
+var _wave_event_interval: float = 180.0
 var _run_goal_sec: float = 1800.0
 var _wave_event_min_time: float = 120.0
+var _siege_duration: float = 120.0
+var _siege_cooldown: float = 60.0
 
-func initialize(main: Node):
+func initialize(main: Node) -> void:
 	main_node = main
 	_run_goal_sec = SaveManager.get_run_goal_sec()
 	mini_boss_times = SaveManager.get_mini_boss_times()
 	_wave_event_min_time = maxf(72.0, 120.0 * (_run_goal_sec / 1800.0))
+	_wave_event_interval = 180.0
+	wave_interval = 60.0
+	_siege_duration = SIEGE_DURATION
+	_siege_cooldown = SIEGE_COOLDOWN
+	if SaveManager.is_arena_run():
+		# ~10 min goal: denser mid-run pressure vs story (30 min).
+		wave_interval = 42.0
+		_wave_event_interval = 95.0
+		_wave_event_min_time = maxf(38.0, 72.0 * (_run_goal_sec / 1800.0))
+		_siege_duration = 88.0
+		_siege_cooldown = 44.0
 
-func process(delta: float, game_timer: float):
+func process(delta: float, game_timer: float) -> void:
 	# Mini boss kontrolü
 	if next_mini_boss_index < mini_boss_times.size():
 		if game_timer >= mini_boss_times[next_mini_boss_index]:
@@ -50,18 +64,18 @@ func process(delta: float, game_timer: float):
 			siege_timer -= delta
 			if siege_timer <= 0:
 				siege_active = false
-				siege_cooldown_timer = SIEGE_COOLDOWN
+				siege_cooldown_timer = _siege_cooldown
 		else:
 			siege_cooldown_timer -= delta
 			if siege_cooldown_timer <= 0:
 				siege_active = true
-				siege_timer = SIEGE_DURATION
+				siege_timer = _siege_duration
 				_start_siege_wave()
 				
 	# Wave event sistemi
 	if game_timer >= _wave_event_min_time and not reaper_mode and not siege_active:
 		wave_event_timer += delta
-		if wave_event_timer >= WAVE_EVENT_INTERVAL:
+		if wave_event_timer >= _wave_event_interval:
 			wave_event_timer = 0.0
 			if randf() < 0.60:
 				main_node.spawn_manager.spawn_swarm_event(game_timer)
@@ -75,45 +89,49 @@ func process(delta: float, game_timer: float):
 		_show_wave_reward()
 
 func get_spawn_multiplier() -> float:
-	return 3.0 if siege_active else 1.0
+	if siege_active:
+		return 3.35 if SaveManager.is_arena_run() else 3.0
+	return 1.38 if SaveManager.is_arena_run() else 1.0
 
 func get_interval_multiplier() -> float:
-	return 0.3 if siege_active else 1.0
+	if siege_active:
+		return 0.24 if SaveManager.is_arena_run() else 0.3
+	return 1.0
 
-func _start_reaper_mode(game_timer: float):
+func _start_reaper_mode(game_timer: float) -> void:
 	reaper_mode = true
 	for enemy in EnemyRegistry.get_enemies():
 		if not enemy.is_in_group("boss"):
 			enemy.queue_free()
 	var players = get_tree().get_nodes_in_group("player")
 	if not players.is_empty():
-		players[0].show_floating_text("☠ ÖLÜM GELİYOR...", players[0].global_position + Vector2(0, -100), Color("#8B0000"), 28)
+		players[0].show_floating_text(tr("ui.alerts.reaper_approaching"), players[0].global_position + Vector2(0, -100), Color("#8B0000"), 28)
 	await get_tree().create_timer(3.0).timeout
 	_spawn_reaper_loop()
 
-func _spawn_reaper_loop():
+func _spawn_reaper_loop() -> void:
 	if not reaper_mode:
 		return
 	reaper_count += 1
 	var reaper = main_node.spawn_manager.spawn_reaper(reaper_count)
 	var players = get_tree().get_nodes_in_group("player")
 	if not players.is_empty():
-		players[0].show_floating_text("☠ REAPER #" + str(reaper_count), reaper.global_position + Vector2(0, -60), Color("#8B0000"), 20)
+		players[0].show_floating_text(tr("ui.alerts.reaper_spawned") % reaper_count, reaper.global_position + Vector2(0, -60), Color("#8B0000"), 20)
 	reaper.tree_exited.connect(_on_reaper_died)
 
-func _on_reaper_died():
+func _on_reaper_died() -> void:
 	if not reaper_mode:
 		return
 	await get_tree().create_timer(2.0).timeout
 	if reaper_mode:
 		_spawn_reaper_loop()
 
-func _start_siege_wave():
+func _start_siege_wave() -> void:
 	var players = get_tree().get_nodes_in_group("player")
 	if not players.is_empty():
-		players[0].show_floating_text("⚠ KUŞATMA!", players[0].global_position + Vector2(0, -80), Color("#FF6600"), 22)
+		players[0].show_floating_text(tr("ui.alerts.siege"), players[0].global_position + Vector2(0, -80), Color("#FF6600"), 22)
 
-func _show_wave_reward():
+func _show_wave_reward() -> void:
 	reward_active = true
 	get_tree().paused = true
 	var overlay = CanvasLayer.new()
@@ -200,7 +218,7 @@ func _make_reward_button(choice: Dictionary) -> Button:
 	btn.text = choice["label"] + "\n" + choice["desc"]
 	return btn
 
-func _on_reward_chosen(choice: Dictionary, overlay: Node):
+func _on_reward_chosen(choice: Dictionary, overlay: Node) -> void:
 	var players = get_tree().get_nodes_in_group("player")
 	var player = players[0] if not players.is_empty() else null
 	if player:

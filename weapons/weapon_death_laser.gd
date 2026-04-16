@@ -58,4 +58,9 @@ func on_upgrade():
 		5: damage = 80; laser_range = 600.0; cooldown = 0.9
 
 func get_description() -> String:
-	return "Death Laser Lv" + str(level) + " | " + str(damage) + " hasar (KRİTİK)"
+	return tr("ui.upgrade_ui.stats.death_laser_desc") % [
+		level,
+		damage,
+		int(laser_range * player.get_area_multiplier()),
+		snappedf(get_effective_cooldown(), 0.01),
+	]

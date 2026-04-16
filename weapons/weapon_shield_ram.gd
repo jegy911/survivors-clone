@@ -61,4 +61,10 @@ func on_upgrade():
 			cone_degrees = 88.0
 
 func get_description() -> String:
-	return "Kalkan Hamlesi Lv" + str(level) + " | " + str(int(ram_range * player.get_area_multiplier())) + " menzil | " + str(damage) + " hasar (koni)"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.shield_ram") % [
+		level,
+		int(ram_range * player.get_area_multiplier()),
+		int(cone_degrees),
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

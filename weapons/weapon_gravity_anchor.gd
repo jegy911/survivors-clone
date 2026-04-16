@@ -54,4 +54,9 @@ func on_upgrade():
 			cooldown = 0.95
 
 func get_description() -> String:
-	return "Çekim Çapası Lv" + str(level) + " | " + str(int(radius * player.get_area_multiplier())) + " menzil | çeker + " + str(damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.gravity_anchor") % [
+		level,
+		int(radius * player.get_area_multiplier()),
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

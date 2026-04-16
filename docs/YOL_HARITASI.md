@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-16 (level-up üç panel UI + `en` kabuk metinleri; kahraman `.tscn` disiplini; `en`-only locale dondurması)
+**Son güncelleme:** 2026-04-18 (run curse tier; loadout + evrim `en.json` tek kaynak; `weapon_evolution` sadece tarife; pickup + lore/arena/VFX önceki oturum)
 
 ---
 
@@ -15,9 +15,9 @@ Aşağıdaki sıra **öneridir**: P0 → hızlı kullanıcı kazanımı; P4 → 
 
 | Konu | Not |
 |------|-----|
-| **Run içi sabit metin** | `main.gd`, `wave_manager.gd` vb. dalga / uyarı / yüzen metinlerde hâlâ Türkçe veya `tr()` dışı string; dil İngilizce olsa da karışık görünür. Matris: `ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md` § çoklu dil. |
-| **Karakter seçimi kalan metin** | **Kilit ipucu** (`unlock_hint` `CharacterData`), P2 **«Seç» / «Hazır»**, bazı butonlar kod içi Türkçe — `locales` + anahtar. *(Kart isimleri: `codex.character.*.name` — tamam.)* |
-| **Debug çıktıları** | `audio_manager.gd` `print` (SFX bus); `save_manager.gd` `print` — yayın öncesi `OS.is_debug_build()` veya log seviyesine alınmalı. |
+| **Run içi sabit metin** | **Tamamlandı (2026-04-16):** `main.gd` / `wave_manager.gd` / `spawn_manager.gd` yüzen uyarılar → `locales/en.json` `ui.alerts.*` + co-op HUD `ui.game.*`; `tr()`. |
+| **Karakter seçimi kalan metin** | **Tamamlandı (2026-04-16):** kilit ipucu `ui.character_select.unlock.<id>`; **Select / Ready / Buy** `ui.character_select.btn_*`; `CharacterData` içinden `unlock_hint` kaldırıldı. |
+| **Debug çıktıları** | **Tamamlandı (2026-04-16):** `audio_manager` SFX bus → `OS.is_debug_build()` + `push_warning`; `save_manager` kayıt mesajları → `push_warning` / yalnız debug. |
 | **Mağaza / placeholder** | `shop_menu` sekmeleri placeholder; oyuncu beklentisi yönetimi veya “yakında” metni. |
 
 ### P1 — Ürün açıkları (YOL’daki [ ] maddeleriyle örtüşür)
@@ -26,10 +26,10 @@ Aşağıdaki sıra **öneridir**: P0 → hızlı kullanıcı kazanımı; P4 → 
 |------|-----|
 | **Öğretici** | İlk saniye güveni (matris #11 **Kısmi**); ayrı tutorial sahnesi yok. |
 | **Co-op giriş** | İkinci oyuncu giriş haritası **Kısmi** (matris #2). |
-| **Evrim + kodeks** | Evrim derinleştirme tablosu `[ ]`; kodekste ayrı **Evrim** sekmesi yok. |
-| **Sınıf → oyun** | Kahraman `hero_class` metin olarak var; **oyun dengesine bağlama** `[ ]`. |
+| **Evrim + kodeks** | Tarif **metinleri** `ui.evolution_defs.*` + `tr()` **2026-04-18** (`weapon_evolution` yalnız `requires_*`). `death_laser` / `frost_nova` + Frost Nova yansıtma **2026-04-17**; kodekste ayrı **Evrim** sekmesi hâlâ yok; genel evrim derinleştirme `[ ]`. |
+| **Sınıf → oyun** | `hero_class` filtre + kartta rol (`codex.character.*.role`) **2026-04-17**; **çarpan/denge bağlama** `[ ]`. |
 | **Bağlam belgesi** | `survivors_clone_context.md` (veya eşdeğeri) yok — yeni geliştirici / AI için özet. |
-| **Arena / lore / rehber** | Arena: `map_select` + `run_variant` **arena** ile kısa hedef süre (10 dk) oynanabilir; ayrı harita / dalga savunma paketi hâlâ plan. Lore/rehber uzun vadeli. |
+| **Arena / lore / rehber** | Arena v0: `map_select` + `run_variant` **arena** + `ARENA_RUN_GOAL_SEC`; **2026-04-18** `wave_manager` / `spawn_manager` ile daha sıkı tempo. Lore: ana menü + kodeks dünya özeti (`en.json`); boss/harita anlatısı uzun vadeli. |
 
 ### P2 — Refaktör / tekrarlayan kod / isim borcu
 
@@ -72,9 +72,9 @@ Bugün toplu dokunuşlar yapıldı; olası regresyonlarda buradan iz sür:
 - **Aura:** `weapon_aura.gd` ölçek / `super._process`, `aura_outer_*` sabitleri.
 - **Zincir:** `weapon_chain` sıralı vuruş + gecikme; VFX önce Line2D TILE, sonra **Sprite2D** segment + `chain.png` (yön + uzunluk); renk / solma / `CHAIN_*` sabitleri `combat_projectile_fx.gd`.
 - **Yıldırım:** `weapon_lightning` + `lightning_bolt` (gökten iniş, dikey sprite), `STRIKE_MAX_DIST_FROM_PLAYER` 600, `weapon_lightning.tscn` üst sprite kaldırıldı/gizlendi.
-- **Locale / UI:** `ui.player` çift anahtar birleştirme; level-up metinleri; **karakter kartı isimleri** artık `codex.character.<id>.name` (`CharacterSelectHelpers.character_display_name`).
+- **Locale / UI (tamam — 2026-04-18):** `ui.player` birleştirme; run yüzen + level-up loadout + **evrim tarifleri** (`weapon_evolution` → `ui.evolution_defs`); karakter kartı isimleri `codex.character.<id>.name` (`CharacterSelectHelpers`).
 - **Meta / kayıt:** `start_level_bonus` clamp, `SaveManager` normalizasyon; kahraman ID kaydı (`selected_character_id` vb.).
-- **Kalan Türkçe sabitler (bilinçli):** `CharacterData` içi `name` / `unlock_hint` (Türkçe veri); seçim ekranında isim düzeltildi, kilit ipucu ve bazı butonlar (`Seç`, `Satın Al`…) hâlâ kod/locale karışık olabilir — ayrı tur.
+- **Kalan (ürün verisi, TR):** `CharacterData` kart `name` / `description` — kodeks `codex.character.*` ile aşamalı hizalama (global pazarda ayrı iş paketi).
 
 ---
 
@@ -131,7 +131,8 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Alan | Ne var? |
 |------|---------|
-| **Yerelleştirme** | `LocalizationManager` autoload; `LANGUAGE_CATALOG` + `locales/tr.json`, `en.json`, `zh_CN.json`; Ayarlar → Dil; ilk kurulumda kayıt yoksa OS dili; `internationalization/locale/fallback` `en`; `check_locale_parity.py` (`en.json` referansı). |
+| **Yerelleştirme** | `LocalizationManager` autoload; `LANGUAGE_CATALOG` + `locales/tr.json`, `en.json`, `zh_CN.json`; Ayarlar → Dil; ilk kurulumda kayıt yoksa OS dili; `internationalization/locale/fallback` `en`; `check_locale_parity.py` (`en.json` referansı). **2026-04-16:** run yüzen uyarılar `ui.alerts.*`, co-op HUD kısa metin `ui.game.*`, karakter kilidi `ui.character_select.unlock.*` + `btn_*` (rutin yeni metin `en` only). |
+| **Statik tipleme (kademeli)** | `SaveManager` üst alanlar (`gold`, `meta_upgrades`, `settings`, …) + çoklu `func … -> void`; `main` / `wave_manager` / `spawn_manager` dönüş tipleri; `wave_manager` skalar alanlar; `upgrade_icon_catalog` zaten güçlü typed. |
 | **Kayıt / ayarlar** | `SaveManager.settings` (ses, görüntü, oynanış, `input_keyboard_overrides`, …); `InputRemap` ile kalıcı klavye eşlemesi; geçersiz dil kodu düzeltmesi. |
 | **İçerik (örnekler)** | Göçebe (nomad): Yelpaze Bıçak başlangıç; Kor Kalbi koşuda, Kor Yelpazesi evrimi; karakter sırası / `character_order_v2` migrasyonu. |
 | **Dokümantasyon disiplini** | `GELISTIRICI_REHBERI`, `YOL_HARITASI`, `TASARIM`, erişilebilirlik matrisi, kök `README`, `.cursor/rules/ironfall-docs.mdc`. |
@@ -144,8 +145,11 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-16 | **Locale P0 + tipleme** — `main`/`wave_manager`/`spawn_manager` yüzen metinler → `en.json` `ui.alerts` / `ui.game`; karakter seçimi `unlock.*` + `btn_select`/`btn_ready`/`btn_buy`; `CharacterData` `unlock_hint` kaldırıldı; `save_manager` / `audio_manager` debug çıktısı; `save_manager` + `main`/`wave`/`spawn` dönüş tipleri; `YAPILACAKLAR_TOPLU` / `YOL` / matris / `TASARIM` senkron. |
 | 2026-04-16 | **Level-up UI sahne ağacı + meta kart + slot metni** — `upgrade_ui.tscn`: `EditorRoot` ile Godot 2D’de düzenlenebilir layout; `upgrade_ui.gd`: `_bind_editor_root` / istat panelinde bu koşu kalan reroll-skip + max slot satırları; `meta_upgrade.tscn` + `meta_upgrade.gd`: ortalı sütun, kartta yalnız `damage_bonus` tam açıklama (diğerleri tooltip), `weapon_slot_bonus` / `item_slot_bonus` meta satırları; `locales/en.json` (yeni anahtarlar; `tr`/`zh_CN` dil turu dışı). |
 | 2026-04-17 | **`dusk` başlangıç yükü düzeltmesi** — `CharacterData`: `start_item` boş (yalnız `dagger`); `night_vial` koşuda; `locales/en.json` + `codex_extensions_en` dusk metni; `lore.md` / `KARAKTER_SINIFLARI` / `GELISTIRICI` senkron. |
+| 2026-04-18 | **Run curse tier + lore/arena/VFX + loadout + evrim locale** — `spawn_manager` curse tier; `weapon_*.gd` / `item_*.gd` `get_description()` → `loadout_*`; **`weapon_evolution.gd`** yalnız tarife, isim/açıklama **`ui.evolution_defs.*` + `tr()`**; `weapon_base` / `passive_item` yedek satır; ana menü/kodeks lore + arena tempo + hit sparks. |
+| 2026-04-17 | **Evrim + sözlük + kahraman rolü** — `weapon_evolution.gd` (`death_laser`, `frost_nova` İngilizce yedek + doc yorumu); Frost Nova gelen hasar yansıtması (`player.take_damage(..., attacker)`); `CollectionData` sözlük ID’leri + kodeks **Glossary** sekmesi; `en.json` `ui.glossary.*` + `codex.character.*.role` + `ui.character_select.hero_class_label`; `CharacterSelectHelpers` kart üst satırı; `YAPILACAKLAR_TOPLU` / `YOL` ilgili maddeler. |
 | 2026-04-14 | **`dusk_striker` kahramanı** — Fighter, başlangıç `dagger` (ikiz hançer, mermiden düşük taban toplam hasar, ~1,28 s CD) + `night_vial` (Gece Şişesi; hafif XP/altın çekim yarıçapı); evrim `veil_daggers` (`dagger` MAX + `night_vial` MAX). Açılış: Arena’da kazanarak ve kadroda `shadow_walker`; **380** altın; oyuncu sahnesi `characters/dusk/dusk.tscn`. **Arena v0:** `ARENA_RUN_GOAL_SEC` 600, `map_select` oynanabilir. |
 | 2026-04-16 | **Kahraman sahne disiplini + dil dondurması** — Yeni kahraman: kendi `.tscn`; kopya sahnede `AnimatedSprite2D` animasyon adları kalır, frame’ler boşaltılır (`dusk` uygulandı). Rutin locale: yalnız `en` + `codex_extensions_en`; `tr` / `zh_CN` raf — `GELISTIRICI` + `ironfall-docs.mdc`. |
 | 2026-04-16 | **Level-up: aura çöküşü + önizleme + ikon klasörü** — `weapon_aura`: halka `player` yerine silah altında; `upgrade_ui`: yeni silah/eşya önizlemesi kodeks-only (geçici `PassiveItem`/`visible` hatası yok), serseri `AuraWeaponRing` temizliği; `UpgradeIconCatalog` + `assets/ui/upgrade_icons/` README. |
@@ -250,8 +254,8 @@ Paralel envanter: `docs/TASARIM.md`.
 
 ### Uzun vadeli — Oyun derinliği
 
-- [ ] **Lore** — Hikaye, boss, harita metinleri (metin/envanter: `docs/TASARIM.md`).
-- [ ] **Arena modu (tam)** — Ayrı arena haritası, dalga savunma ritmi, ödül ekonomisi; `map_select` ile genişletme. *(v0: `run_variant` **arena**, `SaveManager.ARENA_RUN_GOAL_SEC` ≈ 10 dk, `vs_map`; `dusk` açılış bayrağı — günlük 2026-04-14.)*
+- [ ] **Lore** — Boss / harita anlatısı ve geniş metin envanteri (`TASARIM.md`). *(2026-04-18: dünya özeti + Çöküş → `en.json` ana menü + kodeks ipucu.)*
+- [ ] **Arena modu (tam)** — Ayrı arena haritası, ödül ekonomisi paketi. *(v0 + **2026-04-18** tempo: `wave_manager` / `spawn_manager`.)*
 
 ---
 
@@ -265,7 +269,7 @@ Aşağıdaki maddeler **ürün / tasarım** kaynağıdır; kod durumu satır iç
 |--------|--------|
 | [ ] | **P2P / co-op destek kahramanları** — Takım arkadaşına kısa süreli hasar buff’ı, iyileşme oranı, cooldown / area büyütme vb.; çeşitli support kimlikleri. *(Co-op’ta P2 seçimi var; takım buff mekaniği yok.)* |
 | [x] | **Dört sınıf tanımı (metin)** — Controller, Fighter, Mage, Tank açıklamaları `KARAKTER_SINIFLARI_VE_TASARIM.md` içinde. |
-| [ ] | **Sınıfın oyuna bağlanması** — `CharacterData` veya eşdeğerinde `class` alanı, UI’da gösterim, denge. |
+| [ ] | **Sınıfın oyuna bağlanması (denge)** — `hero_class` seçim filtresi + kartta rol (`codex.character.*.role`, `en.json`) **2026-04-17**; **çarpan/denge** hâlâ açık. |
 | [ ] | **Mevcut kahramanların sınıfa göre stat hizalaması** — Taslak atama belgede; sayısal denge beklemede. |
 | [x] | **Yeni kahramanlar için sınıf çerçevesi** — Tasarım kuralı olarak belgelendi (`2.1`). |
 
@@ -296,7 +300,7 @@ Aşağıdaki maddeler **ürün / tasarım** kaynağıdır; kod durumu satır iç
 | [x] | **Koleksiyon / kodeks zemini** — Ana menüden kodeks; düşman, boss, silah, eşya, kahraman, harita sekmeleri (`CollectionData.TAB_ORDER`). |
 | [ ] | **Koleksiyonda evrim bölümü** — Evrim silahları run içinde var; kodekste ayrı **Evrim** sekmesi veya alt bölüm yok. |
 | [ ] | **İleride idle / görev sistemi** — Rehber veya kodeksten bağlantı (D + C entegrasyonu). |
-| [ ] | **Oyun içi sözlük** — Cooldown, area ve benzeri terimlerin açıklaması; koleksiyon içi bölüm veya ayrı sözlük sekmesi. |
+| [x] | **Oyun içi sözlük (temel)** — `CollectionData` terim ID’leri + `locales/en.json` `ui.glossary.*`; kodekste **Glossary** sekmesi; **2026-04-17**. |
 | [ ] | **Genel rehberlik önceliği** — Oyuncunun ne topladığını, neyin ne işe yaradığını anlaması (UX + metin). |
 
 ---

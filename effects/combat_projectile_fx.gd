@@ -66,3 +66,53 @@ static func spawn_chain_segment(
 	var tw := spr.create_tween()
 	tw.tween_property(spr, "modulate:a", 0.0, CHAIN_FADE_DURATION_SEC)
 	tw.tween_callback(spr.queue_free)
+
+
+## Small pixel-style burst (dark rim + bright chips) for readable hit feedback.
+static func spawn_hit_sparks(
+	parent: Node,
+	global_pos: Vector2,
+	player: Node2D,
+	tint: Color,
+	count: int = 9,
+	spread: float = 40.0,
+	lifetime: float = 0.2
+) -> void:
+	if parent == null:
+		return
+	var vfx_a := 1.0
+	if player and player.has_method("get_player_vfx_opacity"):
+		vfx_a = player.get_player_vfx_opacity()
+	var a0: float = minf(1.0, tint.a * vfx_a)
+	var n: int = max(4, count)
+	for i in n:
+		var sz: float = randf_range(3.0, 6.0)
+		var p0: Vector2 = global_pos + Vector2(randf_range(-2.0, 2.0), randf_range(-2.0, 2.0))
+		var rim := ColorRect.new()
+		rim.size = Vector2(sz + 2.0, sz + 2.0)
+		rim.color = Color(0.04, 0.04, 0.06, minf(0.92, a0))
+		parent.add_child(rim)
+		rim.global_position = p0
+		var core := ColorRect.new()
+		core.size = Vector2(sz, sz)
+		core.color = Color(
+			minf(1.0, tint.r * 1.08),
+			minf(1.0, tint.g * 1.08),
+			minf(1.0, tint.b * 1.08),
+			a0
+		)
+		parent.add_child(core)
+		core.global_position = p0 + Vector2(1.0, 1.0)
+		var ang: float = TAU * float(i) / float(n) + randf_range(-0.35, 0.35)
+		var dst: Vector2 = global_pos + Vector2(cos(ang), sin(ang)) * randf_range(spread * 0.35, spread)
+		var lt: float = randf_range(0.11, lifetime)
+		var tw := core.create_tween()
+		tw.set_parallel(true)
+		tw.tween_property(core, "global_position", dst, lt)
+		tw.tween_property(core, "modulate:a", 0.0, lt)
+		tw.chain().tween_callback(core.queue_free)
+		var tw2 := rim.create_tween()
+		tw2.set_parallel(true)
+		tw2.tween_property(rim, "global_position", dst - Vector2(1.0, 1.0), lt)
+		tw2.tween_property(rim, "modulate:a", 0.0, lt * 0.95)
+		tw2.chain().tween_callback(rim.queue_free)

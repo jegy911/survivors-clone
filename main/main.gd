@@ -19,7 +19,7 @@ var spawn_manager: Node = null
 var wave_manager: Node = null
 var env_manager: Node = null
 
-func _ready():
+func _ready() -> void:
 	randomize()
 	add_to_group("main")
 	# Managers oluştur
@@ -41,12 +41,12 @@ func _ready():
 	if not win.focus_exited.is_connected(_on_window_focus_lost):
 		win.focus_exited.connect(_on_window_focus_lost)
 
-func _load_player():
+func _load_player() -> void:
 	_spawn_player(0, Vector2(0, 0))
 	if SaveManager.game_mode == "local_coop":
 		_spawn_player(1, Vector2(60, 0))
 
-func _spawn_player(id: int, offset: Vector2):
+func _spawn_player(id: int, offset: Vector2) -> void:
 	var char_index: int = SaveManager.get_character_index_for_player(id)
 	var char_id = CharacterData.CHARACTERS[char_index]["id"]
 	var scene_path = _get_character_scene(char_id)
@@ -60,7 +60,7 @@ func _spawn_player(id: int, offset: Vector2):
 func _get_character_scene(char_id: String) -> String:
 	return CharacterData.get_character_scene_path(char_id)
 
-func _on_hit_stop_requested(frames: int):
+func _on_hit_stop_requested(frames: int) -> void:
 	hit_stop_frames = max(hit_stop_frames, frames)
 
 func get_curse_level() -> int:
@@ -96,7 +96,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	tree.root.add_child(pm)
 
 
-func _process(delta):
+func _process(delta: float) -> void:
 	# Hit-stop sırasında da güncelle (kill / can çubuğu takılmasın).
 	_update_coop_hud()
 	if hit_stop_frames > 0:
@@ -127,7 +127,7 @@ func _process(delta):
 			spawn_manager.apply_immunity_to_existing(current_immunity)
 			var players = get_tree().get_nodes_in_group("player")
 			if not players.is_empty():
-				players[0].show_floating_text("⚠ BAĞIŞIKLIK: " + current_immunity.to_upper(), players[0].global_position + Vector2(0, -80), Color("#FF6600"), 18)
+				players[0].show_floating_text(tr("ui.alerts.immunity_rotation") % current_immunity.to_upper(), players[0].global_position + Vector2(0, -80), Color("#FF6600"), 18)
 
 	# Wave ve reaper yönetimi
 	wave_manager.process(delta, game_timer)
@@ -158,7 +158,7 @@ func _process(delta):
 				spawn_manager.spawn_random_enemy(game_timer, current_immunity)
 		spawn_timer = spawn_manager.get_current_spawn_interval(game_timer) * wave_manager.get_interval_multiplier()
 
-func update_timer_label():
+func update_timer_label() -> void:
 	if timer_label == null or wave_label == null:
 		return
 	var minutes = int(game_timer) / 60
@@ -180,7 +180,7 @@ const MAX_ZOOM = 1.2
 const ZOOM_SPEED = 2.0
 const CAMERA_SPEED = 5.0
 
-func _setup_camera():
+func _setup_camera() -> void:
 	main_camera = Camera2D.new()
 	main_camera.enabled = true
 	main_camera.position_smoothing_enabled = true
@@ -188,7 +188,7 @@ func _setup_camera():
 	add_child(main_camera)
 	
 
-func _setup_coop_hud():
+func _setup_coop_hud() -> void:
 	if SaveManager.game_mode != "local_coop":
 		return
 	coop_hud = CanvasLayer.new()
@@ -257,14 +257,14 @@ func _make_hud_panel(pos: Vector2, color: Color, label: String) -> PanelContaine
 
 	var level_label = Label.new()
 	level_label.name = "LevelLabel"
-	level_label.text = "Lv 1"
+		level_label.text = tr("ui.game.level_format") % 1
 	level_label.add_theme_color_override("font_color", Color("#FFD700"))
 	level_label.add_theme_font_size_override("font_size", 12)
 	stats_row.add_child(level_label)
 
 	var kill_label = Label.new()
 	kill_label.name = "KillLabel"
-	kill_label.text = "💀 0"
+	kill_label.text = tr("ui.game.kill_format") % 0
 	kill_label.add_theme_color_override("font_color", Color("#AAAAAA"))
 	kill_label.add_theme_font_size_override("font_size", 12)
 	stats_row.add_child(kill_label)
@@ -283,7 +283,7 @@ func _make_hud_panel(pos: Vector2, color: Color, label: String) -> PanelContaine
 
 	return panel
 
-func _update_coop_hud():
+func _update_coop_hud() -> void:
 	if SaveManager.game_mode != "local_coop" or coop_hud == null:
 		return
 	var players = get_tree().get_nodes_in_group("player")
@@ -311,10 +311,10 @@ func _update_coop_hud():
 		if stats_row:
 			var level_label = stats_row.get_node_or_null("LevelLabel")
 			if level_label:
-				level_label.text = "Lv " + str(p.level)
+				level_label.text = tr("ui.game.level_format") % int(p.level)
 			var kill_label = stats_row.get_node_or_null("KillLabel")
 			if kill_label:
-				kill_label.text = "💀 " + str(p.kill_count)
+				kill_label.text = tr("ui.game.kill_format") % int(p.kill_count)
 		# XP bar
 		var xp_bar = vbox.get_node_or_null("XPBar")
 		if xp_bar:
@@ -359,12 +359,12 @@ func _update_camera(delta: float):
 	)
 	main_camera.zoom = lerp(main_camera.zoom, Vector2(target_zoom, target_zoom), delta * ZOOM_SPEED)
 
-func queue_upgrade(player: Node):
+func queue_upgrade(player: Node) -> void:
 	upgrade_queue.append(player)
 	if not upgrade_processing:
 		_process_next_upgrade()
 
-func _process_next_upgrade():
+func _process_next_upgrade() -> void:
 	if upgrade_queue.is_empty():
 		upgrade_processing = false
 		get_tree().paused = false

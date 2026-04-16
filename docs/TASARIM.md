@@ -97,9 +97,9 @@ Her düşman `.tscn` içinde **`AnimatedSprite2D`** + atlas / spritesheet ile **
 | boomerang | ✅ | `assets/projectiles/axe/boomerang.png` + `projectiles/hunter_axe.tscn` (Sprite2D; oyun içi ID: `boomerang`) |
 | lightning | ✅ | Vuruş: `projectiles/lightning_bolt.tscn` (ObjectPool; kamera üstünden hedefe dikey iniş, mermi gibi isabet + `lightning_hit_fx`). Storm / Toxic Chain yalnızca `lightning_hit_fx` + renk. |
 | ice_ball | ✅ | `projectiles/ice_ball.tscn` |
-| shadow | ✅ / ❌ | |
-| laser | ✅ / ❌ | |
-| holy_bullet | ✅ / ❌ | Evrim hedefi: `holy_bullet` |
+| shadow | ✅ / Kısmi | Okunabilirlik: `CombatProjectileFx.spawn_hit_sparks` (orbit isabet). Final sprite ayrı. |
+| laser | ✅ / Kısmi | Işın: koyu alt katman + parlak çekirdek + kıvılcım; final sanat ayrı. |
+| holy_bullet | ✅ / Kısmi | Kutsal mermi isabeti: `bullet.gd` + kıvılcım (`armor_piercing`); final sanat ayrı. |
 | fan_blade | ❌ | Shard: `Polygon2D` — final bıçak / parça sprite’ı yok |
 | toxic_chain, death_laser, blood_boomerang, storm, shadow_storm, frost_nova, ember_fan, veil_daggers | ✅ / ❌ | Çoğu mevcut; **pasif ikonları ve level-up kart görselleri** ayrı bölümde |
 
@@ -192,7 +192,7 @@ Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + is
 | Duraklat | `ui/pause_menu` | ✅ / ❌ |
 | Meta upgrade | `ui/meta_upgrade` | ✅ / ❌ |
 | Ayarlar | `ui/settings` | ✅ |
-| Arayüz dili (çeviri) | `locales/*.json`, `LocalizationManager`, Ayarlar → Dil | ✅ `tr` / `en` / `zh_CN`; level-up **kabuk** metinleri `en` `ui.upgrade_ui.*`; silah/eşya **etki** satırları hâlâ çoğunlukla kod içi (`player.gd` / silah-eşya `get_description`) |
+| Arayüz dili (çeviri) | `locales/*.json`, `LocalizationManager`, Ayarlar → Dil | ✅ `tr` / `en` / `zh_CN`; level-up kabuk `ui.upgrade_ui.*`; run yüzen uyarılar `ui.alerts.*` + co-op kısa HUD `ui.game.*`; karakter seçimi ipucu/butonlar `ui.character_select.*` (`en` rutin); silah/eşya **etki** satırları çoğunlukla kod içi (`player.gd` / `get_description`) |
 | Hasar sayıları | `effects/damage_number` | ✅ |
 | Global font ölçeği (okunabilirlik) | `SaveManager.settings["ui_scale"]`, Ayarlar → Görüntü | Kısmi — bazı ekranlarda (`map_select`, `shop_menu`); tüm HUD/menüde zorunlu değil |
 | Otomatik pause (odak kaybı) | — | Davranış yok; UI tasarımı gerektirmez ama ürün kararı |

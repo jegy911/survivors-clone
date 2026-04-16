@@ -19,4 +19,4 @@ func on_enemy_killed(_position: Vector2):
 		player.heal(heal_per_kill)
 
 func get_description() -> String:
-	return "Kor Kalbi Lv" + str(level) + "\nÖldürünce +" + str(heal_per_kill) + " can"
+	return tr("ui.upgrade_ui.stats.loadout_items.ember_heart") % [level, heal_per_kill]

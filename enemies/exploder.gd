@@ -47,7 +47,7 @@ func explode():
 	var enemies_and_player = get_tree().get_nodes_in_group("player")
 	for p in enemies_and_player:
 		if p.global_position.distance_to(global_position) < EXPLOSION_RADIUS:
-			p.take_damage(DAMAGE)
+			p.take_damage(DAMAGE, self)
 	if SaveManager.is_heavy_vfx_enabled():
 		var pc := SaveManager.get_particle_burst_count(12)
 		for i in pc:

@@ -19,4 +19,4 @@ func on_damage_dealt(_player: Node, _enemy: Node, damage: int):
 		player.heal(heal_amount)
 
 func get_description() -> String:
-	return "Can Çalma Lv" + str(level) + "\nHer vuruşta %" + str(int(steal_percent * 100)) + " hasar → HP"
+	return tr("ui.upgrade_ui.stats.loadout_items.lifesteal") % [level, int(steal_percent * 100)]

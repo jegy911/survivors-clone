@@ -31,8 +31,28 @@ static func character_display_name(char_id: String) -> String:
 	return char_id if t == k else t
 
 
+static func localized_unlock_hint(char_data: Dictionary) -> String:
+	var cid: String = str(char_data.get("id", ""))
+	var key: String = "ui.character_select.unlock." + cid
+	var body: String = _t(key)
+	if body == key or body.is_empty():
+		if bool(char_data.get("secret", false)):
+			return tr("ui.character_select.unlock_line") % _t("ui.character_select.unlock_secret_placeholder")
+		return ""
+	return tr("ui.character_select.unlock_line") % body
+
+
 static func rich_description_unlocked(char_data: Dictionary) -> String:
 	var parts: Array = []
+	var cid: String = str(char_data.get("id", ""))
+	var role_key := "codex.character.%s.role" % cid
+	var role_t := _t(role_key)
+	if role_t != role_key and not role_t.is_empty():
+		var hc := str(char_data.get("hero_class", ""))
+		var class_key := "ui.character_select.hero_class_label.%s" % hc
+		var class_t := _t(class_key)
+		var class_line := class_t if class_t != class_key else hc
+		parts.append("%s — %s" % [class_line, role_t])
 	if char_data["start_weapon"] != "":
 		parts.append(_t("ui.character_select.line_start_weapon") % weapon_display_name(char_data["start_weapon"]))
 	if char_data["start_item"] != "":
@@ -58,7 +78,5 @@ static func rich_description_unlocked(char_data: Dictionary) -> String:
 
 static func rich_description_for_state(char_data: Dictionary, state: String) -> String:
 	if state == "locked":
-		if char_data["secret"]:
-			return "🔒 " + str(char_data.get("unlock_hint", "???"))
-		return "🔒 " + str(char_data.get("unlock_hint", ""))
+		return localized_unlock_hint(char_data)
 	return rich_description_unlocked(char_data)

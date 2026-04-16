@@ -50,4 +50,4 @@ func on_upgrade():
 	pass
 
 func get_description() -> String:
-	return weapon_name + " Lv" + str(level)
+	return tr("ui.upgrade_ui.stats.weapon_fallback_line") % [weapon_name, level]

@@ -8,11 +8,37 @@ const TAB_WEAPON := "weapon"
 const TAB_ITEM := "item"
 const TAB_CHARACTER := "character"
 const TAB_MAP := "map"
+const TAB_GLOSSARY := "glossary"
 
 ## Ana menü / kodeks sekmeleri sırası (UI ile aynı).
 const TAB_ORDER: Array[String] = [
-	TAB_ENEMY, TAB_BOSS, TAB_WEAPON, TAB_ITEM, TAB_CHARACTER, TAB_MAP,
+	TAB_ENEMY, TAB_BOSS, TAB_WEAPON, TAB_ITEM, TAB_CHARACTER, TAB_MAP, TAB_GLOSSARY,
 ]
+
+## Stat / HUD terimleri — metinler `locales/en.json` → `ui.glossary.<id>.title|body`.
+const GLOSSARY_TERM_IDS: PackedStringArray = [
+	"area", "cooldown", "might", "growth", "duration", "luck", "magnet", "crit_chance",
+]
+
+
+static func glossary_title_key(term_id: String) -> String:
+	return "ui.glossary.%s.title" % term_id
+
+
+static func glossary_body_key(term_id: String) -> String:
+	return "ui.glossary.%s.body" % term_id
+
+
+static func glossary_entries() -> Array:
+	var out: Array = []
+	for term_id in GLOSSARY_TERM_IDS:
+		out.append({
+			"id": term_id,
+			"tab": TAB_GLOSSARY,
+			"emoji": "📘",
+			"accent": "#5DADE2",
+		})
+	return out
 
 const ENEMY_ENTRIES: Array = [
 	{"id": "enemy", "tab": TAB_ENEMY, "emoji": "🟥", "accent": "#E74C3C"},
@@ -139,6 +165,7 @@ static func all_entries() -> Array:
 	a.append_array(ITEM_ENTRIES)
 	a.append_array(character_entries())
 	a.append_array(MAP_ENTRIES)
+	a.append_array(glossary_entries())
 	return a
 
 

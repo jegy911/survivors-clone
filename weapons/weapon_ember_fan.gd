@@ -74,4 +74,9 @@ func on_upgrade():
 			cooldown = 0.9
 
 func get_description() -> String:
-	return "Kor Yelpazesi Lv" + str(level) + " | x" + str(blade_count + get_effective_multi_attack()) + " | " + str(damage) + " hasar | delici"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.ember_fan") % [
+		level,
+		blade_count + get_effective_multi_attack(),
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

@@ -42,4 +42,8 @@ func _do_explosion(position: Vector2):
 	EventBus.hit_stop_requested.emit(2)
 
 func get_description() -> String:
-	return "Patlama Lv" + str(level) + "\nÖlünce " + str(int(explosion_radius * player.get_area_multiplier())) + " alanda " + str(explosion_damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_items.explosion") % [
+		level,
+		int(explosion_radius * player.get_area_multiplier()),
+		explosion_damage,
+	]

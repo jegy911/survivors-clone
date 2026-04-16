@@ -15,4 +15,8 @@ func apply():
 	crit_chance = 0.04 * level
 
 func get_description() -> String:
-	return "Kritik Lv" + str(level) + " | %" + str(int(crit_chance * 100)) + " crit"
+	return tr("ui.upgrade_ui.stats.loadout_items.crit") % [
+		level,
+		int(crit_chance * 100),
+		crit_multiplier,
+	]

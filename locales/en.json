@@ -11,7 +11,9 @@
       "collection": "📖  CODEX",
       "settings": "⚙  SETTINGS",
       "quit": "✕  QUIT",
-      "omega_unlock": "????? UNLOCKED"
+      "omega_unlock": "????? UNLOCKED",
+      "world_info_title": "World — the Collapse",
+      "world_info_body": "Humanity once commanded astonishing machines: energy arms, rune-laced shields, and motor harnesses.\n\nThe Collapse came with a waking darkness — ruin rode on corrupted rune-craft. Cities fell; feudal scrap now wraps ancient power.\n\nSurvivors still heft relics and rites from the old age, grinding toward the Devil King's throne — one desperate run at a time."
     },
     "intro_splash": {
       "press_to_start": "Press any key or click to continue"
@@ -147,6 +149,32 @@
       "filter_controller": "Controller",
       "taken_by_p1": "Taken by P1",
       "locked_p1": "🔒 P1",
+      "btn_select": "Select",
+      "btn_ready": "✅ Ready!",
+      "btn_buy": "Buy\n💰 %d",
+      "unlock_line": "🔒 %s",
+      "unlock_secret_placeholder": "???",
+      "unlock": {
+        "warrior": "",
+        "mage": "Kill a total of 50 enemies",
+        "vampire": "Survive 2 minutes as Warrior",
+        "hunter": "Kill 100 enemies",
+        "stormer": "Survive 5 minutes",
+        "frost": "Kill a tank enemy",
+        "shadow_walker": "Kill a total of 300 enemies",
+        "engineer": "Survive 8 minutes",
+        "paladin": "Obtain an evolution weapon",
+        "blood_prince": "Survive 5 minutes as Vampire",
+        "nomad": "Kill a total of 175 enemies",
+        "death_knight": "Kill 1000 enemies in a single run",
+        "chaos": "Play with 5 different characters",
+        "omega": "There is a secret code...",
+        "sigil_warden": "Kill a total of 220 enemies",
+        "grav_binder": "Survive 6 minutes 30 seconds",
+        "ironclad": "Kill a tank enemy",
+        "linebreaker": "Survive 7 minutes 30 seconds",
+        "dusk": "Win an Arena run as Shadow Walker before the goal time"
+      },
       "line_start_weapon": "⚔ Start: %s",
       "line_start_item": "🛡 Item: %s",
       "line_bonus_damage": "🗡 +%d damage",
@@ -162,6 +190,13 @@
         "all_weapons_1hp": "☠ Play at 1 HP, all weapons active",
         "damage_double": "⚔ Damage x2",
         "random_weapons": "🎲 Start with random weapons"
+      },
+      "hero_class_label": {
+        "fighter": "Fighter",
+        "mage": "Mage",
+        "controller": "Controller",
+        "tank": "Tank",
+        "special": "Special"
       }
     },
     "player": {
@@ -222,6 +257,18 @@
     "hud": {
       "wave_counter": "Wave: %d"
     },
+    "game": {
+      "level_format": "Lv %d",
+      "kill_format": "💀 %d"
+    },
+    "alerts": {
+      "immunity_rotation": "⚠ IMMUNITY: %s",
+      "reaper_approaching": "☠ DEATH APPROACHES...",
+      "reaper_spawned": "☠ REAPER #%d",
+      "siege": "⚠ SIEGE!",
+      "swarm_incoming": "⚠ SWARM INCOMING!",
+      "encircled": "☠ YOU ARE SURROUNDED!"
+    },
     "wave_reward": {
       "title": "⚡ WAVE %d COMPLETE!",
       "pick_prompt": "Pick a reward:",
@@ -246,6 +293,61 @@
       "stat_speed": "Move Speed +10\nIncreases move speed (capped)",
       "stat_max_hp": "Max HP +15\nIncreases maximum HP",
       "stat_heal": "Instant +12 HP\nHeals immediately",
+      "stats": {
+        "magnet_desc": "Magnet Lv%d | +%d px pickup radius (XP orbs)",
+        "night_vial_desc": "Night Vial Lv%d\n+%d px pickup radius (XP / gold)",
+        "resonance_stone_desc": "Resonance Stone Lv%d\n+%d px pickup radius (pull-in)",
+        "death_laser_desc": "Death Laser Lv%d | %d base Might (every hit crit) | %d px beam | %.2fs Cooldown",
+        "weapon_fallback_line": "%s | Lv %d",
+        "loadout_weapons": {
+          "bullet": "Bullet Lv%d | ×%d projectiles | %d base Might | %d px range | %.2fs Cooldown",
+          "dagger": "Twin Daggers Lv%d | ×%d knives | %d Might each | %d px range | %.2fs Cooldown",
+          "aura": "Aura Lv%d | %d px Area radius | %d base Might | %.2fs Cooldown | applies slow",
+          "chain": "Chain Lv%d | %d jumps | %d base Might | %d px jump range | %.2fs Cooldown",
+          "boomerang": "Axe Lv%d | ×%d axes | %d base Might | %.2fs Cooldown",
+          "lightning": "Lightning Lv%d | %d strikes | %d base Might | %d px leap range | %.2fs Cooldown",
+          "ice_ball": "Ice Ball Lv%d | ×%d orbs | %d base Might | %.2fs Cooldown | slows on hit",
+          "shadow": "Shadow Lv%d | ×%d orbits | %d base Might | %.2fs Cooldown",
+          "laser": "Laser Lv%d | %d px beam | %d base Might | %.2fs Cooldown",
+          "fan_blade": "Fan Blade Lv%d | ×%d shards | %d Might | %d px reach | %d° cone | %.2fs Cooldown",
+          "hex_sigil": "Hex Sigil Lv%d | %d px Area | %d base Might | %.2fs Cooldown | slows",
+          "gravity_anchor": "Gravity Anchor Lv%d | %d px pull radius | %d base Might | pulls foes | %.2fs Cooldown",
+          "bastion_flail": "Bastion Flail Lv%d | %d px Area | %d base Might | knockback | %.2fs Cooldown",
+          "shield_ram": "Shield Ram Lv%d | %d px cone depth | %d° cone | %d base Might | %.2fs Cooldown",
+          "holy_bullet": "Holy Bullet Lv%d | ×%d shots | %d base Might | %.2fs Cooldown | breaks armor",
+          "toxic_chain": "Toxic Chain Lv%d | ×%d jumps | %d base Might | %d px jump range | %.2fs Cooldown | spreads poison",
+          "blood_boomerang": "Blood Axe Lv%d | ×%d axes | %d base Might | %.2fs Cooldown | lifesteal on hit",
+          "storm": "Storm Lv%d | ×%d jumps | %d base Might | %d px jump range | %.2fs Cooldown | bonus bolts on kills",
+          "shadow_storm": "Shadow Storm Lv%d | %d base Might | %d px orbit | %.2fs Cooldown | hits can chain lightning",
+          "frost_nova": "Frost Nova Lv%d | %d px Area | %d base Might | freeze/slow on impact | %.2fs Cooldown",
+          "ember_fan": "Ember Fan Lv%d | ×%d shards | %d base Might | piercing | %.2fs Cooldown",
+          "binding_circle": "Binding Circle Lv%d | %d px Area | %d base Might | heavy slow | %.2fs Cooldown",
+          "void_lens": "Void Lens Lv%d | %d px pull radius | %d base Might | strong pull | %.2fs Cooldown",
+          "citadel_flail": "Citadel Flail Lv%d | %d px Area | %d base Might | strong knockback | %.2fs Cooldown",
+          "fortress_ram": "Fortress Ram Lv%d | %d px cone depth | %d° wide cone | %d base Might | %.2fs Cooldown",
+          "veil_daggers": "Veil Daggers Lv%d | ×%d knives | %d base Might | %d pierce stacks | %d px range | %.2fs Cooldown"
+        },
+        "loadout_items": {
+          "generic_level": "%s | Lv %d",
+          "armor": "Armor Lv%d\n−%.1f damage taken (flat)",
+          "rampart_plate": "Rampart Plate Lv%d\n−%.1f damage taken (flat)",
+          "glyph_charm": "Glyph Charm Lv%d\n−%.1f damage taken (ward, flat)",
+          "iron_bulwark": "Iron Bulwark Lv%d\n−%d damage taken (flat)",
+          "lifesteal": "Lifesteal Lv%d\nOn hit: heal for %d%% of dealt damage as HP",
+          "speed_charm": "Speed Charm Lv%d\nOn kill: +%d move speed for %.1fs",
+          "blood_pool": "Blood Pool Lv%d\nOn kill chance: %d px Area pool | %d damage per tick",
+          "energy_cell": "Energy Cell Lv%d\nEvery %.1fs: burst all weapons, then %.1fs slow phase",
+          "explosion": "Explosion Lv%d\nOn kill chance: %d px Area | %d damage blast",
+          "poison": "Poison Lv%d\nOn hit: %d damage/s DoT for %.1fs Duration",
+          "shield": "Shield Lv%d\nAbsorbs up to %d damage per proc | %.1fs Cooldown",
+          "steam_armor": "Steam Armor Lv%d\n%.1fs invulnerability on hit | %.1fs Cooldown",
+          "ember_heart": "Ember Heart Lv%d\nOn kill: +%d HP",
+          "vampire": "Vampirism Lv%d\nOn kill: +%d HP",
+          "luck_stone": "Luck Stone Lv%d\n+%d%% crit chance | +%d gold per kill (Growth)",
+          "turbine": "Turbine Lv%d\nWhile moving: +%d Might (current) | max +%d Might",
+          "crit": "Crit Lv%d | +%d%% crit chance (×%.1f crit Might)"
+        }
+      },
       "tooltip_reroll_pool": "Rerolls you start this run with. Each reroll spends from this pool for the whole run (not per level-up).",
       "tooltip_skip_gold": "Skips you start this run with. Skip closes this screen without picking a card and grants +25 gold. Each skip spends from this pool for the whole run.",
       "evolution_pick_title": "⚡ EVOLUTION",
@@ -298,7 +400,7 @@
     "evolution_defs": {
       "holy_bullet": {
         "name": "Holy Bullet",
-        "desc": "Bullet + Armor → Holy Bullet\n+50% damage, breaks enemy armor"
+        "desc": "Bullet + Armor → Holy Bullet\n+50% Might, breaks enemy armor"
       },
       "toxic_chain": {
         "name": "Toxic Chain",
@@ -306,7 +408,7 @@
       },
       "death_laser": {
         "name": "Death Laser",
-        "desc": "Laser + Crit → Death Laser\nEvery hit is critical, 2× range"
+        "desc": "Laser + Crit (both MAX) → Death Laser\nEvery hit is critical (×1.5 Might); longer beam than base Laser."
       },
       "blood_boomerang": {
         "name": "Blood Axe",
@@ -322,7 +424,7 @@
       },
       "frost_nova": {
         "name": "Frost Nova",
-        "desc": "Ice Ball + Armor + Shield → Frost Nova\nArea freeze on hit + damage reflect"
+        "desc": "Ice Ball + Armor + Shield (all MAX) → Frost Nova\nArea slow/freeze on pulse; reflects part of incoming damage to the attacker."
       },
       "ember_fan": {
         "name": "Ember Fan",
@@ -330,7 +432,7 @@
       },
       "binding_circle": {
         "name": "Binding Circle",
-        "desc": "Hex Sigil (MAX) + Glyph Charm (MAX) → Binding Circle\nWide seal: heavy slow and damage."
+        "desc": "Hex Sigil (MAX) + Glyph Charm (MAX) → Binding Circle\nWide Area seal: heavy slow and Might ticks."
       },
       "void_lens": {
         "name": "Void Lens",
@@ -367,7 +469,7 @@
       "tab_map": "Maps",
       "back": "← Main menu",
       "pick_title": "Choose an entry",
-      "pick_desc": "Use the tabs: foes, bosses, weapons, items, heroes, maps. Locked cards hint at how to reveal them.",
+      "pick_desc": "Use the tabs: foes, bosses, weapons, items, heroes, maps, glossary. Locked cards hint at how to reveal them.",
       "locked_name": "???",
       "locked_desc": "Locked.",
       "locked_short": "???",
@@ -376,7 +478,44 @@
       "locked_desc_weapon": "Obtain this weapon in a run (level-up, chest, or starting loadout).",
       "locked_desc_item": "Obtain this item in a run.",
       "locked_desc_character": "Unlock this hero through progression (or secret conditions).",
-      "locked_desc_map": "Start a run on this map to add it to your codex."
+      "locked_desc_map": "Start a run on this map to add it to your codex.",
+      "locked_desc_glossary": "Glossary entries are always available.",
+      "tab_glossary": "Glossary",
+      "world_info_hint": "Lore sketch: a high-tech age shattered by the Collapse — runes and relics rule the rubble. The full primer sits on the main menu under World — the Collapse."
+    },
+    "glossary": {
+      "area": {
+        "title": "Area",
+        "body": "Area scales the size of weapon radii, cones, beams, and similar hit zones. It stacks with meta upgrades and some hero passives. Larger area hits more enemies at once but does not always increase single-target damage."
+      },
+      "cooldown": {
+        "title": "Cooldown",
+        "body": "Cooldown is the time between activations of a weapon or item effect. Lower cooldown means faster attacks. Meta upgrades, some items, and hero passives can reduce cooldown; weapons also enforce a small minimum interval so burst never becomes instant."
+      },
+      "might": {
+        "title": "Might (damage)",
+        "body": "Might is your overall outgoing damage pressure: flat weapon damage, category bonuses, momentum, adrenaline, crit multiplier on critical hits, and similar effects. The level-up stats panel labels the main line as Damage; it is the number fed into each hit before enemy armor."
+      },
+      "growth": {
+        "title": "Growth (gold multiplier)",
+        "body": "Growth here means the meta upgrade line that increases gold earned from enemies (shown as Gold Multiplier in the meta shop). It is separate from XP bonuses and from pickup magnet range."
+      },
+      "duration": {
+        "title": "Duration",
+        "body": "Duration multiplies how long lasting effects run—slows, poison ticks, shrines, and similar timers. It does not change raw weapon hit damage unless the skill explicitly scales with effect length."
+      },
+      "luck": {
+        "title": "Luck",
+        "body": "Luck nudges the odds of seeing rarer upgrade cards and slightly better rolls during level-ups. It is approximate and run-scoped; it does not guarantee a specific weapon."
+      },
+      "magnet": {
+        "title": "Magnet",
+        "body": "Magnet increases how far you pull in XP orbs, gold, and pickups. Meta magnet stacks with item-based pickup bonuses where applicable."
+      },
+      "crit_chance": {
+        "title": "Crit chance",
+        "body": "Crit chance is the probability that a hit rolls as a critical strike. Critical hits use your crit damage multiplier (meta and items can raise it). Some evolved weapons treat every hit as a critical strike."
+      }
     }
   },
   "achievement": {
@@ -661,79 +800,98 @@
     "character": {
       "warrior": {
         "name": "Warrior",
-        "desc": "Balanced fighter: +5 flat damage and +8 origin (combat habit). Good starter."
+        "desc": "Balanced fighter: +5 flat damage and +8 origin (combat habit). Good starter.",
+        "role": "Close-range sustained fighting—flat damage and durability lean."
       },
       "mage": {
         "name": "Mage",
-        "desc": "Aura starter with extra max HP. Area-control mindset."
+        "desc": "Aura starter with extra max HP. Area-control mindset.",
+        "role": "AoE damage and aura start—mage positioning fantasy."
       },
       "vampire": {
         "name": "Vampire",
-        "desc": "Blood-hungry hunter.\nWeapon: chain (Chain — jumping hits)\nItem: lifesteal (found in-run; pairs with Toxic Chain)\nEvolution: toxic_chain (Toxic Chain)\nUnlock: survive 2 min as Warrior → 175 gold; origin: +10% lifesteal"
+        "desc": "Blood-hungry hunter.\nWeapon: chain (Chain — jumping hits)\nItem: lifesteal (found in-run; pairs with Toxic Chain)\nEvolution: toxic_chain (Toxic Chain)\nUnlock: survive 2 min as Warrior → 175 gold; origin: +10% lifesteal",
+        "role": "Close-range chain bruiser with lifesteal—fighter tempo."
       },
       "hunter": {
         "name": "Hunter",
-        "desc": "Axe thrower with extra lifesteal synergy."
+        "desc": "Axe thrower with extra lifesteal synergy.",
+        "role": "Thrown axe skirmisher—medium reach fighter."
       },
       "stormer": {
         "name": "Stormer",
-        "desc": "Lightning focus with cooldown perks."
+        "desc": "Lightning focus with cooldown perks.",
+        "role": "Lightning and ability cadence—burst-leaning mage."
       },
       "frost": {
         "name": "Frost",
-        "desc": "Slow specialist—double slow duration, ice ball starter."
+        "desc": "Slow specialist—double slow duration, ice ball starter.",
+        "role": "Slows and crowd control—controller identity."
       },
       "shadow_walker": {
         "name": "Shadow Walker",
-        "desc": "High-speed assassin with shadow orbs."
+        "desc": "High-speed assassin with shadow orbs.",
+        "role": "Mobility plus shadow damage—assassin-fighter blend."
       },
-      "dusk_striker": {
+      "dusk": {
         "name": "Dusk Striker",
-        "desc": "Twin-dagger skirmisher; Shadow Walker–paced mobility.\n\nWeapon: dagger (Twin Daggers — thin throws to nearest foes in order; starts with two, lower base damage per volley than a single Bullet shot, slightly shorter cooldown)\nNight Vial (night_vial): found during a run (level-up, chest, etc.); at Twin Daggers MAX + Night Vial MAX, evolve into Veil Daggers.\nEvolution: veil_daggers (Veil Daggers — more blades, pierce, longer reach)\nUnlock: Win an Arena run (reach the time goal) with Shadow Walker on your roster → unlock → 380 gold; origin: +22% speed, −18% max HP"
+        "desc": "Twin-dagger skirmisher; Shadow Walker–paced mobility.\n\nWeapon: dagger (Twin Daggers — thin throws to nearest foes in order; starts with two, lower base damage per volley than a single Bullet shot, slightly shorter cooldown)\nNight Vial (night_vial): found during a run (level-up, chest, etc.); at Twin Daggers MAX + Night Vial MAX, evolve into Veil Daggers.\nEvolution: veil_daggers (Veil Daggers — more blades, pierce, longer reach)\nUnlock: Win an Arena run (reach the time goal) with Shadow Walker on your roster → unlock → 380 gold; origin: +22% speed, −18% max HP",
+        "role": "Twin Daggers start; Night Vial on the run; Veil Daggers evolution; Arena + Shadow Walker unlock cadence—fighter skirmisher."
       },
       "engineer": {
         "name": "Engineer",
-        "desc": "Laser main with area bonuses—glass cannon leaning."
+        "desc": "Laser main with area bonuses—glass cannon leaning.",
+        "role": "Laser and area control—skill-shot mage fantasy."
       },
       "paladin": {
         "name": "Paladin",
-        "desc": "Tanky holy starter with armor and Holy Bullet."
+        "desc": "Tanky holy starter with armor and Holy Bullet.",
+        "role": "Armor, holy bullet, frontline—tank anchor."
       },
       "blood_prince": {
         "name": "Blood Prince",
-        "desc": "XP-hungry noble with Blood Axe fantasy."
+        "desc": "XP-hungry noble with Blood Axe fantasy.",
+        "role": "Aggressive fighter from vampire lineage."
       },
       "nomad": {
         "name": "Nomad",
-        "desc": "Exile skirmisher.\nWeapon: fan_blade (Fan Blade — wide close fan)\nItem: ember_heart (Ember Heart — fireheart passive; Ember Fan evolution)\nEvolution: ember_fan (Ember Fan)\nUnlock: 175 total kills → 350 gold; origin: +5 flat damage"
+        "desc": "Exile skirmisher.\nWeapon: fan_blade (Fan Blade — wide close fan)\nItem: ember_heart (Ember Heart — fireheart passive; Ember Fan evolution)\nEvolution: ember_fan (Ember Fan)\nUnlock: 175 total kills → 350 gold; origin: +5 flat damage",
+        "role": "Fan Blade start; Ember Heart on the run; Ember Fan evolution—mobile fighter."
       },
       "sigil_warden": {
         "name": "Sigil Warden",
-        "desc": "Seal and bind specialist.\nWeapon: hex_sigil (Hex Sigil)\nItem: glyph_charm (Glyph Charm)\nEvolution: binding_circle (Binding Circle)\nUnlock: 220 kills → 400 gold; origin: +12% area, -8% speed"
+        "desc": "Seal and bind specialist.\nWeapon: hex_sigil (Hex Sigil)\nItem: glyph_charm (Glyph Charm)\nEvolution: binding_circle (Binding Circle)\nUnlock: 220 kills → 400 gold; origin: +12% area, -8% speed",
+        "role": "Sigil zones, slows, and binding evolution—controller."
       },
       "grav_binder": {
         "name": "Grav Binder",
-        "desc": "Gravity well expert.\nWeapon: gravity_anchor (Gravity Anchor)\nItem: resonance_stone (Resonance Stone)\nEvolution: void_lens (Void Lens)\nUnlock: survive 6m30s → 430 gold; origin: -12% cooldown, -10% max HP"
+        "desc": "Gravity well expert.\nWeapon: gravity_anchor (Gravity Anchor)\nItem: resonance_stone (Resonance Stone)\nEvolution: void_lens (Void Lens)\nUnlock: survive 6m30s → 430 gold; origin: -12% cooldown, -10% max HP",
+        "role": "Pull fields and crowd squeeze plus resonance—controller."
       },
       "ironclad": {
         "name": "Ironclad",
-        "desc": "Frontline bulwark.\nWeapon: bastion_flail (Bastion Flail)\nItem: rampart_plate (Rampart Plate)\nEvolution: citadel_flail (Citadel Flail)\nUnlock: kill 1 tank enemy → 480 gold; origin: +3 armor, -10% speed"
+        "desc": "Frontline bulwark.\nWeapon: bastion_flail (Bastion Flail)\nItem: rampart_plate (Rampart Plate)\nEvolution: citadel_flail (Citadel Flail)\nUnlock: kill 1 tank enemy → 480 gold; origin: +3 armor, -10% speed",
+        "role": "Bastion flail plus rampart plates—knockback frontline tank."
       },
       "linebreaker": {
         "name": "Linebreaker",
-        "desc": "Shield-charge linebreaker.\nWeapon: shield_ram (Shield Ram — cone slam)\nItem: iron_bulwark (Iron Bulwark — armor)\nEvolution: fortress_ram (Fortress Ram)\nUnlock: survive 450s → 520 gold; origin: +12% max HP, -6% damage"
+        "desc": "Shield-charge linebreaker.\nWeapon: shield_ram (Shield Ram — cone slam)\nItem: iron_bulwark (Iron Bulwark — armor)\nEvolution: fortress_ram (Fortress Ram)\nUnlock: survive 450s → 520 gold; origin: +12% max HP, -6% damage",
+        "role": "Shield ram cone and iron bulwark—line-breaking tank."
       },
       "death_knight": {
         "name": "Death Knight",
-        "desc": "Secret: Death Laser start, huge damage, brutal tradeoffs."
+        "desc": "Secret: Death Laser start, huge damage, brutal tradeoffs.",
+        "role": "High risk / high reward burst—fighter with special rules."
       },
       "chaos": {
         "name": "Chaos",
-        "desc": "Secret: random weapon starts—pure variance runs."
+        "desc": "Secret: random weapon starts—pure variance runs.",
+        "role": "Random weapon start—special roster fantasy outside the four classes."
       },
       "omega": {
         "name": "Omega",
-        "desc": "Secret: all weapons, 1 HP. For experts and showboaters."
+        "desc": "Secret: all weapons, 1 HP. For experts and showboaters.",
+        "role": "Full loadout at 1 HP—special challenge pick."
       }
     },
     "map": {

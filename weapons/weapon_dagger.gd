@@ -52,4 +52,10 @@ func on_upgrade() -> void:
 			cooldown = 0.95
 
 func get_description() -> String:
-	return "Hançer Lv" + str(level) + " | x" + str(dagger_count + get_effective_multi_attack()) + " hançer | " + str(damage) + " hasar/hançer"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.dagger") % [
+		level,
+		dagger_count + get_effective_multi_attack(),
+		damage,
+		int(max_range * player.get_area_multiplier()),
+		snappedf(get_effective_cooldown(), 0.01),
+	]

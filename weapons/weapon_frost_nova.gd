@@ -6,7 +6,7 @@ var reflect_damage = 0.2
 
 func _ready():
 	super._ready()
-	weapon_name = "Buz Novas"
+	weapon_name = "Frost Nova"
 	category = "defense"
 	tag = "buyu"
 	damage = 20
@@ -43,4 +43,9 @@ func on_upgrade():
 		5: damage = 52; cooldown = 1.7; nova_radius = 175
 
 func get_description() -> String:
-	return "Buz Novas Lv" + str(level) + " | " + str(int(nova_radius * player.get_area_multiplier())) + " alan | dondurma"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.frost_nova") % [
+		level,
+		int(nova_radius * player.get_area_multiplier()),
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

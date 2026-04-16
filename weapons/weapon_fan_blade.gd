@@ -67,4 +67,11 @@ func on_upgrade():
 			shard_lifetime = 0.2
 
 func get_description() -> String:
-	return "Yelpaze Bıçak Lv" + str(level) + " | x" + str(blade_count + get_effective_multi_attack()) + " | " + str(damage) + " hasar | yakın menzil"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.fan_blade") % [
+		level,
+		blade_count + get_effective_multi_attack(),
+		damage,
+		int(fire_range * player.get_area_multiplier()),
+		int(spread_degrees),
+		snappedf(get_effective_cooldown(), 0.01),
+	]

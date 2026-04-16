@@ -56,4 +56,10 @@ func on_upgrade():
 			cooldown = 1.0
 
 func get_description() -> String:
-	return "Mermi Lv" + str(level) + " | x" + str(bullet_count + get_effective_multi_attack()) + " mermi | " + str(damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.bullet") % [
+		level,
+		bullet_count + get_effective_multi_attack(),
+		damage,
+		int(max_range * player.get_area_multiplier()),
+		snappedf(get_effective_cooldown(), 0.01),
+	]

@@ -1,84 +1,61 @@
 class_name WeaponEvolution
 extends Node
+## Evolution recipes and level-up eligibility. Design tables: `docs/SILAHLAR_ESYALAR_EVO.md` (§2 evolutions, tail matrix).
+## `death_laser`: `laser` + `crit` (both MAX). `frost_nova`: `ice_ball` + `armor` + `shield` (all MAX). Runtime: `is_evolution_ready`, `player.gd` `evolve_weapon`.
 
+## Display strings: `locales/en.json` → `ui.evolution_defs.<id>.name` / `.desc` (same pipeline as `Node.tr()`).
 const EVOLUTIONS = {
 	"holy_bullet": {
 		"requires_weapons": ["bullet"],
 		"requires_items": ["armor"],
-		"name": "Holy Bullet",
-		"description": "Mermi + Zırh → Kutsal Mermi\n+%50 hasar, düşman zırhını kırar"
 	},
 	"toxic_chain": {
 		"requires_weapons": ["chain"],
 		"requires_items": ["poison"],
-		"name": "Toxic Chain",
-		"description": "Zincir + Zehir → Zehirli Zincir\nZincirleme atlarken zehir yayar"
 	},
 	"death_laser": {
 		"requires_weapons": ["laser"],
 		"requires_items": ["crit"],
-		"name": "Death Laser",
-		"description": "Lazer + Kritik → Ölüm Lazeri\nHer vuruş kritik, menzil 2x"
 	},
 	"blood_boomerang": {
 		"requires_weapons": ["boomerang"],
 		"requires_items": ["lifesteal"],
-		"name": "Kan Baltası",
-		"description": "Balta + Can Çalma → Kan Baltası\nVurdukça can çalar"
 	},
 	"storm": {
 		"requires_weapons": ["lightning"],
 		"requires_items": ["speed_charm"],
-		"name": "Storm",
-		"description": "Yıldırım + Hız Tılsımı → Fırtına\nHer öldürmede ekstra yıldırım"
 	},
 	"shadow_storm": {
 		"requires_weapons": ["shadow", "lightning"],
 		"requires_items": ["speed_charm"],
-		"name": "Gölge Fırtınası",
-		"description": "Gölge + Yıldırım + Hız → Gölge Fırtınası\nHer gölge vuruşu yıldırım zinciri tetikler"
 	},
 	"frost_nova": {
 		"requires_weapons": ["ice_ball"],
 		"requires_items": ["armor", "shield"],
-		"name": "Buz Novas",
-		"description": "Buz Topu + Zırh + Kalkan → Buz Novas\nVuruşta alan dondurma + hasar yansıtma"
 	},
 	"ember_fan": {
 		"requires_weapons": ["fan_blade"],
 		"requires_items": ["ember_heart"],
-		"name": "Kor Yelpazesi",
-		"description": "Yelpaze Bıçak (MAX) + Kor Kalbi (MAX) → Kor Yelpazesi\nDaha geniş yelpaze, delici kor kılıçları"
 	},
 	"binding_circle": {
 		"requires_weapons": ["hex_sigil"],
 		"requires_items": ["glyph_charm"],
-		"name": "Bağlayıcı Halka",
-		"description": "Altıgön Mühür + Rün Tılsımı → Bağlayıcı Halka\nGeniş alan, güçlü yavaşlatma ve hasar"
 	},
 	"void_lens": {
 		"requires_weapons": ["gravity_anchor"],
 		"requires_items": ["resonance_stone"],
-		"name": "Uçurum Merceği",
-		"description": "Çekim Çapası + Rezonans Taşı → Uçurum Merceği\nDaha güçlü çekim ve alan hasarı"
 	},
 	"citadel_flail": {
 		"requires_weapons": ["bastion_flail"],
 		"requires_items": ["rampart_plate"],
-		"name": "Hisar Zinciri",
-		"description": "Kale Gürzü + Rampa Plakası → Hisar Zinciri\nGeniş alan, yüksek itme ve hasar"
 	},
 	"fortress_ram": {
 		"requires_weapons": ["shield_ram"],
 		"requires_items": ["iron_bulwark"],
-		"name": "Kale Sur Koşusu",
-		"description": "Kalkan Hamlesi + Demir Siper → Kale Sur Koşusu\nGeniş koni, sur gibi baskı"
 	},
 	"veil_daggers": {
 		"requires_weapons": ["dagger"],
 		"requires_items": ["night_vial"],
-		"name": "Peçe Hançerleri",
-		"description": "İkiz Hançer (MAX) + Gece Şişesi (MAX) → Peçe Hançerleri\nDaha çok bıçak, delme ve biraz daha uzun menzil"
 	},
 }
 
@@ -133,18 +110,14 @@ static func get_evolution_weight(evo_id: String) -> float:
 static func localized_name(evo_id: String) -> String:
 	if not EVOLUTIONS.has(evo_id):
 		return evo_id
-	var key = "ui.evolution_defs.%s.name" % evo_id
-	var t = TranslationServer.translate(key)
-	if t == key:
-		return str(EVOLUTIONS[evo_id]["name"])
-	return t
+	var key := "ui.evolution_defs.%s.name" % evo_id
+	var t: String = tr(key)
+	return t if t != key else evo_id
 
 
 static func localized_description(evo_id: String) -> String:
 	if not EVOLUTIONS.has(evo_id):
 		return ""
-	var key = "ui.evolution_defs.%s.desc" % evo_id
-	var t = TranslationServer.translate(key)
-	if t == key:
-		return str(EVOLUTIONS[evo_id]["description"])
-	return t
+	var key := "ui.evolution_defs.%s.desc" % evo_id
+	var t: String = tr(key)
+	return t if t != key else ""

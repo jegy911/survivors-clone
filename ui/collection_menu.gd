@@ -85,6 +85,23 @@ func _setup_layout() -> void:
 	detail_desc.add_theme_font_size_override("font_size", 15)
 	detail_desc.add_theme_color_override("font_color", Color("#BDC3C7"))
 	_style_back_button()
+	_ensure_world_lore_hint()
+
+
+func _ensure_world_lore_hint() -> void:
+	if $MainVBox.get_node_or_null("WorldLoreHint") != null:
+		return
+	var hint := Label.new()
+	hint.name = "WorldLoreHint"
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hint.add_theme_font_size_override("font_size", 12)
+	hint.add_theme_color_override("font_color", Color("#6F7F90"))
+	hint.text = tr("ui.collection_menu.world_info_hint")
+	var pi: int = $MainVBox/ProgressLabel.get_index()
+	$MainVBox.add_child(hint)
+	$MainVBox.move_child(hint, pi + 1)
 
 
 func _style_back_button() -> void:
@@ -156,6 +173,8 @@ func _on_tab_pressed(tab_id: String) -> void:
 func _entry_name_key(entry: Dictionary) -> String:
 	var tab: String = str(entry.get("tab", ""))
 	var id: String = str(entry.get("id", ""))
+	if tab == CollectionData.TAB_GLOSSARY:
+		return CollectionData.glossary_title_key(id)
 	if tab == CollectionData.TAB_ENEMY or tab == CollectionData.TAB_BOSS:
 		return "codex.%s.name" % id
 	return "codex.%s.%s.name" % [tab, id]
@@ -164,13 +183,18 @@ func _entry_name_key(entry: Dictionary) -> String:
 func _entry_desc_key(entry: Dictionary) -> String:
 	var tab: String = str(entry.get("tab", ""))
 	var id: String = str(entry.get("id", ""))
+	if tab == CollectionData.TAB_GLOSSARY:
+		return CollectionData.glossary_body_key(id)
 	if tab == CollectionData.TAB_ENEMY or tab == CollectionData.TAB_BOSS:
 		return "codex.%s.desc" % id
 	return "codex.%s.%s.desc" % [tab, id]
 
 
 func _locked_desc_key(entry: Dictionary) -> String:
-	return "ui.collection_menu.locked_desc_%s" % str(entry.get("tab", "enemy"))
+	var tab: String = str(entry.get("tab", "enemy"))
+	if tab == CollectionData.TAB_GLOSSARY:
+		return "ui.collection_menu.locked_desc_glossary"
+	return "ui.collection_menu.locked_desc_%s" % tab
 
 
 func _entries_match(a: Dictionary, b: Dictionary) -> bool:
@@ -181,6 +205,9 @@ func _entries_match(a: Dictionary, b: Dictionary) -> bool:
 
 func _apply_texts() -> void:
 	$MainVBox/TitleLabel.text = tr("ui.collection_menu.title")
+	var wl: Node = $MainVBox.get_node_or_null("WorldLoreHint")
+	if wl is Label:
+		(wl as Label).text = tr("ui.collection_menu.world_info_hint")
 	var n = CollectionData.total_entry_count()
 	var d = 0
 	for e in CollectionData.all_entries():

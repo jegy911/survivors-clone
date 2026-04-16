@@ -19,4 +19,8 @@ func get_crit_bonus() -> float:
 	return crit_bonus
 
 func get_description() -> String:
-	return "Şans Taşı Lv" + str(level) + "\n+%" + str(int(crit_bonus * 100)) + " kritik | +" + str(gold_bonus) + " altın/öldürme"
+	return tr("ui.upgrade_ui.stats.loadout_items.luck_stone") % [
+		level,
+		int(crit_bonus * 100),
+		gold_bonus,
+	]

@@ -57,4 +57,8 @@ func _spawn_pool(pos: Vector2):
 	)
 
 func get_description() -> String:
-	return "Kan Havuzu Lv" + str(level) + "\nÖlünce " + str(int(pool_radius * player.get_area_multiplier())) + " alanda " + str(pool_damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_items.blood_pool") % [
+		level,
+		int(pool_radius * player.get_area_multiplier()),
+		pool_damage,
+	]

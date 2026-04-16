@@ -18,4 +18,4 @@ func on_enemy_killed(_position: Vector2):
 		player.heal(heal_per_kill)
 
 func get_description() -> String:
-	return "Vampir Lv" + str(level) + "\nHer öldürmede +" + str(heal_per_kill) + " HP"
+	return tr("ui.upgrade_ui.stats.loadout_items.vampire") % [level, heal_per_kill]

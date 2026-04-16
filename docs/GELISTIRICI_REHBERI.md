@@ -97,7 +97,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 - **Sınıf çerçevesi** (Controller, Fighter, Mage, Tank), co-op destek vizyonu ve mevcut kahramanların **taslak** sınıf eşlemesi: **`docs/KARAKTER_SINIFLARI_VE_TASARIM.md`**. Kodda rol etiketi: `CharacterData.CHARACTERS[].hero_class`; tasarım tablosu ile senkron tutulmalıdır.
 
 ### Veri
-- **`core/character_data.gd`** — `CharacterData.CHARACTERS` dizisi: her eleman bir sözlük (`id`, `name`, `description`, `color`, `start_weapon`, `start_item`, bonuslar, `locked`, `secret`, `cost`, `unlock_hint`, `unlock_condition`, `origin_bonus`, `special`, `hero_class` — tasarım rolü: `tank` / `fighter` / `mage` / `controller` / `special`; seçim filtresi sırası: `HERO_CLASS_FILTER_IDS`). **Tüm kahramanlarda `start_item` boş** — başlangıçta yalnızca `start_weapon`; imza pasifler (ör. `night_vial`, `ember_heart`) koşuda toplanır. `description` / kodeks metinleri silah + koşu içi eşya yolu + evrim satırlarını taşır. Karakter sahne yolu: `CharacterData.CHARACTER_SCENE_BY_ID` + `get_character_scene_path(char_id)` (`main/main.gd` oyuncu spawn).
+- **`core/character_data.gd`** — `CharacterData.CHARACTERS` dizisi: her eleman bir sözlük (`id`, `name`, `description`, `color`, `start_weapon`, `start_item`, bonuslar, `locked`, `secret`, `cost`, `unlock_condition`, `origin_bonus`, `special`, `hero_class` — tasarım rolü: `tank` / `fighter` / `mage` / `controller` / `special`; seçim filtresi sırası: `HERO_CLASS_FILTER_IDS`). Kilit **ipucu metni** artık `locales/en.json` → `ui.character_select.unlock.<id>` (`CharacterSelectHelpers.localized_unlock_hint`). **Tüm kahramanlarda `start_item` boş** — başlangıçta yalnızca `start_weapon`; imza pasifler (ör. `night_vial`, `ember_heart`) koşuda toplanır. `description` / kodeks metinleri silah + koşu içi eşya yolu + evrim satırlarını taşır. Karakter sahne yolu: `CharacterData.CHARACTER_SCENE_BY_ID` + `get_character_scene_path(char_id)` (`main/main.gd` oyuncu spawn).
 
 ### Sahne
 - **`characters/<id>/<id>.tscn`** — Çoğunlukla `CharacterBody2D` + `player/player.gd`; her karakter kendi klasöründe tutulur.
@@ -205,7 +205,7 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 
 ## 6. Harita ve mod seçimi
 
-- **`ui/map_select.gd`**: Run modu **`SaveManager.settings["run_variant"]`** (`story` / `fast` / **`arena`** — kısa hedef süre `SaveManager.ARENA_RUN_GOAL_SEC`); harita listesi + önizleme; **`run_curse_tier`** (0–5) kaydı; **Başlat** → `SaveManager.selected_map` / mod alanları + `register_codex_map`. Süre ve boss ölçeği: `SaveManager.get_run_goal_sec()`, `get_mini_boss_times()`, `get_run_spawn_difficulty_mult()` (`spawn_manager`, `wave_manager`, `main`, `player`).
+- **`ui/map_select.gd`**: Run modu **`SaveManager.settings["run_variant"]`** (`story` / `fast` / **`arena`** — kısa hedef süre `SaveManager.ARENA_RUN_GOAL_SEC`); harita listesi + önizleme; **`run_curse_tier`** (0–5) kaydı; **Başlat** → `SaveManager.selected_map` / mod alanları + `register_codex_map`. Süre ve boss ölçeği: `SaveManager.get_run_goal_sec()`, `get_mini_boss_times()`, `get_run_spawn_difficulty_mult()` (**run_curse_tier** için `1+0,10×tier`; `spawn_manager` ile meta curse çarpımı — **2026-04-18**).
 - Yeni **hikaye haritası**: Yeni buton + `selected_map` string ID + `main` veya ortam tarafında bu ID’ye göre sahne/tileset/spawn mantığı.
 - **Arena**: `map_select` içinde kilitli; dalga mantığı `YOL_HARITASI.md` planı ile genişletilecek.
 

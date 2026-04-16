@@ -114,4 +114,10 @@ func on_upgrade():
 
 
 func get_description() -> String:
-	return "Yıldırım Lv" + str(level) + " | " + str(chain_count + get_effective_multi_attack()) + " zincir | " + str(damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.lightning") % [
+		level,
+		chain_count + get_effective_multi_attack(),
+		damage,
+		int(chain_range * player.get_area_multiplier()),
+		snappedf(get_effective_cooldown(), 0.01),
+	]

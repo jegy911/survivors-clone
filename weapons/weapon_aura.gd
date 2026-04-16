@@ -106,4 +106,9 @@ func on_upgrade():
 			slow_factor = 0.3
 
 func get_description() -> String:
-	return "Aura Lv" + str(level) + " | " + str(int(radius * player.get_area_multiplier())) + " alan | " + str(damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.aura") % [
+		level,
+		int(radius * player.get_area_multiplier()),
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

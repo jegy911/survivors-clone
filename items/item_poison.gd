@@ -21,4 +21,8 @@ func on_damage_dealt(_player: Node, enemy: Node, _damage: int):
 		enemy.apply_poison(poison_damage, effective_duration)
 
 func get_description() -> String:
-	return "Zehir Lv" + str(level) + "\nVuruşta " + str(poison_damage) + " zehir/sn, " + str(snapped(poison_duration * player.get_duration_multiplier(), 0.1)) + "sn"
+	return tr("ui.upgrade_ui.stats.loadout_items.poison") % [
+		level,
+		poison_damage,
+		snappedf(poison_duration * player.get_duration_multiplier(), 0.1),
+	]

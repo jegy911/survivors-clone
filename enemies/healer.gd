@@ -40,7 +40,7 @@ func _process(delta):
 		global_position += direction * current_speed * delta
 
 	if damage_cooldown <= 0 and dist < 40:
-		player.take_damage(DAMAGE)
+		player.take_damage(DAMAGE, self)
 		damage_cooldown = 1.0
 
 	_update_enemy_direction()

@@ -34,4 +34,8 @@ func on_enemy_killed(_position: Vector2):
 		boost_timer = speed_duration
 
 func get_description() -> String:
-	return "Hız Tılsımı Lv" + str(level) + "\nÖldürünce +" + str(speed_bonus) + " hız, " + str(speed_duration) + "sn"
+	return tr("ui.upgrade_ui.stats.loadout_items.speed_charm") % [
+		level,
+		speed_bonus,
+		snappedf(speed_duration, 0.1),
+	]

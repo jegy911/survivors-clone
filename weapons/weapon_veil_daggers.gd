@@ -53,4 +53,11 @@ func on_upgrade() -> void:
 			proj_pierce = 2
 
 func get_description() -> String:
-	return "Peçe Hançerleri Lv" + str(level) + " | x" + str(dagger_count + get_effective_multi_attack()) + " | " + str(damage) + " hasar | delme " + str(proj_pierce)
+	return tr("ui.upgrade_ui.stats.loadout_weapons.veil_daggers") % [
+		level,
+		dagger_count + get_effective_multi_attack(),
+		damage,
+		proj_pierce,
+		int(max_range * player.get_area_multiplier()),
+		snappedf(get_effective_cooldown(), 0.01),
+	]

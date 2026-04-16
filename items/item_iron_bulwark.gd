@@ -14,4 +14,4 @@ func apply():
 	armor_value = 2 * level
 
 func get_description() -> String:
-	return "Demir Siper Lv" + str(level) + " | -" + str(armor_value) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_items.iron_bulwark") % [level, armor_value]

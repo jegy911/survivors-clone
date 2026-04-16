@@ -42,4 +42,9 @@ func on_upgrade():
 			cooldown = 1.3
 
 func get_description() -> String:
-	return "Kan Baltası Lv" + str(level) + " | x" + str(boomerang_count) + " | " + str(damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.blood_boomerang") % [
+		level,
+		boomerang_count,
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

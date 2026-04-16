@@ -54,4 +54,9 @@ func on_upgrade():
 			slow_factor = 0.40
 
 func get_description() -> String:
-	return "Altıgön Mühür Lv" + str(level) + " | " + str(int(radius * player.get_area_multiplier())) + " alan | " + str(damage) + " hasar | yavaşlatır"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.hex_sigil") % [
+		level,
+		int(radius * player.get_area_multiplier()),
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

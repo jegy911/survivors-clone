@@ -54,4 +54,9 @@ func on_upgrade():
 			cooldown = 0.8
 
 func get_description() -> String:
-	return "Uçurum Merceği Lv" + str(level) + " | " + str(int(radius * player.get_area_multiplier())) + " menzil | güçlü çekim + " + str(damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.void_lens") % [
+		level,
+		int(radius * player.get_area_multiplier()),
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

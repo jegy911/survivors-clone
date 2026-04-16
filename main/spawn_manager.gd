@@ -42,7 +42,7 @@ const WAVE_TABLE = {
 	20: {"enemies": [{"scene": "giant", "weight": 0.3}, {"scene": "ranged", "weight": 0.3}, {"scene": "shield", "weight": 0.2}, {"scene": "exploder", "weight": 0.2}], "min": 40, "interval": 0.4},
 }
 
-func initialize(main: Node):
+func initialize(main: Node) -> void:
 	main_node = main
 
 
@@ -82,15 +82,21 @@ func _pick_from_wave(wave: Dictionary) -> Node:
 
 func get_current_spawn_interval(game_timer: float) -> float:
 	var wave = _get_wave_data(game_timer)
-	var curse = SaveManager.meta_upgrades.get("curse_level", 0)
-	var total_curse = (1.0 + curse * 0.10) * SaveManager.get_run_spawn_difficulty_mult()
-	return max(0.15, wave["interval"] / total_curse)
+	var meta_curse: int = int(SaveManager.meta_upgrades.get("curse_level", 0))
+	# Meta curse and run curse tier stack: each tier +10% spawn frequency (shorter interval).
+	var spawn_pressure: float = (1.0 + meta_curse * 0.10) * SaveManager.get_run_spawn_difficulty_mult()
+	var interval: float = max(0.15, wave["interval"] / spawn_pressure)
+	if SaveManager.is_arena_run():
+		interval /= 1.22
+	return interval
 
 func get_current_min_enemies(game_timer: float) -> int:
 	var wave = _get_wave_data(game_timer)
-	var curse = SaveManager.meta_upgrades.get("curse_level", 0)
-	var tier = SaveManager.get_run_curse_tier()
-	return wave["min"] + curse * 2 + tier
+	var curse: int = int(SaveManager.meta_upgrades.get("curse_level", 0))
+	var n: int = wave["min"] + curse * 2
+	if SaveManager.is_arena_run():
+		n = int(ceili(float(n) * 1.12))
+	return n
 
 func get_spawn_outside_screen() -> Vector2:
 	var players = get_tree().get_nodes_in_group("player")
@@ -112,7 +118,7 @@ func get_spawn_outside_screen() -> Vector2:
 		3: pos = Vector2(half_w, randf_range(-half_h, half_h))
 	return center + pos
 
-func spawn_random_enemy(game_timer: float, current_immunity: String):
+func spawn_random_enemy(game_timer: float, current_immunity: String) -> void:
 	var wave = _get_wave_data(game_timer)
 	var enemy = _pick_from_wave(wave)
 	if enemy == null:
@@ -120,12 +126,13 @@ func spawn_random_enemy(game_timer: float, current_immunity: String):
 	main_node.add_child(enemy)
 	enemy.global_position = get_spawn_outside_screen()
 	_apply_scaling(enemy, game_timer)
-	_apply_curse(enemy)
+	_apply_meta_curse_level(enemy)
+	_apply_run_curse_tier(enemy)
 	_make_elite(enemy, game_timer)
 	if current_immunity != "" and randf() < 0.30:
 		_apply_immunity(enemy, current_immunity)
 
-func spawn_mini_boss(game_timer: float, boss_index: int):
+func spawn_mini_boss(game_timer: float, boss_index: int) -> void:
 	EventBus.boss_spawned.emit()
 	var boss = boss_scene.instantiate()
 	boss.set_meta("codex_id", "mini_boss")
@@ -136,6 +143,7 @@ func spawn_mini_boss(game_timer: float, boss_index: int):
 		boss.max_hp = boss.hp
 	if boss.get("DAMAGE") != null:
 		boss.DAMAGE = int(boss.DAMAGE * (1.0 + boss_index * 0.2))
+	_apply_run_curse_tier(boss)
 
 func spawn_reaper(reaper_count: int) -> Node:
 	var reaper = boss_scene.instantiate()
@@ -153,9 +161,10 @@ func spawn_reaper(reaper_count: int) -> Node:
 		reaper.current_speed = reaper.BASE_SPEED
 	if reaper.get_node_or_null("ColorRect"):
 		reaper.get_node("ColorRect").color = Color("#1A0000")
+	_apply_run_curse_tier(reaper)
 	return reaper
 
-func _apply_scaling(enemy: Node, game_timer: float):
+func _apply_scaling(enemy: Node, game_timer: float) -> void:
 	var minutes = game_timer / 60.0
 	var hp_mult = 1.0 + minutes * 0.05
 	var dmg_mult = 1.0 + minutes * 0.04
@@ -168,19 +177,33 @@ func _apply_scaling(enemy: Node, game_timer: float):
 	if enemy.get("BASE_SPEED") != null:
 		enemy.BASE_SPEED *= spd_mult
 
-func _apply_curse(enemy: Node):
-	var curse = SaveManager.meta_upgrades.get("curse_level", 0)
+func _apply_meta_curse_level(enemy: Node) -> void:
+	var curse: int = int(SaveManager.meta_upgrades.get("curse_level", 0))
 	if curse <= 0:
 		return
-	var hp_mult = 1.0 + curse * 0.10
-	var speed_mult = 1.0 + curse * 0.05
+	var hp_mult: float = 1.0 + curse * 0.10
+	var speed_mult: float = 1.0 + curse * 0.05
 	if enemy.get("hp") != null:
 		enemy.hp = int(enemy.hp * hp_mult)
 		enemy.max_hp = enemy.hp
 	if enemy.get("BASE_SPEED") != null:
 		enemy.BASE_SPEED *= speed_mult
 
-func _make_elite(enemy: Node, game_timer: float):
+
+## `SaveManager.settings["run_curse_tier"]` (0–5): +10% HP, +5% move speed per tier (map_select).
+func _apply_run_curse_tier(enemy: Node) -> void:
+	var tier: int = SaveManager.get_run_curse_tier()
+	if tier <= 0:
+		return
+	var hp_m: float = 1.0 + 0.10 * float(tier)
+	var spd_m: float = 1.0 + 0.05 * float(tier)
+	if enemy.get("hp") != null:
+		enemy.hp = int(round(float(enemy.hp) * hp_m))
+		enemy.max_hp = enemy.hp
+	if enemy.get("BASE_SPEED") != null:
+		enemy.BASE_SPEED *= spd_m
+
+func _make_elite(enemy: Node, game_timer: float) -> void:
 	if game_timer < 60:
 		return
 	if randf() > ELITE_CHANCE:
@@ -206,7 +229,7 @@ func _make_elite(enemy: Node, game_timer: float):
 	tween.tween_property(border, "modulate:a", 1.0, 0.5)
 	tween.tween_property(border, "modulate:a", 0.3, 0.5)
 
-func _apply_immunity(enemy: Node, immunity_type: String):
+func _apply_immunity(enemy: Node, immunity_type: String) -> void:
 	enemy.set_meta("immunity", immunity_type)
 	var indicator = ColorRect.new()
 	indicator.name = "ImmunityIndicator"
@@ -218,13 +241,13 @@ func _apply_immunity(enemy: Node, immunity_type: String):
 	indicator.z_index = -1
 	enemy.add_child(indicator)
 
-func apply_immunity_to_existing(current_immunity: String):
+func apply_immunity_to_existing(current_immunity: String) -> void:
 	var enemies = EnemyRegistry.get_enemies()
 	for enemy in enemies:
 		if randf() < 0.30:
 			_apply_immunity(enemy, current_immunity)
 
-func spawn_swarm_event(game_timer: float):
+func spawn_swarm_event(game_timer: float) -> void:
 	var players = get_tree().get_nodes_in_group("player")
 	if players.is_empty():
 		return
@@ -248,15 +271,17 @@ func spawn_swarm_event(game_timer: float):
 		var screen_h = get_viewport().get_visible_rect().size.y
 		enemy.global_position = Vector2(spawn_x, center.y + randf_range(-screen_h * 0.6, screen_h * 0.6))
 		_apply_scaling(enemy, game_timer)
+		_apply_meta_curse_level(enemy)
+		_apply_run_curse_tier(enemy)
 		enemy.make_swarm_enemy(direction, randf_range(160.0, 220.0))
 
 	players[0].show_floating_text(
-		"⚠ SÜRÜ GELİYOR!",
+		tr("ui.alerts.swarm_incoming"),
 		players[0].global_position + Vector2(0, -90),
 		Color("#FF6600"), 20
 	)
 
-func spawn_encircle_event(game_timer: float):
+func spawn_encircle_event(game_timer: float) -> void:
 	var players = get_tree().get_nodes_in_group("player")
 	if players.is_empty():
 		return
@@ -278,10 +303,11 @@ func spawn_encircle_event(game_timer: float):
 		main_node.add_child(enemy)
 		enemy.global_position = center + Vector2(cos(angle), sin(angle)) * radius
 		_apply_scaling(enemy, game_timer)
-		_apply_curse(enemy)
+		_apply_meta_curse_level(enemy)
+		_apply_run_curse_tier(enemy)
 
 	players[0].show_floating_text(
-		"☠ KUŞATILIYORSUN!",
+		tr("ui.alerts.encircled"),
 		players[0].global_position + Vector2(0, -90),
 		Color("#E74C3C"), 20
 	)

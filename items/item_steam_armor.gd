@@ -48,4 +48,8 @@ func is_invincible() -> bool:
 	return invincible
 
 func get_description() -> String:
-	return "Buharlı Zırh Lv" + str(level) + "\n" + str(invincible_duration) + "sn yenilmez, " + str(invincible_cooldown) + "sn bekleme"
+	return tr("ui.upgrade_ui.stats.loadout_items.steam_armor") % [
+		level,
+		snappedf(invincible_duration, 0.1),
+		snappedf(invincible_cooldown, 0.1),
+	]

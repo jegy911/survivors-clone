@@ -559,8 +559,11 @@ func show_floating_text(text: String, pos: Vector2, color: Color, font_size: int
 	popup.global_position = pos
 	popup.show_damage_text(text, color, font_size)
 
+## XP / gold / pickup attract radius (px). Stacks additively — no overlap:
+## meta `magnet_bonus` (+15/ rank), item `magnet` (+60×level per SILAHLAR_ESYALAR_EVO),
+## `resonance_stone` (15+5×level), `night_vial` (4+4×level; Lv1 = 8px).
 func get_magnet_bonus() -> float:
-	var bonus = SaveManager.meta_upgrades.get("magnet_bonus", 0) * 15.0
+	var bonus: float = SaveManager.meta_upgrades.get("magnet_bonus", 0) * 15.0
 	if active_items.has("magnet"):
 		bonus += active_items["magnet"].get_bonus_radius()
 	if active_items.has("resonance_stone"):
@@ -702,7 +705,29 @@ func get_nearest_enemy():
 			nearest = enemy
 	return nearest
 
-func take_damage(amount: int):
+
+## Frost Nova: SILAHLAR_ESYALAR_EVO — incoming HP loss reflects a portion to the attacker.
+func _try_frost_nova_reflect(attacker: Node, damage_applied: int) -> void:
+	if damage_applied <= 0:
+		return
+	if not is_instance_valid(attacker):
+		return
+	if attacker.is_in_group("player"):
+		return
+	if not attacker.has_method("take_damage"):
+		return
+	if not active_weapons.has("frost_nova"):
+		return
+	var w: Node = active_weapons["frost_nova"]
+	var rate: float = float(w.reflect_damage) if w else 0.2
+	var ref_dmg: int = int(floor(float(damage_applied) * rate))
+	if ref_dmg < 1:
+		return
+	attacker.take_damage(ref_dmg, self)
+	EventBus.on_damage_dealt.emit(self, attacker, ref_dmg)
+
+
+func take_damage(amount: int, attacker: Node = null):
 	# Buharlı Zırh aktifse hasar alma
 	if active_items.has("steam_armor") and active_items["steam_armor"].is_invincible():
 		return
@@ -727,6 +752,7 @@ func take_damage(amount: int):
 	if final_damage <= 0:
 		return
 	hp -= final_damage
+	_try_frost_nova_reflect(attacker, final_damage)
 	update_hp_bar()
 	# Buharlı Zırh tetikle
 	if active_items.has("steam_armor"):

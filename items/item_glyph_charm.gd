@@ -15,4 +15,4 @@ func apply():
 	ward_value = 0.5 * level
 
 func get_description() -> String:
-	return "Rün Tılsımı Lv" + str(level) + " | -" + str(snappedf(ward_value, 0.1)) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_items.glyph_charm") % [level, snappedf(ward_value, 0.1)]

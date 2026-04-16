@@ -67,4 +67,10 @@ func on_upgrade():
 		5: damage = 65; chain_count = 5; chain_range = 300.0; cooldown = 1.1
 
 func get_description() -> String:
-	return "Storm Lv" + str(level) + " | x" + str(chain_count) + " zincir | " + str(damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.storm") % [
+		level,
+		chain_count,
+		damage,
+		int(chain_range * player.get_area_multiplier()),
+		snappedf(get_effective_cooldown(), 0.01),
+	]

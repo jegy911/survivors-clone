@@ -34,4 +34,9 @@ func on_upgrade():
 		5: boomerang_count = 3; damage = 32; cooldown = 1.5
 
 func get_description() -> String:
-	return "Balta Lv" + str(level) + " | x" + str(boomerang_count + get_effective_multi_attack()) + " | " + str(damage) + " hasar"
+	return tr("ui.upgrade_ui.stats.loadout_weapons.boomerang") % [
+		level,
+		boomerang_count + get_effective_multi_attack(),
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

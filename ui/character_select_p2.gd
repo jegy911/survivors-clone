@@ -160,10 +160,10 @@ func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContaine
 		desc_label.add_theme_color_override("font_color", Color("#B0B0B0"))
 		var btn: Button
 		if i == selected_index:
-			btn = _make_button("✅ Hazır!", Color("#27AE60"))
+			btn = _make_button(tr("ui.character_select.btn_ready"), Color("#27AE60"))
 			$Panel/VBoxContainer/ActionRow/PlayButton.disabled = false
 		else:
-			btn = _make_button("Seç", Color("#2471A3"))
+			btn = _make_button(tr("ui.character_select.btn_select"), Color("#2471A3"))
 		var idx = i
 		btn.pressed.connect(func(): _on_select(idx))
 		vbox.add_child(char_visual)
