@@ -41,9 +41,9 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 | Autoload | Görev |
 |----------|--------|
-| **SaveManager** | Altın, seçili karakter/harita, meta upgrade’ler, ayarlar (`locale` dahil), kilit / satın alınmış karakter listeleri, istatistikler; kodeks: **`codex_discovered`**, **`codex_weapons`**, **`codex_items`**, **`codex_maps`**. |
+| **SaveManager** | Altın, seçili karakter/harita, meta upgrade’ler, ayarlar (`locale` dahil), kilit / satın alınmış karakter listeleri, istatistikler; **hesap seviyesi:** `account_level`, `account_xp` (mevcut seviye içi ilerleme), `account_xp_total` (koşulardan bankalanan toplam); `user://save.cfg` → **`[account]`** (`level`, `xp`, `xp_total`); koşu sonu `game_over` → run combat XP’nin %20’si (`grant_account_xp_from_run_raw`); seviye atlayınca **`level_up`** / **`account_level_up`** + Profil `ProgressBar` tween için **`account_profile_level_flash_pending`**; kodeks: **`codex_discovered`**, **`codex_weapons`**, **`codex_items`**, **`codex_maps`**. |
 | **LocalizationManager** | `LANGUAGE_CATALOG` + `locales/<code>.json` → `TranslationServer`; fallback dili `project.godot` → `internationalization/locale/fallback` ve `_ready()` içinde `ProjectSettings.set_setting(..., "en")`; ilk kurulumda kayıt yoksa **OS dili** (katalogda varsa); `locale_changed` sinyali. |
-| **AudioManager** | Ses çalma API’si. |
+| **AudioManager** | Ses çalma API’si; `SaveManager.level_up` → `play_account_level_up()` (`LevelUpPlayer` / `levelup.mp3`) — meta hesap seviyesi. |
 | **ObjectPool** | Sık oluşturulan nesneler (mermi, orb, damage number vb.) için havuz; `get_object(scene_path)` / `return_object` (serbest yuva yığını ile hızlı seçim). |
 | **EnemyRegistry** | Canlı düşman listesi; `EnemyBase` kayıt/çıkış (`tree_exiting`); silah ve efektler `EnemyRegistry.get_enemies()` ile okur (yoğun sürüde `get_nodes_in_group` yükünü azaltır). |
 | **EventBus** | Sinyal merkezi (hasar, ölüm, level up, altın vb.). |

@@ -25,6 +25,8 @@ var shake_duration = 0.0
 var xp = 0
 var level = 1
 var xp_to_next_level = 30
+## Koşu boyunca `gain_xp` ile biriken ham XP (run sonu hesap XP payı için).
+var run_xp_collected: int = 0
 var kill_count = 0
 var gold_earned = 0
 var boss_kill_count = 0
@@ -636,7 +638,9 @@ func gain_xp(amount: int):
 	var bonus = 1.0 + SaveManager.meta_upgrades["xp_bonus"] * 0.1 + category_xp_bonus + _origin_xp_bonus
 	if shrine_active:
 		bonus *= 3.0
-	xp += int(amount * bonus * curse_multiplier)
+	var xp_gain: int = int(amount * bonus * curse_multiplier)
+	run_xp_collected += xp_gain
+	xp += xp_gain
 	if SaveManager.game_mode != "local_coop":
 		xp_bar.value = xp
 	AudioManager.play_xp()
@@ -854,12 +858,16 @@ func _solo_die():
 
 func _deferred_die():
 	var game_time = get_tree().get_first_node_in_group("main").game_timer
+	var run_xp_all: int = 0
+	for p in get_tree().get_nodes_in_group("player"):
+		if p.get("run_xp_collected") != null:
+			run_xp_all += int(p.run_xp_collected)
 	get_tree().paused = true
 	var go = game_over_scene.instantiate()
 	go.process_mode = Node.PROCESS_MODE_ALWAYS
 	get_tree().root.add_child(go)
 	var won = game_time >= SaveManager.get_run_goal_sec()
-	go.show_stats(game_time, level, kill_count, gold_earned, won)
+	go.show_stats(game_time, level, kill_count, gold_earned, won, run_xp_all)
 
 func collect_gold(amount: int):
 	var final_amount = amount * (3 if shrine_active else 1)

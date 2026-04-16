@@ -20,7 +20,6 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 - Sınıfın **denge/oynanışa** bağlanması (`hero_class` → çarpanlar vb.) — seçim kartı: `hero_class` + `codex.character.*.role` (`en.json`) **2026-04-17** ile tasarım tablosuyla hizalı.
 - Mevcut kahramanların sınıfa göre stat hizalaması.
 - Profil genişlemesi (takma ad, ikon, çerçeve, arka plan).
-- Hesap / seviye sistemi.
 - Rank sistemi (tasarım açık).
 - Görev / idle-benzeri gönderim + ödüller + ölçekleme + sınırlar.
 - Onboarding (deneyim seviyesine göre).
@@ -69,7 +68,7 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 
 ## `docs/TASARIM.md`
 
-- Meta UI: profil, hesap/rank (YOL ile örtüşür).
+- Meta UI: profil genişlemesi, rank (YOL ile örtüşür). *(Hesap seviye / global XP **2026-04-19** + juiciness **2026-04-16**: tween, `level_up` sesi, Game Over vurgusu — tamam.)*
 - Kodeks evrim sekmesi; oyun içi sözlük; idle görev menüsü.
 - `shadow` / `laser` / `holy_bullet` vb. **final** sprite / kart sanatı (`TASARIM` tablo). *(2026-04-18: vuruş okunabilirliği — `CombatProjectileFx.spawn_hit_sparks` + silah/lazer/holy mermi cilası.)*
 - `fan_blade` / `fan_blade_shard`: final sprite (Polygon2D yerine).

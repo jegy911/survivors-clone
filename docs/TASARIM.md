@@ -239,7 +239,7 @@ Aşağıdaki maddelerin **kod karşılığı** matriste; burada yalnızca **tasa
 - **Sandık heyecanı:** Açılış animasyonu + VFX + ses — kısmi.
 - **Koleksiyon / wiki / bestiary menüsü** (grid, keşfedilenler) — ✅ `ui/collection_menu`, `CollectionData` + `codex_discovered` / `codex_weapons` / `codex_items` / `codex_maps` + kahraman kilidi; 6 sekme (düşman, boss, silah, eşya, kahraman, harita), kart + detay.
 - **Kozmetik ödüller** (şapka, mermi rengi, texture varyantı) — ❌.
-- **Görsel juiciness:** Hit-stop, parçacık, orb — ✅ (genel); yoğun sahnede polish devam edebilir.
+- **Görsel juiciness:** Hit-stop, parçacık, orb — ✅ (genel); yoğun sahnede polish devam edebilir. **Meta (2026-04-16):** hesap seviye atlayınca `SaveManager.level_up` → `AudioManager.play_account_level_up` (`LevelUpPlayer` / `levelup.mp3`); Ayarlar → Profil’de hesap `ProgressBar` üzerinde modulate tween parlama; `account_profile_level_flash_pending` ile oyun sonu sonrası Profil açılışında da bir kez tetiklenir; Game Over’da “Account XP gained” satırı daha büyük punto + outline.
 
 ---
 

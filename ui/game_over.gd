@@ -22,7 +22,8 @@ func _ready():
 	$Panel/VBoxContainer.alignment = BoxContainer.ALIGNMENT_CENTER
 	$Panel/VBoxContainer.add_theme_constant_override("separation", 10)
 
-func show_stats(time: float, level: int, kills: int, gold: int, won: bool = false):
+func show_stats(time: float, level: int, kills: int, gold: int, won: bool = false, run_total_xp: int = 0) -> void:
+	SaveManager.grant_account_xp_from_run_raw(run_total_xp)
 	var screen_size = get_viewport().get_visible_rect().size
 	$Panel.size = Vector2(600, 580)
 	$Panel.position = screen_size / 2 - $Panel.size / 2
@@ -54,7 +55,19 @@ func show_stats(time: float, level: int, kills: int, gold: int, won: bool = fals
 	_add_separator(vbox)
 
 	_add_label(vbox, tr("ui.game_over.gold_earned") % gold, 22, Color("#F5E642"))
-	
+	if run_total_xp > 0:
+		var granted: int = int(floor(float(run_total_xp) * 0.20))
+		if granted > 0:
+			_add_label(
+				vbox,
+				tr("ui.game_over.account_xp_banked") % granted,
+				24,
+				Color("#FFF9C4"),
+				false,
+				3,
+				Color("#1A0A33")
+			)
+
 	_add_separator(vbox)
 	
 	# Butonlar
@@ -74,12 +87,15 @@ func show_stats(time: float, level: int, kills: int, gold: int, won: bool = fals
 	
 	visible = true
 
-func _add_label(parent: Node, text: String, size: int, color: Color, bold: bool = false):
+func _add_label(parent: Node, text: String, size: int, color: Color, bold: bool = false, outline_size: int = 0, outline_color: Color = Color.BLACK):
 	var label = Label.new()
 	label.text = text
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.add_theme_font_size_override("font_size", size)
 	label.add_theme_color_override("font_color", color)
+	if outline_size > 0:
+		label.add_theme_constant_override("outline_size", outline_size)
+		label.add_theme_color_override("font_outline_color", outline_color)
 	parent.add_child(label)
 
 func _add_separator(parent: Node):

@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-18 (run curse tier; loadout + evrim `en.json` tek kaynak; `weapon_evolution` sadece tarife; pickup + lore/arena/VFX önceki oturum)
+**Son güncelleme:** 2026-04-16 (hesap seviyesi juiciness: Profil bar tween + `level_up` ses + Game Over satırı; önceki: 2026-04-19 hesap XP temeli)
 
 ---
 
@@ -148,6 +148,8 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 | 2026-04-16 | **Locale P0 + tipleme** — `main`/`wave_manager`/`spawn_manager` yüzen metinler → `en.json` `ui.alerts` / `ui.game`; karakter seçimi `unlock.*` + `btn_select`/`btn_ready`/`btn_buy`; `CharacterData` `unlock_hint` kaldırıldı; `save_manager` / `audio_manager` debug çıktısı; `save_manager` + `main`/`wave`/`spawn` dönüş tipleri; `YAPILACAKLAR_TOPLU` / `YOL` / matris / `TASARIM` senkron. |
 | 2026-04-16 | **Level-up UI sahne ağacı + meta kart + slot metni** — `upgrade_ui.tscn`: `EditorRoot` ile Godot 2D’de düzenlenebilir layout; `upgrade_ui.gd`: `_bind_editor_root` / istat panelinde bu koşu kalan reroll-skip + max slot satırları; `meta_upgrade.tscn` + `meta_upgrade.gd`: ortalı sütun, kartta yalnız `damage_bonus` tam açıklama (diğerleri tooltip), `weapon_slot_bonus` / `item_slot_bonus` meta satırları; `locales/en.json` (yeni anahtarlar; `tr`/`zh_CN` dil turu dışı). |
 | 2026-04-17 | **`dusk` başlangıç yükü düzeltmesi** — `CharacterData`: `start_item` boş (yalnız `dagger`); `night_vial` koşuda; `locales/en.json` + `codex_extensions_en` dusk metni; `lore.md` / `KARAKTER_SINIFLARI` / `GELISTIRICI` senkron. |
+| 2026-04-16 | **Hesap seviyesi — juiciness** — `SaveManager.level_up` → `AudioManager.play_account_level_up` (`levelup.mp3`); `ui/settings.gd` Profil `ProgressBar` modulate tween + `account_profile_level_flash_pending`; `game_over` hesap XP satırı büyük punto + outline. |
+| 2026-04-19 | **Hesap seviyesi + global XP** — `SaveManager`: `account_level`, `account_xp`, `account_xp_total`, eşik `round(L×500×1.2)`, `level_up` (+ `account_level_up`) sinyali; `player.run_xp_collected`; `game_over.show_stats` → run XP’nin %20’si; Ayarlar → Profil: Label + `ProgressBar`; `en.json`; tam sıfırlamada hesap sıfırlanır. |
 | 2026-04-18 | **Run curse tier + lore/arena/VFX + loadout + evrim locale** — `spawn_manager` curse tier; `weapon_*.gd` / `item_*.gd` `get_description()` → `loadout_*`; **`weapon_evolution.gd`** yalnız tarife, isim/açıklama **`ui.evolution_defs.*` + `tr()`**; `weapon_base` / `passive_item` yedek satır; ana menü/kodeks lore + arena tempo + hit sparks. |
 | 2026-04-17 | **Evrim + sözlük + kahraman rolü** — `weapon_evolution.gd` (`death_laser`, `frost_nova` İngilizce yedek + doc yorumu); Frost Nova gelen hasar yansıtması (`player.take_damage(..., attacker)`); `CollectionData` sözlük ID’leri + kodeks **Glossary** sekmesi; `en.json` `ui.glossary.*` + `codex.character.*.role` + `ui.character_select.hero_class_label`; `CharacterSelectHelpers` kart üst satırı; `YAPILACAKLAR_TOPLU` / `YOL` ilgili maddeler. |
 | 2026-04-14 | **`dusk_striker` kahramanı** — Fighter, başlangıç `dagger` (ikiz hançer, mermiden düşük taban toplam hasar, ~1,28 s CD) + `night_vial` (Gece Şişesi; hafif XP/altın çekim yarıçapı); evrim `veil_daggers` (`dagger` MAX + `night_vial` MAX). Açılış: Arena’da kazanarak ve kadroda `shadow_walker`; **380** altın; oyuncu sahnesi `characters/dusk/dusk.tscn`. **Arena v0:** `ARENA_RUN_GOAL_SEC` 600, `map_select` oynanabilir. |
@@ -279,7 +281,7 @@ Aşağıdaki maddeler **ürün / tasarım** kaynağıdır; kod durumu satır iç
 |--------|--------|
 | [x] | **Profil sekmesi (temel)** — Ayarlar → Profil: kalıcı istatistikler + başarı listesi (`ui/settings.gd` `_build_profil_tab`). |
 | [ ] | **Profil genişlemesi** — Takma adlar, ikonlar, açılabilir profil arka planı ve çerçeveler. |
-| [ ] | **Hesap / seviye sistemi** — Level atladıkça ödüller (yukarıdaki kozmetiklerle bağlantılı olabilir). |
+| [x] | **Hesap / seviye sistemi (teknik temel)** — `SaveManager.account_level` / `account_xp` / `account_xp_total`; eşik `round(level×500×1.2)`; koşu sonu `game_over` → run XP’nin %20’si; `level_up` sinyali; Ayarlar → Profil’de özet + `ProgressBar` + seviye atlayınca tween + ses (`AudioManager`); Game Over hesap XP satırı vurgulu. *(Level başına ödül / kozmetik bağlantısı sonraya.)* |
 | [ ] | **İleride rank sistemi** — Rekabetçi veya görünür derecelendirme (tasarım açık). |
 
 ### C. Verimlilik (idle-benzeri, ana oyunu gölgelemeden)

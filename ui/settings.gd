@@ -1,6 +1,8 @@
 extends CanvasLayer
 
 var current_tab = "ses"
+var _profil_account_progress_bar: ProgressBar = null
+var _profil_account_flash_tween: Tween = null
 var _confirm_reset_full = false
 var _confirm_reset_stats = false
 var _dev_gold_amount = 1000
@@ -16,8 +18,16 @@ func _ready():
 
 	if not LocalizationManager.locale_changed.is_connected(_on_locale_changed):
 		LocalizationManager.locale_changed.connect(_on_locale_changed)
+	if not SaveManager.level_up.is_connected(_on_save_manager_account_level_profile_vfx):
+		SaveManager.level_up.connect(_on_save_manager_account_level_profile_vfx)
 
 	_build_ui()
+
+
+func _exit_tree() -> void:
+	if SaveManager.level_up.is_connected(_on_save_manager_account_level_profile_vfx):
+		SaveManager.level_up.disconnect(_on_save_manager_account_level_profile_vfx)
+	_kill_profil_account_flash_tween()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -133,6 +143,8 @@ func _switch_tab(tab: String):
 		_cancel_rebind()
 	current_tab = tab
 	var content = $VBoxContainer/ContentArea
+	_kill_profil_account_flash_tween()
+	_profil_account_progress_bar = null
 	for child in content.get_children():
 		child.queue_free()
 
@@ -515,6 +527,33 @@ func _add_toggle(parent: Node, label_text: String, default_val: bool, callback: 
 	btn.toggled.connect(callback)
 	row.add_child(btn)
 
+func _kill_profil_account_flash_tween() -> void:
+	if _profil_account_flash_tween != null and is_instance_valid(_profil_account_flash_tween):
+		_profil_account_flash_tween.kill()
+	_profil_account_flash_tween = null
+
+
+func _on_save_manager_account_level_profile_vfx(_new_level: int) -> void:
+	if current_tab == "profil" and is_instance_valid(_profil_account_progress_bar):
+		_flash_profil_account_progress_bar(_profil_account_progress_bar)
+		SaveManager.dismiss_account_profile_level_flash_pending()
+
+
+func _flash_profil_account_progress_bar(bar: ProgressBar) -> void:
+	if not is_instance_valid(bar):
+		return
+	_kill_profil_account_flash_tween()
+	bar.modulate = Color.WHITE
+	var tw := create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_profil_account_flash_tween = tw
+	tw.tween_property(bar, "modulate", Color(1.5, 1.4, 0.82, 1.0), 0.09)
+	tw.tween_property(bar, "modulate", Color(1.75, 1.62, 0.95, 1.0), 0.11)
+	tw.tween_property(bar, "modulate", Color.WHITE, 0.42)
+	tw.finished.connect(func():
+		_profil_account_flash_tween = null
+	)
+
+
 func _on_back():
 	AudioManager.apply_volume_settings()
 	var from_game = get_meta("from_game", false)
@@ -539,6 +578,56 @@ func _build_profil_tab(parent: Node):
 	vbox.add_theme_constant_override("separation", 14)
 	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(vbox)
+
+	var acc_title = Label.new()
+	acc_title.text = tr("ui.settings.profile_account_title")
+	acc_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	acc_title.add_theme_font_size_override("font_size", 17)
+	acc_title.add_theme_color_override("font_color", Color("#5DADE2"))
+	vbox.add_child(acc_title)
+
+	var next_need: int = SaveManager.get_account_xp_for_next_level()
+	var lbl_lv = Label.new()
+	lbl_lv.text = tr("ui.settings.profile_account_level") % SaveManager.account_level
+	lbl_lv.add_theme_color_override("font_color", Color.WHITE)
+	lbl_lv.add_theme_font_size_override("font_size", 16)
+	vbox.add_child(lbl_lv)
+
+	var lbl_tot = Label.new()
+	lbl_tot.text = tr("ui.settings.profile_account_total_xp") % SaveManager.account_xp_total
+	lbl_tot.add_theme_color_override("font_color", Color("#CCCCCC"))
+	lbl_tot.add_theme_font_size_override("font_size", 15)
+	vbox.add_child(lbl_tot)
+
+	var lbl_next = Label.new()
+	lbl_next.text = tr("ui.settings.profile_account_next_threshold") % next_need
+	lbl_next.add_theme_color_override("font_color", Color("#AAAAAA"))
+	lbl_next.add_theme_font_size_override("font_size", 14)
+	vbox.add_child(lbl_next)
+
+	var bar = ProgressBar.new()
+	bar.min_value = 0.0
+	bar.max_value = maxf(1.0, float(next_need))
+	bar.value = clampf(float(SaveManager.account_xp), 0.0, bar.max_value)
+	bar.show_percentage = false
+	bar.custom_minimum_size = Vector2(0, 24)
+	vbox.add_child(bar)
+
+	var lbl_prog = Label.new()
+	lbl_prog.text = tr("ui.settings.profile_account_progress") % [SaveManager.account_xp, next_need]
+	lbl_prog.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl_prog.add_theme_color_override("font_color", Color("#888888"))
+	lbl_prog.add_theme_font_size_override("font_size", 13)
+	vbox.add_child(lbl_prog)
+
+	_profil_account_progress_bar = bar
+	if SaveManager.take_account_profile_level_flash_pending():
+		call_deferred("_flash_profil_account_progress_bar", bar)
+
+	var sep_acc = HSeparator.new()
+	sep_acc.add_theme_color_override("color", Color("#333355"))
+	vbox.add_child(sep_acc)
+
 	var stats_title = Label.new()
 	stats_title.text = tr("ui.settings.stats_title")
 	stats_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -671,6 +760,9 @@ func _on_reset_full():
 	SaveManager.total_chests_opened = 0
 	SaveManager.total_items_collected = 0
 	SaveManager.max_survival_time = 0.0
+	SaveManager.account_level = 1
+	SaveManager.account_xp = 0
+	SaveManager.account_xp_total = 0
 	SaveManager.unlocked_characters = ["warrior"]
 	SaveManager.purchased_characters = ["warrior"]
 	SaveManager.unlocked_achievements = []

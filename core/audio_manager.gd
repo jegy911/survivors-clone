@@ -22,6 +22,8 @@ func _ready() -> void:
 	music_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	music_player2.process_mode = Node.PROCESS_MODE_ALWAYS
 	apply_volume_settings()
+	if not SaveManager.level_up.is_connected(_on_save_manager_account_level_up_sound):
+		SaveManager.level_up.connect(_on_save_manager_account_level_up_sound)
 	EventBus.game_started.connect(_on_game_started)
 	music_player.finished.connect(func(): if current_music == 1: music_player.play())
 	music_player2.finished.connect(func(): if current_music == 2: music_player2.play())
@@ -77,6 +79,15 @@ func play_hit():
 func play_death():
 	death_player.play()
 func play_levelup():
+	levelup_player.play()
+
+
+func _on_save_manager_account_level_up_sound(_new_level: int) -> void:
+	play_account_level_up()
+
+
+## Hesap (meta) seviye atlayınca — `LevelUpPlayer` (`assets/sounds/levelup.mp3`).
+func play_account_level_up() -> void:
 	levelup_player.play()
 func play_player_hurt():
 	player_hurt_player.play()

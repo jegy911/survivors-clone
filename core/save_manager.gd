@@ -1,5 +1,10 @@
 extends Node
 
+## Global account progression (separate from run-level `player.level` / `total_xp_earned` stat).
+signal level_up(new_level: int)
+## Aynı olay; eski ad — yeni dinleyiciler `level_up` kullanmalı.
+signal account_level_up(new_level: int)
+
 const SAVE_PATH: String = "user://save.cfg"
 
 var gold: int = 0
@@ -80,6 +85,13 @@ var total_damage_dealt: int = 0
 var total_chests_opened: int = 0
 var total_items_collected: int = 0
 var total_deaths: int = 0
+## Account: current level (starts at 1). `account_xp` is progress toward the next level only.
+var account_level: int = 1
+var account_xp: int = 0
+## Lifetime XP banked into the account system (sum of all grants from runs).
+var account_xp_total: int = 0
+## Profil sekmesinde ProgressBar parlama VFX (seviye atlayınca menü kapalıysa sonraya bırakılır).
+var account_profile_level_flash_pending: bool = false
 var killed_tank: bool = false
 var evolution_obtained: bool = false
 ## Arena koşusunu (hedef sürede kazanarak) en az bir kez Gölge Yürüyücü ile tamamladı mı — `dusk_striker` açılışı.
@@ -150,6 +162,9 @@ func save_game() -> void:
 	config.set_value("stats", "total_chests_opened", total_chests_opened)
 	config.set_value("stats", "total_items_collected", total_items_collected)
 	config.set_value("stats", "total_deaths", total_deaths)
+	config.set_value("account", "level", account_level)
+	config.set_value("account", "xp", account_xp)
+	config.set_value("account", "xp_total", account_xp_total)
 	config.set_value("unlock", "killed_tank", killed_tank)
 	config.set_value("unlock", "evolution_obtained", evolution_obtained)
 	config.set_value("unlock", "arena_cleared_as_shadow_walker", arena_cleared_as_shadow_walker)
@@ -201,6 +216,12 @@ func load_game() -> void:
 	total_chests_opened = config.get_value("stats", "total_chests_opened", 0)
 	total_items_collected = config.get_value("stats", "total_items_collected", 0)
 	total_deaths = config.get_value("stats", "total_deaths", 0)
+	account_level = int(config.get_value("account", "level", 1))
+	account_xp = int(config.get_value("account", "xp", 0))
+	account_xp_total = int(config.get_value("account", "xp_total", 0))
+	account_level = maxi(1, account_level)
+	account_xp = maxi(0, account_xp)
+	account_xp_total = maxi(0, account_xp_total)
 	killed_tank = config.get_value("unlock", "killed_tank", false)
 	evolution_obtained = config.get_value("unlock", "evolution_obtained", false)
 	arena_cleared_as_shadow_walker = config.get_value("unlock", "arena_cleared_as_shadow_walker", false)
@@ -225,6 +246,46 @@ func spend_gold(amount: int) -> bool:
 	gold -= amount
 	save_game()
 	return true
+
+
+## Threshold to go from current `account_level` → `account_level + 1`: `round(level × 500 × 1.2)`.
+func get_account_xp_for_next_level() -> int:
+	return maxi(1, int(round(float(account_level) * 500.0 * 1.2)))
+
+
+func add_account_xp(amount: int) -> void:
+	if amount <= 0:
+		return
+	account_xp_total += amount
+	account_xp += amount
+	while account_xp >= get_account_xp_for_next_level():
+		account_xp -= get_account_xp_for_next_level()
+		account_level += 1
+		account_profile_level_flash_pending = true
+		level_up.emit(account_level)
+		account_level_up.emit(account_level)
+	save_game()
+
+
+func take_account_profile_level_flash_pending() -> bool:
+	var p: bool = account_profile_level_flash_pending
+	account_profile_level_flash_pending = false
+	return p
+
+
+func dismiss_account_profile_level_flash_pending() -> void:
+	account_profile_level_flash_pending = false
+
+
+## Koşu bitince: ham run XP'sinin bir kısmını hesaba yazar (varsayılan %20).
+func grant_account_xp_from_run_raw(run_raw_xp: int, run_share: float = 0.20) -> void:
+	if run_raw_xp <= 0:
+		return
+	var grant: int = int(floor(float(run_raw_xp) * run_share))
+	if grant <= 0:
+		return
+	add_account_xp(grant)
+
 
 func _normalize_meta_upgrades() -> void:
 	for key in meta_upgrades:
