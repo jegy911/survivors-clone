@@ -128,7 +128,7 @@ Level-up kartı ve yüzen evrim bildirimi metinleri: `locales/*.json` → `ui.ev
 
 ## Pasif eşyalar (ikon + upgrade kartı)
 
-Level-up ekranı ağırlıklı **metin**; `upgrade_ui` için **büyük net ikon** seti yok (matris satır 14).
+Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + istatistik), emoji/Unicode yedek; isteğe bağlı PNG: `assets/ui/upgrade_icons/` + `core/upgrade_icon_catalog.gd` (matris satır 14 — kısmi).
 
 | Item ID | Menü/kart ikonu |
 |---------|-----------------|
@@ -186,13 +186,13 @@ Level-up ekranı ağırlıklı **metin**; `upgrade_ui` için **büyük net ikon*
 | Mağaza (kozmetik / pet / fragman) | `ui/shop_menu` | ❌ Placeholder sekmeler; satın alma UI yok |
 | Karakter seçimi (+ P2) | `ui/character_select*` + `character_select_preview.gd` | Dört rol filtresi; portre = `idle_left` (yoksa yedek) ilk kare, sabit çerçeve; kilit=siyah; koşul açık=silüet; satın alınmış=tam renk |
 | Harita / mod | `ui/map_select` | Story / fast mod + lanet slider + harita önizlemesi; arena kilitli |
-| Level-up kartları | `ui/upgrade_ui` | Kısmi — Unicode/emoji satır önekleri; büyük sprite ikon seti yok |
+| Level-up kartları | `ui/upgrade_ui` | Kısmi — üç panel + dikey kartlar + envanter `tooltip_text` + `en.json` kabuk metinleri; büyük sprite ikon seti yok |
 | HUD (kill, altın, çubuklar) | `player` + CanvasLayer | ✅ / ❌ |
 | Oyun sonu | `ui/game_over` | ✅ |
 | Duraklat | `ui/pause_menu` | ✅ / ❌ |
 | Meta upgrade | `ui/meta_upgrade` | ✅ / ❌ |
 | Ayarlar | `ui/settings` | ✅ |
-| Arayüz dili (çeviri) | `locales/*.json`, `LocalizationManager`, Ayarlar → Dil | ✅ `tr` / `en` / `zh_CN`; silah-eşya kart metinleri hâlâ kod içi (`player.gd` / `upgrade_ui`) — ileride anahtarlanabilir |
+| Arayüz dili (çeviri) | `locales/*.json`, `LocalizationManager`, Ayarlar → Dil | ✅ `tr` / `en` / `zh_CN`; level-up **kabuk** metinleri `en` `ui.upgrade_ui.*`; silah/eşya **etki** satırları hâlâ çoğunlukla kod içi (`player.gd` / silah-eşya `get_description`) |
 | Hasar sayıları | `effects/damage_number` | ✅ |
 | Global font ölçeği (okunabilirlik) | `SaveManager.settings["ui_scale"]`, Ayarlar → Görüntü | Kısmi — bazı ekranlarda (`map_select`, `shop_menu`); tüm HUD/menüde zorunlu değil |
 | Otomatik pause (odak kaybı) | — | Davranış yok; UI tasarımı gerektirmez ama ürün kararı |
@@ -228,7 +228,7 @@ Aşağıdaki maddelerin **kod karşılığı** matriste; burada yalnızca **tasa
 - **Yüksek kontrast düşman:** Ayarlarda açılabilir sarı siluet/çerçeve — ✅ (`enemy_high_contrast_outline`, **Görüntü** sekmesi); matris satır 5.
 - **Tuş atamaları:** Ayarlar → **Kontroller** — P1/P2 hareket, duraklat, tam ekran (`InputRemap`); matris satır 18 (fare hareketi hâlâ yok).
 - **Renk körlüğü paleti:** Alternatif tema — ❌.
-- **Büyük net ikonlar:** Level-up — ❌.
+- **Büyük net ikonlar:** Level-up — ❌ (Unicode/emoji ile kısmi okunabilirlik; `upgrade_ui` üç sütun).
 - **Ön uyarı (exploder):** Yakınlıkta modulate nabız — ✅; matris satır 15.
 - **Öğretici / ilk 10 sn:** Bilinçli “güvenli” görsel ve düşman yerleşimi — kısmi (ayrı tutorial sahnesi yok).
 

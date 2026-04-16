@@ -32,7 +32,8 @@ func _ensure_ring_visual() -> void:
 	_ring.texture = TEX_AURA
 	_ring.centered = true
 	_ring.z_index = -2
-	player.add_child(_ring)
+	# Silah düğümünün çocuğu olmalı: level-up önizlemesi / `queue_free` ile halka da temizlenir.
+	add_child(_ring)
 	_sync_ring_visual()
 
 func _aura_effective_radius() -> float:

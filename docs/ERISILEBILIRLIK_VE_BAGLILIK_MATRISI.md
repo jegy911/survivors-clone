@@ -3,7 +3,7 @@
 Bu belge, **20 + 20 maddenin** Ironfall kod tabanındaki **Var / Kısmi / Yok** durumunu ve kısa **repo notunu** içerir.  
 Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 
-**Son kod kontrolü:** 2026-04-14 (güncelleme: Arena `run_variant` + `dusk` / `dagger` / `night_vial` / `veil_daggers`; önceki: aura / zincir / yıldırım / balta + `CombatProjectileFx`)
+**Son kod kontrolü:** 2026-04-16 (güncelleme: `upgrade_ui` üç panel + envanter `tooltip_text`; önceki: Arena `run_variant` + `dusk` / `dagger` / `night_vial` / `veil_daggers`)
 
 ---
 
@@ -24,9 +24,9 @@ Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 | 11 | Öğretici / güvenli ilk saniyeler | **Kısmi** | Ayrı tutorial sahnesi yok; dalga doğrudan başlıyor. |
 | 12 | Otomatik duraklatma (odak kaybı) | **Var** | `main/main.gd` `get_window().focus_exited` → `pause_menu` + `get_tree().paused`; `SaveManager.settings["pause_on_focus_loss"]` (isteğe bağlı, varsayılan açık; **Ayarlar → Oynanış**); `pause_menu_overlay`; yalnız koşu sahnesi. |
 | 13 | Renk körlüğü paleti | **Kısmi** | `SaveManager.settings["colorblind_palette"]` (`none` / `friendly`); **Ayarlar → Görüntü**; XP orb rengi `filter_accessibility_orb_color()` (`enemy_base` drop). Tam UI tema paleti yok. |
-| 14 | Büyük net ikonlar (level-up) | **Kısmi** | `upgrade_ui.gd` seçenek satırlarında emoji/unicode önekler; ayrı sprite ikon asset’i yok. |
+| 14 | Büyük net ikonlar (level-up) | **Kısmi** | `upgrade_ui.gd`: üç sütunlu panel, dikey kartlarda Unicode/emoji ikonlar + envanter `tooltip_text`; ayrı büyük sprite ikon asset’i yok. |
 | 15 | Görsel patlama ön uyarısı (exploder) | **Var** | Yakınlık ~95 px içindeyken `AnimatedSprite2D.modulate` nabız; patlamada sıfırlanır; `flash()` taban sınıf (vuruş geri bildirimi). |
-| 16 | Metin boyutu (global ölçek) | **Kısmi** | `SaveManager.settings["ui_scale"]` (kayıt + **Ayarlar → Görüntü** kaydırıcı); `map_select`, `shop_menu` ve benzeri yeni ekranlarda `get_ui_scale()`. Tüm menü/HUD’da zorunlu uygulama yok. |
+| 16 | Metin boyutu (global ölçek) | **Kısmi** | `SaveManager.settings["ui_scale"]` (kayıt + **Ayarlar → Görüntü** kaydırıcı); `map_select`, `shop_menu`, `upgrade_ui` (dış `MarginContainer` kenar boşlukları) ve benzeri ekranlarda `get_ui_scale()`. Tüm menü/HUD’da zorunlu uygulama yok. |
 | 17 | Pencere / tam ekran | **Var** | `settings.gd` + `SaveManager.apply_window_mode_from_settings()`; `project.godot` `toggle_fullscreen` (F11); `load_game` sonunda pencere modu uygulanır. |
 | 18 | Fare veya klavye (hibrit hareket) | **Kısmi** | Fare ile hareket yok; **Ayarlar → Kontroller** ile P1/P2 yön, duraklat, tam ekran için klavye yeniden eşleme (`InputRemap`, `input_keyboard_overrides`); oyun kolu eksen/tuşları projede kaldı. |
 | 19 | Lore’u zorlamama / ayrı sekme | **Kısmi** | Uzun lore ekranı yok; ayrı hikaye sekmesi yok. |
@@ -34,7 +34,7 @@ Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 
 ### Çoklu dil (çapraz — erişilebilirlik)
 
-Arayüz dili **`LocalizationManager`** + `locales/tr.json`, `en.json`, `zh_CN.json` (`LANGUAGE_CATALOG`, Ayarlar → Dil). **Run içi (2026-04-07 itibarıyla `tr()` ile):** `main/main.gd` HUD **dalga sayacı** (`ui.hud.wave_counter`), `main/wave_manager.gd` **dalga ödülü** paneli (`ui.wave_reward.*`), `ui/upgrade_ui.gd` level-up **silah/eşya satır önekleri** (`ui.upgrade_ui.option_weapon_prefix`, `option_item_prefix`). Menü, ayarlar, duraklatma, kodeks, karakter seçimi, oyun sonu, meta upgrade vb. zaten anahtarlanmıştır. **Kısmi:** Bazı yüzen metinler, `wave_manager` içi Reaper / kuşatma / bağışıklık uyarıları ve benzeri run içi string’ler hâlâ sabit metin; ileride aynı locale anahtarlarına taşınabilir (`locales/check_locale_parity.py` ile küme eşitliği korunmalı).
+Arayüz dili **`LocalizationManager`** + `locales/tr.json`, `en.json`, `zh_CN.json` (`LANGUAGE_CATALOG`, Ayarlar → Dil). **Run içi (2026-04-07 itibarıyla `tr()` ile):** `main/main.gd` HUD **dalga sayacı** (`ui.hud.wave_counter`), `main/wave_manager.gd` **dalga ödülü** paneli (`ui.wave_reward.*`), `ui/upgrade_ui.gd` level-up **kabuk metinleri** (`ui.upgrade_ui.*`, `en.json` — 2026-04-16 genişletme; `option_weapon_prefix` / `option_item_prefix` hâlâ dosyada). Menü, ayarlar, duraklatma, kodeks, karakter seçimi, oyun sonu, meta upgrade vb. zaten anahtarlanmıştır. **Kısmi:** Bazı yüzen metinler, `wave_manager` içi Reaper / kuşatma / bağışıklık uyarıları ve benzeri run içi string’ler hâlâ sabit metin; ileride aynı locale anahtarlarına taşınabilir (`locales/check_locale_parity.py` ile küme eşitliği korunmalı).
 
 ---
 

@@ -79,7 +79,7 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 - XP orb, gold orb, sandık: spritesheet / ritüel görsel.
 - Dünya objeleri: tutarlı stil polish.
 - `bullet` / `ice_ball` / `enemy_bullet` / HUD / pause / meta: final pass.
-- `upgrade_ui` / `player` kart metinleri kod içi → locale.
+- **Kalan:** `player` loadout / silah `get_description()` satırlarında kod içi (çoğu Türkçe) metin → aşamalı locale; **yapıldı (kabuk):** `upgrade_ui` üç panel başlıkları / slot / nadirlik / meta özet `en.json` `ui.upgrade_ui.*`.
 - Harita görselleri; arena ortamı; zamanla değişen ortam rengi; geometri çeşitliliği.
 - Ses: level-up / sandık / boss ritüel katmanları.
 - Lore sunumu menüde.

@@ -149,8 +149,11 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 
 ### Level-up havuzu
 - **`ui/upgrade_ui.gd`**
-  - `weapon_upgrades` dizisine string ID.
-  - `get_upgrade_text()` içindeki silah `match` satırına aynı ID.
+  - `WEAPON_UPGRADE_IDS` / `ITEM_UPGRADE_IDS` dizileri `player.gd` içindeki `_LEVELUP_*` listeleriyle uyumlu olmalı.
+  - Arayüz: üç sütun (envanter ızgarası + dikey kartlar + istatistik / meta özeti); veri `Player` ve `SaveManager` üzerinden; envanter slotlarında `tooltip_text`.
+  - Yeni yüzey metinleri (dil dondurması sırasında): `locales/en.json` → `ui.upgrade_ui.*`.
+  - İkon PNG’leri: `assets/ui/upgrade_icons/` (alt klasörler + `README.txt`); yükleme `UpgradeIconCatalog` (`core/upgrade_icon_catalog.gd`).
+  - **Aura görsel halkası** (`weapon_aura.gd`): `AuraWeaponRing` artık **silah düğümünün** çocuğu (`add_child` silahta); level-up önizlemesi yeni silah için oyuncuya geçici child eklemez (kodeks metni).
 
 ### Evrim
 - **`weapons/weapon_evolution.gd`**
@@ -159,7 +162,7 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
   - `get_available_evolutions(player)`: Hazır evrimleri döndürür; sıra **karıştırılır** (aynı ekranda birden fazla evrim adil görünsün).
   - `localized_name` / `localized_description`: `ui.evolution_defs.<id>.name|desc`; çeviri yoksa sözlükteki `name` / `description`.
 - **`player/player.gd`** → `evolve_weapon`: Önce `is_evolution_ready`; sonra sadece **`requires_weapons`** silahlarını kaldırır; **eşyalar kalır**. Yüzen metin: `ui.upgrade_ui.evolution_floating`.
-- **`ui/upgrade_ui.gd`**: Evrim kartı başlığı `ui.upgrade_ui.evolution_pick_title`; cog shard **4 seçenek** (`Option4`); reroll aynı `pick_count` ile çalışır.
+- **`ui/upgrade_ui.gd`**: Evrim kartı başlığı `ui.upgrade_ui.evolution_pick_title`; cog shard **4 seçenek** (kart havuzu `pick_count`); reroll aynı `pick_count` ile çalışır.
 - **Locale**: Yeni evrim → `locales/*.json` içinde `ui.evolution_defs.<evo_id>` (`name`, `desc`) + mümkünse `gen_locales.py` (tr/en).
 
 ### Özel davranışlar
@@ -181,9 +184,6 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
   - `_on_upgrade_chosen` → item ID listesi ile uyumlu olmalı.
   - `get_item_description(type)` → `codex.item.<id>.name/desc` + `ui.player.loadout.*`.
   - Oyun olayları: örn. `on_enemy_killed` içinde `active_items.has("...")` ile özel item metodu çağrısı.
-
-### Level-up havuzu
-- **`ui/upgrade_ui.gd`** — `item_upgrades` + `get_upgrade_text` item `match`.
 
 ### Dünya ödülleri
 - Örn. **`effects/chest.gd`** içindeki rastgele item listeleri; boss / dalga ödülleri varsa aynı ID tutarlılığı.
@@ -284,7 +284,7 @@ Oyun içi uzun `description` / `codex.character.<id>` metni (Açılış, origin 
 1. `weapons/weapon_*.gd` + `class_name`.
 2. `core/player_loadout_registry.gd` — `WEAPON_SCRIPT_BY_ID` içine aynı string ID.
 3. `player/player.gd` — `_LEVELUP_WEAPON_IDS` (ve Kaos için `random_weapons` listesi); açıklama `get_weapon_description` → `codex`.
-4. `ui/upgrade_ui.gd` — `WEAPON_UPGRADE_IDS`, `get_upgrade_text`.
+4. `ui/upgrade_ui.gd` — `WEAPON_UPGRADE_IDS`, `ITEM_UPGRADE_IDS`, `get_upgrade_text` (yardımcı / hata ayıklama).
 5. Varsa projectile: `projectiles/*.tscn` + script, `ObjectPool` uyumu; hedef seçiminde tercihen `EnemyRegistry.get_enemies()`.
 6. Kaos: `apply_character_bonuses` içindeki `random_weapons` listesi.
 7. `core/collection_data.gd` — `WEAPON_ENTRIES` (kodeks sekmesi).
@@ -297,7 +297,7 @@ Oyun içi uzun `description` / `codex.character.<id>` metni (Açılış, origin 
 1. `items/item_*.gd` + `class_name`.
 2. `core/player_loadout_registry.gd` — `ITEM_SCRIPT_BY_ID` satırı.
 3. `player/player.gd` — `_on_upgrade_chosen` ve oyun döngüsü kancaları (`on_enemy_killed`, `take_damage`, `_process` vb.); açıklama `codex` + `ui.player.loadout`.
-4. `ui/upgrade_ui.gd` — `item_upgrades`, `get_upgrade_text`.
+4. `ui/upgrade_ui.gd` — `ITEM_UPGRADE_IDS`, `get_upgrade_text`.
 5. Sandık/boss/dalga ödül listeleri (kullanılacaksa).
 6. Evrim gereksinimi olacaksa `weapon_evolution.gd` — `requires_items`.
 

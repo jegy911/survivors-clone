@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-16 (kahraman `.tscn` / boş anim frame disiplini; `en`-only locale dondurması; `dusk` paketi)
+**Son güncelleme:** 2026-04-16 (level-up üç panel UI + `en` kabuk metinleri; kahraman `.tscn` disiplini; `en`-only locale dondurması)
 
 ---
 
@@ -146,6 +146,8 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 |--------|------|
 | 2026-04-14 | **`dusk_striker` kahramanı** — Fighter, başlangıç `dagger` (ikiz hançer, mermiden düşük taban toplam hasar, ~1,28 s CD) + `night_vial` (Gece Şişesi; hafif XP/altın çekim yarıçapı); evrim `veil_daggers` (`dagger` MAX + `night_vial` MAX). Açılış: Arena’da kazanarak ve kadroda `shadow_walker`; **380** altın; oyuncu sahnesi `characters/dusk/dusk.tscn`. **Arena v0:** `ARENA_RUN_GOAL_SEC` 600, `map_select` oynanabilir. |
 | 2026-04-16 | **Kahraman sahne disiplini + dil dondurması** — Yeni kahraman: kendi `.tscn`; kopya sahnede `AnimatedSprite2D` animasyon adları kalır, frame’ler boşaltılır (`dusk` uygulandı). Rutin locale: yalnız `en` + `codex_extensions_en`; `tr` / `zh_CN` raf — `GELISTIRICI` + `ironfall-docs.mdc`. |
+| 2026-04-16 | **Level-up: aura çöküşü + önizleme + ikon klasörü** — `weapon_aura`: halka `player` yerine silah altında; `upgrade_ui`: yeni silah/eşya önizlemesi kodeks-only (geçici `PassiveItem`/`visible` hatası yok), serseri `AuraWeaponRing` temizliği; `UpgradeIconCatalog` + `assets/ui/upgrade_icons/` README. |
+| 2026-04-16 | **Level-up UI (Megabonk tarzı)** — `upgrade_ui.gd` / `upgrade_ui.tscn`: tam ekran üç sütun (`HBoxContainer`), sol envanter ızgarası + `tooltip_text`, orta dikey seçim kartları (silah/eşya/evrim önizlemesi), sağ canlı istatistik + `SaveManager.meta_upgrades` özeti; kabuk metinleri `locales/en.json` `ui.upgrade_ui.*`; `TASARIM` / erişilebilirlik matrisi / `YAPILACAKLAR_TOPLU` senkron. |
 | 2026-04-15 | **`YAPILACAKLAR_TOPLU` iş akışı** — Liste = yalnız açık iş; bitince satır sil, kaynakta tik; `[ ]` kaldırıldı; `GELISTIRICI` / `README` / P0 karakter satırı güncellendi. |
 | 2026-04-15 | **YAPILACAKLAR_TOPLU.md** — Yedi ana dokümandaki yapılacaklar tek `.md` checklist; `README.md` tablo linki. |
 | 2026-04-15 | **Proje incelemesi (audit)** — `YOL_HARITASI.md`: P0–P4 öncelikli plan (locale kalanları, `get_nodes_in_group`, liste tekrarı, perf, bakım). |
