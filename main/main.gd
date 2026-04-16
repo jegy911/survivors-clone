@@ -257,7 +257,7 @@ func _make_hud_panel(pos: Vector2, color: Color, label: String) -> PanelContaine
 
 	var level_label = Label.new()
 	level_label.name = "LevelLabel"
-		level_label.text = tr("ui.game.level_format") % 1
+	level_label.text = tr("ui.game.level_format") % 1
 	level_label.add_theme_color_override("font_color", Color("#FFD700"))
 	level_label.add_theme_font_size_override("font_size", 12)
 	stats_row.add_child(level_label)

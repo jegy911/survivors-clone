@@ -37,9 +37,9 @@ static func localized_unlock_hint(char_data: Dictionary) -> String:
 	var body: String = _t(key)
 	if body == key or body.is_empty():
 		if bool(char_data.get("secret", false)):
-			return tr("ui.character_select.unlock_line") % _t("ui.character_select.unlock_secret_placeholder")
+			return _t("ui.character_select.unlock_line") % _t("ui.character_select.unlock_secret_placeholder")
 		return ""
-	return tr("ui.character_select.unlock_line") % body
+	return _t("ui.character_select.unlock_line") % body
 
 
 static func rich_description_unlocked(char_data: Dictionary) -> String:

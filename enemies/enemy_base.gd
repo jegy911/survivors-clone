@@ -327,7 +327,7 @@ func _physics_process(delta):
 
 	if is_swarm_enemy and not is_dead:
 		global_position += swarm_direction * swarm_speed_override * delta
-		_update_enemy_direction()
+		_update_swarm_facing()
 		var players = get_tree().get_nodes_in_group("player")
 		if not players.is_empty():
 			var center = Vector2.ZERO
@@ -399,7 +399,16 @@ func _update_enemy_direction():
 		sprite.flip_h = true
 	else:
 		sprite.flip_h = false
-		
+
+
+## Sürü olayı: oyuncuya değil **yürüyüş vektörüne** göre bakış (walk_left + flip_h = sağa).
+func _update_swarm_facing() -> void:
+	var sprite := get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
+	if sprite == null:
+		return
+	if absf(swarm_direction.x) > 0.05:
+		sprite.flip_h = swarm_direction.x > 0.0
+
 func _get_nearest_player() -> Node2D:
 	var players = get_tree().get_nodes_in_group("player")
 	if players.is_empty():

@@ -3,7 +3,7 @@ extends Node
 ## Evolution recipes and level-up eligibility. Design tables: `docs/SILAHLAR_ESYALAR_EVO.md` (§2 evolutions, tail matrix).
 ## `death_laser`: `laser` + `crit` (both MAX). `frost_nova`: `ice_ball` + `armor` + `shield` (all MAX). Runtime: `is_evolution_ready`, `player.gd` `evolve_weapon`.
 
-## Display strings: `locales/en.json` → `ui.evolution_defs.<id>.name` / `.desc` (same pipeline as `Node.tr()`).
+## Display strings: `locales/en.json` → `ui.evolution_defs.<id>.name` / `.desc` (`TranslationServer` = `Node.tr()` pipeline).
 const EVOLUTIONS = {
 	"holy_bullet": {
 		"requires_weapons": ["bullet"],
@@ -107,11 +107,15 @@ static func get_evolution_weight(evo_id: String) -> float:
 	return float(EVOLUTIONS[evo_id].get("weight", 10.0))
 
 
+static func _evo_tr(key: String) -> String:
+	return str(TranslationServer.translate(StringName(key)))
+
+
 static func localized_name(evo_id: String) -> String:
 	if not EVOLUTIONS.has(evo_id):
 		return evo_id
 	var key := "ui.evolution_defs.%s.name" % evo_id
-	var t: String = tr(key)
+	var t := _evo_tr(key)
 	return t if t != key else evo_id
 
 
@@ -119,5 +123,5 @@ static func localized_description(evo_id: String) -> String:
 	if not EVOLUTIONS.has(evo_id):
 		return ""
 	var key := "ui.evolution_defs.%s.desc" % evo_id
-	var t: String = tr(key)
+	var t := _evo_tr(key)
 	return t if t != key else ""

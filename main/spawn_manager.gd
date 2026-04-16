@@ -259,8 +259,11 @@ func spawn_swarm_event(game_timer: float) -> void:
 	var from_right = randf() > 0.5
 	var direction = Vector2(-1, 0) if from_right else Vector2(1, 0)
 	var spawn_x = center.x + (900 if from_right else -900)
-	var count = int((40 + randi() % 21) * SaveManager.get_swarm_event_count_mult())
-	count = maxi(count, 8)
+	# Daha kalabalık sürü; arena’da ekstra baskı (performans çarpanı hâlâ geçerli).
+	var count = int((58 + randi() % 38) * SaveManager.get_swarm_event_count_mult())
+	if SaveManager.is_arena_run():
+		count = int(round(float(count) * 1.55))
+	count = maxi(count, 16)
 
 	for i in count:
 		var current_count = EnemyRegistry.get_live_count()
