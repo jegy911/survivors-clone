@@ -4,7 +4,7 @@ Oyuncunun **kendine güveni**, takımda **rolünü bilmesi** ve yeni kahramanlar
 Kod envanteri (`core/character_data.gd`, sahneler): `docs/GELISTIRICI_REHBERI.md` §3.  
 Görsel envanter: `docs/TASARIM.md`.
 
-**Son güncelleme:** 2026-04-14 (`dusk` — fighter, ikiz hançer + Gece Şişesi + Peçe Hançerleri evrimi; Arena + Gölge Yürüyücü açılış koşulu)
+**Son güncelleme:** 2026-04-17 (`dusk` — başlangıç yalnız `dagger`; Gece Şişesi koşuda; Peçe Hançerleri evrimi; Arena + Gölge Yürüyücü açılışı)
 
 ---
 
@@ -91,7 +91,7 @@ Aşağıdaki atamalar **taslak**tır; denge ve co-op destek tasarımı netleşti
 | sigil_warden | Mühür Ustası | Controller | Rün mühürü, alan yavaşlatma + bağlayıcı evrim |
 | grav_binder | Eğim Bağlayıcı | Controller | Çekim alanı, kalabalık sıkıştırma + rezonans |
 | shadow_walker | Gölge Yürüyücü | Fighter | Mobilite + gölge hasarı, assassin-fighter |
-| dusk_striker | Alacakaranlık Hançeri | Fighter | İkiz hançer + Gece Şişesi (çekim yarıçapı); Peçe Hançerleri evrimi; Arena + Shadow Walker açılışı |
+| dusk_striker | Alacakaranlık Hançeri | Fighter | İkiz hançer başlangıç; Gece Şişesi koşuda; Peçe Hançerleri evrimi; Arena + Shadow Walker açılışı |
 | engineer | Mühendis | Mage | Lazer / alan, yetenek konumlandırma |
 | paladin | Paladin | Tank | Zırh, kutsal mermi, ön saflar |
 | ironclad | Tam Zırhlı | Tank | Gürz + siper plakası, itme ve ön hat |

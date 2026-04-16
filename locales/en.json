@@ -243,9 +243,11 @@
       "title_solo": "⭐ LEVEL %d — CHOOSE YOUR UPGRADE ⭐",
       "option_weapon_prefix": "⚔ WEAPON — tap an option below",
       "option_item_prefix": "🛡 ITEM — passive upgrade",
-      "stat_speed": "Move Speed +20\nIncreases move speed",
-      "stat_max_hp": "Max HP +25\nIncreases maximum HP",
-      "stat_heal": "Instant +20 HP\nHeals immediately",
+      "stat_speed": "Move Speed +10\nIncreases move speed (capped)",
+      "stat_max_hp": "Max HP +15\nIncreases maximum HP",
+      "stat_heal": "Instant +12 HP\nHeals immediately",
+      "tooltip_reroll_pool": "Rerolls you start this run with. Each reroll spends from this pool for the whole run (not per level-up).",
+      "tooltip_skip_gold": "Skips you start this run with. Skip closes this screen without picking a card and grants +25 gold. Each skip spends from this pool for the whole run.",
       "evolution_pick_title": "⚡ EVOLUTION",
       "evolution_floating": "⚡ EVOLUTION: %s!",
       "panel_inventory": "Inventory",
@@ -288,8 +290,10 @@
       "meta_area_rank": "Area upgrade rank",
       "meta_duration_rank": "Duration upgrade rank",
       "meta_multi_rank": "Multi-shot rank",
-      "meta_rerolls": "Rerolls this screen (base)",
-      "meta_skips": "Skips this screen (base)"
+      "meta_weapon_slots": "Weapon slots (max)",
+      "meta_item_slots": "Item slots (max)",
+      "meta_rerolls": "Rerolls left (this run)",
+      "meta_skips": "Skips left (this run)"
     },
     "evolution_defs": {
       "holy_bullet": {
@@ -685,7 +689,7 @@
       },
       "dusk_striker": {
         "name": "Dusk Striker",
-        "desc": "Twin-dagger skirmisher; Shadow Walker–paced mobility.\n\nWeapon: dagger (Twin Daggers — thin throws to nearest foes in order; starts with two, lower base damage per volley than a single Bullet shot, slightly shorter cooldown)\nItem: night_vial (Night Vial — small XP/gold pickup radius; mild alone, still useful off-build)\nEvolution: veil_daggers (Veil Daggers — Twin Daggers MAX + Night Vial MAX; more blades, pierce, longer reach)\nUnlock: Win an Arena run (reach the time goal) with Shadow Walker on your roster → unlock → 380 gold; origin: +22% speed, −18% max HP"
+        "desc": "Twin-dagger skirmisher; Shadow Walker–paced mobility.\n\nWeapon: dagger (Twin Daggers — thin throws to nearest foes in order; starts with two, lower base damage per volley than a single Bullet shot, slightly shorter cooldown)\nNight Vial (night_vial): found during a run (level-up, chest, etc.); at Twin Daggers MAX + Night Vial MAX, evolve into Veil Daggers.\nEvolution: veil_daggers (Veil Daggers — more blades, pierce, longer reach)\nUnlock: Win an Arena run (reach the time goal) with Shadow Walker on your roster → unlock → 380 gold; origin: +22% speed, −18% max HP"
       },
       "engineer": {
         "name": "Engineer",
@@ -826,11 +830,19 @@
     },
     "reroll_bonus": {
       "name": "🔄 Extra Reroll",
-      "desc": "+1 reroll on level up\n(max rank: +3 rerolls)"
+      "desc": "+1 reroll added to your starting pool each run\n(max rank: +3 rerolls total from this line)"
     },
     "skip_bonus": {
       "name": "⏭ Extra Skip",
-      "desc": "+1 skip on level up\n(max rank: +3 skips)"
+      "desc": "+1 skip added to your starting pool each run\n(max rank: +3 skips total from this line)"
+    },
+    "weapon_slot_bonus": {
+      "name": "🔢 Weapon Slot",
+      "desc": "+1 max weapon slot per rank (max 2 ranks).\nBase 6 + up to 2 here = 8 weapon slots."
+    },
+    "item_slot_bonus": {
+      "name": "🧰 Item Slot",
+      "desc": "+1 max item slot per rank (max 2 ranks).\nBase 6 + up to 2 here = 8 item slots."
     },
     "speed_bonus": {
       "name": "👟 Move Speed",

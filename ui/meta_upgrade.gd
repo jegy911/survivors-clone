@@ -25,8 +25,10 @@ var upgrade_defs = [
 	{"id": "gold_bonus", "name": "💰 Altın Bonusu", "desc": "Düşmandan +1 altın per rank\n(max rank: +5 altın)", "max_level": 5, "category": "progress"},
 	{"id": "growth_bonus", "name": "📦 Altın Çarpanı", "desc": "Kazanılan altın +%15 per rank\n(max rank: +%75 altın)", "max_level": 5, "category": "progress"},
 	{"id": "start_level_bonus", "name": "📈 Başlangıç Seviyesi", "desc": "En az 1 rank: koşuya 2. seviyede başla (+1 net).\nRank 2–3 şimdilik aynı (ileride ek ödül planlanıyor).", "max_level": 3, "category": "progress"},
-	{"id": "reroll_bonus", "name": "🔄 Ekstra Reroll", "desc": "Level up'ta +1 reroll hakkı\n(max rank: +3 reroll)", "max_level": 3, "category": "progress"},
-	{"id": "skip_bonus", "name": "⏭ Ekstra Skip", "desc": "Level up'ta +1 skip hakkı\n(max rank: +3 skip)", "max_level": 3, "category": "progress"},
+	{"id": "reroll_bonus", "name": "🔄 Ekstra Reroll", "desc": "Koşu başına +1 reroll (havuz)\n(max rank: +3)", "max_level": 3, "category": "progress"},
+	{"id": "skip_bonus", "name": "⏭ Ekstra Skip", "desc": "Koşu başına +1 skip (havuz)\n(max rank: +3)", "max_level": 3, "category": "progress"},
+	{"id": "weapon_slot_bonus", "name": "🔢 Silah Slotu", "desc": "+1 silah slotu (max 2 rank, toplam +2)", "max_level": 2, "category": "progress"},
+	{"id": "item_slot_bonus", "name": "🧰 Eşya Slotu", "desc": "+1 eşya slotu (max 2 rank, toplam +2)", "max_level": 2, "category": "progress"},
 
 	# --- ZOR MOD ---
 	{"id": "speed_bonus", "name": "👟 Hareket Hızı", "desc": "Hareket hızı +10 per rank\n(max rank: +50 hız)", "max_level": 5, "category": "utility"},
@@ -38,16 +40,10 @@ var pending_reset = false
 func _ready():
 	if not LocalizationManager.locale_changed.is_connected(_on_locale_changed):
 		LocalizationManager.locale_changed.connect(_on_locale_changed)
-	var screen_size = get_viewport().get_visible_rect().size
-	$Background.size = screen_size
-	$Background.color = Color("#0D0D1A")
-	$VBoxContainer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	$VBoxContainer.alignment = BoxContainer.ALIGNMENT_BEGIN
-	$VBoxContainer.add_theme_constant_override("separation", 10)
-	$VBoxContainer/TitleLabel.text = tr("ui.meta_screen.title")
-	$VBoxContainer/TitleLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	$VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 36)
-	$VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
+	$CenterRoot/VBoxContainer/TitleLabel.text = tr("ui.meta_screen.title")
+	$CenterRoot/VBoxContainer/TitleLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	$CenterRoot/VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 36)
+	$CenterRoot/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
 	update_gold_label()
 
 	# Back butonu
@@ -57,30 +53,28 @@ func _ready():
 	back_style.corner_radius_top_right = 8
 	back_style.corner_radius_bottom_left = 8
 	back_style.corner_radius_bottom_right = 8
-	$VBoxContainer/BackButton.add_theme_stylebox_override("normal", back_style)
-	$VBoxContainer/BackButton.add_theme_color_override("font_color", Color.WHITE)
-	$VBoxContainer/BackButton.text = tr("ui.meta_screen.back")
-	$VBoxContainer/BackButton.custom_minimum_size = Vector2(200, 50)
-	$VBoxContainer/BackButton.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	$VBoxContainer/BackButton.pressed.connect(_on_back)
+	$CenterRoot/VBoxContainer/BackButton.add_theme_stylebox_override("normal", back_style)
+	$CenterRoot/VBoxContainer/BackButton.add_theme_color_override("font_color", Color.WHITE)
+	$CenterRoot/VBoxContainer/BackButton.text = tr("ui.meta_screen.back")
+	$CenterRoot/VBoxContainer/BackButton.custom_minimum_size = Vector2(200, 50)
+	$CenterRoot/VBoxContainer/BackButton.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	$CenterRoot/VBoxContainer/BackButton.pressed.connect(_on_back)
 
-	$VBoxContainer/ScrollContainer.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	$VBoxContainer/ScrollContainer.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	$CenterRoot/VBoxContainer/ScrollContainer.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	var scroll_style = StyleBoxFlat.new()
 	scroll_style.bg_color = Color("#0D0D1A")
-	$VBoxContainer/ScrollContainer.add_theme_stylebox_override("panel", scroll_style)
-	$VBoxContainer/ScrollContainer/UpgradeList.add_theme_constant_override("separation", 12)
-	$VBoxContainer/ScrollContainer/UpgradeList.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	$CenterRoot/VBoxContainer/ScrollContainer.add_theme_stylebox_override("panel", scroll_style)
+	$CenterRoot/VBoxContainer/ScrollContainer/UpgradeList.add_theme_constant_override("separation", 12)
 	build_upgrade_list()
 
 func _on_locale_changed(_locale: String) -> void:
-	$VBoxContainer/TitleLabel.text = tr("ui.meta_screen.title")
-	$VBoxContainer/BackButton.text = tr("ui.meta_screen.back")
+	$CenterRoot/VBoxContainer/TitleLabel.text = tr("ui.meta_screen.title")
+	$CenterRoot/VBoxContainer/BackButton.text = tr("ui.meta_screen.back")
 	update_gold_label()
 	build_upgrade_list()
 
 func build_upgrade_list():
-	var list = $VBoxContainer/ScrollContainer/UpgradeList
+	var list = $CenterRoot/VBoxContainer/ScrollContainer/UpgradeList
 	for child in list.get_children():
 		child.queue_free()
 	list.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -100,6 +94,8 @@ func build_upgrade_list():
 
 		var card = PanelContainer.new()
 		card.custom_minimum_size = Vector2(280, 100)
+		card.mouse_filter = Control.MOUSE_FILTER_STOP
+		card.tooltip_text = tr("meta." + upgrade["id"] + ".desc")
 		var card_style = StyleBoxFlat.new()
 		card_style.bg_color = Color("#1A1A2E")
 		card_style.corner_radius_top_left = 10
@@ -135,7 +131,10 @@ func build_upgrade_list():
 		name_label.add_theme_font_size_override("font_size", 18)
 
 		var desc_label = Label.new()
-		desc_label.text = tr("meta." + uid + ".desc")
+		var show_desc_on_card: bool = uid == "damage_bonus"
+		desc_label.visible = show_desc_on_card
+		desc_label.text = tr("meta." + uid + ".desc") if show_desc_on_card else ""
+		desc_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		desc_label.add_theme_color_override("font_color", Color("#AAAAAA"))
 
 		info.add_child(name_label)
@@ -193,10 +192,10 @@ func build_upgrade_list():
 	list.add_child(reset_btn)
 
 func update_gold_label():
-	$VBoxContainer/GoldLabel.text = tr("ui.meta_screen.gold") % SaveManager.gold
-	$VBoxContainer/GoldLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	$VBoxContainer/GoldLabel.add_theme_color_override("font_color", Color("#F5E642"))
-	$VBoxContainer/GoldLabel.add_theme_font_size_override("font_size", 22)
+	$CenterRoot/VBoxContainer/GoldLabel.text = tr("ui.meta_screen.gold") % SaveManager.gold
+	$CenterRoot/VBoxContainer/GoldLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	$CenterRoot/VBoxContainer/GoldLabel.add_theme_color_override("font_color", Color("#F5E642"))
+	$CenterRoot/VBoxContainer/GoldLabel.add_theme_font_size_override("font_size", 22)
 
 func _on_upgrade_pressed(upgrade_id: String, cost: int):
 	if SaveManager.spend_gold(cost):

@@ -76,8 +76,14 @@ var upgrade_ui = null
 var active_weapons = {}
 var active_items = {}
 
-var max_weapons = 5
-var max_items = 5
+## Taban 6 + meta `weapon_slot_bonus` / `item_slot_bonus` (her biri en fazla 2) → en fazla 8.
+const BASE_WEAPON_SLOTS := 6
+const BASE_ITEM_SLOTS := 6
+var max_weapons: int = BASE_WEAPON_SLOTS
+var max_items: int = BASE_ITEM_SLOTS
+## Koşu boyunca level-up reroll/skip (meta bu başlangıç havuzuna eklenir); level-up arasında sıfırlanmaz.
+var run_levelup_rerolls_left: int = 0
+var run_levelup_skips_left: int = 0
 
 var category_counts = {
 	"attack": 0,
@@ -227,6 +233,11 @@ func apply_meta_bonuses():
 		level += 1
 		xp_to_next_level = _calc_xp_for_level(level)
 	
+	max_weapons = BASE_WEAPON_SLOTS + clampi(int(meta.get("weapon_slot_bonus", 0)), 0, 2)
+	max_items = BASE_ITEM_SLOTS + clampi(int(meta.get("item_slot_bonus", 0)), 0, 2)
+	run_levelup_rerolls_left = 2 + int(meta.get("reroll_bonus", 0))
+	run_levelup_skips_left = 2 + int(meta.get("skip_bonus", 0))
+
 	# Revival — oyun başında sıfırla
 	revival_used = false
 
@@ -668,13 +679,13 @@ func _on_upgrade_chosen(upgrade_id: String):
 	else:
 		match upgrade_id:
 			"speed":
-				SPEED = minf(SPEED + 20.0, MAX_MOVE_SPEED)
+				SPEED = minf(SPEED + 10.0, MAX_MOVE_SPEED)
 			"max_hp":
-				max_hp += 25
-				hp = min(hp + 25, max_hp)
+				max_hp += 15
+				hp = min(hp + 15, max_hp)
 				update_hp_bar()
 			"heal":
-				heal(20)
+				heal(12)
 
 	if upgrade_ui:
 		upgrade_ui.queue_free()

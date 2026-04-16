@@ -35,6 +35,8 @@ var meta_upgrades = {
 	"adrenaline": 0,
 	"momentum": 0,
 	"overheal": 0,
+	"weapon_slot_bonus": 0,
+	"item_slot_bonus": 0,
 }
 var settings = {
 	"master_volume": 1.0,
@@ -231,6 +233,8 @@ func _normalize_meta_upgrades() -> void:
 
 func get_max_rank(key: String) -> int:
 	match key:
+		"weapon_slot_bonus", "item_slot_bonus":
+			return 2
 		"reroll_bonus", "skip_bonus", "multi_attack_bonus", "crit_damage_bonus", "start_level_bonus":
 			return 3
 		"revival":
@@ -265,6 +269,8 @@ func get_upgrade_cost(key: String, current_rank: int) -> int:
 		"adrenaline": 250,
 		"momentum": 250,
 		"overheal": 200,
+		"weapon_slot_bonus": 2200,
+		"item_slot_bonus": 2200,
 	}
 	var initial = initial_prices.get(key, 100)
 	var bought = current_rank

@@ -128,7 +128,7 @@ Level-up kartı ve yüzen evrim bildirimi metinleri: `locales/*.json` → `ui.ev
 
 ## Pasif eşyalar (ikon + upgrade kartı)
 
-Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + istatistik), emoji/Unicode yedek; isteğe bağlı PNG: `assets/ui/upgrade_icons/` + `core/upgrade_icon_catalog.gd` (matris satır 14 — kısmi).
+Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + istatistik), emoji/Unicode yedek; isteğe bağlı PNG: `assets/ui/upgrade_icons/` + `core/upgrade_icon_catalog.gd` (matris satır 14 — kısmi). Yerleşim: `ui/upgrade_ui.tscn` içindeki **`EditorRoot`** düğümü editörden taşınabilir; betik bu ağaca bağlanır veya yoksa kodla kabuk üretir.
 
 | Item ID | Menü/kart ikonu |
 |---------|-----------------|

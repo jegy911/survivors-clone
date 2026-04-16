@@ -61,6 +61,7 @@ var _reroll_btn: Button
 var _skip_btn: Button
 var _card_nodes: Array[Control] = []
 var _hovered_card: Control = null
+var _uses_editor_scene: bool = false
 
 
 func _option_buttons() -> Array:
@@ -87,8 +88,8 @@ func _style_flat_panel(bg: Color, border: Color = Color(0.5, 0.55, 0.6, 0.85), w
 	return s
 
 
-func _populate_icon_wrap(wrap: PanelContainer, tex: Texture2D, glyph: String, font_size: int = 22) -> void:
-	for ch in wrap.get_children():
+func _populate_icon_wrap(icon_wrap: PanelContainer, tex: Texture2D, glyph: String, font_size: int = 22) -> void:
+	for ch in icon_wrap.get_children():
 		ch.queue_free()
 	if tex != null:
 		var tr_icon := TextureRect.new()
@@ -97,7 +98,7 @@ func _populate_icon_wrap(wrap: PanelContainer, tex: Texture2D, glyph: String, fo
 		tr_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		tr_icon.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		tr_icon.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		wrap.add_child(tr_icon)
+		icon_wrap.add_child(tr_icon)
 	else:
 		var lab := Label.new()
 		lab.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -107,7 +108,7 @@ func _populate_icon_wrap(wrap: PanelContainer, tex: Texture2D, glyph: String, fo
 		lab.text = glyph
 		lab.add_theme_font_size_override("font_size", font_size)
 		lab.add_theme_color_override("font_color", Color.WHITE)
-		wrap.add_child(lab)
+		icon_wrap.add_child(lab)
 
 
 func _texture_for_upgrade_card(id: String, is_evo: bool) -> Texture2D:
@@ -135,7 +136,106 @@ func _style_header() -> StyleBoxFlat:
 func _ready() -> void:
 	layer = 120
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	_build_ui_shell()
+	var editor_root: Node = get_node_or_null("EditorRoot")
+	if editor_root is Control:
+		_uses_editor_scene = true
+		_bind_editor_root(editor_root as Control)
+	else:
+		_build_ui_shell()
+	_apply_action_tooltips()
+	_apply_ui_scale()
+
+
+func _bind_editor_root(editor: Control) -> void:
+	_root = editor
+	_root.mouse_filter = Control.MOUSE_FILTER_STOP
+	_outer_margin = editor.get_node("OuterMargin") as MarginContainer
+	_title = editor.get_node("OuterMargin/OuterVBox/TitleLabel") as Label
+	_columns = editor.get_node("OuterMargin/OuterVBox/ColumnsHBox") as HBoxContainer
+	_weapons_grid = editor.get_node("OuterMargin/OuterVBox/ColumnsHBox/LeftColumn/InvPanel/InvVBox/WeaponsGrid") as GridContainer
+	_items_grid = editor.get_node("OuterMargin/OuterVBox/ColumnsHBox/LeftColumn/InvPanel/InvVBox/ItemsGrid") as GridContainer
+	_options_column = editor.get_node("OuterMargin/OuterVBox/ColumnsHBox/CenterColumn/OptionsScroll/OptionsVBox") as VBoxContainer
+	_reroll_btn = editor.get_node("OuterMargin/OuterVBox/ColumnsHBox/CenterColumn/ActionRow/RerollButton") as Button
+	_skip_btn = editor.get_node("OuterMargin/OuterVBox/ColumnsHBox/CenterColumn/ActionRow/SkipButton") as Button
+	_stats_scroll = editor.get_node("OuterMargin/OuterVBox/ColumnsHBox/RightColumn/StatsPanel/StatsScroll") as ScrollContainer
+	_stats_vbox = editor.get_node("OuterMargin/OuterVBox/ColumnsHBox/RightColumn/StatsPanel/StatsScroll/StatsVBox") as VBoxContainer
+	_card_nodes.clear()
+	for i in 4:
+		var card: PanelContainer = editor.get_node("OuterMargin/OuterVBox/ColumnsHBox/CenterColumn/OptionsScroll/OptionsVBox/UpgradeCard%d" % i) as PanelContainer
+		_wire_upgrade_card(card, i)
+		_card_nodes.append(card)
+	if not _reroll_btn.pressed.is_connected(_on_reroll):
+		_reroll_btn.pressed.connect(_on_reroll)
+	if not _skip_btn.pressed.is_connected(_on_skip):
+		_skip_btn.pressed.connect(_on_skip)
+	_editor_refresh_static_labels()
+	_editor_apply_shell_styles()
+
+
+func _editor_refresh_static_labels() -> void:
+	var inv_h: Label = _root.get_node_or_null("OuterMargin/OuterVBox/ColumnsHBox/LeftColumn/InvPanel/InvVBox/InvHeaderLabel") as Label
+	if inv_h:
+		inv_h.text = tr("ui.upgrade_ui.panel_inventory")
+	var up_h: Label = _root.get_node_or_null("OuterMargin/OuterVBox/ColumnsHBox/CenterColumn/UpgradesHeaderLabel") as Label
+	if up_h:
+		up_h.text = tr("ui.upgrade_ui.panel_upgrades")
+	var st_h: Label = _root.get_node_or_null("OuterMargin/OuterVBox/ColumnsHBox/RightColumn/StatsHeaderLabel") as Label
+	if st_h:
+		st_h.text = tr("ui.upgrade_ui.panel_stats")
+	var wl: Label = _root.get_node_or_null("OuterMargin/OuterVBox/ColumnsHBox/LeftColumn/InvPanel/InvVBox/WeaponsHeaderLabel") as Label
+	if wl:
+		wl.text = tr("ui.upgrade_ui.weapons_header")
+	var il: Label = _root.get_node_or_null("OuterMargin/OuterVBox/ColumnsHBox/LeftColumn/InvPanel/InvVBox/ItemsHeaderLabel") as Label
+	if il:
+		il.text = tr("ui.upgrade_ui.items_header")
+
+
+func _editor_apply_shell_styles() -> void:
+	var inv_panel: PanelContainer = _root.get_node("OuterMargin/OuterVBox/ColumnsHBox/LeftColumn/InvPanel") as PanelContainer
+	inv_panel.add_theme_stylebox_override("panel", _style_flat_panel(_PANEL_BG))
+	var stats_panel: PanelContainer = _root.get_node("OuterMargin/OuterVBox/ColumnsHBox/RightColumn/StatsPanel") as PanelContainer
+	stats_panel.add_theme_stylebox_override("panel", _style_flat_panel(_PANEL_BG))
+	for i in 4:
+		var c: PanelContainer = _card_nodes[i] as PanelContainer
+		c.add_theme_stylebox_override("panel", _style_flat_panel(Color(0.11, 0.12, 0.18), Color(0.65, 0.7, 0.75), 1))
+		var iw: PanelContainer = c.get_meta("icon_wrap") as PanelContainer
+		iw.add_theme_stylebox_override("panel", _style_flat_panel(_SLOT_BG, Color(0.4, 0.45, 0.5), 1))
+	var rb: StyleBoxFlat = _style_flat_panel(Color(0.1, 0.12, 0.2))
+	_reroll_btn.add_theme_stylebox_override("normal", rb)
+	_skip_btn.add_theme_stylebox_override("normal", rb)
+
+
+func _wire_upgrade_card(panel: PanelContainer, index: int) -> void:
+	panel.visible = false
+	panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	panel.custom_minimum_size = Vector2(0, 96)
+	panel.set_meta("card_index", index)
+	if not panel.get_meta("_upgrade_signals", false):
+		panel.set_meta("_upgrade_signals", true)
+		panel.gui_input.connect(_on_card_gui_input_bound.bind(panel))
+		panel.mouse_entered.connect(_on_card_hover_enter.bind(panel))
+		panel.mouse_exited.connect(_on_card_hover_exit.bind(panel))
+	var margin_n: MarginContainer = panel.get_child(0) as MarginContainer
+	var row: HBoxContainer = margin_n.get_child(0) as HBoxContainer
+	var icon_wrap: PanelContainer = row.get_child(0) as PanelContainer
+	var text_col: VBoxContainer = row.get_child(1) as VBoxContainer
+	var top_row: HBoxContainer = text_col.get_child(0) as HBoxContainer
+	panel.set_meta("icon_wrap", icon_wrap)
+	panel.set_meta("rarity_label", top_row.get_child(0) as Label)
+	panel.set_meta("badge_label", top_row.get_child(1) as Label)
+	panel.set_meta("name_label", text_col.get_child(1) as Label)
+	panel.set_meta("delta_label", text_col.get_child(2) as Label)
+
+
+func _on_card_gui_input_bound(ev: InputEvent, panel: Control) -> void:
+	_on_card_gui_input(ev, panel)
+
+
+func _apply_action_tooltips() -> void:
+	if _reroll_btn:
+		_reroll_btn.tooltip_text = tr("ui.upgrade_ui.tooltip_reroll_pool")
+	if _skip_btn:
+		_skip_btn.tooltip_text = tr("ui.upgrade_ui.tooltip_skip_gold")
 
 
 func _build_ui_shell() -> void:
@@ -201,7 +301,7 @@ func _build_ui_shell() -> void:
 	inv_v.add_child(wl)
 
 	_weapons_grid = GridContainer.new()
-	_weapons_grid.columns = 5
+	_weapons_grid.columns = 6
 	_weapons_grid.add_theme_constant_override("h_separation", 6)
 	_weapons_grid.add_theme_constant_override("v_separation", 6)
 	inv_v.add_child(_weapons_grid)
@@ -213,7 +313,7 @@ func _build_ui_shell() -> void:
 	inv_v.add_child(il)
 
 	_items_grid = GridContainer.new()
-	_items_grid.columns = 5
+	_items_grid.columns = 6
 	_items_grid.add_theme_constant_override("h_separation", 6)
 	_items_grid.add_theme_constant_override("v_separation", 6)
 	inv_v.add_child(_items_grid)
@@ -285,8 +385,6 @@ func _build_ui_shell() -> void:
 	_stats_vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_stats_vbox.add_theme_constant_override("separation", 4)
 	_stats_scroll.add_child(_stats_vbox)
-
-	_apply_ui_scale()
 
 
 func _apply_ui_scale() -> void:
@@ -436,6 +534,8 @@ func _rebuild_inventory_slots() -> void:
 		c.queue_free()
 	if player_ref == null:
 		return
+	_weapons_grid.columns = maxi(1, int(player_ref.max_weapons))
+	_items_grid.columns = maxi(1, int(player_ref.max_items))
 
 	var w_ids: Array = player_ref.active_weapons.keys()
 	w_ids.sort()
@@ -565,6 +665,13 @@ func _collect_stat_rows() -> Array:
 
 func _collect_meta_rows() -> Array:
 	var m: Dictionary = SaveManager.meta_upgrades
+	var rr: int = 2 + int(m.get("reroll_bonus", 0))
+	var sk: int = 2 + int(m.get("skip_bonus", 0))
+	if player_ref != null and is_instance_valid(player_ref):
+		rr = int(player_ref.run_levelup_rerolls_left)
+		sk = int(player_ref.run_levelup_skips_left)
+	var ws: int = 6 + clampi(int(m.get("weapon_slot_bonus", 0)), 0, 2)
+	var isl: int = 6 + clampi(int(m.get("item_slot_bonus", 0)), 0, 2)
 	return [
 		[tr("ui.upgrade_ui.meta_xp"), "x%.2f" % (1.0 + int(m.get("xp_bonus", 0)) * 0.1)],
 		[tr("ui.upgrade_ui.meta_gold"), "x%.2f" % (1.0 + int(m.get("gold_bonus", 0)) * 0.05)],
@@ -573,8 +680,10 @@ func _collect_meta_rows() -> Array:
 		[tr("ui.upgrade_ui.meta_area_rank"), str(m.get("area_bonus", 0))],
 		[tr("ui.upgrade_ui.meta_duration_rank"), str(m.get("duration_bonus", 0))],
 		[tr("ui.upgrade_ui.meta_multi_rank"), str(m.get("multi_attack_bonus", 0))],
-		[tr("ui.upgrade_ui.meta_rerolls"), str(2 + int(m.get("reroll_bonus", 0)))],
-		[tr("ui.upgrade_ui.meta_skips"), str(2 + int(m.get("skip_bonus", 0)))],
+		[tr("ui.upgrade_ui.meta_weapon_slots"), str(ws)],
+		[tr("ui.upgrade_ui.meta_item_slots"), str(isl)],
+		[tr("ui.upgrade_ui.meta_rerolls"), str(rr)],
+		[tr("ui.upgrade_ui.meta_skips"), str(sk)],
 	]
 
 
@@ -645,12 +754,12 @@ func _preview_effect_text(upgrade: Dictionary) -> String:
 
 	if id == "speed":
 		var cur: float = float(player_ref.SPEED)
-		var nxt: float = minf(cur + 20.0, float(player_ref.MAX_MOVE_SPEED))
+		var nxt: float = minf(cur + 10.0, float(player_ref.MAX_MOVE_SPEED))
 		return tr("ui.upgrade_ui.delta_move_speed") % [int(cur), int(nxt)]
 	if id == "max_hp":
-		return tr("ui.upgrade_ui.delta_max_hp") % [player_ref.max_hp, player_ref.max_hp + 25]
+		return tr("ui.upgrade_ui.delta_max_hp") % [player_ref.max_hp, player_ref.max_hp + 15]
 	if id == "heal":
-		var nh: int = mini(player_ref.hp + 20, player_ref.max_hp)
+		var nh: int = mini(player_ref.hp + 12, player_ref.max_hp)
 		return tr("ui.upgrade_ui.delta_heal") % [player_ref.hp, nh]
 
 	if id in WEAPON_UPGRADE_IDS:
@@ -780,7 +889,7 @@ func build_pool() -> Array:
 			continue
 		if id == "heal" and not prog:
 			continue
-		pool.append({"id": id, "weight": 1.5, "is_evolution": false})
+		pool.append({"id": id, "weight": 0.32, "is_evolution": false})
 
 	for id in WEAPON_UPGRADE_IDS:
 		if player_ref.active_weapons.has(id):
@@ -894,8 +1003,8 @@ func refresh_buttons() -> void:
 func show_upgrades(player: Node) -> void:
 	player_ref = player
 	_remove_stray_aura_rings_on_player()
-	reroll_count = 2 + int(SaveManager.meta_upgrades.get("reroll_bonus", 0))
-	skip_count = 2 + int(SaveManager.meta_upgrades.get("skip_bonus", 0))
+	reroll_count = int(player_ref.run_levelup_rerolls_left)
+	skip_count = int(player_ref.run_levelup_skips_left)
 
 	pick_count = 4 if player_ref.get("cog_shard_bonus_active") else 3
 	_layout_levelup_panel(pick_count)
@@ -927,6 +1036,7 @@ func _on_reroll() -> void:
 	if reroll_count <= 0:
 		return
 	reroll_count -= 1
+	player_ref.run_levelup_rerolls_left = reroll_count
 	current_pool = build_pool()
 	chosen_upgrades = weighted_pick(current_pool, pick_count)
 	refresh_buttons()
@@ -936,7 +1046,12 @@ func _on_skip() -> void:
 	if skip_count <= 0:
 		return
 	skip_count -= 1
-	player_ref.gain_xp(int(player_ref.xp_to_next_level * 0.3))
+	player_ref.run_levelup_skips_left = skip_count
+	player_ref.gold_earned += 25
+	if SaveManager.game_mode != "local_coop":
+		var gl: Node = player_ref.get_node_or_null("CanvasLayer/StatsRow/GoldLabel")
+		if gl:
+			gl.text = "💰 " + str(player_ref.gold_earned)
 	upgrade_chosen.emit("skip")
 	visible = false
 
