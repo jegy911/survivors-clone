@@ -84,8 +84,27 @@ func _setup_layout() -> void:
 	detail_title.add_theme_color_override("font_color", Color("#ECF0F1"))
 	detail_desc.add_theme_font_size_override("font_size", 15)
 	detail_desc.add_theme_color_override("font_color", Color("#BDC3C7"))
+	_ensure_detail_icon_row()
 	_style_back_button()
 	_ensure_world_lore_hint()
+
+
+func _ensure_detail_icon_row() -> void:
+	var vbox: VBoxContainer = $MainVBox/DetailPanel/DetailInner/DetailVBox as VBoxContainer
+	if vbox.get_node_or_null("DetailIconWrap") != null:
+		return
+	var wrap := CenterContainer.new()
+	wrap.name = "DetailIconWrap"
+	wrap.custom_minimum_size = Vector2(0, 84)
+	wrap.visible = false
+	var tr_icon := TextureRect.new()
+	tr_icon.name = "DetailIcon"
+	tr_icon.custom_minimum_size = Vector2(80, 80)
+	tr_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	tr_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	wrap.add_child(tr_icon)
+	vbox.add_child(wrap)
+	vbox.move_child(wrap, 0)
 
 
 func _ensure_world_lore_hint() -> void:
@@ -271,13 +290,31 @@ func _make_card(entry: Dictionary) -> PanelContainer:
 	var inner = VBoxContainer.new()
 	inner.add_theme_constant_override("separation", 6)
 	margin.add_child(inner)
-	var emoji = Label.new()
-	emoji.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	emoji.text = str(entry.get("emoji", "•")) if discovered else "❔"
-	emoji.add_theme_font_size_override("font_size", 32 if discovered else 28)
-	if not discovered:
-		emoji.modulate = Color(0.45, 0.45, 0.55, 1.0)
-	inner.add_child(emoji)
+	var icon_wrap := CenterContainer.new()
+	icon_wrap.custom_minimum_size = Vector2(44, 44)
+	inner.add_child(icon_wrap)
+	if discovered:
+		var tex: Texture2D = CodexIconCatalog.try_for_entry(entry)
+		if tex != null:
+			var tr_icon := TextureRect.new()
+			tr_icon.texture = tex
+			tr_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			tr_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			tr_icon.custom_minimum_size = Vector2(44, 44)
+			icon_wrap.add_child(tr_icon)
+		else:
+			var emoji := Label.new()
+			emoji.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			emoji.text = str(entry.get("emoji", "•"))
+			emoji.add_theme_font_size_override("font_size", 32)
+			icon_wrap.add_child(emoji)
+	else:
+		var lock_l := Label.new()
+		lock_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		lock_l.text = "❔"
+		lock_l.add_theme_font_size_override("font_size", 28)
+		lock_l.modulate = Color(0.45, 0.45, 0.55, 1.0)
+		icon_wrap.add_child(lock_l)
 	var name_l = Label.new()
 	name_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -320,17 +357,34 @@ func _on_card_pressed(entry: Dictionary) -> void:
 func _refresh_detail() -> void:
 	var title: Label = $MainVBox/DetailPanel/DetailInner/DetailVBox/DetailTitle
 	var desc: Label = $MainVBox/DetailPanel/DetailInner/DetailVBox/DetailDesc
+	var wrap: CenterContainer = $MainVBox/DetailPanel/DetailInner/DetailVBox.get_node_or_null("DetailIconWrap") as CenterContainer
+	var dicon: TextureRect = null
+	if wrap != null:
+		dicon = wrap.get_node_or_null("DetailIcon") as TextureRect
 	if _selected_entry.is_empty():
 		title.text = tr("ui.collection_menu.pick_title")
 		desc.text = tr("ui.collection_menu.pick_desc")
+		if wrap != null:
+			wrap.visible = false
 		return
 	var discovered = SaveManager.is_codex_entry_unlocked(_selected_entry)
 	if discovered:
 		title.text = tr(_entry_name_key(_selected_entry))
 		desc.text = tr(_entry_desc_key(_selected_entry))
+		if dicon != null:
+			var tex: Texture2D = CodexIconCatalog.try_for_entry(_selected_entry)
+			if tex != null:
+				dicon.texture = tex
+				wrap.visible = true
+			else:
+				dicon.texture = null
+				wrap.visible = false
 	else:
 		title.text = tr("ui.collection_menu.locked_name")
 		desc.text = tr(_locked_desc_key(_selected_entry))
+		if dicon != null:
+			dicon.texture = null
+			wrap.visible = false
 
 
 func _on_back() -> void:

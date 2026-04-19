@@ -194,13 +194,14 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 
 ## 5a. Koleksiyon (bestiary / kodeks)
 
-- **`core/collection_data.gd`** — Sekmeler: `TAB_ENEMY`, `TAB_BOSS`, `TAB_WEAPON`, `TAB_ITEM`, `TAB_CHARACTER`, `TAB_MAP`. Tablo dizileri: `ENEMY_ENTRIES`, `BOSS_ENTRIES`, `WEAPON_ENTRIES`, `ITEM_ENTRIES`, `MAP_ENTRIES`; kahramanlar **`character_entries()`** ile `CharacterData.CHARACTERS` üzerinden üretilir (emoji + `accent` = karakter rengi). `all_entries()`, `entries_for_tab(tab)`, `total_entry_count()`, `has_bestiary_id()` (sadece ölüm kaydı).
+- **`core/collection_data.gd`** — Sekmeler: `TAB_ENEMY`, `TAB_BOSS`, `TAB_WEAPON`, `TAB_ITEM`, `TAB_CHARACTER`, `TAB_MAP`, `TAB_GLOSSARY`. Tablo dizileri: `ENEMY_ENTRIES`, `BOSS_ENTRIES`, `WEAPON_ENTRIES`, `ITEM_ENTRIES`, `MAP_ENTRIES`; kahramanlar **`character_entries()`** ile `CharacterData.CHARACTERS` üzerinden üretilir (emoji + `accent` = karakter rengi). `all_entries()`, `entries_for_tab(tab)`, `total_entry_count()`, `has_bestiary_id()` (sadece ölüm kaydı).
+- **Kodeks kart / detay görseli:** `core/codex_icon_catalog.gd` — sırayla `codex_icons`, `codex_art`, sekmeye özel yollar (kahraman `codex.png`, harita önizlemesi, düşman/boss sprite eşlemesi, `glossary_icons`), ardından **silah/eşya** için `assets/ui/upgrade_icons/` (`core/upgrade_icon_catalog.gd`; evrim sonucu silahlar için `evolutions/<id>.png` ve `shadow_storm` → `storm_shadow.png` takması). PNG yoksa emoji. Ayrıntı: `assets/ui/codex_icons/README.txt`, `assets/ui/codex_art/README.txt`. Harita önizleme yolu: `CodexIconCatalog.MAP_PREVIEW_TEXTURES` / `map_preview_path` (harita seçimi ile aynı).
 - **`SaveManager`**: `codex_discovered` (düşman/boss), `codex_weapons`, `codex_items`, `codex_maps`; `is_codex_entry_unlocked(entry)` tek doğrulama; `register_codex_*` aileleri. **Tüm ilerlemeyi sıfırla** dört kodeks dizisini de temizler.
 - **Keşif tetikleyicileri:** düşman ölümü `enemy_base` / `boss` / `giant`; silah ve eşya ilk alımda **`player/player.gd`** `add_weapon` / `add_item`; harita **`ui/map_select.gd`** oyun başlatırken `register_codex_map`; kahramanlar **`unlocked_characters`** (kilit açılmadan kart gizli).
 - **Yeni düşman:** `.tscn` + `ENEMY_ENTRIES`/`BOSS_ENTRIES` + `codex.<id>.name/desc` (düşman/boss düz anahtar).
 - **Yeni silah / eşya / harita:** `WEAPON_ENTRIES` / `ITEM_ENTRIES` / `MAP_ENTRIES` + `codex.<weapon|item|map>.<id>.name/desc` — **dil dondurması sırasında** yalnızca `codex_extensions_en.json` → `merge_codex_extensions.py` ile `en.json`’a birleştir; `tr` / `zh_CN` şimdilik elleme. (Tam dil turunda yine `{en,tr,zh_CN}` akışı.)
 - **Yeni kahraman:** `CharacterData`’ya ekle; `codex.character.<id>` — dondurma sırasında **`codex_extensions_en.json`** (ve `en.json` birleşimi); diğer diller raf.
-- **UI:** `ui/collection_menu.gd` — üstte 6 sekme (`ui.collection_menu.tab_*`); ana menü **`ui/main_menu.gd`** → Kodeks.
+- **UI:** `ui/collection_menu.gd` — üstte sekmeler (`ui.collection_menu.tab_*`); ana menü **`ui/main_menu.gd`** → Kodeks; grid + detayda `CodexIconCatalog.try_for_entry`.
 
 ---
 
@@ -221,7 +222,7 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 | Mağaza (iskelet) | `ui/shop_menu.gd` / `.tscn` |
 | Karakter seçimi | `ui/character_select.gd`, `character_select_p2.gd`, `character_select_helpers.gd`, `character_select_preview.gd` (sabit boy `TextureRect`: `idle_left` ilk kare önbelleği; kilit=siyah kutu, açık+satın alınmamış=silüet, satın alınmış=tam); `game_mode_select.gd` → `warmup_portraits_async`; ESC: P1→`game_mode_select`, P2→`character_select` |
 | Harita | `ui/map_select.gd` |
-| Level-up | `ui/upgrade_ui.gd` |
+| Level-up | `ui/upgrade_ui.gd` — kart ikonları `UpgradeIconCatalog` (`assets/ui/upgrade_icons/README.txt`); silah envanter slotu evrim PNG yedeği: `try_weapon_with_evolution_fallback` |
 | HUD (kill, altın, çubuklar) | `player/player.gd` + `player` sahnesindeki `CanvasLayer` düğümleri |
 | Oyun sonu / duraklat | `ui/game_over.gd`, `pause_menu.gd` |
 | Meta upgrade | `ui/meta_upgrade.gd` |

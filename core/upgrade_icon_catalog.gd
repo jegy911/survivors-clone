@@ -37,7 +37,21 @@ static func try_item(item_id: String) -> Texture2D:
 
 
 static func try_evolution(evo_id: String) -> Texture2D:
-	return try_texture_at(evolution_texture_path(evo_id))
+	var t: Texture2D = try_texture_at(evolution_texture_path(evo_id))
+	if t != null:
+		return t
+	## Dosya adı evrim id’sinden farklı import edildiyse (ör. `shadow_storm` → `storm_shadow.png`).
+	if evo_id == "shadow_storm":
+		return try_texture_at("%s/evolutions/storm_shadow.png" % ICON_ROOT)
+	return null
+
+
+## Silah kartı / kodeks: bazı sonuç silahları yalnızca `evolutions/<id>.png` altında olabilir.
+static func try_weapon_with_evolution_fallback(weapon_id: String) -> Texture2D:
+	var w: Texture2D = try_weapon(weapon_id)
+	if w != null:
+		return w
+	return try_evolution(weapon_id)
 
 
 static func try_stat(stat_id: String) -> Texture2D:

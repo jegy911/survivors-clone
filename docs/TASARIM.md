@@ -4,7 +4,7 @@ Oyunda **görsel, ses sunumu, UI/ikon ve pazarlama** tarafında yapılması veya
 Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.  
 Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.
 
-**Son güncelleme:** 2026-04-07 (karakter görselleri envanteri; run HUD / dalga ödülü yerelleştirmesi)
+**Son güncelleme:** 2026-04-16 (silah/eşya tablo şablonu: mantık / ikon / projectile / tasarım)
 
 ---
 
@@ -30,8 +30,22 @@ Karakter sınıfı ve rol envanteri (oyun dizaynı metni): `docs/KARAKTER_SINIFL
 |--------|--------|
 | ✅ | Bu hedefe uygun bir **ilk geçiş** var (asset veya uygulama oyunda kullanılıyor). |
 | ❌ | **Eksik**, placeholder, geometrik geçici çözüm veya hedeflenen kaliteye henüz ulaşılmadı. |
+| **/** | Bu **sütun ilgili değil** veya içerik **henüz atanmadı** (ör. pasif eşyalarda dünya içi *projectile* hattı yok). |
 
 *(İnce ayar / “final art pass” gerekiyorsa satır notunda belirtilir.)*
+
+### Silah ve pasif eşya — satır şablonu (mantık / ikon / projectile / tasarım)
+
+Koleksiyon ve level-up tarafında tutarlı takip için tablolarda beş sütun kullanılır:
+
+| Sütun | Kapsam |
+|--------|--------|
+| **Mantık** | Oyun içi davranış: ilgili `weapon_*.gd` / `item` etkisi, havuz, istatistik bağları — çalışır durum. |
+| **İkon** | Menü / level-up kartı / kodeks: `assets/ui/upgrade_icons/` (`weapons/`, `items/`, `evolutions/`) veya `codex_icons` / `codex_art` (bkz. `upgrade_icon_catalog.gd`, `codex_icon_catalog.gd`). |
+| **Projectile** | Dünya içi görünür mermi veya doğrudan eşdeğeri: `projectiles/*.tscn`, `assets/projectiles/`, silaha özel VFX hattı (ör. zincir segmenti, yıldırım cismi). **Pasif eşyalar** için bu sütunda yalnızca **`/`** (şu an projectile hattı yok / tanımsız). |
+| **Tasarım** | Final sanat, palet, okunabilirlik ve “ürün kalitesi” polish’i (ikon ve sahadaki sprite’ın birlikte oturması). |
+
+Özet: eşya satırlarında **Projectile = /** sabit; silahlarda gerçekten saha objesi yoksa (yalnızca oyuncuya bağlı alan vb.) hücrede kısa not veya yine **`/`** kullanılabilir — o durumda **Mantık** veya **Tasarım** notunda neyin “mermi yerine” geçtiği yazılır.
 
 ---
 
@@ -86,24 +100,26 @@ Her düşman `.tscn` içinde **`AnimatedSprite2D`** + atlas / spritesheet ile **
 
 ---
 
-## Taban silahlar (VFX / projectile / okunabilirlik)
+## Taban silahlar (mantık / ikon / projectile / tasarım)
 
-| Silah ID | Oyunda mantık | Final VFX / okunaklı mermi görselleri |
-|----------|----------------|----------------------------------------|
-| bullet | ✅ | `projectiles/bullet.gd` — `player_vfx_opacity` → ColorRect/Sprite2D `modulate.a` |
-| dagger | ✅ | `projectiles/dagger.tscn` — `bullet.gd` ile aynı mantık; ince sprite ölçeği (ikiz atış `weapon_dagger.gd`) |
-| aura | ✅ | `assets/projectiles/aura/aura.png` — oyuncuya bağlı halka (`weapon_aura.gd` → `AuraWeaponRing`) |
-| chain | ✅ | `assets/projectiles/chain/chain.png` — `CombatProjectileFx.spawn_chain_segment` (Sprite2D segment, `weapon_chain.gd`) |
-| boomerang | ✅ | `assets/projectiles/axe/boomerang.png` + `projectiles/hunter_axe.tscn` (Sprite2D; oyun içi ID: `boomerang`) |
-| lightning | ✅ | Vuruş: `projectiles/lightning_bolt.tscn` (ObjectPool; kamera üstünden hedefe dikey iniş, mermi gibi isabet + `lightning_hit_fx`). Storm / Toxic Chain yalnızca `lightning_hit_fx` + renk. |
-| ice_ball | ✅ | `projectiles/ice_ball.tscn` |
-| shadow | ✅ / Kısmi | Okunabilirlik: `CombatProjectileFx.spawn_hit_sparks` (orbit isabet). Final sprite ayrı. |
-| laser | ✅ / Kısmi | Işın: koyu alt katman + parlak çekirdek + kıvılcım; final sanat ayrı. |
-| holy_bullet | ✅ / Kısmi | Kutsal mermi isabeti: `bullet.gd` + kıvılcım (`armor_piercing`); final sanat ayrı. |
-| fan_blade | ❌ | Shard: `Polygon2D` — final bıçak / parça sprite’ı yok |
-| toxic_chain, death_laser, blood_boomerang, storm, shadow_storm, frost_nova, ember_fan, veil_daggers | ✅ / ❌ | Çoğu mevcut; **pasif ikonları ve level-up kart görselleri** ayrı bölümde |
+| Silah ID | Mantık | İkon | Projectile | Tasarım |
+|----------|--------|------|------------|---------|
+| bullet | ✅ `projectiles/bullet.gd`; `player_vfx_opacity` → ColorRect/Sprite2D `modulate.a` | ✅ `upgrade_icons/weapons/bullet.png` | ✅ Mermi gövdesi + isabet hattı | ✅ / kısmi — opaklık / palet ince ayarı açık olabilir |
+| dagger | ✅ `weapon_dagger.gd` + ikiz atış | ✅ `upgrade_icons/weapons/dagger.png` | ✅ `projectiles/dagger.tscn` (`bullet.gd`) | ✅ — ince sprite ölçeği |
+| aura | ✅ `weapon_aura.gd` → `AuraWeaponRing` | ✅ `upgrade_icons/weapons/aura.png` | / — klasik `.tscn` mermi yok; saha etkisi oyuncuya bağlı halka | ✅ `assets/projectiles/aura/aura.png` |
+| chain | ✅ `weapon_chain.gd` + `CombatProjectileFx.spawn_chain_segment` | ✅ `upgrade_icons/weapons/chain.png` | ✅ Segment Sprite2D + `assets/projectiles/chain/chain.png` | ✅ |
+| boomerang | ✅ Oyun içi ID `boomerang` | ✅ `upgrade_icons/weapons/boomerang.png` | ✅ `projectiles/hunter_axe.tscn` + `assets/projectiles/axe/boomerang.png` | ✅ |
+| lightning | ✅ Ana hat + storm/toxic varyantları | ✅ `upgrade_icons/weapons/lightning.png` | ✅ `projectiles/lightning_bolt.tscn` + `lightning_hit_fx` | ✅ / kısmi |
+| ice_ball | ✅ | ❌ (PNG yok) | ✅ `projectiles/ice_ball.tscn` | ✅ / kısmi |
+| shadow | ✅ Orbit isabet + sparks | ✅ `upgrade_icons/weapons/shadow.png` | ✅ / kısmi — `spawn_hit_sparks` odaklı | Kısmi — final mermi sprite ayrı |
+| laser | ✅ Işın katmanları | ✅ `upgrade_icons/weapons/laser.png` | ✅ / kısmi — ışın geometrisi kodda | Kısmi — final sanat |
+| holy_bullet | ✅ `bullet.gd` + `armor_piercing` kıvılcımı | ✅ `upgrade_icons/evolutions/holy_bullet.png` (`try_weapon_with_evolution_fallback` ile aynı ada) | ✅ Mermi hattı | Kısmi |
+| fan_blade | ✅ | ✅ `upgrade_icons/weapons/fan_blade.png` | ❌ Shard `Polygon2D` | ❌ final bıçak / parça sprite |
+| arc_pulse | ✅ | ✅ `upgrade_icons/weapons/arc_pulse.png` | ✅ / kısmi — silaha özel projeksiyon hattı | Kısmi |
+| hex_sigil, gravity_anchor, bastion_flail, shield_ram, binding_circle, void_lens, citadel_flail, fortress_ram | ✅ (silah başına sahne/kod) | ✅ ilgili `weapons/*.png` mevcutsa | Silaha göre ✅ veya / + not `projectiles/` / `GELISTIRICI_REHBERI` | Kısmi / ❌ satır içi |
+| veil_daggers, toxic_chain, death_laser, blood_boomerang, storm, shadow_storm, frost_nova, ember_fan, arc_surge | ✅ evrim / türev hatlar | Evrim PNG’leri (`evolutions/*.png`) kısmi set | Çoğunlukla taban silah projectile’ını paylaşır veya ek VFX | Çoğunlukla kısmi — kart / saha ayrımı `upgrade_icons` + bu tablo |
 
-*(“✅ / ❌” = çalışıyor ancak final sanat / ayarlanabilir opaklık / palet uyumu eksik olabilir.)*
+*(“✅ / kısmi” = çalışıyor; final sanat veya tek tip ikon seti eksik olabilir.)*
 
 ---
 
@@ -126,29 +142,36 @@ Level-up kartı ve yüzen evrim bildirimi metinleri: `locales/*.json` → `ui.ev
 
 ---
 
-## Pasif eşyalar (ikon + upgrade kartı)
+## Pasif eşyalar (mantık / ikon / projectile / tasarım)
 
-Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + istatistik), emoji/Unicode yedek; isteğe bağlı PNG: `assets/ui/upgrade_icons/` + `core/upgrade_icon_catalog.gd` (matris satır 14 — kısmi). Yerleşim: `ui/upgrade_ui.tscn` içindeki **`EditorRoot`** düğümü editörden taşınabilir; betik bu ağaca bağlanır veya yoksa kodla kabuk üretir.
+Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + istatistik), emoji/Unicode yedek; isteğe bağlı PNG: `assets/ui/upgrade_icons/items/` + `core/upgrade_icon_catalog.gd` (matris satır 14 — kısmi). Yerleşim: `ui/upgrade_ui.tscn` içindeki **`EditorRoot`** düğümü editörden taşınabilir; betik bu ağaca bağlanır veya yoksa kodla kabuk üretir.
 
-| Item ID | Menü/kart ikonu |
-|---------|-----------------|
-| magnet | ❌ |
-| armor | ❌ |
-| crit | ❌ |
-| explosion | ❌ |
-| lifesteal | ❌ |
-| poison | ❌ |
-| shield | ❌ |
-| speed_charm | ❌ |
-| blood_pool | ❌ |
-| luck_stone | ❌ |
-| turbine | ❌ |
-| steam_armor | ❌ |
-| energy_cell | ❌ |
-| ember_heart | ❌ |
-| night_vial | ❌ |
+**Projectile sütunu:** pasif eşyalar için hepsinde **`/`** (dünya içi mermi hattı yok; etkiler istatistik / proc / aura kodunda).
 
-`items/item_vampire.gd` — oyunda bağlı değil (yalnızca dosya); ikon ihtiyacı yok.
+| Item ID | Mantık | İkon | Projectile | Tasarım |
+|---------|---------|------|------------|---------|
+| magnet | ✅ | ❌ | / | ❌ |
+| armor | ✅ | ❌ | / | ❌ |
+| crit | ✅ | ❌ | / | ❌ |
+| explosion | ✅ | ❌ | / | ❌ |
+| lifesteal | ✅ | ❌ | / | ❌ |
+| poison | ✅ | ❌ | / | ❌ |
+| shield | ✅ | ❌ | / | ❌ |
+| speed_charm | ✅ | ❌ | / | ❌ |
+| blood_pool | ✅ | ❌ | / | ❌ |
+| luck_stone | ✅ | ❌ | / | ❌ |
+| turbine | ✅ | ❌ | / | ❌ |
+| steam_armor | ✅ | ❌ | / | ❌ |
+| energy_cell | ✅ | ❌ | / | ❌ |
+| ember_heart | ✅ | ❌ | / | ❌ |
+| glyph_charm | ✅ | ❌ | / | ❌ |
+| resonance_stone | ✅ | ❌ | / | ❌ |
+| rampart_plate | ✅ | ❌ | / | ❌ |
+| iron_bulwark | ✅ | ❌ | / | ❌ |
+| night_vial | ✅ | ❌ | / | ❌ |
+| field_lens | ✅ | ✅ `upgrade_icons/items/field_lens.png` | / | Kısmi |
+
+`items/item_vampire.gd` — oyunda bağlı değil (yalnızca dosya); envanter satırı yok.
 
 ---
 
@@ -261,6 +284,6 @@ Aşağıdaki maddelerin **kod karşılığı** matriste; burada yalnızca **tasa
 
 ## Bu dosyayı ne zaman güncelle?
 
-- Yeni karakter, silah, eşya, düşman veya orb eklenince ilgili satırları ekle.
+- Yeni karakter, silah, eşya, düşman veya orb eklenince ilgili satırları ekle; silah/eşya için **mantık / ikon / projectile / tasarım** beş sütununu doldur (eşyada projectile hücresi **`/`**).
 - Bir görsel veya ikon **tamamlandığında** ✅ yap; placeholder kaldıysa ❌ bırak.
 - `docs/YOL_HARITASI.md` artık görsel iş listesi taşımaz; görsel iş burada kapanır.

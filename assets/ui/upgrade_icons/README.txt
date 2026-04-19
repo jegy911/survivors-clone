@@ -13,14 +13,16 @@ Layout (paths are also in code: core/upgrade_icon_catalog.gd):
 Weapon IDs (base pool + evolution results use "weapons" for the result weapon id when it is a normal weapon id; evolution-only results are under "evolutions"):
 
   weapons/: bullet, dagger, aura, chain, boomerang, lightning, ice_ball, shadow, laser, fan_blade,
-            hex_sigil, gravity_anchor, bastion_flail, shield_ram,
+            hex_sigil, gravity_anchor, bastion_flail, shield_ram, arc_pulse,
             holy_bullet, toxic_chain, death_laser, blood_boomerang, storm, shadow_storm, frost_nova,
             ember_fan, binding_circle, void_lens, citadel_flail, fortress_ram, veil_daggers
 
 Evolution cards (pick row uses evolutions/ when the offer is an evolution):
 
   evolutions/: holy_bullet, toxic_chain, death_laser, blood_boomerang, storm, shadow_storm, frost_nova,
-              ember_fan, binding_circle, void_lens, citadel_flail, fortress_ram, veil_daggers
+              ember_fan, binding_circle, void_lens, citadel_flail, fortress_ram, veil_daggers, arc_surge
+
+  Not: `shadow_storm` evrimi için dosya adı `storm_shadow.png` ise kod otomatik o yolu da dener.
 
   (You may use the same art for weapons/<id> and evolutions/<id> if identical.)
 
@@ -28,7 +30,7 @@ Item IDs:
 
   items/: lifesteal, armor, crit, explosion, magnet, poison, shield, speed_charm, blood_pool,
          luck_stone, turbine, steam_armor, energy_cell, ember_heart, glyph_charm, resonance_stone,
-         rampart_plate, iron_bulwark, night_vial
+         rampart_plate, iron_bulwark, night_vial, field_lens
 
 Stat upgrade cards (optional):
 

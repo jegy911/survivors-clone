@@ -1,8 +1,5 @@
 extends CanvasLayer
 
-const MAP_PREVIEW := {
-	"vs_map": "res://assets/zemin/zemin.png",
-}
 const MAP_IDS_VS := ["vs_map"]
 
 var _variant: String = "story"
@@ -207,8 +204,8 @@ func _on_curse_changed(v: float) -> void:
 
 
 func _update_preview() -> void:
-	var path: String = str(MAP_PREVIEW.get(_map_id, MAP_PREVIEW["vs_map"]))
-	var tex: Texture2D = load(path) as Texture2D
+	var path: String = CodexIconCatalog.map_preview_path(_map_id)
+	var tex: Texture2D = UpgradeIconCatalog.try_texture_at(path)
 	_preview.texture = tex
 	var body: String
 	if _variant == "fast":

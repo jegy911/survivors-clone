@@ -117,7 +117,7 @@ func _texture_for_upgrade_card(id: String, is_evo: bool) -> Texture2D:
 	if is_evo or WeaponEvolution.EVOLUTIONS.has(id):
 		return UpgradeIconCatalog.try_evolution(id)
 	if id in WEAPON_UPGRADE_IDS:
-		return UpgradeIconCatalog.try_weapon(id)
+		return UpgradeIconCatalog.try_weapon_with_evolution_fallback(id)
 	if id in ITEM_UPGRADE_IDS:
 		return UpgradeIconCatalog.try_item(id)
 	if id in STAT_UPGRADES:
@@ -546,7 +546,7 @@ func _rebuild_inventory_slots() -> void:
 			var wid: String = str(w_ids[i])
 			var g: String = str(_WEAPON_GLYPH.get(wid, "⚔"))
 			var tip: String = player_ref.get_weapon_description(wid)
-			_weapons_grid.add_child(_inventory_slot(tip, g, true, false, UpgradeIconCatalog.try_weapon(wid)))
+			_weapons_grid.add_child(_inventory_slot(tip, g, true, false, UpgradeIconCatalog.try_weapon_with_evolution_fallback(wid)))
 		else:
 			var empty_tip := tr("ui.upgrade_ui.slot_weapon_empty")
 			_weapons_grid.add_child(_inventory_slot(empty_tip, "🔒", false, true))
