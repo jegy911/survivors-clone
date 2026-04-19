@@ -62,7 +62,7 @@ Koleksiyon ve level-up tarafında tutarlı takip için tablolarda beş sütun ku
 | stormer | ✅ | `assets/character assets/stormer assets/` |
 | frost | ✅ | `assets/character assets/Frost assets/` |
 | shadow_walker | ✅ | `assets/character assets/sw assets/` — `characters/shadow_walker/shadow_walker.tscn` |
-| dusk | ❌ | `characters/dusk/dusk.tscn` — animasyon slotları var, **frame** yok (dusk özel sprite gelene kadar). |
+| dusk | ✅ | `assets/character assets/dusk assets/` — `characters/dusk/dusk.tscn` (`AnimatedSprite2D` + idle/walk/run). |
 | engineer | ✅ | `assets/character assets/engineer assets/` |
 | paladin | ✅ | `assets/character assets/paladin assets/` |
 | blood_prince | ✅ | `assets/character assets/bp assets/` |
