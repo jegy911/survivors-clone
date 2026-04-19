@@ -24,25 +24,43 @@
 
 **Silah ID:** dosya adından `weapon_` önekini ve `.tscn` uzantısını çıkar → örn. `weapon_bastion_flail.tscn` → `bastion_flail` → ikon yolu `res://assets/ui/upgrade_icons/weapons/bastion_flail.png`; yoksa `.../evolutions/<aynı_id>.png` (`arc_surge` gibi). Kod: `UpgradeIconCatalog.try_weapon_with_evolution_fallback`.
 
-**Kart / kodeks ikon:** yukarıdaki PNG gerçekten var mı (evrim silahlarında `evolutions/`).
+**Kart / kodeks ikon:** yukarıdaki PNG gerçekten var mı (evrim silahlarında çoğunlukla `evolutions/`).
 
 **Oyun-içi görsel:** `assets/projectiles/...`, anlamlı `Sprite2D` + doku (sahne veya kod), veya `projectiles/*.tscn` içi sprite; yalnızca gizli `ColorRect` / saf yarıçap hasarı / runtime `ColorRect` ✗ sayılır.
+
+Evrim kimlikleri tek kaynak: `weapons/weapon_evolution.gd` → `EVOLUTIONS`.
+
+### Taban silahlar
+
+Level-up havuzundan doğrudan seçilen / evrim **sonucu olmayan** silah sahneleri (gap tablosu).
 
 | Sahne | Silah ID | Kart / kodeks ikon | Oyun-içi görsel |
 |-------|----------|-------------------|-----------------|
 | `weapon_bastion_flail.tscn` | bastion_flail | ✓ | ✗ |
+| `weapon_gravity_anchor.tscn` | gravity_anchor | ✓ | ✗ |
+| `weapon_hex_sigil.tscn` | hex_sigil | ✓ | ✗ |
+| `weapon_ice_ball.tscn` | ice_ball | ✗ | ✓ |
+| `weapon_shield_ram.tscn` | shield_ram | ✓ | ✗ |
+
+### Evrim silahları
+
+Yalnızca `EVOLUTIONS` ile elde edilen silah id’leri; sahneleri yine `weapons/scenes/weapon_<id>.tscn`.
+
+| Sahne | Silah ID | Kart / kodeks ikon | Oyun-içi görsel |
+|-------|----------|-------------------|-----------------|
 | `weapon_binding_circle.tscn` | binding_circle | ✗ | ✗ |
 | `weapon_citadel_flail.tscn` | citadel_flail | ✗ | ✗ |
 | `weapon_ember_fan.tscn` | ember_fan | ✗ | ✓ |
 | `weapon_fortress_ram.tscn` | fortress_ram | ✗ | ✗ |
 | `weapon_frost_nova.tscn` | frost_nova | ✗ | ✗ |
-| `weapon_gravity_anchor.tscn` | gravity_anchor | ✓ | ✗ |
-| `weapon_hex_sigil.tscn` | hex_sigil | ✓ | ✗ |
-| `weapon_ice_ball.tscn` | ice_ball | ✗ | ✓ |
 | `weapon_shadow_storm.tscn` | shadow_storm | ✗ | ✗ |
-| `weapon_shield_ram.tscn` | shield_ram | ✓ | ✗ |
 | `weapon_veil_daggers.tscn` | veil_daggers | ✗ | ✓ |
 | `weapon_void_lens.tscn` | void_lens | ✗ | ✗ |
+
+**Son tarama (kart + oyun-içi ✓ — gap tablosundan çıkarıldı):**
+
+- **Taban:** `arc_pulse`, `aura`, `bullet`, `chain`, `boomerang`, `dagger`, `fan_blade`, `laser`, `lightning`, `shadow`
+- **Evrim:** `arc_surge`, `blood_boomerang`, `death_laser`, `holy_bullet`, `storm`, `toxic_chain`
 
 Runtime `ColorRect` (sahne envanteri değil): `weapon_frost_nova.gd`, `weapon_shadow.gd`, `weapon_shadow_storm.gd`.
 
