@@ -1,42 +1,80 @@
 # ColorRect — hızlı takip
 
-**Kullanım:** Bu tabloda kalan satır için tasarım / ikon / oyun-içi görsel tamamlanınca **satırı sil**. Yeni boşluk açılırsa **ekle**. Detay için `docs/TASARIM.md`.
+**Kullanım:** Bir satır tamamlanınca **satırı sil**; yeni gap açılırsa **ekle**. Detay için `docs/TASARIM.md`.
 
-**Not:** Kahraman sahnelerinde kök `ColorRect` çoğunlukla `player.gd` gövde rengi; **eksik görsel** = `AnimatedSprite2D` yok veya frame boş. Şu an listede yok.
+**İşaretler:** ✓ = var (dosya veya anlamlı oyun-içi görsel), ✗ = yok / henüz yok.
+
+**Not:** Kahraman sahnelerinde kök `ColorRect` çoğunlukla `player.gd` gövde rengi; bu dosya özellikle **eksik ikon** ve **eksik oyun-içi silah/eşya görseli** takibi içindir.
 
 ---
 
-## Kahraman (AnimatedSprite eksik / placeholder)
+## Kahraman
 
-| ID | Tasarım | Sahne / asset |
-|----|---------|---------------|
-| — | — | Şu an kayıt yok. |
+| Karakter ID | Kart / kodeks ikon | Oyun-içi görsel |
+|-------------|-------------------|-----------------|
+| *(şu an açık gap yok)* | — | — |
+
+**Kart / kodeks ikon:** `res://assets/ui/character_icons/<id>.png`, `res://characters/<id>/codex.png`, `res://assets/ui/codex_icons/...` vb. (`CodexIconCatalog` / `UpgradeIconCatalog` sırasıyla dener).
+
+**Oyun-içi görsel:** `AnimatedSprite2D` + dolu frame / karakter dokuları (`assets/character assets/...`); burada satır yoksa hepsi bu anlamda kapsanıyor sayılır.
 
 ---
 
 ## Silah sahneleri (`weapons/scenes/`)
 
-**Kriter (silah satırı burada *kalır*):** Aşağıdakilerden **en az biri eksik** ise burada listelenir.
+**Silah ID:** dosya adından `weapon_` önekini ve `.tscn` uzantısını çıkar → örn. `weapon_bastion_flail.tscn` → `bastion_flail` → ikon yolu `res://assets/ui/upgrade_icons/weapons/bastion_flail.png`; yoksa `.../evolutions/<aynı_id>.png` (`arc_surge` gibi). Kod: `UpgradeIconCatalog.try_weapon_with_evolution_fallback`.
 
-1. **Kart / kodeks ikonu:** `res://assets/ui/upgrade_icons/weapons/<silah_id>.png` **veya** `.../evolutions/<id>.png` (`UpgradeIconCatalog.try_weapon_with_evolution_fallback` mantığı; `shadow_storm` → `storm_shadow.png` özel yolu dahil — dosya yoksa sayılmaz).
-2. **Oyun-içi görsel:** `assets/projectiles/...` dokusu, anlamlı `Sprite2D` + texture (ör. gölge küresi), veya `projectiles/*.tscn` + sprite; **yalnızca** sahadaki gizli `ColorRect` / radius-hasarı / runtime `ColorRect` sayılmaz.
+**Kart / kodeks ikon:** yukarıdaki PNG gerçekten var mı (evrim silahlarında `evolutions/`).
 
-**Son tarama:** İki koşul da sağlanan silahlar tablodan çıkarıldı (ör. `arc_pulse`, `arc_surge`, `aura`, mermi/zincir/lazer/hançer vb.).
+**Oyun-içi görsel:** `assets/projectiles/...`, anlamlı `Sprite2D` + doku (sahne veya kod), veya `projectiles/*.tscn` içi sprite; yalnızca gizli `ColorRect` / saf yarıçap hasarı / runtime `ColorRect` ✗ sayılır.
 
-| Sahne | Tasarım |
-|-------|---------|
-| `weapon_bastion_flail.tscn` | [ ] |
-| `weapon_binding_circle.tscn` | [ ] |
-| `weapon_citadel_flail.tscn` | [ ] |
-| `weapon_ember_fan.tscn` | [ ] |
-| `weapon_fortress_ram.tscn` | [ ] |
-| `weapon_frost_nova.tscn` | [ ] |
-| `weapon_gravity_anchor.tscn` | [ ] |
-| `weapon_hex_sigil.tscn` | [ ] |
-| `weapon_ice_ball.tscn` | [ ] |
-| `weapon_shadow_storm.tscn` | [ ] |
-| `weapon_shield_ram.tscn` | [ ] |
-| `weapon_veil_daggers.tscn` | [ ] |
-| `weapon_void_lens.tscn` | [ ] |
+| Sahne | Silah ID | Kart / kodeks ikon | Oyun-içi görsel |
+|-------|----------|-------------------|-----------------|
+| `weapon_bastion_flail.tscn` | bastion_flail | ✓ | ✗ |
+| `weapon_binding_circle.tscn` | binding_circle | ✗ | ✗ |
+| `weapon_citadel_flail.tscn` | citadel_flail | ✗ | ✗ |
+| `weapon_ember_fan.tscn` | ember_fan | ✗ | ✓ |
+| `weapon_fortress_ram.tscn` | fortress_ram | ✗ | ✗ |
+| `weapon_frost_nova.tscn` | frost_nova | ✗ | ✗ |
+| `weapon_gravity_anchor.tscn` | gravity_anchor | ✓ | ✗ |
+| `weapon_hex_sigil.tscn` | hex_sigil | ✓ | ✗ |
+| `weapon_ice_ball.tscn` | ice_ball | ✗ | ✓ |
+| `weapon_shadow_storm.tscn` | shadow_storm | ✗ | ✗ |
+| `weapon_shield_ram.tscn` | shield_ram | ✓ | ✗ |
+| `weapon_veil_daggers.tscn` | veil_daggers | ✗ | ✓ |
+| `weapon_void_lens.tscn` | void_lens | ✗ | ✗ |
 
 Runtime `ColorRect` (sahne envanteri değil): `weapon_frost_nova.gd`, `weapon_shadow.gd`, `weapon_shadow_storm.gd`.
+
+---
+
+## Eşyalar (`items/` — sahne yok, script + ikon)
+
+Pasif eşyalar `items/item_<id>.gd` ile yüklenir; **`.tscn` yok**. İleride dünyada görünür efekt / özel doku eklendikçe **Oyun-içi görsel** sütununu güncelle.
+
+**Kart / kodeks ikon:** `res://assets/ui/upgrade_icons/items/<id>.png` (`UpgradeIconCatalog.try_item`).
+
+**Oyun-içi görsel:** Oyunda dünyaya eklenen görünür node / partikül / özel efekt doku yolu (yalnızca sayısal pasif etki ✗).
+
+| Eşya ID | Kart / kodeks ikon | Oyun-içi görsel |
+|---------|-------------------|-----------------|
+| lifesteal | ✗ | ✗ |
+| armor | ✗ | ✗ |
+| crit | ✗ | ✗ |
+| explosion | ✗ | ✗ |
+| magnet | ✗ | ✗ |
+| poison | ✗ | ✗ |
+| shield | ✗ | ✗ |
+| speed_charm | ✗ | ✗ |
+| blood_pool | ✗ | ✓ |
+| luck_stone | ✗ | ✗ |
+| turbine | ✗ | ✗ |
+| steam_armor | ✗ | ✗ |
+| energy_cell | ✗ | ✗ |
+| ember_heart | ✗ | ✗ |
+| glyph_charm | ✗ | ✗ |
+| resonance_stone | ✗ | ✗ |
+| rampart_plate | ✗ | ✗ |
+| iron_bulwark | ✗ | ✗ |
+| night_vial | ✗ | ✗ |
+| field_lens | ✓ | ✗ |
