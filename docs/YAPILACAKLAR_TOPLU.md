@@ -6,7 +6,7 @@
 1. **Buradan** ilgili satırı **sil** (tik yok — kalan satır = yapılacak).  
 2. **Kaynak dosyada** aynı maddeyi **[x]** yap, ✓ koy, metni güncelle veya satırı kaldır (`YOL` öncelik tabloları, matris **Var/Kısmi**, `TASARIM` ✅/❌ vb.).
 
-Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`, `TASARIM.md`, `KARAKTER_SINIFLARI_VE_TASARIM.md`, `lore.md`, `README.md`.
+Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`, `TASARIM.md`, `sesler-muzikler-efektler.md`, `colorrect.md`, `KARAKTER_SINIFLARI_VE_TASARIM.md`, `lore.md`, `README.md`.
 
 ---
 

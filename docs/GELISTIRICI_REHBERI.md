@@ -21,6 +21,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 6. **`locales/en.json`** (+ gerekirse **`locales/codex_sources/codex_extensions_en.json`**) — Rutin geliştirmede yeni metin **yalnızca İngilizce** dosyalara eklenir (`tr` / `zh_CN` donduruldu — ayrıntı § «Yerelleştirme»). Tam dil turunda tüm `locales/*.json` + `check_locale_parity.py` disiplinine dönülür.
 7. **`README.md`** — Kurulum / çalıştırma / repo yapısı değiştiyse ana sayfayı güncelle.
 8. **`docs/lore.md`** — Evren, karakter ve düşman anlatısı netleştikçe veya yeni içerik lore ile bağlanacaksa ilgili bölümü güncelle.
+9. **`docs/sesler-muzikler-efektler.md`** — Yeni ses dosyası, `AudioManager` / `audio_manager.tscn` stream’i, yeni `play_*` tetikleyicisi veya müzik parçası eklendiyse / kaldırıldıysa bu envanteri güncelle.
 
 *(IDE’de Cursor kullanıyorsan: `.cursor/rules` altındaki `ironfall-docs.mdc` kuralı bu disiplini hatırlatır.)*
 
@@ -43,7 +44,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 |----------|--------|
 | **SaveManager** | Altın, seçili karakter/harita, meta upgrade’ler, ayarlar (`locale` dahil), kilit / satın alınmış karakter listeleri, istatistikler; **hesap seviyesi:** `account_level`, `account_xp` (mevcut seviye içi ilerleme), `account_xp_total` (koşulardan bankalanan toplam); `user://save.cfg` → **`[account]`** (`level`, `xp`, `xp_total`); koşu sonu `game_over` → run combat XP’nin %20’si (`grant_account_xp_from_run_raw`); seviye atlayınca **`level_up`** / **`account_level_up`** + Profil `ProgressBar` tween için **`account_profile_level_flash_pending`**; kodeks: **`codex_discovered`**, **`codex_weapons`**, **`codex_items`**, **`codex_maps`**. |
 | **LocalizationManager** | `LANGUAGE_CATALOG` + `locales/<code>.json` → `TranslationServer`; fallback dili `project.godot` → `internationalization/locale/fallback` ve `_ready()` içinde `ProjectSettings.set_setting(..., "en")`; ilk kurulumda kayıt yoksa **OS dili** (katalogda varsa); `locale_changed` sinyali. |
-| **AudioManager** | SFX + tek `MusicPlayer` ile arka plan: `music1`–`music6` sırayla döngü (`play_music(1..6)`, `music_prev` / `music_next`, `pause_music` / `resume_music`); koşu yarısında `main.gd` hâlâ erken `play_music(2)` çağırabilir. `SaveManager.level_up` → `play_account_level_up()` (`levelup.mp3`). |
+| **AudioManager** | SFX + tek `MusicPlayer` ile arka plan: `music1`–`music6` sırayla döngü (`play_music(1..6)`, `music_prev` / `music_next`, `pause_music` / `resume_music`); koşu yarısında `main.gd` hâlâ erken `play_music(2)` çağırabilir. `SaveManager.level_up` → `play_account_level_up()` (`levelup.mp3`). **Dosya / olay haritası:** `docs/sesler-muzikler-efektler.md`. |
 | **ObjectPool** | Sık oluşturulan nesneler (mermi, orb, damage number vb.) için havuz; `get_object(scene_path)` / `return_object` (serbest yuva yığını ile hızlı seçim). |
 | **EnemyRegistry** | Canlı düşman listesi; `EnemyBase` kayıt/çıkış (`tree_exiting`); silah ve efektler `EnemyRegistry.get_enemies()` ile okur (yoğun sürüde `get_nodes_in_group` yükünü azaltır). |
 | **EventBus** | Sinyal merkezi (hasar, ölüm, level up, altın vb.). |
@@ -340,7 +341,7 @@ Bu rehber, kod tabanındaki gerçek yapıya göre yazılmıştır; yeni sistem e
 **20+20 madde — kod durumu (Var/Kısmi/Yok + repo notu):**  
 `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`
 
-`docs/TASARIM.md` — ses ve UI ile ilgili ürün hedefleri (§15 dışı).
+`docs/TASARIM.md` — ses ve UI ile ilgili ürün hedefleri (§15 dışı). Dosya/tetik envanteri: `docs/sesler-muzikler-efektler.md`.
 
 ### `SaveManager.settings` anahtarları (`core/save_manager.gd`)
 
@@ -378,6 +379,6 @@ Oyun başında projedeki `InputMap` anlık görüntüsünü alır; `SaveManager.
 
 ### XP sesi (`pitch_scale`)
 
-`core/audio_manager.gd` → `play_xp()`: Her toplamada `xp_player.pitch_scale` pentatonik dizi (`xp_notes`) ile ayarlanır; kısa süre sonra `xp_note_index` sıfırlanır (`_process`). XP sesi ile ilgili ürün maddeleri: `docs/TASARIM.md`.
+`core/audio_manager.gd` → `play_xp()`: Her toplamada `xp_player.pitch_scale` pentatonik dizi (`xp_notes`) ile ayarlanır; kısa süre sonra `xp_note_index` sıfırlanır (`_process`). Ürün maddeleri: `docs/TASARIM.md` § Ses tasarımı; teknik envanter: `docs/sesler-muzikler-efektler.md`.
 
 Ayar anahtarları veya matris satırı değişince **`docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`** ile senkron tut.

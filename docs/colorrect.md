@@ -1,6 +1,6 @@
 # ColorRect — hızlı takip
 
-**Kullanım:** Bir satır tamamlanınca **satırı sil**; yeni gap açılırsa **ekle**. Detay için `docs/TASARIM.md`.
+**Kullanım:** Bir satır tamamlanınca **satırı sil**; yeni gap açılırsa **ekle**. Detay için `docs/TASARIM.md`. Ses dosyası / SFX tetikleyicisi için `docs/sesler-muzikler-efektler.md`.
 
 **İşaretler:** ✓ = var (dosya veya anlamlı oyun-içi görsel), ✗ = yok / henüz yok.
 

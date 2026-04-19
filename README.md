@@ -22,7 +22,7 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 
 ## Dokümantasyon
 
-İçerik veya mimari değişikliklerinde **`docs/GELISTIRICI_REHBERI.md`**, **`docs/YOL_HARITASI.md`**, gerekiyorsa **`docs/TASARIM.md`** ve karakter rolü / sınıfı değiştiyse **`docs/KARAKTER_SINIFLARI_VE_TASARIM.md`** ile **erişilebilirlik matrisini** güncel tutmayı unutmayın (ayrıntı: `.cursor/rules/ironfall-docs.mdc`).
+İçerik veya mimari değişikliklerinde **`docs/GELISTIRICI_REHBERI.md`**, **`docs/YOL_HARITASI.md`**, gerekiyorsa **`docs/TASARIM.md`**, ses eklediyseniz **`docs/sesler-muzikler-efektler.md`**, ikon/görsel gap değiştiyse **`docs/colorrect.md`** ve karakter rolü / sınıfı değiştiyse **`docs/KARAKTER_SINIFLARI_VE_TASARIM.md`** ile **erişilebilirlik matrisini** güncel tutmayı unutmayın (ayrıntı: `.cursor/rules/ironfall-docs.mdc`).
 
 | Dosya | İçerik |
 |--------|--------|
@@ -32,6 +32,8 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 | [docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md](docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md) | Erişilebilirlik + bağlılık (20+20), Var/Kısmi/Yok |
 | [docs/KARAKTER_SINIFLARI_VE_TASARIM.md](docs/KARAKTER_SINIFLARI_VE_TASARIM.md) | Karakter sınıfları (Controller / Fighter / Mage / Tank), co-op destek vizyonu, kahraman taslak tablosu |
 | [docs/YAPILACAKLAR_TOPLU.md](docs/YAPILACAKLAR_TOPLU.md) | Açık işlerin düz listesi; biten satır silinir, kaynak `.md` içinde tiklenir |
+| [docs/sesler-muzikler-efektler.md](docs/sesler-muzikler-efektler.md) | Müzik, SFX, tetikleyiciler (`AudioManager`) — yaşayan ses envanteri |
+| [docs/colorrect.md](docs/colorrect.md) | İkon / oyun-içi görsel gap takibi (kahraman, silah taban–evrim, eşya) |
 
 **Son dokümantasyon odağı (2026-04-16):** Arka plan müziği `assets/sounds/music1.mp3`–`music6.mp3` sıralı döngü (`core/audio_manager.gd`); Ayarlar → Ses’te parça önceki/sonraki, duraklat/devam ve müzik sesi kaydırıcısı. Meta upgrade ekranı üst hizalı + kaydırılabilir liste (`ui/meta_upgrade.tscn`). Karakter seçimi (P1/P2): kenar boşlukları, sağda level-up tarzı özet istatistik paneli (`ui/character_select_stats_panel.gd`).
 

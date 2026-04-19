@@ -2,9 +2,10 @@
 
 Oyunda **görsel, ses sunumu, UI/ikon ve pazarlama** tarafında yapılması veya iyileştirilmesi gereken her şeyin tek adresi.  
 Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.  
-Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.
+Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.  
+**Ses / müzik / SFX dosya ve tetik envanteri** (ayrıntılı): `docs/sesler-muzikler-efektler.md`.
 
-**Son güncelleme:** 2026-04-16 (yelpaze shard menzil/spawn; silah/eşya tablo şablonu)
+**Son güncelleme:** 2026-04-16 (ses envanter belgesi; yelpaze shard menzil/spawn; silah/eşya tablo şablonu)
 
 ---
 
@@ -234,6 +235,8 @@ Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + is
 ---
 
 ## Ses tasarımı (sunum)
+
+Ürün hedefleri bu tabloda; **hangi dosyanın nerede çaldığı** için `docs/sesler-muzikler-efektler.md`.
 
 | Konu | Durum |
 |------|--------|

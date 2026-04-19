@@ -135,7 +135,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 | **Statik tipleme (kademeli)** | `SaveManager` üst alanlar (`gold`, `meta_upgrades`, `settings`, …) + çoklu `func … -> void`; `main` / `wave_manager` / `spawn_manager` dönüş tipleri; `wave_manager` skalar alanlar; `upgrade_icon_catalog` zaten güçlü typed. |
 | **Kayıt / ayarlar** | `SaveManager.settings` (ses, görüntü, oynanış, `input_keyboard_overrides`, …); `InputRemap` ile kalıcı klavye eşlemesi; geçersiz dil kodu düzeltmesi. |
 | **İçerik (örnekler)** | Göçebe (nomad): Yelpaze Bıçak başlangıç; Kor Kalbi koşuda, Kor Yelpazesi evrimi; karakter sırası / `character_order_v2` migrasyonu. |
-| **Dokümantasyon disiplini** | `GELISTIRICI_REHBERI`, `YOL_HARITASI`, `TASARIM`, erişilebilirlik matrisi, kök `README`, `.cursor/rules/ironfall-docs.mdc`. |
+| **Dokümantasyon disiplini** | `GELISTIRICI_REHBERI`, `YOL_HARITASI`, `TASARIM`, `sesler-muzikler-efektler`, `colorrect`, erişilebilirlik matrisi, kök `README`, `.cursor/rules/ironfall-docs.mdc`. |
 
 **Not (dil):** Yeni locale dosyası ekleme işi **şimdilik durduruldu**; sıradaki diller `GELISTIRICI_REHBERI.md` içindeki plan tablosunda listelenir.
 
@@ -145,6 +145,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-16 | **Dokümantasyon — ses + görsel takip** — `docs/sesler-muzikler-efektler.md` (tüm SFX / müzik / bölümlü envanter); `docs/colorrect.md` (silah taban–evrim ayrımı, kart + oyun-içi sütunları, eşya tablosu); `README`, `GELISTIRICI_REHBERI`, `TASARIM`, `YAPILACAKLAR_TOPLU`, `ironfall-docs.mdc` link / madde senkronu. |
 | 2026-04-16 | **Müzik + menü UI** — `audio_manager`: `music1`–`music6` döngü, tek `MusicPlayer`, Ayarlar → Ses’te önceki/sonraki + duraklat/devam; `meta_upgrade`: `MarginRoot` + kaydırılabilir kart listesi; `character_select` / P2: tam ekran arka plan, margin’ler, sağda `CharacterSelectStatsPanel` (meta taban + yeşil kahraman bonusları); `locales` `ui.character_select.stats_*`, `music_*`, `music_volume`; `pause_menu` müzik etiketi. |
 | 2026-04-16 | **Locale P0 + tipleme** — `main`/`wave_manager`/`spawn_manager` yüzen metinler → `en.json` `ui.alerts` / `ui.game`; karakter seçimi `unlock.*` + `btn_select`/`btn_ready`/`btn_buy`; `CharacterData` `unlock_hint` kaldırıldı; `save_manager` / `audio_manager` debug çıktısı; `save_manager` + `main`/`wave`/`spawn` dönüş tipleri; `YAPILACAKLAR_TOPLU` / `YOL` / matris / `TASARIM` senkron. |
 | 2026-04-16 | **Level-up UI sahne ağacı + meta kart + slot metni** — `upgrade_ui.tscn`: `EditorRoot` ile Godot 2D’de düzenlenebilir layout; `upgrade_ui.gd`: `_bind_editor_root` / istat panelinde bu koşu kalan reroll-skip + max slot satırları; `meta_upgrade.tscn` + `meta_upgrade.gd`: kartta yalnız `damage_bonus` tam açıklama (diğerleri tooltip), `weapon_slot_bonus` / `item_slot_bonus` meta satırları; *(layout sonradan üst hizalı + ScrollContainer — aynı günün “Müzik + menü UI” günlük satırına bakın.)* `locales/en.json` (yeni anahtarlar; `tr`/`zh_CN` dil turu dışı). |
