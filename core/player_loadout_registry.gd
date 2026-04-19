@@ -30,6 +30,8 @@ const WEAPON_SCRIPT_BY_ID: Dictionary = {
 	"shield_ram": preload("res://weapons/weapon_shield_ram.gd"),
 	"fortress_ram": preload("res://weapons/weapon_fortress_ram.gd"),
 	"veil_daggers": preload("res://weapons/weapon_veil_daggers.gd"),
+	"arc_pulse": preload("res://weapons/weapon_arc_pulse.gd"),
+	"arc_surge": preload("res://weapons/weapon_arc_surge.gd"),
 }
 
 const ITEM_SCRIPT_BY_ID: Dictionary = {
@@ -52,6 +54,7 @@ const ITEM_SCRIPT_BY_ID: Dictionary = {
 	"rampart_plate": preload("res://items/item_rampart_plate.gd"),
 	"iron_bulwark": preload("res://items/item_iron_bulwark.gd"),
 	"night_vial": preload("res://items/item_night_vial.gd"),
+	"field_lens": preload("res://items/item_field_lens.gd"),
 }
 
 

@@ -1,0 +1,65 @@
+class_name WeaponArcPulse
+extends WeaponBase
+
+## Halka bant (donut) içinde periyodik büyü hasarı — yavaşlatma yok; alan odaklı mage ritmi.
+var ring_inner: float = 70.0
+var ring_outer: float = 128.0
+var hit_cooldowns: Dictionary = {}
+const HIT_INTERVAL: float = 0.78
+
+func _ready() -> void:
+	super._ready()
+	weapon_name = "Ark Halkası"
+	tag = "buyu"
+	category = "attack"
+	damage = 10
+	cooldown = 1.18
+
+func attack() -> void:
+	var area_m: float = player.get_area_multiplier()
+	var inner: float = ring_inner * area_m
+	var outer: float = ring_outer * area_m
+	var cd_step: float = get_effective_cooldown()
+	for k in hit_cooldowns.keys():
+		hit_cooldowns[k] -= cd_step
+		if hit_cooldowns[k] <= 0.0:
+			hit_cooldowns.erase(k)
+	var enemies: Array = EnemyRegistry.get_enemies()
+	for enemy in enemies:
+		if not is_instance_valid(enemy):
+			continue
+		var eid: int = enemy.get_instance_id()
+		if hit_cooldowns.has(eid):
+			continue
+		var d: float = player.global_position.distance_to(enemy.global_position)
+		if d < inner or d > outer:
+			continue
+		var final_damage: int = player.get_total_damage(damage)
+		enemy.take_damage(final_damage, player)
+		EventBus.on_damage_dealt.emit(player, enemy, final_damage)
+		hit_cooldowns[eid] = HIT_INTERVAL
+
+func on_upgrade() -> void:
+	match level:
+		2:
+			ring_outer = 142.0
+			damage = 12
+		3:
+			ring_inner = 62.0
+			cooldown = 1.08
+		4:
+			damage = 15
+			ring_outer = 158.0
+		5:
+			damage = 18
+			cooldown = 0.92
+			ring_inner = 54.0
+
+func get_description() -> String:
+	return tr("ui.upgrade_ui.stats.loadout_weapons.arc_pulse") % [
+		level,
+		int(ring_inner * player.get_area_multiplier()),
+		int(ring_outer * player.get_area_multiplier()),
+		damage,
+		snappedf(get_effective_cooldown(), 0.01),
+	]

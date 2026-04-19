@@ -4,7 +4,7 @@ Oyuncunun **kendine güveni**, takımda **rolünü bilmesi** ve yeni kahramanlar
 Kod envanteri (`core/character_data.gd`, sahneler): `docs/GELISTIRICI_REHBERI.md` §3.  
 Görsel envanter: `docs/TASARIM.md`.
 
-**Son güncelleme:** 2026-04-17 (`dusk` — başlangıç yalnız `dagger`; Gece Şişesi koşuda; Peçe Hançerleri evrimi; Arena + Gölge Yürüyücü açılışı)
+**Son güncelleme:** 2026-04-16 (`arcanist` — `lightning` başlangıç; Hız Tılsımı koşuda; Fırtına evrimi; 195 kill açılışı; `hero_class`: mage)
 
 ---
 
@@ -93,6 +93,7 @@ Aşağıdaki atamalar **taslak**tır; denge ve co-op destek tasarımı netleşti
 | shadow_walker | Gölge Yürüyücü | Fighter | Mobilite + gölge hasarı, assassin-fighter |
 | dusk_striker | Alacakaranlık Hançeri | Fighter | İkiz hançer başlangıç; Gece Şişesi koşuda; Peçe Hançerleri evrimi; Arena + Shadow Walker açılışı |
 | engineer | Mühendis | Mage | Lazer / alan, yetenek konumlandırma |
+| arcanist | Arkancı | Mage | Ark Halkası (`arc_pulse`) başlangıç; Alan Merceği (`field_lens`) koşuda — Ark Taşkını (`arc_surge`) evrimi; XP odaklı origin |
 | paladin | Paladin | Tank | Zırh, kutsal mermi, ön saflar |
 | ironclad | Tam Zırhlı | Tank | Gürz + siper plakası, itme ve ön hat |
 | linebreaker | Hat Kıran | Tank | Kalkan koşusu, koni darbe, demir siper |
@@ -108,7 +109,7 @@ Aşağıdaki atamalar **taslak**tır; denge ve co-op destek tasarımı netleşti
 |-------|-----------------|-----------|
 | Controller | 3 | frost, sigil_warden, grav_binder |
 | Fighter | 8 | warrior, vampire, hunter, shadow_walker, blood_prince, nomad, death_knight, dusk_striker |
-| Mage | 3 | mage, stormer, engineer |
+| Mage | 4 | mage, stormer, engineer, arcanist |
 | Tank | 3 | paladin, ironclad, linebreaker |
 | Özel | 2 | chaos, omega |
 

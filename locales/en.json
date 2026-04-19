@@ -178,7 +178,8 @@
         "grav_binder": "Survive 6 minutes 30 seconds",
         "ironclad": "Kill a tank enemy",
         "linebreaker": "Survive 7 minutes 30 seconds",
-        "dusk": "Win an Arena run as Shadow Walker before the goal time"
+        "dusk": "Win an Arena run as Shadow Walker before the goal time",
+        "arcanist": "Kill a total of 195 enemies"
       },
       "line_start_weapon": "⚔ Start: %s",
       "line_start_item": "🛡 Item: %s",
@@ -331,7 +332,9 @@
           "void_lens": "Void Lens Lv%d | %d px pull radius | %d base Might | strong pull | %.2fs Cooldown",
           "citadel_flail": "Citadel Flail Lv%d | %d px Area | %d base Might | strong knockback | %.2fs Cooldown",
           "fortress_ram": "Fortress Ram Lv%d | %d px cone depth | %d° wide cone | %d base Might | %.2fs Cooldown",
-          "veil_daggers": "Veil Daggers Lv%d | ×%d knives | %d base Might | %d pierce stacks | %d px range | %.2fs Cooldown"
+          "veil_daggers": "Veil Daggers Lv%d | ×%d knives | %d base Might | %d pierce stacks | %d px range | %.2fs Cooldown",
+          "arc_pulse": "Arc Ring Lv%d | inner %d / outer %d px band | %d base Might | %.2fs Cooldown",
+          "arc_surge": "Arc Surge Lv%d | inner %d / outer %d px band | %d base Might | %.2fs Cooldown"
         },
         "loadout_items": {
           "generic_level": "%s | Lv %d",
@@ -351,7 +354,8 @@
           "vampire": "Vampirism Lv%d\nOn kill: +%d HP",
           "luck_stone": "Luck Stone Lv%d\n+%d%% crit chance | +%d gold per kill (Growth)",
           "turbine": "Turbine Lv%d\nWhile moving: +%d Might (current) | max +%d Might",
-          "crit": "Crit Lv%d | +%d%% crit chance (×%.1f crit Might)"
+          "crit": "Crit Lv%d | +%d%% crit chance (×%.1f crit Might)",
+          "field_lens": "Field Lens Lv%d\n+%d%% Area (multiplier)"
         }
       },
       "tooltip_reroll_pool": "Rerolls you start this run with. Each reroll spends from this pool for the whole run (not per level-up).",
@@ -455,6 +459,10 @@
       "veil_daggers": {
         "name": "Veil Daggers",
         "desc": "Twin Daggers (MAX) + Night Vial (MAX) → Veil Daggers\nMore blades, pierce hits, slightly longer reach."
+      },
+      "arc_surge": {
+        "name": "Arc Surge",
+        "desc": "Arc Ring (MAX) + Field Lens (MAX) → Arc Surge\nWider donut, faster ticks, higher Might."
       }
     },
     "devtools": {
@@ -723,6 +731,14 @@
       "ember_fan": {
         "name": "Ember Fan",
         "desc": "Evolved fan: wider arc and piercing ember shards."
+      },
+      "arc_pulse": {
+        "name": "Arc Ring",
+        "desc": "Donut-shaped arc pulse: damages enemies between an inner safe radius and an outer ring. Scales with Area."
+      },
+      "arc_surge": {
+        "name": "Arc Surge",
+        "desc": "Evolved arc ring: wider band, faster ticks, higher Might—Field Lens resonance at full power."
       }
     },
     "item": {
@@ -801,6 +817,10 @@
       "iron_bulwark": {
         "name": "Iron Bulwark",
         "desc": "Iron defense passive—pairs with shield ram evolutions."
+      },
+      "field_lens": {
+        "name": "Field Lens",
+        "desc": "Focus lens that widens your Area multiplier. Pairs with Arc Ring for the Arc Surge evolution."
       }
     },
     "character": {
@@ -883,6 +903,11 @@
         "name": "Linebreaker",
         "desc": "Shield-charge linebreaker.\nWeapon: shield_ram (Shield Ram — cone slam)\nItem: iron_bulwark (Iron Bulwark — armor)\nEvolution: fortress_ram (Fortress Ram)\nUnlock: survive 450s → 520 gold; origin: +12% max HP, -6% damage",
         "role": "Shield ram cone and iron bulwark—line-breaking tank."
+      },
+      "arcanist": {
+        "name": "Arcanist",
+        "desc": "Donut arc mage—unique spacing fantasy.\nWeapon: arc_pulse (Arc Ring — damage in an annulus; scales with Area)\nItem: field_lens (Field Lens — found in-run; adds Area%; pairs with Arc Surge evolution)\nEvolution: arc_surge (Arc Surge)\nUnlock: 195 total kills → 385 gold; origin: +18% XP, −12% max HP",
+        "role": "Arc Ring start; Field Lens on the run; Arc Surge evolution—XP-leaning mage with ring control."
       },
       "death_knight": {
         "name": "Death Knight",

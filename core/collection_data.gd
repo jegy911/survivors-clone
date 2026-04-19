@@ -62,6 +62,8 @@ const WEAPON_ENTRIES: Array = [
 	{"id": "bullet", "tab": TAB_WEAPON, "emoji": "🎯", "accent": "#BDC3C7"},
 	{"id": "dagger", "tab": TAB_WEAPON, "emoji": "🗡", "accent": "#5B2C6F"},
 	{"id": "veil_daggers", "tab": TAB_WEAPON, "emoji": "🌑", "accent": "#5B2C6F"},
+	{"id": "arc_pulse", "tab": TAB_WEAPON, "emoji": "◎", "accent": "#BB8FCE"},
+	{"id": "arc_surge", "tab": TAB_WEAPON, "emoji": "✶", "accent": "#9B59B6"},
 	{"id": "aura", "tab": TAB_WEAPON, "emoji": "⭕", "accent": "#9B59B6"},
 	{"id": "chain", "tab": TAB_WEAPON, "emoji": "🔗", "accent": "#3498DB"},
 	{"id": "boomerang", "tab": TAB_WEAPON, "emoji": "🪓", "accent": "#27AE60"},
@@ -109,6 +111,7 @@ const ITEM_ENTRIES: Array = [
 	{"id": "rampart_plate", "tab": TAB_ITEM, "emoji": "🧱", "accent": "#7F8C8D"},
 	{"id": "iron_bulwark", "tab": TAB_ITEM, "emoji": "🔩", "accent": "#B7950B"},
 	{"id": "night_vial", "tab": TAB_ITEM, "emoji": "🌙", "accent": "#5B2C6F"},
+	{"id": "field_lens", "tab": TAB_ITEM, "emoji": "🔍", "accent": "#BB8FCE"},
 ]
 
 const MAP_ENTRIES: Array = [
@@ -138,6 +141,7 @@ static func _char_emoji(char_id: String) -> String:
 		"ironclad": "⛓",
 		"linebreaker": "🛡",
 		"dusk_striker": "🗡",
+		"arcanist": "✦",
 	}
 	return str(m.get(char_id, "⭐"))
 

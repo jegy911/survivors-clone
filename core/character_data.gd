@@ -374,6 +374,25 @@ const CHARACTERS = [
 		"origin_bonus": {"type": "speed_pct", "amount": 0.22, "penalty": "hp_pct", "penalty_amount": -0.18},
 		"hero_class": "fighter",
 	},
+	{
+		"id": "arcanist",
+		"name": "Arkancı",
+		"description": "Od halkası büyücüsü — alan bandında ritim.\n\nSilah: arc_pulse (Ark Halkası — iç güvenli, dış halkada hasar)\nEşya: field_lens (Alan Merceği — koşuda toplanır; genişletilmiş alan çarpanı; Ark Taşkını evrimiyle eşlenir)\nEvrim: arc_surge (Ark Taşkını)\nAçılış: 195 düşman öldür → 385 altın; origin_bonus: XP +%18, max can -%12",
+		"color": "#BB8FCE",
+		"start_weapon": "arc_pulse",
+		"bonus_damage": 0,
+		"bonus_hp": 12,
+		"bonus_speed": 0,
+		"bonus_armor": 0,
+		"start_item": "",
+		"special": "",
+		"locked": true,
+		"secret": false,
+		"cost": 385,
+		"unlock_condition": {"type": "total_kills", "amount": 195},
+		"origin_bonus": {"type": "xp_pct", "amount": 0.18, "penalty": "hp_pct", "penalty_amount": -0.12},
+		"hero_class": "mage",
+	},
 ]
 
 static func get_character_index_by_id(char_id: String) -> int:
@@ -401,6 +420,7 @@ const CHARACTER_SCENE_BY_ID: Dictionary = {
 	"ironclad": "res://characters/ironclad/ironclad.tscn",
 	"linebreaker": "res://characters/linebreaker/linebreaker.tscn",
 	"dusk_striker": "res://characters/dusk/dusk.tscn",
+	"arcanist": "res://characters/arcanist/arcanist.tscn",
 	"death_knight": "res://characters/death_knight/death_knight.tscn",
 	"chaos": "res://characters/chaos/chaos.tscn",
 	"omega": "res://characters/omega/omega.tscn",

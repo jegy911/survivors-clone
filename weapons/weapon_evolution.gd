@@ -1,7 +1,7 @@
 class_name WeaponEvolution
 extends Node
 ## Evolution recipes and level-up eligibility. Design tables: `docs/SILAHLAR_ESYALAR_EVO.md` (§2 evolutions, tail matrix).
-## `death_laser`: `laser` + `crit` (both MAX). `frost_nova`: `ice_ball` + `armor` + `shield` (all MAX). Runtime: `is_evolution_ready`, `player.gd` `evolve_weapon`.
+## `death_laser`: `laser` + `crit` (both MAX). `arc_surge`: `arc_pulse` + `field_lens` (both MAX). `frost_nova`: `ice_ball` + `armor` + `shield` (all MAX). Runtime: `is_evolution_ready`, `player.gd` `evolve_weapon`.
 
 ## Display strings: `locales/en.json` → `ui.evolution_defs.<id>.name` / `.desc` (`TranslationServer` = `Node.tr()` pipeline).
 const EVOLUTIONS = {
@@ -56,6 +56,10 @@ const EVOLUTIONS = {
 	"veil_daggers": {
 		"requires_weapons": ["dagger"],
 		"requires_items": ["night_vial"],
+	},
+	"arc_surge": {
+		"requires_weapons": ["arc_pulse"],
+		"requires_items": ["field_lens"],
 	},
 }
 

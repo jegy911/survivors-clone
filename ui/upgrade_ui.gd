@@ -4,12 +4,12 @@ signal upgrade_chosen(upgrade_id)
 
 const WEAPON_UPGRADE_IDS: Array[String] = [
 	"bullet", "dagger", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade",
-	"hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram",
+	"hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram", "arc_pulse",
 ]
 const ITEM_UPGRADE_IDS: Array[String] = [
 	"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool",
 	"luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart", "glyph_charm", "resonance_stone",
-	"rampart_plate", "iron_bulwark", "night_vial",
+	"rampart_plate", "iron_bulwark", "night_vial", "field_lens",
 ]
 const STAT_UPGRADES: Array[String] = ["speed", "max_hp", "heal"]
 
@@ -31,6 +31,7 @@ const _WEAPON_GLYPH: Dictionary = {
 	"toxic_chain": "☠", "death_laser": "☇", "blood_boomerang": "🩸", "storm": "🌩",
 	"shadow_storm": "🌑", "frost_nova": "❅", "ember_fan": "🔥", "binding_circle": "⭕",
 	"void_lens": "◉", "citadel_flail": "⚔", "fortress_ram": "🛡", "veil_daggers": "🗡",
+	"arc_pulse": "◎", "arc_surge": "✶",
 }
 
 const _ITEM_GLYPH: Dictionary = {
@@ -38,6 +39,7 @@ const _ITEM_GLYPH: Dictionary = {
 	"shield": "◇", "speed_charm": "👟", "blood_pool": "🩸", "luck_stone": "🍀", "turbine": "⚙",
 	"steam_armor": "♨", "energy_cell": "🔋", "ember_heart": "🔥", "glyph_charm": "✧",
 	"resonance_stone": "◇", "rampart_plate": "🧱", "iron_bulwark": "⛨", "night_vial": "🌙",
+	"field_lens": "🔍",
 }
 
 var player_ref: Node = null

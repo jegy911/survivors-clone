@@ -18,7 +18,9 @@
     "shadow_storm": {"name": "Shadow Storm", "desc": "Evolved hybrid: shadow hits can chain lightning."},
     "frost_nova": {"name": "Frost Nova", "desc": "Evolved ice: area freeze on impact plus reflect tricks."},
     "ember_fan": {"name": "Ember Fan", "desc": "Evolved fan: wider arc and piercing ember shards."},
-    "veil_daggers": {"name": "Veil Daggers", "desc": "Evolved form: more targets per volley, piercing hits, longer reach; completes the Night Vial pairing."}
+    "veil_daggers": {"name": "Veil Daggers", "desc": "Evolved form: more targets per volley, piercing hits, longer reach; completes the Night Vial pairing."},
+    "arc_pulse": {"name": "Arc Ring", "desc": "Donut arc pulse between inner and outer radii; scales with Area."},
+    "arc_surge": {"name": "Arc Surge", "desc": "Evolved arc ring: wider band, faster ticks, higher Might with Field Lens."}
   },
   "item": {
     "lifesteal": {"name": "Lifesteal", "desc": "Heal when you deal damage. Stabilizes long fights."},
@@ -35,7 +37,8 @@
     "steam_armor": {"name": "Steam Armor", "desc": "Defense with a steam-themed mitigation twist."},
     "energy_cell": {"name": "Energy Cell", "desc": "Powers sustained fire and cooldown recovery."},
     "ember_heart": {"name": "Ember Heart", "desc": "Fireheart passive that pairs with fan evolutions."},
-    "night_vial": {"name": "Night Vial", "desc": "Small pickup radius bonus for XP and gold. Mild comfort on its own; pairs with Twin Daggers for the Veil Daggers evolution."}
+    "night_vial": {"name": "Night Vial", "desc": "Small pickup radius bonus for XP and gold. Mild comfort on its own; pairs with Twin Daggers for the Veil Daggers evolution."},
+    "field_lens": {"name": "Field Lens", "desc": "Adds Area%; pairs with Arc Ring for the Arc Surge evolution."}
   },
   "character": {
     "warrior": {"name": "Warrior", "desc": "Balanced fighter: +5 flat damage and +8 origin (combat habit). Good starter."},

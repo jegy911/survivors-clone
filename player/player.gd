@@ -3,12 +3,12 @@ extends CharacterBody2D
 ## `ui/upgrade_ui.gd` havuzları ile aynı sıra — level-up seçiminde `add_weapon` / `add_item` eşlemesi.
 const _LEVELUP_WEAPON_IDS: PackedStringArray = [
 	"bullet", "dagger", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade",
-	"hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram",
+	"hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram", "arc_pulse",
 ]
 const _LEVELUP_ITEM_IDS: PackedStringArray = [
 	"lifesteal", "armor", "crit", "explosion", "magnet", "poison", "shield", "speed_charm", "blood_pool",
 	"luck_stone", "turbine", "steam_armor", "energy_cell", "ember_heart", "glyph_charm", "resonance_stone",
-	"rampart_plate", "iron_bulwark", "night_vial",
+	"rampart_plate", "iron_bulwark", "night_vial", "field_lens",
 ]
 
 var player_id: int = 0
@@ -207,7 +207,7 @@ func apply_character_bonuses():
 	elif special == "damage_double":
 		bullet_damage *= 2
 	elif special == "random_weapons":
-		var all_weapons = ["bullet", "dagger", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade", "hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram"]
+		var all_weapons = ["bullet", "dagger", "aura", "chain", "boomerang", "lightning", "ice_ball", "shadow", "laser", "fan_blade", "hex_sigil", "gravity_anchor", "bastion_flail", "shield_ram", "arc_pulse"]
 		all_weapons.shuffle()
 		for w in all_weapons.slice(0, 3):
 			add_weapon(w)
@@ -396,7 +396,10 @@ func get_cooldown_multiplier() -> float:
 	return max(0.10, 1.0 - reduction + _origin_cooldown_bonus)
 
 func get_area_multiplier() -> float:
-	return 1.0 + SaveManager.meta_upgrades.get("area_bonus", 0) * 0.10 + _origin_area_bonus
+	var lens_pct: float = 0.0
+	if active_items.has("field_lens"):
+		lens_pct = active_items["field_lens"].get_area_bonus_pct()
+	return 1.0 + SaveManager.meta_upgrades.get("area_bonus", 0) * 0.10 + _origin_area_bonus + lens_pct
 
 func get_duration_multiplier() -> float:
 	return 1.0 + SaveManager.meta_upgrades.get("duration_bonus", 0) * 0.15
