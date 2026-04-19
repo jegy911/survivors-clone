@@ -98,7 +98,7 @@ func get_interval_multiplier() -> float:
 		return 0.24 if SaveManager.is_arena_run() else 0.3
 	return 1.0
 
-func _start_reaper_mode(game_timer: float) -> void:
+func _start_reaper_mode(_game_timer: float) -> void:
 	reaper_mode = true
 	for enemy in EnemyRegistry.get_enemies():
 		if not enemy.is_in_group("boss"):

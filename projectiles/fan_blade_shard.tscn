@@ -1,19 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://fanbladeshard01"]
+[gd_scene format=3 uid="uid://dmhkotu38uaui"]
 
-[ext_resource type="Script" path="res://projectiles/fan_blade_shard.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://ch5p415hd7e13" path="res://projectiles/fan_blade_shard.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://d6en7ouqmusm" path="res://assets/projectiles/fan_blade/shard.png" id="2_xx7hr"]
 
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_blade"]
-points = PackedVector2Array(0, 0, 22, -6, 22, 6)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_anxhc"]
+size = Vector2(57.272728, 6)
 
-[node name="FanBladeShard" type="Area2D"]
+[node name="FanBladeShard" type="Area2D" unique_id=177274769]
 collision_layer = 4
 collision_mask = 2
 script = ExtResource("1_script")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(11, 0)
-shape = SubResource("ConvexPolygonShape2D_blade")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=997970032]
+position = Vector2(0.49999952, 0)
+scale = Vector2(1.1, 1.1)
+shape = SubResource("RectangleShape2D_anxhc")
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1455536501]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_xx7hr")
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=165536060]
+visible = false
 color = Color(0.95, 0.35, 0.08, 1)
 polygon = PackedVector2Array(0, 0, 22, -6, 22, 6)

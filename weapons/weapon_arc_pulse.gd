@@ -1,6 +1,8 @@
 class_name WeaponArcPulse
 extends WeaponBase
 
+const ARC_PULSE_FX_TEX := preload("res://assets/projectiles/arc_pulse/arc_pulseprojectile.png")
+
 ## Halka bant (donut) içinde periyodik büyü hasarı — yavaşlatma yok; alan odaklı mage ritmi.
 var ring_inner: float = 70.0
 var ring_outer: float = 128.0
@@ -16,6 +18,11 @@ func _ready() -> void:
 	cooldown = 1.18
 
 func attack() -> void:
+	var par: Node = player.get_parent() if is_instance_valid(player) else null
+	if par != null:
+		CombatProjectileFx.spawn_short_lived_projectile_sprite(
+			par, player.global_position, player, ARC_PULSE_FX_TEX, Color(0.78, 0.68, 1.0, 0.92)
+		)
 	var area_m: float = player.get_area_multiplier()
 	var inner: float = ring_inner * area_m
 	var outer: float = ring_outer * area_m

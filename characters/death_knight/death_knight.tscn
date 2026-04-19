@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://kkrd8fiynkb" path="res://assets/character assets/dk assets/dkwalksag.png" id="5_b0h3v"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i3pqv"]
-size = Vector2(49, 63)
+size = Vector2(52, 110)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_o4rrc"]
 atlas = ExtResource("2_hl8l3")
@@ -748,7 +748,7 @@ collision_mask = 10
 script = ExtResource("1_8c0nw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1307471674]
-position = Vector2(2.5, 7.5)
+position = Vector2(0, 7)
 shape = SubResource("RectangleShape2D_i3pqv")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=2032631792]
@@ -760,24 +760,25 @@ offset_bottom = 16.0
 color = Color(1, 0, 0, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=658400564]
-scale = Vector2(0.31, 0.31)
+position = Vector2(1, 5)
+scale = Vector2(0.4, 0.4)
 sprite_frames = SubResource("SpriteFrames_qjt2w")
 animation = &"walk_right"
 
 [node name="WorldUI" type="Node2D" parent="." unique_id=260614110]
 
 [node name="HPBarBG" type="ColorRect" parent="WorldUI" unique_id=1514891724]
-offset_left = -26.0
-offset_top = 50.0
-offset_right = 24.0
-offset_bottom = 56.0
+offset_left = -30.0
+offset_top = 64.0
+offset_right = 30.0
+offset_bottom = 70.0
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="HPBarFill" type="ColorRect" parent="WorldUI" unique_id=223972483]
-offset_left = -26.0
-offset_top = 50.0
-offset_right = 24.0
-offset_bottom = 56.0
+offset_left = -30.0
+offset_top = 64.0
+offset_right = 30.0
+offset_bottom = 70.0
 color = Color(0.18039216, 0.8, 0.44313726, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1014858962]

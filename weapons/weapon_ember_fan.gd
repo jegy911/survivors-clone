@@ -3,7 +3,7 @@ extends WeaponBase
 
 var blade_count = 4
 var spread_degrees = 40.0
-var fire_range = 200.0
+var fire_range = 148.0
 var shard_speed = 300.0
 var shard_lifetime = 0.24
 var pierce = 1
@@ -21,11 +21,12 @@ func attack():
 	var enemies = EnemyRegistry.get_enemies()
 	if enemies.is_empty():
 		return
+	var eff_reach: float = fire_range * player.get_area_multiplier()
 	var nearest = null
 	var best = 999999.0
 	for enemy in enemies:
 		var dist = player.global_position.distance_to(enemy.global_position)
-		if dist <= fire_range and dist < best:
+		if dist <= eff_reach and dist < best:
 			best = dist
 			nearest = enemy
 	if nearest == null:
@@ -42,10 +43,11 @@ func attack():
 		for i in total_blades:
 			angles.append(-half + span * (float(i) / float(total_blades - 1)))
 	var ember_tint = Color(1.0, 0.55, 0.12, 1.0)
+	var shard_life: float = eff_reach / maxf(shard_speed, 1.0)
 	for ang in angles:
 		var dir = base_dir.rotated(ang)
 		var shard = ObjectPool.get_object("res://projectiles/fan_blade_shard.tscn")
-		shard.global_position = player.global_position
+		shard.global_position = player.get_directional_attack_spawn(dir)
 		shard.init(
 			dir,
 			player.get_total_damage(damage),
@@ -53,7 +55,7 @@ func attack():
 			pierce,
 			ember_tint,
 			shard_speed,
-			shard_lifetime
+			shard_life
 		)
 
 func on_upgrade():
@@ -66,7 +68,7 @@ func on_upgrade():
 			cooldown = 1.0
 		4:
 			damage = 15
-			fire_range = 215.0
+			fire_range = 160.0
 		5:
 			blade_count = 6
 			damage = 19

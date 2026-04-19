@@ -347,11 +347,11 @@ func _get_total_bought() -> int:
 		total += meta_upgrades[key]
 	return total
 
-func update_stats_after_game(char_id: String, kills: int, survival_time: float, got_evolution: bool, got_tank_kill: bool, gold: int = 0, xp_levels: int = 0, bosses: int = 0, damage: int = 0, chests: int = 0, items: int = 0, won: bool = false) -> void:
+func update_stats_after_game(char_id: String, kills: int, survival_time: float, got_evolution: bool, got_tank_kill: bool, run_gold: int = 0, xp_levels: int = 0, bosses: int = 0, damage: int = 0, chests: int = 0, items: int = 0, won: bool = false) -> void:
 	total_kills += kills
 	total_runs += 1
 	total_deaths += 1
-	total_gold_earned += gold
+	total_gold_earned += run_gold
 	total_levels_gained += xp_levels
 	total_bosses_killed += bosses
 	total_damage_dealt += damage

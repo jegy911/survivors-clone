@@ -1,6 +1,8 @@
 class_name WeaponArcSurge
 extends WeaponBase
 
+const ARC_SURGE_FX_TEX := preload("res://assets/projectiles/arc_surge/arc_surgeprojectile.png")
+
 ## Ark Halkası + Alan Merceği evrimi: daha geniş bant, daha sık vuruş, daha yüksek Might.
 var ring_inner: float = 50.0
 var ring_outer: float = 178.0
@@ -16,6 +18,11 @@ func _ready() -> void:
 	cooldown = 1.0
 
 func attack() -> void:
+	var par: Node = player.get_parent() if is_instance_valid(player) else null
+	if par != null:
+		CombatProjectileFx.spawn_short_lived_projectile_sprite(
+			par, player.global_position, player, ARC_SURGE_FX_TEX, Color(1.0, 0.55, 0.45, 0.95), 0.26, 0.18, 0.52
+		)
 	var area_m: float = player.get_area_multiplier()
 	var inner: float = ring_inner * area_m
 	var outer: float = ring_outer * area_m

@@ -2,7 +2,7 @@ extends Node
 
 signal achievement_unlocked(achievement: Dictionary)
 
-func check_after_game(run_kills: int, survival_time: float):
+func check_after_game(run_kills: int, _survival_time: float):
 	for ach in AchievementData.ACHIEVEMENTS:
 		if SaveManager.unlocked_achievements.has(ach["id"]):
 			continue

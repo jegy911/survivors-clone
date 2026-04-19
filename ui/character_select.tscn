@@ -2,52 +2,142 @@
 
 [ext_resource type="Script" uid="uid://brdtpu3j0afui" path="res://ui/character_select.gd" id="1_tddig"]
 
-[node name="CharacterSelect" type="CanvasLayer" unique_id=579546304]
+[node name="CharacterSelect" type="CanvasLayer"]
 script = ExtResource("1_tddig")
 
-[node name="Panel" type="Panel" parent="." unique_id=238186466]
+[node name="Panel" type="Panel" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Panel" unique_id=871494151]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Background" type="ColorRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 color = Color(0.050980393, 0.050980393, 0.101960786, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel" unique_id=348572330]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="OuterMargin" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 22
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 22
+theme_override_constants/margin_bottom = 22
 
-[node name="TitleLabel" type="Label" parent="Panel/VBoxContainer" unique_id=1822205936]
+[node name="MainVBox" type="VBoxContainer" parent="Panel/OuterMargin"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="Panel/OuterMargin/MainVBox"]
 layout_mode = 2
 text = "KARAKTER SEÇ"
 horizontal_alignment = 1
 
-[node name="GoldLabel" type="Label" parent="Panel/VBoxContainer" unique_id=1750270591]
+[node name="GoldMargin" type="MarginContainer" parent="Panel/OuterMargin/MainVBox"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 6
+
+[node name="GoldLabel" type="Label" parent="Panel/OuterMargin/MainVBox/GoldMargin"]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer" unique_id=1907660859]
+[node name="BodyHBox" type="HBoxContainer" parent="Panel/OuterMargin/MainVBox"]
 layout_mode = 2
 size_flags_vertical = 3
-horizontal_scroll_mode = 0
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
 
-[node name="GridContainer" type="GridContainer" parent="Panel/VBoxContainer/ScrollContainer" unique_id=1868452077]
+[node name="LeftColumn" type="MarginContainer" parent="Panel/OuterMargin/MainVBox/BodyHBox"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/OuterMargin/MainVBox/BodyHBox/LeftColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_horizontal = 3
+clip_contents = true
+horizontal_scroll_mode = 2
+vertical_scroll_mode = 1
+
+[node name="GridCenterRow" type="HBoxContainer" parent="Panel/OuterMargin/MainVBox/BodyHBox/LeftColumn/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpacerL" type="Control" parent="Panel/OuterMargin/MainVBox/BodyHBox/LeftColumn/ScrollContainer/GridCenterRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="GridContainer" type="GridContainer" parent="Panel/OuterMargin/MainVBox/BodyHBox/LeftColumn/ScrollContainer/GridCenterRow"]
+layout_mode = 2
+size_flags_horizontal = 4
 columns = 5
 
-[node name="ActionRow" type="HBoxContainer" parent="Panel/VBoxContainer" unique_id=1552556534]
+[node name="SpacerR" type="Control" parent="Panel/OuterMargin/MainVBox/BodyHBox/LeftColumn/ScrollContainer/GridCenterRow"]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="BackButton" type="Button" parent="Panel/VBoxContainer/ActionRow" unique_id=1327358480]
+[node name="StatsColumn" type="VBoxContainer" parent="Panel/OuterMargin/MainVBox/BodyHBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(288, 0)
+size_flags_horizontal = 0
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="StatsPanel" type="PanelContainer" parent="Panel/OuterMargin/MainVBox/BodyHBox/StatsColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatsScroll" type="ScrollContainer" parent="Panel/OuterMargin/MainVBox/BodyHBox/StatsColumn/StatsPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_horizontal = 3
+clip_contents = true
+horizontal_scroll_mode = 2
+vertical_scroll_mode = 1
+
+[node name="StatsVBox" type="VBoxContainer" parent="Panel/OuterMargin/MainVBox/BodyHBox/StatsColumn/StatsPanel/StatsScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="ActionMargin" type="MarginContainer" parent="Panel/OuterMargin/MainVBox"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_bottom = 4
+
+[node name="ActionRow" type="HBoxContainer" parent="Panel/OuterMargin/MainVBox/ActionMargin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BackButton" type="Button" parent="Panel/OuterMargin/MainVBox/ActionMargin/ActionRow"]
 layout_mode = 2
 text = "← Geri"
 
-[node name="PlayButton" type="Button" parent="Panel/VBoxContainer/ActionRow" unique_id=93059825]
+[node name="ActionSpacer" type="Control" parent="Panel/OuterMargin/MainVBox/ActionMargin/ActionRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PlayButton" type="Button" parent="Panel/OuterMargin/MainVBox/ActionMargin/ActionRow"]
 layout_mode = 2
 text = "▶ Oyna"

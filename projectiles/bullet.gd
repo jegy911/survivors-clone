@@ -12,11 +12,15 @@ var player = null
 var _hit = false
 var pierce_count = 0
 var _pierce_remaining = 0
+var _default_bullet_texture: Texture2D
 
 func _ready():
 	$ColorRect.color = Color("#FFD700")
-	if get_node_or_null("Sprite2D"):
+	var spr0 := get_node_or_null("Sprite2D") as Sprite2D
+	if spr0:
 		$ColorRect.visible = false
+		if spr0.texture != null:
+			_default_bullet_texture = spr0.texture
 	area_entered.connect(_on_area_entered)
 
 func _on_area_entered(area: Area2D):
@@ -74,7 +78,7 @@ func _restore_hit_scan() -> void:
 	collision_layer = BULLET_COLLISION_LAYER
 	collision_mask = BULLET_COLLISION_MASK
 
-func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter = null):
+func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter = null, projectile_texture: Texture2D = null):
 	_hit = false
 	_pierce_remaining = pierce_count
 	_restore_hit_scan()
@@ -89,12 +93,21 @@ func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter 
 	var cr = get_node_or_null("ColorRect")
 	if cr:
 		cr.modulate.a = vfx_a
-	var spr = get_node_or_null("Sprite2D")
+	var spr = get_node_or_null("Sprite2D") as Sprite2D
 	if spr:
+		if projectile_texture != null:
+			spr.texture = projectile_texture
+			if cr:
+				cr.visible = false
+		else:
+			if _default_bullet_texture != null:
+				spr.texture = _default_bullet_texture
+			if cr:
+				cr.visible = spr.texture == null
 		spr.modulate.a = vfx_a
 	add_to_group("player_bullets")
-	if get_node_or_null("Sprite2D"):
-		$Sprite2D.rotation = direction.angle()
+	if spr:
+		spr.rotation = direction.angle()
 	show()
 
 func reset():
@@ -108,8 +121,14 @@ func reset():
 	var cr = get_node_or_null("ColorRect")
 	if cr:
 		cr.modulate.a = 1.0
-	var spr = get_node_or_null("Sprite2D")
+	var spr = get_node_or_null("Sprite2D") as Sprite2D
 	if spr:
+		if _default_bullet_texture != null:
+			spr.texture = _default_bullet_texture
 		spr.modulate.a = 1.0
+	if cr and spr:
+		cr.visible = spr.texture == null
+	elif cr:
+		cr.visible = true
 	remove_from_group("player_bullets")
 	hide()

@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-16 (hesap seviyesi juiciness: Profil bar tween + `level_up` ses + Game Over satırı; önceki: 2026-04-19 hesap XP temeli)
+**Son güncelleme:** 2026-04-16 (UI/ses: karakter seçimi istat paneli + meta scroll + müzik 6 parça; önceki not: hesap seviyesi juiciness / 2026-04-19 hesap XP temeli)
 
 ---
 
@@ -145,8 +145,9 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-16 | **Müzik + menü UI** — `audio_manager`: `music1`–`music6` döngü, tek `MusicPlayer`, Ayarlar → Ses’te önceki/sonraki + duraklat/devam; `meta_upgrade`: `MarginRoot` + kaydırılabilir kart listesi; `character_select` / P2: tam ekran arka plan, margin’ler, sağda `CharacterSelectStatsPanel` (meta taban + yeşil kahraman bonusları); `locales` `ui.character_select.stats_*`, `music_*`, `music_volume`; `pause_menu` müzik etiketi. |
 | 2026-04-16 | **Locale P0 + tipleme** — `main`/`wave_manager`/`spawn_manager` yüzen metinler → `en.json` `ui.alerts` / `ui.game`; karakter seçimi `unlock.*` + `btn_select`/`btn_ready`/`btn_buy`; `CharacterData` `unlock_hint` kaldırıldı; `save_manager` / `audio_manager` debug çıktısı; `save_manager` + `main`/`wave`/`spawn` dönüş tipleri; `YAPILACAKLAR_TOPLU` / `YOL` / matris / `TASARIM` senkron. |
-| 2026-04-16 | **Level-up UI sahne ağacı + meta kart + slot metni** — `upgrade_ui.tscn`: `EditorRoot` ile Godot 2D’de düzenlenebilir layout; `upgrade_ui.gd`: `_bind_editor_root` / istat panelinde bu koşu kalan reroll-skip + max slot satırları; `meta_upgrade.tscn` + `meta_upgrade.gd`: ortalı sütun, kartta yalnız `damage_bonus` tam açıklama (diğerleri tooltip), `weapon_slot_bonus` / `item_slot_bonus` meta satırları; `locales/en.json` (yeni anahtarlar; `tr`/`zh_CN` dil turu dışı). |
+| 2026-04-16 | **Level-up UI sahne ağacı + meta kart + slot metni** — `upgrade_ui.tscn`: `EditorRoot` ile Godot 2D’de düzenlenebilir layout; `upgrade_ui.gd`: `_bind_editor_root` / istat panelinde bu koşu kalan reroll-skip + max slot satırları; `meta_upgrade.tscn` + `meta_upgrade.gd`: kartta yalnız `damage_bonus` tam açıklama (diğerleri tooltip), `weapon_slot_bonus` / `item_slot_bonus` meta satırları; *(layout sonradan üst hizalı + ScrollContainer — aynı günün “Müzik + menü UI” günlük satırına bakın.)* `locales/en.json` (yeni anahtarlar; `tr`/`zh_CN` dil turu dışı). |
 | 2026-04-17 | **`dusk` başlangıç yükü düzeltmesi** — `CharacterData`: `start_item` boş (yalnız `dagger`); `night_vial` koşuda; `locales/en.json` + `codex_extensions_en` dusk metni; `lore.md` / `KARAKTER_SINIFLARI` / `GELISTIRICI` senkron. |
 | 2026-04-16 | **Hesap seviyesi — juiciness** — `SaveManager.level_up` → `AudioManager.play_account_level_up` (`levelup.mp3`); `ui/settings.gd` Profil `ProgressBar` modulate tween + `account_profile_level_flash_pending`; `game_over` hesap XP satırı büyük punto + outline. |
 | 2026-04-19 | **Hesap seviyesi + global XP** — `SaveManager`: `account_level`, `account_xp`, `account_xp_total`, eşik `round(L×500×1.2)`, `level_up` (+ `account_level_up`) sinyali; `player.run_xp_collected`; `game_over.show_stats` → run XP’nin %20’si; Ayarlar → Profil: Label + `ProgressBar`; `en.json`; tam sıfırlamada hesap sıfırlanır. |
@@ -200,7 +201,8 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 | 2026-04-06 | **Yerelleştirme (ilk sürüm)** — `LocalizationManager` autoload, `locales/tr.json` + `en.json`, `SaveManager.settings.locale`, Ayarlar → Dil; ana UI metinleri `tr()` ile anahtarlandı. |
 | 2026-04-04 | **Dokümantasyon** — `docs/TASARIM.md` eklendi; sanat/yayın envanteri oraya taşındı; erişilebilirlik matrisi yalnızca kod durumuna indirgendi. |
 | 2026-04 | **Göçebe (nomad)** — Karakter, sahne, spawn, kilit (175 toplam kill → 350 altın), seçim ekranı sırası, indeks migrasyonu (`character_order_v2`). |
-| 2026-04 | **Yelpaze Bıçak + shard** — `fan_blade`, `fan_blade_shard` (Polygon2D, ObjectPool), yakın menzil. |
+| 2026-04 | **Yelpaze Bıçak + shard** — `fan_blade`, `fan_blade_shard` (ObjectPool), yakın menzil. |
+| 2026-04-16 | **Yelpaze shard hizalama** — menzil = `fire_range×area` ile ömür; `_max_travel` taşma önleme; spawn `get_directional_attack_spawn`; havuz `collision_layer=0`; `ember_fan` aynı kurallar. |
 | 2026-04 | **Kor Kalbi + Kor Yelpazesi** — `ember_heart`, evrim `ember_fan` (MAX fan_blade + MAX ember_heart). |
 | 2026-04 | **Dokümantasyon** — `docs/GELISTIRICI_REHBERI.md`, `docs/YOL_HARITASI.md`, kök `README.md`, Cursor kuralı `ironfall-docs.mdc`. |
 | 2026-04-05 | **Erişilebilirlik + devamlılık checklist** — Özet bölüm eklendi; kodla doğrulandı. |

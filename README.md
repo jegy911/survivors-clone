@@ -33,6 +33,8 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 | [docs/KARAKTER_SINIFLARI_VE_TASARIM.md](docs/KARAKTER_SINIFLARI_VE_TASARIM.md) | Karakter sınıfları (Controller / Fighter / Mage / Tank), co-op destek vizyonu, kahraman taslak tablosu |
 | [docs/YAPILACAKLAR_TOPLU.md](docs/YAPILACAKLAR_TOPLU.md) | Açık işlerin düz listesi; biten satır silinir, kaynak `.md` içinde tiklenir |
 
+**Son dokümantasyon odağı (2026-04-16):** Arka plan müziği `assets/sounds/music1.mp3`–`music6.mp3` sıralı döngü (`core/audio_manager.gd`); Ayarlar → Ses’te parça önceki/sonraki, duraklat/devam ve müzik sesi kaydırıcısı. Meta upgrade ekranı üst hizalı + kaydırılabilir liste (`ui/meta_upgrade.tscn`). Karakter seçimi (P1/P2): kenar boşlukları, sağda level-up tarzı özet istatistik paneli (`ui/character_select_stats_panel.gd`).
+
 **Yerelleştirme:** `locales/tr.json`, `en.json`, `zh_CN.json` — `LocalizationManager` + `LANGUAGE_CATALOG`. Anahtar kontrolü: `python locales/check_locale_parity.py` (referans `en.json`). Yeni diller şimdilik plan aşamasında; tablo `GELISTIRICI_REHBERI.md` içinde.
 
 **Tuşlar:** Ana menü / duraklatmadan **Ayarlar → Kontroller** ile P1 ve P2 hareketi, duraklat ve tam ekran için klavye yeniden atama (`InputRemap`, `user://save.cfg` içinde `input_keyboard_overrides`). Oyun kolu eksen ve tuşları projedeki `InputMap` tanımıyla kalır.

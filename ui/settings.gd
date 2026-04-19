@@ -224,7 +224,9 @@ func _build_ses_tab(parent: Node):
 		SaveManager.save_game()
 	)
 
-	_add_slider(vbox, tr("ui.settings.music"), settings.get("music_volume", 1.0), func(val):
+	_add_music_playback_row(vbox)
+
+	_add_slider(vbox, tr("ui.settings.music_volume"), settings.get("music_volume", 1.0), func(val):
 		SaveManager.settings["music_volume"] = val
 		var bus = AudioServer.get_bus_index("Music")
 		if bus >= 0:
@@ -479,6 +481,84 @@ func _add_dropdown(parent: Node, label_text: String, current_val: String, callba
 	dropdown.item_selected.connect(func(idx): callback.call(options[idx]))
 	row.add_child(dropdown)
 
+
+func _add_music_playback_row(parent: Node) -> void:
+	var row = HBoxContainer.new()
+	row.add_theme_constant_override("separation", 16)
+	parent.add_child(row)
+
+	var label = Label.new()
+	label.text = tr("ui.settings.music_playback")
+	label.custom_minimum_size = Vector2(200, 0)
+	label.add_theme_color_override("font_color", Color.WHITE)
+	label.add_theme_font_size_override("font_size", 18)
+	row.add_child(label)
+
+	var controls = HBoxContainer.new()
+	controls.add_theme_constant_override("separation", 10)
+	row.add_child(controls)
+
+	var prev_btn = Button.new()
+	prev_btn.text = "◀"
+	prev_btn.custom_minimum_size = Vector2(48, 40)
+	prev_btn.tooltip_text = tr("ui.settings.music_prev_tooltip")
+	controls.add_child(prev_btn)
+
+	var track_label = Label.new()
+	track_label.custom_minimum_size = Vector2(80, 0)
+	track_label.add_theme_color_override("font_color", Color("#CCCCCC"))
+	track_label.add_theme_font_size_override("font_size", 18)
+	track_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	controls.add_child(track_label)
+
+	var next_btn = Button.new()
+	next_btn.text = "▶"
+	next_btn.custom_minimum_size = Vector2(48, 40)
+	next_btn.tooltip_text = tr("ui.settings.music_next_tooltip")
+	controls.add_child(next_btn)
+
+	var pause_btn = Button.new()
+	pause_btn.text = tr("ui.settings.music_pause")
+	pause_btn.custom_minimum_size = Vector2(100, 40)
+	controls.add_child(pause_btn)
+
+	var resume_btn = Button.new()
+	resume_btn.text = tr("ui.settings.music_resume")
+	resume_btn.custom_minimum_size = Vector2(100, 40)
+	controls.add_child(resume_btn)
+
+	var refresh := func() -> void:
+		var n_tracks: int = AudioManager.get_music_track_count()
+		var cur: int = AudioManager.current_music
+		if cur <= 0 or n_tracks <= 0:
+			track_label.text = "- / %d" % maxi(n_tracks, 1)
+		else:
+			track_label.text = "%d / %d" % [cur, n_tracks]
+		var playing: bool = AudioManager.is_music_playing()
+		var paused: bool = AudioManager.is_music_paused()
+		pause_btn.disabled = not playing or paused
+		resume_btn.disabled = not paused
+
+	prev_btn.pressed.connect(func() -> void:
+		AudioManager.music_prev()
+		refresh.call()
+	)
+	next_btn.pressed.connect(func() -> void:
+		AudioManager.music_next()
+		refresh.call()
+	)
+	pause_btn.pressed.connect(func() -> void:
+		AudioManager.pause_music()
+		refresh.call()
+	)
+	resume_btn.pressed.connect(func() -> void:
+		AudioManager.resume_music()
+		refresh.call()
+	)
+
+	refresh.call()
+
+
 func _add_slider(parent: Node, label_text: String, default_val: float, callback: Callable):
 	var row = HBoxContainer.new()
 	row.add_theme_constant_override("separation", 20)
@@ -651,7 +731,7 @@ func _build_profil_tab(parent: Node):
 		str(SaveManager.total_damage_dealt),
 		str(SaveManager.total_chests_opened),
 		str(SaveManager.total_items_collected),
-		"%d:%02d" % [int(SaveManager.max_survival_time / 60), int(SaveManager.max_survival_time) % 60],
+		"%d:%02d" % [int(SaveManager.max_survival_time / 60.0), int(SaveManager.max_survival_time) % 60],
 	]
 	for i in stat_keys.size():
 		var row = HBoxContainer.new()

@@ -54,8 +54,8 @@ func _get_wave_data(game_timer: float) -> Dictionary:
 	minute = min(minute, 20)
 	return WAVE_TABLE[minute]
 
-func _scene_from_name(name: String) -> PackedScene:
-	match name:
+func _scene_from_name(scene_key: String) -> PackedScene:
+	match scene_key:
 		"enemy": return enemy_scene
 		"fast_enemy": return fast_enemy_scene
 		"tank": return tank_enemy_scene
@@ -132,7 +132,7 @@ func spawn_random_enemy(game_timer: float, current_immunity: String) -> void:
 	if current_immunity != "" and randf() < 0.30:
 		_apply_immunity(enemy, current_immunity)
 
-func spawn_mini_boss(game_timer: float, boss_index: int) -> void:
+func spawn_mini_boss(_game_timer: float, boss_index: int) -> void:
 	EventBus.boss_spawned.emit()
 	var boss = boss_scene.instantiate()
 	boss.set_meta("codex_id", "mini_boss")

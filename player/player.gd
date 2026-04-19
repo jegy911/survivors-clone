@@ -126,8 +126,7 @@ func _ready():
 	xp_bar.show_percentage = false
 	# XP bar boyutunu ekrana göre ayarla
 	xp_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	xp_bar.custom_minimum_size.x = 0
-	xp_bar.size.y = 18
+	xp_bar.custom_minimum_size = Vector2(0, 18)
 	
 	update_hp_bar()
 	update_category_ui()
@@ -247,7 +246,7 @@ func get_effective_move_speed() -> float:
 	return minf(float(SPEED), MAX_MOVE_SPEED)
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var direction = _get_input_direction()
 	velocity = direction.normalized() * get_effective_move_speed()
 	move_and_slide()
@@ -350,8 +349,12 @@ func _process(delta):
 			heal(regen)
 
 func update_hp_bar():
-	var ratio = float(hp) / float(max_hp)
-	hp_bar_fill.size.x = 50 * ratio
+	var ratio: float = clampf(float(hp) / float(max_hp), 0.0, 1.0)
+	## Arka plan `offset_*` ile tanımlı; eski sabit 50px kısa kalıyordu (tam can görünmüyordu).
+	var left: float = hp_bar_bg.offset_left
+	var full_w: float = hp_bar_bg.offset_right - hp_bar_bg.offset_left
+	hp_bar_fill.offset_left = left
+	hp_bar_fill.offset_right = left + full_w * ratio
 	if ratio > 0.5:
 		hp_bar_fill.color = Color("#2ECC71")
 	elif ratio > 0.25:
@@ -400,6 +403,40 @@ func get_area_multiplier() -> float:
 	if active_items.has("field_lens"):
 		lens_pct = active_items["field_lens"].get_area_bonus_pct()
 	return 1.0 + SaveManager.meta_upgrades.get("area_bonus", 0) * 0.10 + _origin_area_bonus + lens_pct
+
+
+## Yakın silah / yelpaze shard’ı: `global_position` gövdenin içinde kalmasın — sprite silüetine göre `dir` yönünde dış kenara yakın nokta.
+func get_directional_attack_spawn(dir: Vector2, margin: float = 4.0) -> Vector2:
+	var d := dir.normalized()
+	if d.length_squared() < 0.0001:
+		d = Vector2.RIGHT
+	var spr := get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
+	if spr != null and spr.sprite_frames != null:
+		var tex: Texture2D = spr.sprite_frames.get_frame_texture(spr.animation, spr.frame)
+		if tex != null:
+			var frame_sz: Vector2 = tex.get_size()
+			var sc: Vector2 = spr.global_scale.abs()
+			var half_w: float = frame_sz.x * sc.x * 0.5
+			var half_h: float = frame_sz.y * sc.y * 0.5
+			## Pivot etrafında eksen hizalı kutu: `dir` yönünde dış yüzeye kadar (köşe için min eksen t).
+			var t_exit_s: float = INF
+			if absf(d.x) > 1e-5:
+				t_exit_s = minf(t_exit_s, half_w / absf(d.x))
+			if absf(d.y) > 1e-5:
+				t_exit_s = minf(t_exit_s, half_h / absf(d.y))
+			if t_exit_s != t_exit_s or t_exit_s > 1e6:
+				t_exit_s = maxf(half_w, half_h)
+			## Siluet dışına çık ama “silah ucu” çok ileri taşınmasın (yelpaze hissi).
+			var push: float = t_exit_s * 0.78 + margin
+			return spr.global_position + d * push
+	var col := get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if col != null and col.shape is RectangleShape2D:
+		var rect: RectangleShape2D = col.shape
+		var hw: float = rect.size.x * 0.5 * absf(col.scale.x)
+		var hh: float = rect.size.y * 0.5 * absf(col.scale.y)
+		var skin: float = sqrt(hw * hw + hh * hh) * 0.78 + margin
+		return col.global_position + d * skin
+	return global_position + d * 24.0
 
 func get_duration_multiplier() -> float:
 	return 1.0 + SaveManager.meta_upgrades.get("duration_bonus", 0) * 0.15
@@ -819,10 +856,10 @@ func _setup_revive_area():
 	add_child(area)
 	area.body_entered.connect(_on_reviver_entered)
 
-func _on_reviver_entered(body: Node):
+func _on_reviver_entered(reviver_body: Node):
 	if not is_downed:
 		return
-	if body.is_in_group("player") and body != self:
+	if reviver_body.is_in_group("player") and reviver_body != self:
 		revive()
 
 func revive():
@@ -946,6 +983,8 @@ func get_tag_crit_bonus() -> float:
 	return bonus
 
 
+## `player_ui_helpers.gd` istatistik paneli için; bu sınıfta doğrudan okunmaz (statik analiz uyarısı).
+@warning_ignore("unused_private_class_variable")
 var _stat_panel = null
 
 

@@ -1,6 +1,8 @@
 class_name WeaponDeathLaser
 extends WeaponBase
 
+const DEATH_LASER_BEAM_TEX := preload("res://assets/projectiles/death_laser/death_laser_projectile.png")
+
 var laser_range = 400.0
 
 func _ready():
@@ -38,17 +40,24 @@ func attack():
 	_spawn_laser_beam(dir)
 
 func _spawn_laser_beam(dir: Vector2):
-	var beam = ColorRect.new()
-	beam.size = Vector2(laser_range, 6)
-	beam.color = Color("#FF0000")
-	beam.position = player.global_position
-	beam.rotation = dir.angle()
-	beam.modulate.a = player.get_player_vfx_opacity() if player else 1.0
-	player.get_parent().add_child(beam)
-	
-	var tween = beam.create_tween()
-	tween.tween_property(beam, "modulate:a", 0.0, 0.15)
-	tween.tween_callback(beam.queue_free)
+	var par: Node = player.get_parent()
+	if par == null:
+		return
+	var vfx_a: float = player.get_player_vfx_opacity() if player else 1.0
+	var tex_w: float = maxf(float(DEATH_LASER_BEAM_TEX.get_width()), 1.0)
+	var spr := Sprite2D.new()
+	spr.texture = DEATH_LASER_BEAM_TEX
+	spr.centered = true
+	spr.global_position = player.global_position + dir * (laser_range * 0.5)
+	spr.rotation = dir.angle()
+	spr.scale = Vector2(laser_range / tex_w, 0.2)
+	spr.z_index = 56
+	spr.z_as_relative = false
+	spr.modulate = Color(1.0, 1.0, 1.0, 0.98 * vfx_a)
+	par.add_child(spr)
+	var tw := spr.create_tween()
+	tw.tween_property(spr, "modulate:a", 0.0, 0.15)
+	tw.tween_callback(spr.queue_free)
 
 func on_upgrade():
 	match level:

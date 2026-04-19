@@ -78,7 +78,7 @@ func take_damage(amount: int, shooter: Node = null):
 	AudioManager.play_hit()
 	explode()
 
-func take_explosion_damage(amount: int):
+func take_explosion_damage(_amount: int):
 	if is_dead:
 		return
 	explode()

@@ -40,10 +40,10 @@ var pending_reset = false
 func _ready():
 	if not LocalizationManager.locale_changed.is_connected(_on_locale_changed):
 		LocalizationManager.locale_changed.connect(_on_locale_changed)
-	$CenterRoot/VBoxContainer/TitleLabel.text = tr("ui.meta_screen.title")
-	$CenterRoot/VBoxContainer/TitleLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	$CenterRoot/VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 36)
-	$CenterRoot/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
+	$MarginRoot/VBoxContainer/TitleLabel.text = tr("ui.meta_screen.title")
+	$MarginRoot/VBoxContainer/TitleLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	$MarginRoot/VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 36)
+	$MarginRoot/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
 	update_gold_label()
 
 	# Back butonu
@@ -53,31 +53,32 @@ func _ready():
 	back_style.corner_radius_top_right = 8
 	back_style.corner_radius_bottom_left = 8
 	back_style.corner_radius_bottom_right = 8
-	$CenterRoot/VBoxContainer/BackButton.add_theme_stylebox_override("normal", back_style)
-	$CenterRoot/VBoxContainer/BackButton.add_theme_color_override("font_color", Color.WHITE)
-	$CenterRoot/VBoxContainer/BackButton.text = tr("ui.meta_screen.back")
-	$CenterRoot/VBoxContainer/BackButton.custom_minimum_size = Vector2(200, 50)
-	$CenterRoot/VBoxContainer/BackButton.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	$CenterRoot/VBoxContainer/BackButton.pressed.connect(_on_back)
+	$MarginRoot/VBoxContainer/BackButton.add_theme_stylebox_override("normal", back_style)
+	$MarginRoot/VBoxContainer/BackButton.add_theme_color_override("font_color", Color.WHITE)
+	$MarginRoot/VBoxContainer/BackButton.text = tr("ui.meta_screen.back")
+	$MarginRoot/VBoxContainer/BackButton.custom_minimum_size = Vector2(200, 50)
+	$MarginRoot/VBoxContainer/BackButton.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	$MarginRoot/VBoxContainer/BackButton.pressed.connect(_on_back)
 
-	$CenterRoot/VBoxContainer/ScrollContainer.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	var scroll: ScrollContainer = $MarginRoot/VBoxContainer/ScrollContainer
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	var scroll_style = StyleBoxFlat.new()
 	scroll_style.bg_color = Color("#0D0D1A")
-	$CenterRoot/VBoxContainer/ScrollContainer.add_theme_stylebox_override("panel", scroll_style)
-	$CenterRoot/VBoxContainer/ScrollContainer/UpgradeList.add_theme_constant_override("separation", 12)
+	scroll.add_theme_stylebox_override("panel", scroll_style)
+	$MarginRoot/VBoxContainer/ScrollContainer/UpgradeList.add_theme_constant_override("separation", 12)
 	build_upgrade_list()
 
 func _on_locale_changed(_locale: String) -> void:
-	$CenterRoot/VBoxContainer/TitleLabel.text = tr("ui.meta_screen.title")
-	$CenterRoot/VBoxContainer/BackButton.text = tr("ui.meta_screen.back")
+	$MarginRoot/VBoxContainer/TitleLabel.text = tr("ui.meta_screen.title")
+	$MarginRoot/VBoxContainer/BackButton.text = tr("ui.meta_screen.back")
 	update_gold_label()
 	build_upgrade_list()
 
 func build_upgrade_list():
-	var list = $CenterRoot/VBoxContainer/ScrollContainer/UpgradeList
+	var list = $MarginRoot/VBoxContainer/ScrollContainer/UpgradeList
 	for child in list.get_children():
 		child.queue_free()
-	list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 
 	var grid = GridContainer.new()
 	grid.columns = 3
@@ -192,10 +193,10 @@ func build_upgrade_list():
 	list.add_child(reset_btn)
 
 func update_gold_label():
-	$CenterRoot/VBoxContainer/GoldLabel.text = tr("ui.meta_screen.gold") % SaveManager.gold
-	$CenterRoot/VBoxContainer/GoldLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	$CenterRoot/VBoxContainer/GoldLabel.add_theme_color_override("font_color", Color("#F5E642"))
-	$CenterRoot/VBoxContainer/GoldLabel.add_theme_font_size_override("font_size", 22)
+	$MarginRoot/VBoxContainer/GoldLabel.text = tr("ui.meta_screen.gold") % SaveManager.gold
+	$MarginRoot/VBoxContainer/GoldLabel.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	$MarginRoot/VBoxContainer/GoldLabel.add_theme_color_override("font_color", Color("#F5E642"))
+	$MarginRoot/VBoxContainer/GoldLabel.add_theme_font_size_override("font_size", 22)
 
 func _on_upgrade_pressed(upgrade_id: String, cost: int):
 	if SaveManager.spend_gold(cost):

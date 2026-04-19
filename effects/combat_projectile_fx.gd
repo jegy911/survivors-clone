@@ -68,6 +68,38 @@ static func spawn_chain_segment(
 	tw.tween_callback(spr.queue_free)
 
 
+## Silah dokusu: oyuncu etrafında kısa süre büyüyüp solan bir `Sprite2D` (ör. Ark Halkası nabız görseli).
+static func spawn_short_lived_projectile_sprite(
+	parent: Node,
+	global_pos: Vector2,
+	player: Node2D,
+	tex: Texture2D,
+	tint: Color,
+	duration: float = 0.24,
+	start_scale: float = 0.16,
+	end_scale: float = 0.44
+) -> void:
+	if parent == null or tex == null:
+		return
+	var s := Sprite2D.new()
+	s.texture = tex
+	s.centered = true
+	s.global_position = global_pos
+	s.scale = Vector2(start_scale, start_scale)
+	s.z_index = 90
+	s.z_as_relative = false
+	var vfx_a := 1.0
+	if player and player.has_method("get_player_vfx_opacity"):
+		vfx_a = float(player.get_player_vfx_opacity())
+	s.modulate = Color(tint.r, tint.g, tint.b, minf(1.0, tint.a * vfx_a))
+	parent.add_child(s)
+	var tw := s.create_tween()
+	tw.set_parallel(true)
+	tw.tween_property(s, "scale", Vector2(end_scale, end_scale), duration * 0.88)
+	tw.tween_property(s, "modulate:a", 0.0, duration)
+	tw.chain().tween_callback(s.queue_free)
+
+
 ## Small pixel-style burst (dark rim + bright chips) for readable hit feedback.
 static func spawn_hit_sparks(
 	parent: Node,

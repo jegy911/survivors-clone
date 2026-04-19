@@ -11,38 +11,76 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_tree().change_scene_to_file("res://ui/game_mode_select.tscn")
 
 func _ready():
-	var vp = get_viewport().get_visible_rect().size
-	$Panel/VBoxContainer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	$Panel/VBoxContainer.add_theme_constant_override("separation", 16)
-	$Panel/VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 32)
-	$Panel/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
+	var main: VBoxContainer = $Panel/OuterMargin/MainVBox
+	main.add_theme_constant_override("separation", 16)
+	var title: Label = $Panel/OuterMargin/MainVBox/TitleLabel
+	title.add_theme_font_size_override("font_size", 32)
+	title.add_theme_color_override("font_color", Color("#9B59B6"))
 	if SaveManager.game_mode == "local_coop":
-		$Panel/VBoxContainer/TitleLabel.text = tr("ui.character_select.p1_title")
+		title.text = tr("ui.character_select.p1_title")
 	else:
-		$Panel/VBoxContainer/TitleLabel.text = tr("ui.character_select.title_solo")
-	$Panel/VBoxContainer/ScrollContainer/GridContainer.add_theme_constant_override("h_separation", 16)
-	$Panel/VBoxContainer/ScrollContainer/GridContainer.add_theme_constant_override("v_separation", 16)
+		title.text = tr("ui.character_select.title_solo")
+	var grid: GridContainer = _grid()
+	grid.add_theme_constant_override("h_separation", 16)
+	grid.add_theme_constant_override("v_separation", 16)
+	var scroll: ScrollContainer = $Panel/OuterMargin/MainVBox/BodyHBox/LeftColumn/ScrollContainer
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_setup_stats_panel_style()
 	_setup_class_filter_row()
 	build_characters()
 	_update_gold_label()
-	$Panel/VBoxContainer/ActionRow/BackButton.pressed.connect(_on_back)
-	$Panel/VBoxContainer/ActionRow/PlayButton.pressed.connect(_on_play)
-	$Panel/VBoxContainer/ActionRow/PlayButton.disabled = true
+	var action_row: HBoxContainer = $Panel/OuterMargin/MainVBox/ActionMargin/ActionRow
+	action_row.get_node("BackButton").pressed.connect(_on_back)
+	action_row.get_node("PlayButton").pressed.connect(_on_play)
+	action_row.get_node("PlayButton").disabled = true
 
-func _update_gold_label():
-	if has_node("Panel/VBoxContainer/GoldLabel"):
-		$Panel/VBoxContainer/GoldLabel.text = "💰 " + str(SaveManager.gold)
 
-func _setup_class_filter_row():
-	var vbox: VBoxContainer = $Panel/VBoxContainer
+func _grid() -> GridContainer:
+	return $Panel/OuterMargin/MainVBox/BodyHBox/LeftColumn/ScrollContainer/GridCenterRow/GridContainer as GridContainer
+
+
+func _stats_vbox() -> VBoxContainer:
+	return $Panel/OuterMargin/MainVBox/BodyHBox/StatsColumn/StatsPanel/StatsScroll/StatsVBox as VBoxContainer
+
+
+func _setup_stats_panel_style() -> void:
+	var st := StyleBoxFlat.new()
+	st.bg_color = Color(0.07, 0.08, 0.14)
+	st.border_color = Color(0.22, 0.24, 0.34)
+	st.set_border_width_all(1)
+	st.corner_radius_top_left = 10
+	st.corner_radius_top_right = 10
+	st.corner_radius_bottom_left = 10
+	st.corner_radius_bottom_right = 10
+	var stats_panel: PanelContainer = $Panel/OuterMargin/MainVBox/BodyHBox/StatsColumn/StatsPanel
+	stats_panel.add_theme_stylebox_override("panel", st)
+	var stats_scroll: ScrollContainer = $Panel/OuterMargin/MainVBox/BodyHBox/StatsColumn/StatsPanel/StatsScroll
+	stats_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	stats_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+
+
+func _refresh_stats_panel() -> void:
+	CharacterSelectStatsPanel.rebuild(_stats_vbox(), selected_index)
+
+func _update_gold_label() -> void:
+	$Panel/OuterMargin/MainVBox/GoldMargin/GoldLabel.text = "💰 " + str(SaveManager.gold)
+
+
+func _play_button() -> Button:
+	return $Panel/OuterMargin/MainVBox/ActionMargin/ActionRow/PlayButton as Button
+
+
+func _setup_class_filter_row() -> void:
+	var vbox: VBoxContainer = $Panel/OuterMargin/MainVBox
 	if vbox.get_node_or_null("ClassFilterRow"):
 		return
 	var row = HBoxContainer.new()
 	row.name = "ClassFilterRow"
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	row.add_theme_constant_override("separation", 10)
-	var gold = vbox.get_node_or_null("GoldLabel")
-	var insert_at = gold.get_index() + 1 if gold else 1
+	var gold_margin: MarginContainer = vbox.get_node_or_null("GoldMargin")
+	var insert_at: int = gold_margin.get_index() + 1 if gold_margin else 2
 	vbox.add_child(row)
 	vbox.move_child(row, insert_at)
 	_class_filter_buttons.clear()
@@ -90,18 +128,16 @@ func _on_class_filter_pressed(class_id: String) -> void:
 		var cd: Dictionary = CharacterData.CHARACTERS[selected_index]
 		if _active_hero_class != "" and str(cd.get("hero_class", "")) != _active_hero_class:
 			selected_index = -1
-			$Panel/VBoxContainer/ActionRow/PlayButton.disabled = true
+			_play_button().disabled = true
 	build_characters()
-	if selected_index >= 0:
-		_update_selection_borders()
 
 func _character_visible_for_filter(_char_index: int, char_data: Dictionary) -> bool:
 	if _active_hero_class.is_empty():
 		return true
 	return str(char_data.get("hero_class", "")) == _active_hero_class
 
-func build_characters():
-	var container = $Panel/VBoxContainer/ScrollContainer/GridContainer
+func build_characters() -> void:
+	var container: GridContainer = _grid()
 	for child in container.get_children():
 		child.queue_free()
 
@@ -112,6 +148,9 @@ func build_characters():
 		var state = _get_state(char_data["id"])
 		var card = _build_card(i, char_data, state)
 		container.add_child(card)
+	if selected_index >= 0:
+		_update_selection_borders()
+	_refresh_stats_panel()
 
 func _get_state(char_id: String) -> String:
 	if SaveManager.is_purchased(char_id):
@@ -233,17 +272,18 @@ func _make_button(label_text: String, color: Color) -> Button:
 	btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	return btn
 
-func _on_select(index: int):
+func _on_select(index: int) -> void:
 	selected_index = index
 	_update_selection_borders()
-	$Panel/VBoxContainer/ActionRow/PlayButton.disabled = false
+	_play_button().disabled = false
+	_refresh_stats_panel()
 	if SaveManager.game_mode == "local_coop":
 		SaveManager.set_selected_character_p1_index(selected_index)
 		SaveManager.save_game()
 		get_tree().change_scene_to_file("res://ui/character_select_p2.tscn")
 
-func _update_selection_borders():
-	var container = $Panel/VBoxContainer/ScrollContainer/GridContainer
+func _update_selection_borders() -> void:
+	var container: GridContainer = _grid()
 	for vis_i in container.get_child_count():
 		var card = container.get_child(vis_i)
 		var char_idx: int = int(card.get_meta("index"))

@@ -99,7 +99,7 @@ func _build_settings_panel() -> Control:
 			AudioServer.set_bus_volume_db(bus, linear_to_db(val))
 		SaveManager.save_game()
 	)
-	_add_slider_to(vbox, tr("ui.settings.music"), SaveManager.settings.get("music_volume", 1.0), func(val):
+	_add_slider_to(vbox, tr("ui.settings.music_volume"), SaveManager.settings.get("music_volume", 1.0), func(val):
 		SaveManager.settings["music_volume"] = val
 		var bus = AudioServer.get_bus_index("Music")
 		if bus >= 0:

@@ -110,11 +110,13 @@ Projeksiyon: `projectiles/lightning_bolt.tscn` (uçuş + isabet); Storm / Toxic 
 
 | Lv | Hasar | Alan (menzil / yay °) | Bıçak | CD | Diğer |
 |----|-------|------------------------|-------|-----|--------|
-| 1 | 6 | 175 / 28 | 3 | 1.4 | shard_speed 240, lifetime 0.18 |
-| 2 | 8 | 182 / 32 | 3 | 1.4 | |
-| 3 | 8 | 182 / 32 | 4 | 1.2 | |
-| 4 | 10 | 190 / 36 | 4 | 1.2 | |
-| 5 | 13 | 190 / 36 | 5 | 1.0 | speed 265, lifetime 0.2 |
+| 1 | 6 | 128 / 28 | 3 | 1.4 | `shard_speed` 240; **saha ömrü** = `(fire_range × get_area_multiplier) / shard_speed` — menzil ile hizalı |
+| 2 | 8 | 136 / 32 | 3 | 1.4 | |
+| 3 | 8 | 136 / 32 | 4 | 1.2 | |
+| 4 | 10 | 144 / 36 | 4 | 1.2 | |
+| 5 | 13 | 144 / 36 | 5 | 1.0 | `shard_speed` 265 (Lv5); ömür yine menzil ÷ hız |
+
+Saha shard görseli: `assets/projectiles/fan_blade/shard.png` → `projectiles/fan_blade_shard.tscn` (`Sprite2D`; editörde doku atanmışsa öncelik; yoksa `Polygon2D` yedeği). **Spawn:** `player.get_directional_attack_spawn(dir)` — `AnimatedSprite2D` çerçevesine göre gövde dışı; havuza dönüşte `collision_layer = 0` ile hayalet isabet yok. **Hareket:** `_max_travel = speed × lifetime` ile taşma yok.
 
 ### Altıgön mühür (`hex_sigil`)
 
@@ -234,11 +236,13 @@ Projeksiyon: `projectiles/lightning_bolt.tscn` (uçuş + isabet); Storm / Toxic 
 
 | Lv | Hasar | Bıçak | CD | Menzil | Yay ° | Delici |
 |----|-------|-------|-----|--------|-------|--------|
-| 1 | 10 | 4 | 1.2 | 200 | 40 | 1 |
-| 2 | 12 | 4 | 1.2 | 200 | 44 | 1 |
-| 3 | 12 | 5 | 1.0 | 200 | 44 | 1 |
-| 4 | 15 | 5 | 1.0 | 215 | 44 | 1 |
-| 5 | 19 | 6 | 0.9 | 215 | 44 | 2 |
+| 1 | 10 | 4 | 1.2 | 148 | 40 | 1 |
+| 2 | 12 | 4 | 1.2 | 148 | 44 | 1 |
+| 3 | 12 | 5 | 1.0 | 148 | 44 | 1 |
+| 4 | 15 | 5 | 1.0 | 160 | 44 | 1 |
+| 5 | 19 | 6 | 0.9 | 160 | 44 | 2 |
+
+Aynı shard sahnesi (`fan_blade_shard`); ömür ve menzil `fan_blade` ile aynı kural (`fire_range × area` ÷ `shard_speed`), spawn `get_directional_attack_spawn`.
 
 ### Peçe Hançerleri (`veil_daggers`)
 

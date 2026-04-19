@@ -1,6 +1,7 @@
 extends Node2D
 
 const UpgradeUiScript = preload("res://ui/upgrade_ui.gd")
+const PAUSE_MENU_SCENE := preload("res://ui/pause_menu.tscn")
 
 var spawn_timer = 0.0
 var immunity_timer = 0.0
@@ -75,7 +76,7 @@ func _on_window_focus_lost() -> void:
 		return
 	if tree.get_first_node_in_group("pause_menu_overlay"):
 		return
-	var pm = preload("res://ui/pause_menu.tscn").instantiate()
+	var pm = PAUSE_MENU_SCENE.instantiate()
 	tree.root.add_child(pm)
 	tree.paused = true
 
@@ -92,7 +93,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	get_viewport().set_input_as_handled()
 	tree.paused = true
-	var pm := preload("res://ui/pause_menu.tscn").instantiate()
+	var pm := PAUSE_MENU_SCENE.instantiate()
 	tree.root.add_child(pm)
 
 
@@ -161,8 +162,8 @@ func _process(delta: float) -> void:
 func update_timer_label() -> void:
 	if timer_label == null or wave_label == null:
 		return
-	var minutes = int(game_timer) / 60
-	var seconds = int(game_timer) % 60
+	var minutes: int = int(game_timer / 60.0)
+	var seconds: int = int(game_timer) % 60
 	timer_label.text = "%02d:%02d" % [minutes, seconds]
 	var goal: float = SaveManager.get_run_goal_sec()
 	if game_timer < goal:

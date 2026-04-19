@@ -4,7 +4,7 @@ Oyunda **görsel, ses sunumu, UI/ikon ve pazarlama** tarafında yapılması veya
 Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.  
 Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.
 
-**Son güncelleme:** 2026-04-16 (silah/eşya tablo şablonu: mantık / ikon / projectile / tasarım)
+**Son güncelleme:** 2026-04-16 (yelpaze shard menzil/spawn; silah/eşya tablo şablonu)
 
 ---
 
@@ -114,7 +114,7 @@ Her düşman `.tscn` içinde **`AnimatedSprite2D`** + atlas / spritesheet ile **
 | shadow | ✅ Orbit isabet + sparks | ✅ `upgrade_icons/weapons/shadow.png` | ✅ / kısmi — `spawn_hit_sparks` odaklı | Kısmi — final mermi sprite ayrı |
 | laser | ✅ Işın katmanları | ✅ `upgrade_icons/weapons/laser.png` | ✅ / kısmi — ışın geometrisi kodda | Kısmi — final sanat |
 | holy_bullet | ✅ `bullet.gd` + `armor_piercing` kıvılcımı | ✅ `upgrade_icons/evolutions/holy_bullet.png` (`try_weapon_with_evolution_fallback` ile aynı ada) | ✅ Mermi hattı | Kısmi |
-| fan_blade | ✅ | ✅ `upgrade_icons/weapons/fan_blade.png` | ❌ Shard `Polygon2D` | ❌ final bıçak / parça sprite |
+| fan_blade | ✅ | ✅ `upgrade_icons/weapons/fan_blade.png` | ✅ `assets/projectiles/fan_blade/shard.png` + sahne `Sprite2D` / `CollisionShape2D` (kullanıcı); menzil = `fire_range×area`, hareket taşması yok | Spawn `get_directional_attack_spawn`; nomad ölçekleriyle uyumlu |
 | arc_pulse | ✅ | ✅ `upgrade_icons/weapons/arc_pulse.png` | ✅ / kısmi — silaha özel projeksiyon hattı | Kısmi |
 | hex_sigil, gravity_anchor, bastion_flail, shield_ram, binding_circle, void_lens, citadel_flail, fortress_ram | ✅ (silah başına sahne/kod) | ✅ ilgili `weapons/*.png` mevcutsa | Silaha göre ✅ veya / + not `projectiles/` / `GELISTIRICI_REHBERI` | Kısmi / ❌ satır içi |
 | veil_daggers, toxic_chain, death_laser, blood_boomerang, storm, shadow_storm, frost_nova, ember_fan, arc_surge | ✅ evrim / türev hatlar | Evrim PNG’leri (`evolutions/*.png`) kısmi set | Çoğunlukla taban silah projectile’ını paylaşır veya ek VFX | Çoğunlukla kısmi — kart / saha ayrımı `upgrade_icons` + bu tablo |
@@ -195,7 +195,7 @@ Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + is
 | dagger.tscn | ✅ / ❌ | İnce `Sprite2D` + `bullet.gd` (ObjectPool) |
 | hunter_axe.tscn | ✅ | Avcı baltası (ObjectPool); Sprite2D + `assets/projectiles/axe/boomerang.png` |
 | ice_ball.tscn | ✅ / ❌ |
-| fan_blade_shard.tscn | ❌ | Polygon2D geçici |
+| fan_blade_shard.tscn | ✅ / kısmi — `assets/projectiles/fan_blade/shard.png` + `Sprite2D`; yoksa `Polygon2D` (`fan_blade_shard.gd`) |
 | enemy_bullet.tscn | ✅ / ❌ |
 
 ---
@@ -207,14 +207,14 @@ Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + is
 | Açılış ekranı | `ui/intro_splash` | Aynı `main_menu_bg.*` adayı, tint yok (tam parlaklık); yalnızca başta siyah ~5 sn fade; 4–6. sn alttan kalkan “devam” metni (konum `intro_splash.gd` `PROMPT_*`); müzik track 1; tuş/tık/kol → ana menü |
 | Ana menü | `ui/main_menu` | Tam ekran foto: `assets/ui/main_menu_bg.*` (yoksa düz renk + yıldızlar); Mağaza → `shop_menu` iskelet |
 | Mağaza (kozmetik / pet / fragman) | `ui/shop_menu` | ❌ Placeholder sekmeler; satın alma UI yok |
-| Karakter seçimi (+ P2) | `ui/character_select*` + `character_select_preview.gd` | Dört rol filtresi; portre = `idle_left` (yoksa yedek) ilk kare, sabit çerçeve; kilit=siyah; koşul açık=silüet; satın alınmış=tam renk |
+| Karakter seçimi (+ P2) | `ui/character_select*` + `character_select_preview.gd` + `character_select_stats_panel.gd` | Dört rol filtresi; portre = `idle_left` (yoksa yedek) ilk kare, sabit çerçeve; kilit=siyah; koşul açık=silüet; satın alınmış=tam renk; tam ekran arka plan + margin’li layout; sağda meta taban + kahraman bonus özet istatistikleri |
 | Harita / mod | `ui/map_select` | Story / fast mod + lanet slider + harita önizlemesi; arena kilitli |
 | Level-up kartları | `ui/upgrade_ui` | Kısmi — üç panel + dikey kartlar + envanter `tooltip_text` + `en.json` kabuk metinleri; büyük sprite ikon seti yok |
 | HUD (kill, altın, çubuklar) | `player` + CanvasLayer | ✅ / ❌ |
 | Oyun sonu | `ui/game_over` | ✅ |
 | Duraklat | `ui/pause_menu` | ✅ / ❌ |
-| Meta upgrade | `ui/meta_upgrade` | ✅ / ❌ |
-| Ayarlar | `ui/settings` | ✅ |
+| Meta upgrade | `ui/meta_upgrade` | ✅ — üst hizalı sütun + `ScrollContainer` ile kart ızgarası kaydırılabilir |
+| Ayarlar | `ui/settings` | ✅ — Ses sekmesinde müzik parça kontrolleri + müzik sesi kaydırıcısı (`music_volume`) |
 | Arayüz dili (çeviri) | `locales/*.json`, `LocalizationManager`, Ayarlar → Dil | ✅ `tr` / `en` / `zh_CN`; level-up kabuk `ui.upgrade_ui.*`; run yüzen uyarılar `ui.alerts.*` + co-op kısa HUD `ui.game.*`; karakter seçimi ipucu/butonlar `ui.character_select.*` (`en` rutin); silah/eşya **etki** satırları çoğunlukla kod içi (`player.gd` / `get_description`) |
 | Hasar sayıları | `effects/damage_number` | ✅ |
 | Global font ölçeği (okunabilirlik) | `SaveManager.settings["ui_scale"]`, Ayarlar → Görüntü | Kısmi — bazı ekranlarda (`map_select`, `shop_menu`); tüm HUD/menüde zorunlu değil |

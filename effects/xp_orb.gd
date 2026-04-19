@@ -5,7 +5,6 @@ var player = null
 var move_speed = 0.0
 var base_attract_radius = 100.0
 var collect_radius = 20.0
-var _bob_offset = 0.0
 var _bob_time = 0.0
 var _is_moving = false
 

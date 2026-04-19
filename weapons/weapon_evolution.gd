@@ -70,7 +70,7 @@ static func _meets_weapon_requirements(player, evo: Dictionary) -> bool:
 		var weapon = player.active_weapons[w]
 		var required_level = weapon.max_level
 		if player.get("blood_oath_active") and player.blood_oath_active:
-			required_level = max(1, weapon.max_level / 2)
+			required_level = max(1, int(weapon.max_level / 2.0))
 		if weapon.level < required_level:
 			return false
 	return true

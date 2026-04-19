@@ -1,6 +1,8 @@
 class_name WeaponLaser
 extends WeaponBase
 
+const LASER_BEAM_TEX := preload("res://assets/projectiles/laser/laser_projectile.png")
+
 var laser_range = 300.0
 
 func _ready():
@@ -56,30 +58,22 @@ func _spawn_laser_beam(dir: Vector2, range_val: float):
 	if par == null:
 		return
 	var vfx_a: float = player.get_player_vfx_opacity() if player else 1.0
-	var under := ColorRect.new()
-	under.size = Vector2(range_val + 8.0, 12.0)
-	under.color = Color(0.02, 0.02, 0.05, 0.62 * vfx_a)
-	under.position = player.global_position
-	under.rotation = dir.angle()
-	par.add_child(under)
-	var beam := ColorRect.new()
-	beam.size = Vector2(range_val, 7.0)
-	beam.color = Color(1.0, 0.22, 0.28, 0.95 * vfx_a)
-	beam.position = player.global_position
-	beam.rotation = dir.angle()
-	par.add_child(beam)
+	var tex_w: float = maxf(float(LASER_BEAM_TEX.get_width()), 1.0)
+	var spr := Sprite2D.new()
+	spr.texture = LASER_BEAM_TEX
+	spr.centered = true
+	spr.global_position = player.global_position + dir * (range_val * 0.5)
+	spr.rotation = dir.angle()
+	spr.scale = Vector2(range_val / tex_w, 0.16)
+	spr.z_index = 55
+	spr.z_as_relative = false
+	spr.modulate = Color(1.0, 1.0, 1.0, 0.96 * vfx_a)
+	par.add_child(spr)
 	var mid: Vector2 = player.global_position + dir * (range_val * 0.52)
 	CombatProjectileFx.spawn_hit_sparks(par, mid, player, Color("#FF8899"), 8, 32.0, 0.16)
-	var tw := beam.create_tween()
-	tw.set_parallel(true)
-	tw.tween_property(beam, "modulate:a", 0.0, 0.18)
-	tw.tween_property(under, "modulate:a", 0.0, 0.18)
-	tw.chain().tween_callback(func():
-		if is_instance_valid(beam):
-			beam.queue_free()
-		if is_instance_valid(under):
-			under.queue_free()
-	)
+	var tw := spr.create_tween()
+	tw.tween_property(spr, "modulate:a", 0.0, 0.18)
+	tw.tween_callback(spr.queue_free)
 
 func on_upgrade():
 	match level:

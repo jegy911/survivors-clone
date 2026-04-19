@@ -1,6 +1,7 @@
 extends Node
 
-# Player sinyalleri
+@warning_ignore_start("unused_signal")
+# Player sinyalleri (çoklu dosyadan emit/connect; statik analiz burada kullanım görmeyebilir.)
 signal player_damaged(amount: int)
 signal player_healed(amount: int)
 signal player_hp_changed(hp: int, max_hp: int)
@@ -25,3 +26,5 @@ signal gold_collected(amount: int)
 signal hit_stop_requested(frames: int)
 signal boss_spawned
 signal on_damage_dealt(player: Node, enemy: Node, damage: int)
+
+@warning_ignore_restore("unused_signal")

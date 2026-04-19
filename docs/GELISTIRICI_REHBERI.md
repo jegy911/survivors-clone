@@ -4,7 +4,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 *(İngilizce projelerde eşdeğeri genelde `ARCHITECTURE.md`, `DEVELOPER_GUIDE.md` veya `docs/CONTRIBUTING.md` olarak adlandırılır.)*
 
 **Motor:** Godot 4.x  
-**Son güncelleme:** 2026-04-16
+**Son güncelleme:** 2026-04-16 (yelpaze shard menzil / spawn notu §Projectile)
 
 **Öncelikli plan (audit):** Ürün açıkları, bug / locale kalanları, refaktör ve optimizasyon maddelerinin sıralı özeti → **`docs/YOL_HARITASI.md`** başındaki **«Proje incelemesi — öncelikli plan (audit)»** (P0–P4).  
 **Tek sayfa yapılacaklar:** [x] **`docs/YAPILACAKLAR_TOPLU.md`** — yalnızca açık işler listelenir; madde bitince oradan **silinir**, kaynak dokümanda **[x]** / güncelleme yapılır (iş akışı dosya başında).
@@ -43,7 +43,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 |----------|--------|
 | **SaveManager** | Altın, seçili karakter/harita, meta upgrade’ler, ayarlar (`locale` dahil), kilit / satın alınmış karakter listeleri, istatistikler; **hesap seviyesi:** `account_level`, `account_xp` (mevcut seviye içi ilerleme), `account_xp_total` (koşulardan bankalanan toplam); `user://save.cfg` → **`[account]`** (`level`, `xp`, `xp_total`); koşu sonu `game_over` → run combat XP’nin %20’si (`grant_account_xp_from_run_raw`); seviye atlayınca **`level_up`** / **`account_level_up`** + Profil `ProgressBar` tween için **`account_profile_level_flash_pending`**; kodeks: **`codex_discovered`**, **`codex_weapons`**, **`codex_items`**, **`codex_maps`**. |
 | **LocalizationManager** | `LANGUAGE_CATALOG` + `locales/<code>.json` → `TranslationServer`; fallback dili `project.godot` → `internationalization/locale/fallback` ve `_ready()` içinde `ProjectSettings.set_setting(..., "en")`; ilk kurulumda kayıt yoksa **OS dili** (katalogda varsa); `locale_changed` sinyali. |
-| **AudioManager** | Ses çalma API’si; `SaveManager.level_up` → `play_account_level_up()` (`LevelUpPlayer` / `levelup.mp3`) — meta hesap seviyesi. |
+| **AudioManager** | SFX + tek `MusicPlayer` ile arka plan: `music1`–`music6` sırayla döngü (`play_music(1..6)`, `music_prev` / `music_next`, `pause_music` / `resume_music`); koşu yarısında `main.gd` hâlâ erken `play_music(2)` çağırabilir. `SaveManager.level_up` → `play_account_level_up()` (`levelup.mp3`). |
 | **ObjectPool** | Sık oluşturulan nesneler (mermi, orb, damage number vb.) için havuz; `get_object(scene_path)` / `return_object` (serbest yuva yığını ile hızlı seçim). |
 | **EnemyRegistry** | Canlı düşman listesi; `EnemyBase` kayıt/çıkış (`tree_exiting`); silah ve efektler `EnemyRegistry.get_enemies()` ile okur (yoğun sürüde `get_nodes_in_group` yükünü azaltır). |
 | **EventBus** | Sinyal merkezi (hasar, ölüm, level up, altın vb.). |
@@ -121,7 +121,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 
 ### UI
 - **`locales/*.json`**: `ui` altında **aynı anahtar iki kez** (ör. iki `"player"`) kullanma — JSON son değeri kabul eder; önceki blok (ör. `loadout`, istat metinleri) sessizce kaybolur ve `tr()` anahtarı döner → level-up’ta `%` format hatası / boş açıklama.
-- **`ui/character_select.gd`** / **`ui/character_select_p2.gd`**: Kartlar `CHARACTERS` sırasına göre üretilir; sınıf filtresi (`hero_class`); P2’de P1’in karakteri filtre dışı kalsa da kartı görünür (alınamaz). **Görünen kahraman adı** `CharacterSelectHelpers.character_display_name(id)` → `codex.character.<id>.name`; **başlangıç silahı / eşya satırı** `CharacterSelectHelpers.weapon_display_name` / `item_display_name` → `codex.weapon.<id>.name` / `codex.item.<id>.name` (dil dosyası). `CharacterData.CHARACTERS[].name` yalnızca veri / Türkçe taslak.
+- **`ui/character_select.gd`** / **`ui/character_select_p2.gd`**: Kartlar `CHARACTERS` sırasına göre üretilir; sınıf filtresi (`hero_class`); P2’de P1’in karakteri filtre dışı kalsa da kartı görünür (alınamaz). **Görünen kahraman adı** `CharacterSelectHelpers.character_display_name(id)` → `codex.character.<id>.name`; **başlangıç silahı / eşya satırı** `CharacterSelectHelpers.weapon_display_name` / `item_display_name` → `codex.weapon.<id>.name` / `codex.item.<id>.name` (dil dosyası). `CharacterData.CHARACTERS[].name` yalnızca veri / Türkçe taslak. **Layout (2026-04-16):** `character_select*.tscn` — tam ekran arka plan `ColorRect`, `OuterMargin`, sol sütunda ortalanmış ızgara (`GridCenterRow` + spacer), sağda istatistik özeti `CharacterSelectStatsPanel.rebuild()` (`ui/character_select_stats_panel.gd`; meta + kahraman düz/yüzde bonusları yeşil satırlar). Alt aksiyon satırı `ActionMargin` ile köşeden içeride.
 
 ### Dikkat: indeks + kimlik kaydı
 - `selected_character` / `selected_character_p2` hâlâ **indeks** olarak kaydedilir (UI uyumu); ayrıca `selected_character_id` / `selected_character_p2_id` (**kahraman `id` string**) saklanır. Oyun ve spawn `SaveManager.get_character_index_for_player()` ile önce ID’den indeks çözer; seçim ekranı `set_selected_character_p1_index` / `p2` ile ikisini birlikte günceller. Eski kayıtlarda yalnızca indeks varsa `load_game` sonunda `_reconcile_selected_characters_from_storage()` ID’yi indeksten doldurur.
@@ -169,7 +169,7 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 
 ### Özel davranışlar
 - **Kaos** karakteri: `apply_character_bonuses` içinde `random_weapons` listesine yeni taban silah eklenmeli.
-- **Projectile + ObjectPool**: Sahne yolu `ObjectPool.get_object(...)` ile alınır; `reset()` havuza dönüşte çağrılır (bkz. `projectiles/bullet.gd`, `fan_blade_shard.gd`).
+- **Projectile + ObjectPool**: Sahne yolu `ObjectPool.get_object(...)` ile alınır; `reset()` havuza dönüşte çağrılır (bkz. `projectiles/bullet.gd`, `fan_blade_shard.gd`). **Yelpaze shard:** menzil = `fire_range × get_area_multiplier`; ömür = menzil ÷ `shard_speed`; `_physics_process` adımı `_max_travel` ile sınırlı; spawn `player.get_directional_attack_spawn` (sprite silüeti); havuzda `collision_layer = 0`.
 - **Taban projeksiyon / silah VFX dokuları** (`assets/projectiles/`): Aura halkası `weapon_aura.gd` (oyuncuya `AuraWeaponRing`); hasar yarıçapı ile dış hizası için silah kökünde **`aura_outer_radius_texels`** / **`aura_outer_texel_auto_factor`** (0 pikselde otomatik dış yarıçap ≈ doku × 0,5 × faktör; meta alan `get_area_multiplier()` ile hem hasar hem halka). Zincir segmenti `CombatProjectileFx.spawn_chain_segment` (`effects/combat_projectile_fx.gd`, `weapon_chain.gd`; sıçrama arası **`chain_step_delay_sec`**; segment başına **Sprite2D** + `chain.png`, mesafe boyunca `scale.x`, yön `rotation`; dikey doku için `CHAIN_TEX_LINKS_ALONG_WIDTH := false`); yıldırım sahnesi **`effects/lightning_hit_fx.tscn`** (+ `lightning_hit_fx.gd`): editördeki `texture` / `scale` korunur, `run()` yalnızca renk / süre uygular; `CombatProjectileFx.spawn_lightning_style_flash` (`weapon_storm.gd`, `weapon_toxic_chain.gd`); yıldırım **silah vuruşu** `projectiles/lightning_bolt.tscn` (ObjectPool; görsel: kamera üst çizgisinde hedef X’inde spawn, düşüş; isabet `lightning_hit_fx`; `weapons/scenes/weapon_lightning.tscn` oyuncu üstü sprite yok; hedef havuzu `STRIKE_MAX_DIST_FROM_PLAYER` 600 px); savrulan balta `projectiles/hunter_axe.tscn` + `assets/projectiles/axe/boomerang.png`. **Not:** Kayıtlı silah kimliği hâlâ `boomerang`; oyuncuya dönük metinlerde “Balta” / “Axe” (`locales`, kodeks). Yeniden üretilebilir silah sahneleri: `python tools/gen_weapon_scenes.py`.
 
 ---
@@ -220,14 +220,14 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 | Açılış ekranı | `ui/intro_splash.gd` / `.tscn` — `FullRect`; prompt `PROMPT_ANCHOR_*` / `PROMPT_OFF_*` (4–6. sn tween); `MainMenuBackground.load_texture()`; tint yok; siyah overlay ~5 sn; müzik track 1; `ui.intro_splash.press_to_start` |
 | Ana menü | `ui/main_menu.gd` / `.tscn` — arka plan: `BackgroundBase` + isteğe bağlı `BackgroundPhoto` (`MainMenuBackground` / `assets/ui/main_menu_bg.png|.jpg|.webp`) + `BackgroundTint` + `StarsLayer`; `assets/ui/README_MAIN_MENU_BG.txt` |
 | Mağaza (iskelet) | `ui/shop_menu.gd` / `.tscn` |
-| Karakter seçimi | `ui/character_select.gd`, `character_select_p2.gd`, `character_select_helpers.gd`, `character_select_preview.gd` (sabit boy `TextureRect`: `idle_left` ilk kare önbelleği; kilit=siyah kutu, açık+satın alınmamış=silüet, satın alınmış=tam); `game_mode_select.gd` → `warmup_portraits_async`; ESC: P1→`game_mode_select`, P2→`character_select` |
+| Karakter seçimi | `ui/character_select*.tscn` + `character_select.gd` / `character_select_p2.gd`, `character_select_helpers.gd`, `character_select_preview.gd`, `character_select_stats_panel.gd` — portre/cache aynı; sağ sütunda seçime göre istatistik özeti; `game_mode_select.gd` → `warmup_portraits_async`; ESC: P1→`game_mode_select`, P2→`character_select` |
 | Harita | `ui/map_select.gd` |
 | Level-up | `ui/upgrade_ui.gd` — kart ikonları `UpgradeIconCatalog` (`assets/ui/upgrade_icons/README.txt`); silah envanter slotu evrim PNG yedeği: `try_weapon_with_evolution_fallback` |
 | HUD (kill, altın, çubuklar) | `player/player.gd` + `player` sahnesindeki `CanvasLayer` düğümleri |
 | Oyun sonu / duraklat | `ui/game_over.gd`, `pause_menu.gd` |
-| Meta upgrade | `ui/meta_upgrade.gd` |
+| Meta upgrade | `ui/meta_upgrade.gd` + `meta_upgrade.tscn` — `OuterMargin` + üst `VBox`, kart alanı `ScrollContainer` ile kaydırılabilir |
 | Koleksiyon (kodeks) | `ui/collection_menu.gd` / `.tscn` |
-| Ayarlar | `ui/settings.gd` (+ sekme stilleri `ui/settings_ui_styles.gd`); ESC/geri: `core/menu_input.gd` (`MenuInput`) + ilgili menülerde `_unhandled_input` |
+| Ayarlar | `ui/settings.gd` (+ sekme stilleri `ui/settings_ui_styles.gd`); **Ses:** müzik parça satırı (önceki/sonraki, duraklat/devam) + `music_volume` kaydırıcısı; ESC/geri: `core/menu_input.gd` (`MenuInput`) + ilgili menülerde `_unhandled_input` |
 
 **Yeni bir Label / buton:** İlgili `.tscn` düğümü + `.gd` içinde `onready` veya `%UniqueName` ile referans.
 

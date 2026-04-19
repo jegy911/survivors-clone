@@ -1,6 +1,8 @@
 class_name WeaponHolyBullet
 extends WeaponBase
 
+const HOLY_PROJECTILE_TEX := preload("res://assets/projectiles/holy_bullet/holy_bullet_projectile.png")
+
 var bullet_count = 3
 
 func _ready():
@@ -24,7 +26,7 @@ func attack():
 		bullet.global_position = player.global_position
 		var dir = (enemies[i].global_position - player.global_position).normalized()
 		var final_damage = player.get_total_damage(damage)
-		bullet.init(dir, final_damage, true, player)
+		bullet.init(dir, final_damage, true, player, HOLY_PROJECTILE_TEX)
 
 func on_upgrade():
 	match level:

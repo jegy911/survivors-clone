@@ -59,16 +59,16 @@ static func _add_textured_portrait(inner: MarginContainer, char_id: String, acce
 		ph.modulate.a = 0.45 if silhouette else 1.0
 		inner.add_child(ph)
 		return
-	var tr := TextureRect.new()
-	tr.texture = tex
-	tr.custom_minimum_size = INNER_SIZE
-	tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	var portrait_texrect := TextureRect.new()
+	portrait_texrect.texture = tex
+	portrait_texrect.custom_minimum_size = INNER_SIZE
+	portrait_texrect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	portrait_texrect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	if silhouette:
-		tr.modulate = Color(0.55, 0.58, 0.64, 0.48)
+		portrait_texrect.modulate = Color(0.55, 0.58, 0.64, 0.48)
 	else:
-		tr.modulate = Color.WHITE
-	inner.add_child(tr)
+		portrait_texrect.modulate = Color.WHITE
+	inner.add_child(portrait_texrect)
 
 
 ## İlk kare dokusu (idle_left öncelikli). Önbellekli.

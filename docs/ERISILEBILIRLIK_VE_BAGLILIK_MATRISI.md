@@ -3,7 +3,7 @@
 Bu belge, **20 + 20 maddenin** Ironfall kod tabanındaki **Var / Kısmi / Yok** durumunu ve kısa **repo notunu** içerir.  
 Sanat ve yayın envanteri (✅/❌): **`docs/TASARIM.md`**.
 
-**Son kod kontrolü:** 2026-04-16 (`ui.alerts` / `ui.game` run metinleri; karakter seçimi `ui.character_select.unlock` + `btn_*`; `upgrade_ui` üç panel + envanter `tooltip_text`; Arena `run_variant` + `dusk` vb.)
+**Son kod kontrolü:** 2026-04-16 (`ui.alerts` / `ui.game` run metinleri; karakter seçimi `ui.character_select.unlock` + `btn_*` + istatistik özeti paneli; `upgrade_ui` üç panel + envanter `tooltip_text`; Ayarlar → Ses müzik kontrolleri; `meta_upgrade` kaydırılabilir liste; Arena `run_variant` + `dusk` vb.)
 
 ---
 

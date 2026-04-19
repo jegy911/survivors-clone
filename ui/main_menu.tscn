@@ -47,12 +47,6 @@ mouse_filter = 2
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-
-[node name="GoldLabel" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-
 [node name="StartButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 

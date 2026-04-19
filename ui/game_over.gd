@@ -22,14 +22,14 @@ func _ready():
 	$Panel/VBoxContainer.alignment = BoxContainer.ALIGNMENT_CENTER
 	$Panel/VBoxContainer.add_theme_constant_override("separation", 10)
 
-func show_stats(time: float, level: int, kills: int, gold: int, won: bool = false, run_total_xp: int = 0) -> void:
+func show_stats(time: float, level: int, kills: int, gold_earned_run: int, won: bool = false, run_total_xp: int = 0) -> void:
 	SaveManager.grant_account_xp_from_run_raw(run_total_xp)
 	var screen_size = get_viewport().get_visible_rect().size
 	$Panel.size = Vector2(600, 580)
 	$Panel.position = screen_size / 2 - $Panel.size / 2
 	
-	var minutes = int(time) / 60
-	var seconds = int(time) % 60
+	var minutes: int = int(time / 60.0)
+	var seconds: int = int(time) % 60
 	var kpm = 0.0
 	if time > 0:
 		kpm = kills / (time / 60.0)
@@ -54,7 +54,7 @@ func show_stats(time: float, level: int, kills: int, gold: int, won: bool = fals
 
 	_add_separator(vbox)
 
-	_add_label(vbox, tr("ui.game_over.gold_earned") % gold, 22, Color("#F5E642"))
+	_add_label(vbox, tr("ui.game_over.gold_earned") % gold_earned_run, 22, Color("#F5E642"))
 	if run_total_xp > 0:
 		var granted: int = int(floor(float(run_total_xp) * 0.20))
 		if granted > 0:
@@ -87,7 +87,7 @@ func show_stats(time: float, level: int, kills: int, gold: int, won: bool = fals
 	
 	visible = true
 
-func _add_label(parent: Node, text: String, size: int, color: Color, bold: bool = false, outline_size: int = 0, outline_color: Color = Color.BLACK):
+func _add_label(parent: Node, text: String, size: int, color: Color, _bold: bool = false, outline_size: int = 0, outline_color: Color = Color.BLACK):
 	var label = Label.new()
 	label.text = text
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
