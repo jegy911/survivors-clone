@@ -1,6 +1,6 @@
 # ColorRect — hızlı takip
 
-**Kullanım:** Tasarım / sprite gelince satırı **sil**. Yeni boşluk açılırsa **ekle**. Detay için `docs/TASARIM.md`.
+**Kullanım:** Bu tabloda kalan satır için tasarım / ikon / oyun-içi görsel tamamlanınca **satırı sil**. Yeni boşluk açılırsa **ekle**. Detay için `docs/TASARIM.md`.
 
 **Not:** Kahraman sahnelerinde kök `ColorRect` çoğunlukla `player.gd` gövde rengi; **eksik görsel** = `AnimatedSprite2D` yok veya frame boş. Şu an listede yok.
 
@@ -14,37 +14,28 @@
 
 ---
 
-## Silah sahneleri (`weapons/scenes/` — kökte ColorRect placeholder)
+## Silah sahneleri (`weapons/scenes/`)
+
+**Kriter (silah satırı burada *kalır*):** Aşağıdakilerden **en az biri eksik** ise burada listelenir.
+
+1. **Kart / kodeks ikonu:** `res://assets/ui/upgrade_icons/weapons/<silah_id>.png` **veya** `.../evolutions/<id>.png` (`UpgradeIconCatalog.try_weapon_with_evolution_fallback` mantığı; `shadow_storm` → `storm_shadow.png` özel yolu dahil — dosya yoksa sayılmaz).
+2. **Oyun-içi görsel:** `assets/projectiles/...` dokusu, anlamlı `Sprite2D` + texture (ör. gölge küresi), veya `projectiles/*.tscn` + sprite; **yalnızca** sahadaki gizli `ColorRect` / radius-hasarı / runtime `ColorRect` sayılmaz.
+
+**Son tarama:** İki koşul da sağlanan silahlar tablodan çıkarıldı (ör. `arc_pulse`, `arc_surge`, `aura`, mermi/zincir/lazer/hançer vb.).
 
 | Sahne | Tasarım |
 |-------|---------|
-| `weapon_arc_pulse.tscn` | [ ] |
-| `weapon_arc_surge.tscn` | [ ] |
-| `weapon_aura.tscn` | [ ] |
 | `weapon_bastion_flail.tscn` | [ ] |
 | `weapon_binding_circle.tscn` | [ ] |
-| `weapon_blood_boomerang.tscn` | [ ] |
-| `weapon_boomerang.tscn` | [ ] |
-| `weapon_bullet.tscn` | [ ] |
-| `weapon_chain.tscn` | [ ] |
 | `weapon_citadel_flail.tscn` | [ ] |
-| `weapon_dagger.tscn` | [ ] |
-| `weapon_death_laser.tscn` | [ ] |
 | `weapon_ember_fan.tscn` | [ ] |
-| `weapon_fan_blade.tscn` | [ ] |
 | `weapon_fortress_ram.tscn` | [ ] |
 | `weapon_frost_nova.tscn` | [ ] |
 | `weapon_gravity_anchor.tscn` | [ ] |
 | `weapon_hex_sigil.tscn` | [ ] |
-| `weapon_holy_bullet.tscn` | [ ] |
 | `weapon_ice_ball.tscn` | [ ] |
-| `weapon_laser.tscn` | [ ] |
-| `weapon_lightning.tscn` | [ ] |
-| `weapon_shadow.tscn` | [ ] |
 | `weapon_shadow_storm.tscn` | [ ] |
 | `weapon_shield_ram.tscn` | [ ] |
-| `weapon_storm.tscn` | [ ] |
-| `weapon_toxic_chain.tscn` | [ ] |
 | `weapon_veil_daggers.tscn` | [ ] |
 | `weapon_void_lens.tscn` | [ ] |
 
