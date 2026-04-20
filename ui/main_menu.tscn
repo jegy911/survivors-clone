@@ -59,6 +59,9 @@ layout_mode = 2
 [node name="ShopButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 
+[node name="SteamStoreButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+
 [node name="SettingsButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 

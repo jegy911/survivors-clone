@@ -5,7 +5,7 @@ Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.
 Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.  
 **Ses / müzik / SFX dosya ve tetik envanteri** (ayrıntılı): `docs/sesler-muzikler-efektler.md`.
 
-**Son güncelleme:** 2026-04-16 (ses envanter belgesi; yelpaze shard menzil/spawn; silah/eşya tablo şablonu)
+**Son güncelleme:** 2026-04-20 (ana menü buton kapakları — `assets/button covers/` + `GELISTIRICI_REHBERI` §7.1)
 
 ---
 
@@ -206,7 +206,7 @@ Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + is
 | Alan | Dosya / konum | İkon / layout / tutarlı tema |
 |------|----------------|------------------------------|
 | Açılış ekranı | `ui/intro_splash` | Aynı `main_menu_bg.*` adayı, tint yok (tam parlaklık); yalnızca başta siyah ~5 sn fade; 4–6. sn alttan kalkan “devam” metni (konum `intro_splash.gd` `PROMPT_*`); müzik track 1; tuş/tık/kol → ana menü |
-| Ana menü | `ui/main_menu` | Tam ekran foto: `assets/ui/main_menu_bg.*` (yoksa düz renk + yıldızlar); Mağaza → `shop_menu` iskelet |
+| Ana menü | `ui/main_menu` | Tam ekran foto: `assets/ui/main_menu_bg.*` (yoksa düz renk + yıldızlar); **buton kapakları:** `assets/button covers/button1.png` → `StyleBoxTexture` (`main_menu.gd`), atlas `region_rect` + yatay nine-patch; Mağaza → `shop_menu` iskelet — ayrıntı **`docs/GELISTIRICI_REHBERI.md` §7.1** |
 | Mağaza (kozmetik / pet / fragman) | `ui/shop_menu` | ❌ Placeholder sekmeler; satın alma UI yok |
 | Karakter seçimi (+ P2) | `ui/character_select*` + `character_select_preview.gd` + `character_select_stats_panel.gd` | Dört rol filtresi; portre = `idle_left` (yoksa yedek) ilk kare, sabit çerçeve; kilit=siyah; koşul açık=silüet; satın alınmış=tam renk; tam ekran arka plan + margin’li layout; sağda meta taban + kahraman bonus özet istatistikleri |
 | Harita / mod | `ui/map_select` | Story / fast mod + lanet slider + harita önizlemesi; arena kilitli |

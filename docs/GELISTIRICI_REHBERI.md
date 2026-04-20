@@ -4,7 +4,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 *(İngilizce projelerde eşdeğeri genelde `ARCHITECTURE.md`, `DEVELOPER_GUIDE.md` veya `docs/CONTRIBUTING.md` olarak adlandırılır.)*
 
 **Motor:** Godot 4.x  
-**Son güncelleme:** 2026-04-16 (yelpaze shard menzil / spawn notu §Projectile)
+**Son güncelleme:** 2026-04-20 (ana menü buton kapakları — `StyleBoxTexture` / §7.1)
 
 **Öncelikli plan (audit):** Ürün açıkları, bug / locale kalanları, refaktör ve optimizasyon maddelerinin sıralı özeti → **`docs/YOL_HARITASI.md`** başındaki **«Proje incelemesi — öncelikli plan (audit)»** (P0–P4).  
 **Tek sayfa yapılacaklar:** [x] **`docs/YAPILACAKLAR_TOPLU.md`** — yalnızca açık işler listelenir; madde bitince oradan **silinir**, kaynak dokümanda **[x]** / güncelleme yapılır (iş akışı dosya başında).
@@ -219,7 +219,7 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 | Alan | Tipik dosya |
 |------|-------------|
 | Açılış ekranı | `ui/intro_splash.gd` / `.tscn` — `FullRect`; prompt `PROMPT_ANCHOR_*` / `PROMPT_OFF_*` (4–6. sn tween); `MainMenuBackground.load_texture()`; tint yok; siyah overlay ~5 sn; müzik track 1; `ui.intro_splash.press_to_start` |
-| Ana menü | `ui/main_menu.gd` / `.tscn` — arka plan: `BackgroundBase` + isteğe bağlı `BackgroundPhoto` (`MainMenuBackground` / `assets/ui/main_menu_bg.png|.jpg|.webp`) + `BackgroundTint` + `StarsLayer`; `assets/ui/README_MAIN_MENU_BG.txt` |
+| Ana menü | `ui/main_menu.gd` / `.tscn` — arka plan: `BackgroundBase` + isteğe bağlı `BackgroundPhoto` (`MainMenuBackground` / `assets/ui/main_menu_bg.png|.jpg|.webp`) + `BackgroundTint` + `StarsLayer`; `assets/ui/README_MAIN_MENU_BG.txt` — **metal buton kapakları:** §7.1 |
 | Mağaza (iskelet) | `ui/shop_menu.gd` / `.tscn` |
 | Karakter seçimi | `ui/character_select*.tscn` + `character_select.gd` / `character_select_p2.gd`, `character_select_helpers.gd`, `character_select_preview.gd`, `character_select_stats_panel.gd` — portre/cache aynı; sağ sütunda seçime göre istatistik özeti; `game_mode_select.gd` → `warmup_portraits_async`; ESC: P1→`game_mode_select`, P2→`character_select` |
 | Harita | `ui/map_select.gd` |
@@ -231,6 +231,29 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 | Ayarlar | `ui/settings.gd` (+ sekme stilleri `ui/settings_ui_styles.gd`); **Ses:** müzik parça satırı (önceki/sonraki, duraklat/devam) + `music_volume` kaydırıcısı; ESC/geri: `core/menu_input.gd` (`MenuInput`) + ilgili menülerde `_unhandled_input` |
 
 **Yeni bir Label / buton:** İlgili `.tscn` düğümü + `.gd` içinde `onready` veya `%UniqueName` ile referans.
+
+### 7.1 Ana menü — buton kapakları (`StyleBoxTexture`)
+
+Ana menüdeki tüm ana aksiyon butonları (Play, Meta, Shop, Codex, Settings, Store, Quit) **tek bir kapak PNG** ile çizilir; kod `ui/main_menu.gd` içinde üretilir (`_build_ui` + dil yenilemesinde `_apply_texts`).
+
+| Ne | Nerede / ne işe yarar |
+|----|------------------------|
+| **Kapak dokusu** | `const _MAIN_MENU_BTN_COVER := preload("res://assets/button covers/button1.png")` — başka dosya kullanacaksan sabiti ve yolu güncelle. Klasör notu: `assets/button covers/README.txt`. |
+| **Atlas kırpma** | `_button_cover_atlas_region(tex)` → `StyleBoxTexture.region_rect`. `button1.png` tam boyutu 512×512; opak UI şeridi yaklaşık **`Rect2(2, 188, 507, 134)`** (şeffaf çerçeveyi atlamak için). **Yeni PNG** için: düzenleyicide veya `python` + Pillow `Image.open(...).getbbox()` ile opak kutuyu ölçüp bu `Rect2` değerlerini güncelle. |
+| **Nine-patch (yatay)** | `_stylebox_texture_from_button_cover`: `texture_margin_left` / `texture_margin_right` = **104** — sivri uçlar bu dilimde kalır, orta sütun yatay uzar. |
+| **Dikey: margin 0** | `texture_margin_top` ve `texture_margin_bottom` = **0**. Dikey üç dilim (üst / orta / alt) **açma**: metal bevel simetrik olduğundan orta şerit dikey esneyince ekranda yatay **dikiş / çift parça** gibi görünür. Tüm yükseklik tek parça gibi ölçeklenir. |
+| **Yazı içi boşluk** | `content_margin_*` ← `_main_menu_button_text_inset(btn)` (buton adına göre). |
+| **Punto** | `_main_menu_button_font_size(btn)` — dar buton (Quit) / uzun metin (Store) için ayrı değerler. |
+| **Buton yüksekliği** | `_build_ui` içinde `BTN_H`, `PLAY_H`, Quit `custom_minimum_size` — kapak oranı ile birlikte düşün. |
+
+**Başka bir `buttonX.png` denemek — kısa checklist**
+
+1. PNG’yi `assets/button covers/` altına koy (veya yeni klasör + `preload` yolunu değiştir).
+2. Opak bbox → `_button_cover_atlas_region` içindeki `Rect2` (gerekirse `tex == _MAIN_MENU_BTN_COVER` yerine yeni `preload` sabiti için dal ekle).
+3. Sivri uç genişliğine göre `texture_margin_left` / `right` ayarla; **dikey dikiş istemiyorsan** üst/alt margin’i **0** bırak.
+4. Gerekirse `_main_menu_button_text_inset` ve `_main_menu_button_font_size` ile metni çerçeveye oturt.
+
+Tasarım envanteri satırı: `docs/TASARIM.md` → **UI, HUD ve menüler** → Ana menü.
 
 ---
 

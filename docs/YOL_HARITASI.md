@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-16 (UI/ses: karakter seçimi istat paneli + meta scroll + müzik 6 parça; önceki not: hesap seviyesi juiciness / 2026-04-19 hesap XP temeli)
+**Son güncelleme:** 2026-04-20 (ana menü buton kapak dokümantasyonu — `GELISTIRICI_REHBERI` §7.1 + `TASARIM` / `README` linkleri)
 
 ---
 
@@ -145,6 +145,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-20 | **Ana menü buton kapakları — dokümantasyon** — `assets/button covers/button1.png` + `ui/main_menu.gd` (`StyleBoxTexture`, `region_rect`, yatay `texture_margin`, dikey margin 0 ile dikiş önleme); **`docs/GELISTIRICI_REHBERI.md` §7.1**, `docs/TASARIM.md` (Ana menü satırı), `assets/button covers/README.txt`, `README.md` kısa link. |
 | 2026-04-16 | **Dokümantasyon — ses + görsel takip** — `docs/sesler-muzikler-efektler.md` (tüm SFX / müzik / bölümlü envanter); `docs/colorrect.md` (silah taban–evrim ayrımı, kart + oyun-içi sütunları, eşya tablosu); `README`, `GELISTIRICI_REHBERI`, `TASARIM`, `YAPILACAKLAR_TOPLU`, `ironfall-docs.mdc` link / madde senkronu. |
 | 2026-04-16 | **Müzik + menü UI** — `audio_manager`: `music1`–`music6` döngü, tek `MusicPlayer`, Ayarlar → Ses’te önceki/sonraki + duraklat/devam; `meta_upgrade`: `MarginRoot` + kaydırılabilir kart listesi; `character_select` / P2: tam ekran arka plan, margin’ler, sağda `CharacterSelectStatsPanel` (meta taban + yeşil kahraman bonusları); `locales` `ui.character_select.stats_*`, `music_*`, `music_volume`; `pause_menu` müzik etiketi. |
 | 2026-04-16 | **Locale P0 + tipleme** — `main`/`wave_manager`/`spawn_manager` yüzen metinler → `en.json` `ui.alerts` / `ui.game`; karakter seçimi `unlock.*` + `btn_select`/`btn_ready`/`btn_buy`; `CharacterData` `unlock_hint` kaldırıldı; `save_manager` / `audio_manager` debug çıktısı; `save_manager` + `main`/`wave`/`spawn` dönüş tipleri; `YAPILACAKLAR_TOPLU` / `YOL` / matris / `TASARIM` senkron. |

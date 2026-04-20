@@ -26,7 +26,7 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 
 | Dosya | İçerik |
 |--------|--------|
-| [docs/GELISTIRICI_REHBERI.md](docs/GELISTIRICI_REHBERI.md) | Mimari, autoload’lar, yerelleştirme, checklist’ler |
+| [docs/GELISTIRICI_REHBERI.md](docs/GELISTIRICI_REHBERI.md) | Mimari, autoload’lar, yerelleştirme, checklist’ler; ana menü buton kapakları **§7.1** |
 | [docs/YOL_HARITASI.md](docs/YOL_HARITASI.md) | Plan, **tamamlanan sistemler özeti**, günlük |
 | [docs/TASARIM.md](docs/TASARIM.md) | Görsel / ikon / UI / ses / yayın envanteri (✅/❌) |
 | [docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md](docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md) | Erişilebilirlik + bağlılık (20+20), Var/Kısmi/Yok |
@@ -35,7 +35,7 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 | [docs/sesler-muzikler-efektler.md](docs/sesler-muzikler-efektler.md) | Müzik, SFX, tetikleyiciler (`AudioManager`) — yaşayan ses envanteri |
 | [docs/colorrect.md](docs/colorrect.md) | İkon / oyun-içi görsel gap takibi (kahraman, silah taban–evrim, eşya) |
 
-**Son dokümantasyon odağı (2026-04-16):** Arka plan müziği `assets/sounds/music1.mp3`–`music6.mp3` sıralı döngü (`core/audio_manager.gd`); Ayarlar → Ses’te parça önceki/sonraki, duraklat/devam ve müzik sesi kaydırıcısı. Meta upgrade ekranı üst hizalı + kaydırılabilir liste (`ui/meta_upgrade.tscn`). Karakter seçimi (P1/P2): kenar boşlukları, sağda level-up tarzı özet istatistik paneli (`ui/character_select_stats_panel.gd`).
+**Son dokümantasyon odağı (2026-04-20):** Ana menü aksiyon butonları — `assets/button covers/` + `ui/main_menu.gd` (`StyleBoxTexture`); teknik özet **`docs/GELISTIRICI_REHBERI.md` §7.1**. *(Önceki odağı 2026-04-16: müzik döngüsü, meta upgrade scroll, karakter seçimi istat paneli.)*
 
 **Yerelleştirme:** `locales/tr.json`, `en.json`, `zh_CN.json` — `LocalizationManager` + `LANGUAGE_CATALOG`. Anahtar kontrolü: `python locales/check_locale_parity.py` (referans `en.json`). Yeni diller şimdilik plan aşamasında; tablo `GELISTIRICI_REHBERI.md` içinde.
 
@@ -44,6 +44,8 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 **Performans:** **Ayarlar → Görüntü** içinde **Performans ön ayarı** (Yüksek / Orta / Düşük) — düşman üst sınırı, sürü/kuşatma yoğunluğu ve ağır VFX/partikül davranışını değiştirir (`SaveManager.performance_quality`).
 
 **Ana menü arka planı:** İsteğe bağlı tam ekran görsel — `assets/ui/main_menu_bg.png` (veya `.jpg` / `.webp`). Ayrıntı: `assets/ui/README_MAIN_MENU_BG.txt`.
+
+**Ana menü buton kapakları:** `assets/button covers/` (şu an `button1.png` — `StyleBoxTexture` ile). Özet ve yeni PNG checklist: **`docs/GELISTIRICI_REHBERI.md` §7.1**; klasör girişi: `assets/button covers/README.txt`.
 
 ## Lisans
 
