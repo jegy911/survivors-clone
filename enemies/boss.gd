@@ -33,25 +33,24 @@ func die(killer: Node = null):
 		p.boss_kill_count += 1
 	super.die(killer)
 
-func _try_drop_gold():
-	var orb = ObjectPool.get_object("res://effects/gold_orb.tscn")
-	var value = gold_value
-	var player_node = get_tree().get_first_node_in_group("player")
-	if player_node and player_node.active_items.has("luck_stone"):
-		value += player_node.active_items["luck_stone"].gold_bonus
-	orb.init(value, global_position)
-
 func flash():
 	var tween = create_tween()
 	body.color = Color.WHITE
 	tween.tween_property(body, "color", Color("#C0392B"), 0.12)
 
+func resolve_death_loot() -> void:
+	## Mini-boss: tek XP küresi (toplam değer korunur) + sahne sandığı — ayrı altın küresi yok.
+	var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
+	var orb_color: Color = SaveManager.filter_accessibility_orb_color(Color("#4A90E2"))
+	orb.init(XP_VALUE, global_position)
+	if orb.get_node_or_null("ColorRect"):
+		orb.get_node("ColorRect").color = orb_color
+	_spawn_boss_chest()
+
+
 func _on_death_complete():
 	SaveManager.register_codex_discovered(get_codex_id())
-	for i in 20:
-		var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
-		orb.init(XP_VALUE / 20, global_position + Vector2(randf_range(-60, 60), randf_range(-60, 60)))
-	_spawn_boss_chest()
+	resolve_death_loot()
 	queue_free()
 
 func _spawn_boss_chest():

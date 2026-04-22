@@ -46,7 +46,7 @@ Arayüz dili **`LocalizationManager`** + `locales/tr.json`, `en.json`, `zh_CN.js
 | 2 | Power fantasy | **Var** | Silah level + evrim + meta. |
 | 3 | Slot makinesi (level-up) | **Var** | `upgrade_ui.gd`, `weighted_pick`, level-up flash `player.gd`. |
 | 4 | Silah evrimleri | **Var** | `weapon_evolution.gd`, `player.evolve_weapon()`. |
-| 5 | Hızlı erken level | **Var** | `player.gd` `_calc_xp_for_level` — düşük seviyelerde daha düşük XP eşiği. |
+| 5 | Hızlı erken level | **Var** | `player.gd` `_calc_xp_for_level` + `LEVEL_XP_REQUIREMENT_MULT`, `RUN_XP_GAIN_MULT`, dalga XP ödülü (`wave_manager`); taban `EnemyBase.XP_DROP_CHANCE`. *(Denge: seviye hızı yavaşlatılabilir — sabitler `player.gd` / `enemy_base.gd`.)* |
 | 6 | Kilidi açılır karakter | **Var** | `character_data.gd`, `save_manager`, sahneler. |
 | 7 | Görsel juiciness | **Var** | `hit_stop`, damage numbers, orb drop, `show_vfx` dalları. |
 | 8 | Tatmin edici ses (XP pitch) | **Var** | `audio_manager.gd` `play_xp()` — ardışık toplamada `xp_streak` ile pitch artışı + daha uzun sıfırlama. |
@@ -54,7 +54,7 @@ Arayüz dili **`LocalizationManager`** + `locales/tr.json`, `en.json`, `zh_CN.js
 | 10 | Beklenmedik boss | **Var** | `wave_manager.gd` `mini_boss_times`. |
 | 11 | Koleksiyon / bestiary | **Var** | `core/collection_data.gd`, `SaveManager.codex_discovered`, ölümde `register_codex_discovered` (`enemy_base`, `boss`); `ui/collection_menu.tscn`; ana menü; `locales` `codex.*`. |
 | 12 | Sayılar büyür (oyun sonu) | **Var** | `game_over.gd`. |
-| 13 | Zorluk kademeleri (run başı) | **Var** | `SaveManager.settings["run_curse_tier"]` 0–5; `map_select` kaydırıcı; `spawn_manager`: kademe başına **+%10 HP**, **+%5 hız**, spawn aralığı **÷(1+0,10×tier)** (meta `curse_level` ile çarpılır); mini boss / Reaper / sürü / çemberde de uygulanır (**2026-04-18**). |
+| 13 | Zorluk kademeleri (run başı) | **Var** | `run_curse_tier` 0–`RUN_CURSE_TIER_MAX`, varsayılan **1**; referans `RUN_CURSE_REFERENCE_TIER` (**1**), `run_curse_tier_delta()` = tier − ref; `map_select` + `run_curse_stat_bar`; spawn **÷(1+RUN_CURSE_SPAWN_PER_TIER×delta)**; düşman HP/hız **×(1+RUN_CURSE_ENEMY_*×delta)** (`get_run_curse_enemy_*_mult`); XP dilimi **RUN_CURSE_XP_GAIN_PER_TIER×delta**; ilk **60 s** dalga düşmanı **1 HP**; dakika 1+ ek **MOB_GLOBAL_*** (`get_global_mob_*_mult`); sürüde `swarm_speed_override` lanet + global hız; mini boss / Reaper koşu laneti katmanı (**2026-04-23**). |
 | 14 | Risk / ödül | **Var** | `shrine_of_risk.gd`, shrine XP çarpanı. |
 | 15 | Çevre değişimi (zamanla renk/tempo) | **Yok** | Zamanla global renk/müzik tempo değişimi yok. |
 | 16 | Gizli kilitler | **Var** | `AchievementManager`, Omega kodu `main_menu`, `character_data` unlock. |

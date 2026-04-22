@@ -48,8 +48,8 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 |----------|--------|
 | **SaveManager** | Altın, seçili karakter/harita, meta upgrade’ler, ayarlar (`locale` dahil), kilit / satın alınmış karakter listeleri, istatistikler; **hesap seviyesi:** `account_level`, `account_xp` (mevcut seviye içi ilerleme), `account_xp_total` (koşulardan bankalanan toplam); `user://save.cfg` → **`[account]`** (`level`, `xp`, `xp_total`); koşu sonu `game_over` → run combat XP’nin %20’si (`grant_account_xp_from_run_raw`); seviye atlayınca **`level_up`** / **`account_level_up`** + Profil `ProgressBar` tween için **`account_profile_level_flash_pending`**; kodeks: **`codex_discovered`**, **`codex_weapons`**, **`codex_items`**, **`codex_maps`**. |
 | **LocalizationManager** | `LANGUAGE_CATALOG` + `locales/<code>.json` → `TranslationServer`; fallback dili `project.godot` → `internationalization/locale/fallback` ve `_ready()` içinde `ProjectSettings.set_setting(..., "en")`; ilk kurulumda kayıt yoksa **OS dili** (katalogda varsa); `locale_changed` sinyali. |
-| **AudioManager** | SFX + tek `MusicPlayer` ile arka plan: `music1`–`music6` sırayla döngü (`play_music(1..6)`, `music_prev` / `music_next`, `pause_music` / `resume_music`); koşu yarısında `main.gd` hâlâ erken `play_music(2)` çağırabilir. `SaveManager.level_up` → `play_account_level_up()` (`levelup.mp3`). **Dosya / olay haritası:** `docs/sesler-muzikler-efektler.md`. |
-| **ObjectPool** | Sık oluşturulan nesneler (mermi, orb, damage number vb.) için havuz; `get_object(scene_path)` / `return_object` (serbest yuva yığını ile hızlı seçim). |
+| **AudioManager** | SFX + tek `MusicPlayer` ile arka plan: `music1`–`music6` sırayla döngü (`play_music(1..6)`, `music_prev` / `music_next`, `pause_music` / `resume_music`); koşu yarısında `main.gd` hâlâ erken `play_music(2)` çağırabilir. `SaveManager.level_up` → `play_account_level_up()` (`levelup.mp3`). **İsteğe bağlı müzik dip’i:** `SaveManager.settings["combat_music_duck"]` açıkken `weapon_base` her başarılı `attack()` sonrası `notify_combat_music_duck_beat()` → müzik bus hacmine kısa linear çarpan (`_refresh_music_bus_volume`); kapalıyken çarpan uygulanmaz. **Dosya / olay haritası:** `docs/sesler-muzikler-efektler.md`. |
+| **ObjectPool** | Sık oluşturulan nesneler (mermi, orb, damage number vb.) için havuz; `get_object(scene_path)` / `return_object` (serbest yuva yığını ile hızlı seçim); ilk dolgu + dönüşte `reset()`. Havuzdaki `Area2D` çarpışma politikası → aşağı §4 **Projectile + ObjectPool**. |
 | **EnemyRegistry** | Canlı düşman listesi; `EnemyBase` kayıt/çıkış (`tree_exiting`); silah ve efektler `EnemyRegistry.get_enemies()` ile okur (yoğun sürüde `get_nodes_in_group` yükünü azaltır). |
 | **EventBus** | Sinyal merkezi (hasar, ölüm, level up, altın vb.). |
 | **AchievementManager** | Başarı kontrolleri. |
@@ -63,6 +63,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 - **İlk oyun açılışı:** `user://save.cfg` yoksa dil, `OS.get_locale()` ile kataloga eşlenir; eşleşmezse `en`. Seçim kayda yazılır.
 - **Eksik çeviri:** `internationalization/locale/fallback` (`en`); yeni dil dosyasında boş anahtar bırakılmamalı — `python locales/check_locale_parity.py` ile tüm `locales/*.json` dosyalarının `en.json` ile anahtar eşitliği kontrol edilir (çıkış kodu 1 = fark var).
 - **Geliştirme dönemi — dil dondurması (2026):** Yeni metin ve anahtarlar **yalnızca** `locales/en.json` ve `locales/codex_sources/codex_extensions_en.json` içinde güncellenir. **`tr.json`**, **`zh_CN.json`**, **`codex_extensions_tr.json`**, **`codex_extensions_zh_CN.json`** şimdilik **raf** (ikinci emre / tam yerelleştirme turuna kadar rutin güncelleme yok; mevcut halleriyle kalır). Bu süreçte parity script bilinçli olarak `en` ile fark gösterebilir; dil turunda tekrar hizalanır.
+- **EN-only UI metni (dondurma sırasında):** Arayüz dil `tr` / `zh_CN` olsa bile belirli blokların metnini **yalnızca İngilizce** göstermek için `LocalizationManager.tr_en_source("ui....")` kullanılır (`en.json` çeviri nesnesinden okur; yoksa `tr()`). Örnek: `ui/map_select` koşu laneti açıklaması + istatistik satırları; `ui.settings.combat_music_duck` etiketi.
 - **Yeni metin (tam dil turu / eski disiplin):** Tüm mevcut locale dosyalarına aynı anahtarı ekleyin; gerekirse `locales/gen_locales.py` ile `tr`/`en` üretimi (isteğe bağlı).
 
 #### Mevcut diller (repo)
@@ -113,7 +114,7 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 - **`main/main.gd`** → `_get_character_scene(char_id)` içinde `match` ile `res://characters/...` yolu **mutlaka** eklenmeli.
 
 ### Oyun içi uygulama
-- **`player/player.gd`** → `apply_character_bonuses()`: `SaveManager.get_character_index_for_player(player_id)` ile `CHARACTERS` okunur (kahraman **`selected_character_id`** / **`selected_character_p2_id`** üzerinden tutarlıdır); `start_weapon` / `start_item` için `add_weapon` / `add_item` çağrılır; `origin_bonus` ve `special` burada işlenir. **Level-up:** `gain_xp` birden fazla seviye verirse her biri için `main.queue_upgrade(player)` kuyruğa girer (solo ve co-op aynı yol). `get_total_damage()` taban silah hasarına `bullet_damage` (karakter/meta/dalga düz bonusu) ekler.
+- **`player/player.gd`** → `apply_character_bonuses()`: `SaveManager.get_character_index_for_player(player_id)` ile `CHARACTERS` okunur (kahraman **`selected_character_id`** / **`selected_character_p2_id`** üzerinden tutarlıdır); `start_weapon` / `start_item` için `add_weapon` / `add_item` çağrılır; `origin_bonus` ve `special` burada işlenir. **Level-up:** `gain_xp` birden fazla seviye verirse her biri için `main.queue_upgrade(player)` kuyruğa girer (solo ve co-op aynı yol). **Koşu XP / seviye hızı:** `RUN_XP_GAIN_MULT` (girdi çarpanı), `_calc_xp_for_level` + `LEVEL_XP_REQUIREMENT_MULT` (seviye eşiği), Lv1 için `apply_meta_bonuses` sonrası `_calc_xp_for_level(1)`; dalga ödülü XP → `wave_manager.gd` (`xp_to_next_level` kesri). `get_total_damage()` taban silah hasarına `bullet_damage` (karakter/meta/dalga düz bonusu) ekler. **Koşu HUD envanteri:** `recalculate_category_bonus()` sonunda `update_category_ui()` → `PlayerUiHelpers.rebuild_run_loadout_hud(self)` — `CanvasLayer/CategoryPanel` içinde iki satır (silahlar / eşyalar), slot başına `UpgradeIconCatalog` ikon + `ui.player.loadout_slot_lvl` (`tr_en_source`, yalnız `en.json`); ikon yoksa `upgrade_ui` ile aynı emoji yedeği (`player_ui_helpers.gd`).
 
 ### Kayıt ve kilit
 - **`core/save_manager.gd`**
@@ -141,7 +142,7 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 
 ### Taban
 - **`docs/SILAHLAR_ESYALAR_EVO.md`** — Taban silahlar, evrim silahları ve pasif eşyaların hasar / alan / miktar / cooldown özet tabloları (denge değişince güncelle).
-- **`weapons/weapon_base.gd`** — `WeaponBase`: cooldown, `attack()`, `upgrade()`, `category`, `tag`, `weapon_name`; kök düğüm **`Area2D`** (çarpışma katmanı/maske 0, `monitoring` kapalı — yalnızca editör yerleşimi / isteğe bağlı çarpışma için). **`has_targets_for_attack()`** düşman yokken tam cooldown tüketmeden `NO_TARGET_RECHECK_SEC` ile yeniden dener; alan silahlarında `hit_cooldowns` boşalana kadar `true` kalabilir. **`GLOBAL_COOLDOWN_SCALE`** (~1,38) tüm taban bekleme sürelerini çarpar (`get_effective_cooldown`); alt sınıflar menzil kapısını kendi geometrilerine göre uygular.
+- **`weapons/weapon_base.gd`** — `WeaponBase`: cooldown, `attack()`, `upgrade()`, `category`, `tag`, `weapon_name`; kök düğüm **`Area2D`** (çarpışma katmanı/maske 0, `monitoring` kapalı — yalnızca editör yerleşimi / isteğe bağlı çarpışma için). **`has_targets_for_attack()`** düşman yokken tam cooldown tüketmeden `NO_TARGET_RECHECK_SEC` ile yeniden dener; alan silahlarında `hit_cooldowns` boşalana kadar `true` kalabilir. **`GLOBAL_COOLDOWN_SCALE`** (`weapon_base.gd` sabiti; tüm silahların `get_effective_cooldown` çıktısı) taban bekleme sürelerini çarpar; alt sınıflar menzil kapısını kendi geometrilerine göre uygular. Başarılı `attack()` sonrası **`AudioManager.notify_combat_music_duck_beat()`** (yalnız `combat_music_duck` açıksa müzik dip’i).
 
 ### Yeni silah scripti
 - `weapons/weapon_<isim>.gd`, tercihen **`class_name Weapon...`** (Godot global sınıf).
@@ -174,7 +175,11 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 
 ### Özel davranışlar
 - **Kaos** karakteri: `apply_character_bonuses` içinde `random_weapons` listesine yeni taban silah eklenmeli.
-- **Projectile + ObjectPool**: Sahne yolu `ObjectPool.get_object(...)` ile alınır; `reset()` havuza dönüşte çağrılır (bkz. `projectiles/bullet.gd`, `fan_blade_shard.gd`). **Yelpaze shard:** menzil = `fire_range × get_area_multiplier`; ömür = menzil ÷ `shard_speed`; `_physics_process` adımı `_max_travel` ile sınırlı; spawn `player.get_directional_attack_spawn` (sprite silüeti); havuzda `collision_layer = 0`.
+- **Projectile + ObjectPool**
+  - Sahne yolu `ObjectPool.get_object(...)` ile alınır; `ObjectPool.return_object` önce `hide()` sonra `reset()` çağırır (`core/ObjectPool.gd`). Havuz **ilk doldurulurken** de `hide()` + `reset()` (aynı dosya) — gizli nesnede sahne dosyasından gelen çarpışma kalmasın.
+  - **Havuzda `Area2D` çarpışması:** Yalnız `visible = false` yetmez; özellikle `area_entered` kullanan mermiler (`bullet.gd`, `dagger.tscn`) gizliyken de tetiklenebilirdi. Kural: **`reset()` sonunda `collision_layer` / `collision_mask` = 0** (ve gerekirse `lightning_bolt` gibi aynı politika); **`init()`** (veya eşdeğeri) sahneye uygun katman/maskeyi yeniden yazar. Uygulanan örnekler: `bullet.gd`, `lightning_bolt.gd`, `fan_blade_shard.gd`, `hunter_axe.gd`, `ice_ball.gd`, `enemy_bullet.gd`, `effects/gold_orb.gd`, `effects/xp_orb.gd`.
+  - **`fan_blade_shard`:** `set_deferred("monitoring", false)` kaldırıldı — kuyruk, sonraki `init()` ile yarışıp shard’ı yanlışlıkla susturabiliyordu; havuzda `collision_layer = 0` yeterli.
+  - **Yelpaze shard oynanışı:** menzil = `fire_range × get_area_multiplier`; ömür = menzil ÷ `shard_speed`; `_physics_process` adımı `_max_travel` ile sınırlı; spawn `player.get_directional_attack_spawn` (sprite silüeti).
 - **Taban projeksiyon / silah VFX dokuları** (`assets/projectiles/`): Aura halkası `weapon_aura.gd` (oyuncuya `AuraWeaponRing`); hasar yarıçapı ile dış hizası için silah kökünde **`aura_outer_radius_texels`** / **`aura_outer_texel_auto_factor`** (0 pikselde otomatik dış yarıçap ≈ doku × 0,5 × faktör; meta alan `get_area_multiplier()` ile hem hasar hem halka). Zincir segmenti `CombatProjectileFx.spawn_chain_segment` (`effects/combat_projectile_fx.gd`, `weapon_chain.gd`; sıçrama arası **`chain_step_delay_sec`**; segment başına **Sprite2D** + `chain.png`, mesafe boyunca `scale.x`, yön `rotation`; dikey doku için `CHAIN_TEX_LINKS_ALONG_WIDTH := false`); yıldırım sahnesi **`effects/lightning_hit_fx.tscn`** (+ `lightning_hit_fx.gd`): editördeki `texture` / `scale` korunur, `run()` yalnızca renk / süre uygular; `CombatProjectileFx.spawn_lightning_style_flash` (`weapon_storm.gd`, `weapon_toxic_chain.gd`); yıldırım **silah vuruşu** `projectiles/lightning_bolt.tscn` (ObjectPool; görsel: kamera üst çizgisinde hedef X’inde spawn, düşüş; isabet `lightning_hit_fx`; `weapons/scenes/weapon_lightning.tscn` oyuncu üstü sprite yok; hedef havuzu `GameplayConstants.MAX_COMBAT_RADIUS_PX` — `core/gameplay_constants.gd`, co-op centroid tavanı ile aynı); savrulan balta `projectiles/hunter_axe.tscn` + `assets/projectiles/axe/boomerang.png`. **Not:** Kayıtlı silah kimliği hâlâ `boomerang`; oyuncuya dönük metinlerde “Balta” / “Axe” (`locales`, kodeks). Yeniden üretilebilir silah sahneleri: `python tools/gen_weapon_scenes.py`.
 
 ---
@@ -212,7 +217,7 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 
 ## 6. Harita ve mod seçimi
 
-- **`ui/map_select.gd`**: Run modu **`SaveManager.settings["run_variant"]`** (`story` / `fast` / **`arena`** — kısa hedef süre `SaveManager.ARENA_RUN_GOAL_SEC`); harita listesi + önizleme; **`run_curse_tier`** (0–5) kaydı; **Başlat** → `SaveManager.selected_map` / mod alanları + `register_codex_map`. Süre ve boss ölçeği: `SaveManager.get_run_goal_sec()`, `get_mini_boss_times()`, `get_run_spawn_difficulty_mult()` (**run_curse_tier** için `1+0,10×tier`; `spawn_manager` ile meta curse çarpımı — **2026-04-18**).
+- **`ui/map_select.gd`**: Run modu **`SaveManager.settings["run_variant"]`** (`story` / `fast` / **`arena`** — kısa hedef süre `SaveManager.ARENA_RUN_GOAL_SEC`); harita listesi + önizleme; **`run_curse_tier`** (0–`SaveManager.RUN_CURSE_TIER_MAX`, varsayılan **1**) kaydı; **Başlat** → `SaveManager.selected_map` / mod alanları + `register_codex_map`. **Referans kademe:** `SaveManager.RUN_CURSE_REFERENCE_TIER` (**1**) — denge bu kademe etrafında; `run_curse_tier_delta()` = `tier − REF`. Spawn: `get_run_spawn_difficulty_mult()` = `1 + RUN_CURSE_SPAWN_PER_TIER × delta`. Düşman: `get_run_curse_enemy_hp_mult()` / `get_run_curse_enemy_speed_mult()`; XP dilimi: `player.gain_xp` içinde `RUN_CURSE_XP_GAIN_PER_TIER × delta`. **Dalga düşmanı (normal / sürü / çember):** `main/spawn_manager.gd` — zaman scaling’inden sonra `FIRST_MINUTE_ONE_SHOT_SEC` (**60**) içinde **1 HP** (tek vuruş); sonrasında zaman scaling’ine ek **`MOB_GLOBAL_*`** can / hasar / hız çarpanları (`get_global_mob_*_mult()`). Mini boss / Reaper: yalnızca koşu laneti katmanı (`_apply_run_curse_tier`), global mob buff yok. **Koşu laneti UI:** `tr_en_source` + `ui/run_curse_stat_bar.gd`; `run_curse_*_percent_for_tier()` önizleme (**2026-04-23**).
 - Yeni **hikaye haritası**: Yeni buton + `selected_map` string ID + `main` veya ortam tarafında bu ID’ye göre sahne/tileset/spawn mantığı.
 - **Arena**: `map_select` içinde kilitli; dalga mantığı `YOL_HARITASI.md` planı ile genişletilecek.
 
@@ -228,7 +233,7 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 | Karakter seçimi | `ui/character_select*.tscn` + `character_select.gd` / `character_select_p2.gd`, `character_select_helpers.gd`, `character_select_preview.gd`, `character_select_stats_panel.gd` — portre/cache aynı; sağ sütunda seçime göre istatistik özeti; `game_mode_select.gd` → `warmup_portraits_async`; ESC: P1→`game_mode_select`, P2→`character_select` |
 | Harita | `ui/map_select.gd` |
 | Level-up | `ui/upgrade_ui.gd` — kart ikonları `UpgradeIconCatalog` (`assets/ui/upgrade_icons/README.txt`); silah envanter slotu evrim PNG yedeği: `try_weapon_with_evolution_fallback` |
-| HUD (kill, altın, çubuklar) | `player/player.gd` + `player` sahnesindeki `CanvasLayer` düğümleri |
+| HUD (kill, altın, XP, silah/eşya ızgarası) | `player/player.gd` + `player` sahnesindeki `CanvasLayer` (`StatsRow`, `XPBar`, **`CategoryPanel`** → `PlayerUiHelpers.rebuild_run_loadout_hud`) |
 | Oyun sonu / duraklat | `ui/game_over.gd`, `pause_menu.gd` — duraklatmadan **Ayarlar** → tam `settings.tscn` (`meta from_game`), geri `restore_after_settings()` |
 | Meta upgrade | `ui/meta_upgrade.gd` + `meta_upgrade.tscn` — `OuterMargin` + üst `VBox`, kart alanı `ScrollContainer` ile kaydırılabilir |
 | Koleksiyon (kodeks) | `ui/collection_menu.gd` / `.tscn` |
@@ -264,14 +269,14 @@ Mevcut örnekler: **`effects/xp_orb.tscn`**, **`effects/gold_orb.tscn`**. İkisi
 
 ### Mevcut bağlantılar (referans)
 
-- **Düşürme:** `enemies/enemy_base.gd` (ölümde altın / XP orb), `enemies/boss.gd`, `enemies/giant.gd` vb. — `ObjectPool.get_object("res://effects/....tscn")`.
+- **Düşürme:** `enemies/enemy_base.gd` — ölüm sonunda **`resolve_death_loot()`**: XP / altın / sandık / nadir pickup için **tek ağırlıklı seçim** (aynı ölümde çoğul bağımsız düşürme yok); **~%1** ile en fazla **iki** ayrı tür. `boss` / `giant` / `exploder` özel sonlar `resolve_death_loot` veya `super._on_death_complete` ile hizalı. `ObjectPool.get_object("res://effects/....tscn")`.
 - **Ortam:** `main/environment_manager.gd` — ağaçta kalan `xp_orbs` / `gold_orbs` grupları üzerinde işlem (ör. temizlik).
 - **Havuz boyutu:** `core/ObjectPool.gd` — yol içinde `xp_orb` veya `gold_orb` geçen sahneler için havuz **40** öğe (diğerleri 20).
 
 ### Yeni bir orb (veya pickup) türü eklerken — checklist
 
 1. **`effects/<isim>_orb.tscn` + `.gd`** — `Area2D`; çarpışma / toplama mesafesi; oyuncuya yaklaşma mantığı (mıknatıs: `player.get_magnet_bonus()` veya sabit yarıçap).
-2. **`init` / `reset`** — Pool ile uyum: `reset()` içinde hız, pozisyon, görünürlük, grup üyeliği sıfırlanmalı; `ObjectPool.return_object(self)` toplandığında veya ömür bittiğinde çağrılmalı.
+2. **`init` / `reset`** — Pool ile uyum: `reset()` içinde hız, pozisyon, görünürlük, grup üyeliği sıfırlanmalı; **`Area2D` ise havuzda `collision_layer` / `collision_mask` = 0**, tekrar kullanımda `init()` ile `.tscn` ile aynı değerlere dön (`gold_orb` / `xp_orb` dahil). `ObjectPool.return_object(self)` toplandığında veya ömür bittiğinde çağrılmalı.
 3. **`add_to_group` / `remove_from_group`** — Örn. `"xp_orbs"`, `"gold_orbs"` gibi; **pausa, temizlik veya istatistik** için grupları kullanan kod varsa (`environment_manager` vb.) yeni grup adını oraya da ekle.
 4. **Düşürme noktaları** — Hangi düşman / sandık / olay bu orb’u üretecekse orada `get_object` ile sahne yolu; gerekirse değer parametresi (`xp_value`, `value` gibi) `init` ile verilir.
 5. **Oyuncu tarafı** — Toplanınca `player.gain_xp`, `collect_gold`, `heal`, yeni bir metot veya `EventBus` emit; co-op’ta P1/P2 paylaşımı **mevcut orb’lardaki gibi** düşünülmeli.
@@ -349,7 +354,7 @@ Oyun içi uzun `description` / `codex.character.<id>` metni (Açılış, origin 
 - `effects/` — Sandık, parçacık benzeri efektler.
 - `projectiles/` — Oyuncu / düşman mermileri.
 - `core/` — Kayıt, karakter verisi, kategori bonusları, havuz, `EnemyRegistry`, `PlayerLoadoutRegistry`.
-- `player/` — `player.gd` + `player_ui_helpers.gd` (level-up VFX, istatistik paneli).
+- `player/` — `player.gd` + `player_ui_helpers.gd` (level-up VFX, hız sinerjisi izi; koşu içi ayrı HUD istatistik paneli yok — level-up / upgrade ekranında özet).
 - `weapons/`, `items/` — Oyun içi ekipman mantığı.
 
 ---
@@ -374,6 +379,7 @@ Bu rehber, kod tabanındaki gerçek yapıya göre yazılmıştır; yeni sistem e
 | `master_volume` | float | Ana ses (0–1) |
 | `sfx_volume` | float | Efekt bus |
 | `music_volume` | float | Müzik bus |
+| `combat_music_duck` | bool | Varsayılan **kapalı**; açıkken silah saldırısı başına kısa müzik hattı kısılması (`AudioManager.notify_combat_music_duck_beat`); **Ayarlar → Ses** |
 | `fullscreen` | bool | Tam ekran |
 | `resolution_x` | int | Pencere genişliği (pencereli mod) |
 | `resolution_y` | int | Pencere yüksekliği |
@@ -388,7 +394,7 @@ Bu rehber, kod tabanındaki gerçek yapıya göre yazılmıştır; yeni sistem e
 | `enemy_high_contrast_outline` | bool | Düşmanlarda sarı siluet/çerçeve (yalnız yeni spawn); **Ayarlar → Görüntü**; `enemy_base.gd` `_setup_visuals()`. |
 | `input_keyboard_overrides` | Dictionary | İsteğe bağlı klavye eşlemesi: eylem adı (`ui_up`, …) → fiziksel tuş kodu (`int`); `core/input_remap.gd`. |
 
-**UI:** `ui/settings.gd` — Sekmeler: Ses, **Dil** (`locale`), **Görüntü** (`fullscreen`, çözünürlük, VFX, `performance_quality`, `enemy_high_contrast_outline`), **Oynanış** (`damage_numbers`, `hp_bars`, `screen_shake`, `pause_on_focus_loss`, `player_vfx_opacity`), **Kontroller** (tuş yeniden atama, `InputRemap`), Profil, Dev. **Tam ekran kısayolu:** `toggle_fullscreen` (F11) → `SaveManager._unhandled_input`.
+**UI:** `ui/settings.gd` — Sekmeler: Ses (**`combat_music_duck`** anahtarının etiketi `LocalizationManager.tr_en_source` ile yalnız EN metin dosyasından), **Dil** (`locale`), **Görüntü** (`fullscreen`, çözünürlük, VFX, `performance_quality`, `enemy_high_contrast_outline`), **Oynanış** (`damage_numbers`, `hp_bars`, `screen_shake`, `pause_on_focus_loss`, `player_vfx_opacity`), **Kontroller** (tuş yeniden atama, `InputRemap`), Profil, Dev. **Tam ekran kısayolu:** `toggle_fullscreen` (F11) → `SaveManager._unhandled_input`.
 
 ### `InputRemap` (`core/input_remap.gd`)
 

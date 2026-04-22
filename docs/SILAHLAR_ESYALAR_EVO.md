@@ -2,7 +2,7 @@
 
 **Kaynak:** `weapons/weapon_*.gd`, `items/item_*.gd`, `weapons/weapon_evolution.gd` — oyun verisi bu dosyalarla senkron; denge güncellemesi PDF “Oyun Dengesi İçin Silah Verileri” ile hizalandı.
 
-**Not:** Oyuncu çarpanları (`get_area_multiplier()`, `get_total_damage()`, `get_cooldown_multiplier()`, `get_effective_multi_attack()`, `get_duration_multiplier()`) tablolardaki **taban** değerleri ölçekler; minimum cooldown silah bazında `WeaponBase.get_effective_cooldown()` ile **≥ 0.15s** altına inmez.
+**Not:** Oyuncu çarpanları (`get_area_multiplier()`, `get_total_damage()`, `get_cooldown_multiplier()`, `get_effective_multi_attack()`, `get_duration_multiplier()`) tablolardaki **taban** değerleri ölçekler. **CD** sütunu script `cooldown` tabanıdır; oyunda `WeaponBase.get_effective_cooldown()` bunu **`GLOBAL_COOLDOWN_SCALE`** (`weapon_base.gd`, tüm silahlar) ve `get_cooldown_multiplier()` ile çarpar; sonuç **≥ ~0,20s** altına inmez (`max(0.2, …)`).
 
 ---
 
@@ -70,11 +70,11 @@ Projeksiyon: `projectiles/lightning_bolt.tscn` (uçuş + isabet); Storm / Toxic 
 
 | Lv | Hasar | Alan (atlama menzili) | Miktar | CD |
 |----|-------|------------------------|--------|-----|
-| 1 | 20 | 200 | 2 | 2.2 |
-| 2 | 25 | 200 | 3 | 2.2 |
-| 3 | 30 | 250 | 3 | 2.0 |
-| 4 | 35 | 250 | 4 | 2.0 |
-| 5 | 45 | 300 | 5 | 1.8 |
+| 1 | 20 | 200 | 2 | 2.85 |
+| 2 | 25 | 200 | 3 | 2.85 |
+| 3 | 30 | 250 | 3 | 2.55 |
+| 4 | 35 | 250 | 4 | 2.55 |
+| 5 | 45 | 300 | 5 | 2.25 |
 
 ### Buz topu (`ice_ball`)
 
@@ -116,7 +116,7 @@ Projeksiyon: `projectiles/lightning_bolt.tscn` (uçuş + isabet); Storm / Toxic 
 | 4 | 10 | 144 / 36 | 4 | 1.2 | |
 | 5 | 13 | 144 / 36 | 5 | 1.0 | `shard_speed` 265 (Lv5); ömür yine menzil ÷ hız |
 
-Saha shard görseli: `assets/projectiles/fan_blade/shard.png` → `projectiles/fan_blade_shard.tscn` (`Sprite2D`; editörde doku atanmışsa öncelik; yoksa `Polygon2D` yedeği). **Spawn:** `player.get_directional_attack_spawn(dir)` — `AnimatedSprite2D` çerçevesine göre gövde dışı; havuza dönüşte `collision_layer = 0` ile hayalet isabet yok. **Hareket:** `_max_travel = speed × lifetime` ile taşma yok.
+Saha shard görseli: `assets/projectiles/fan_blade/shard.png` → `projectiles/fan_blade_shard.tscn` (`Sprite2D`; editörde doku atanmışsa öncelik; yoksa `Polygon2D` yedeği). **Spawn:** `player.get_directional_attack_spawn(dir)` — `AnimatedSprite2D` çerçevesine göre gövde dışı; havuza dönüşte **`collision_layer` / `collision_mask` = 0** (hayalet isabet yok; ayrıntı `GELISTIRICI_REHBERI` ObjectPool maddesi). **Hareket:** `_max_travel = speed × lifetime` ile taşma yok.
 
 ### Altıgön mühür (`hex_sigil`)
 
@@ -216,11 +216,11 @@ Saha shard görseli: `assets/projectiles/fan_blade/shard.png` → `projectiles/f
 
 | Lv | Hasar | Yörünge R | CD | Diğer |
 |----|-------|-----------|-----|--------|
-| 1 | 25 | 80 | 0.8 | Ek zincir hasarı ~%40 taban hasar |
-| 2 | 30 | 90 | 0.8 | |
-| 3 | 36 | 90 | 0.7 | |
-| 4 | 44 | 110 | 0.7 | |
-| 5 | 55 | 130 | 0.5 | |
+| 1 | 25 | 80 | 1.15 | Ek zincir hasarı ~%40 taban hasar |
+| 2 | 30 | 90 | 1.15 | |
+| 3 | 36 | 90 | 1.0 | |
+| 4 | 44 | 110 | 1.0 | |
+| 5 | 55 | 130 | 0.88 | |
 
 ### Buz novası (`frost_nova`)
 

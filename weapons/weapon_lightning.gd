@@ -14,7 +14,7 @@ func _ready() -> void:
 	tag = "patlayici"
 	category = "attack"
 	damage = 20
-	cooldown = 2.2
+	cooldown = 2.85
 
 
 func has_targets_for_attack() -> bool:
@@ -103,7 +103,7 @@ func on_upgrade():
 			damage = 25
 		3:
 			damage = 30
-			cooldown = 2.0
+			cooldown = 2.55
 			chain_range = 250.0
 		4:
 			chain_count = 4
@@ -111,7 +111,7 @@ func on_upgrade():
 		5:
 			chain_count = 5
 			damage = 45
-			cooldown = 1.8
+			cooldown = 2.25
 			chain_range = 300.0
 
 

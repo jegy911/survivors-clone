@@ -35,6 +35,7 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 | [docs/survivors_clone_context.md](docs/survivors_clone_context.md) | Kısa repo / autoload / sahne akışı özeti (yeni geliştirici veya AI girişi) |
 | [docs/sesler-muzikler-efektler.md](docs/sesler-muzikler-efektler.md) | Müzik, SFX, tetikleyiciler (`AudioManager`) — yaşayan ses envanteri |
 | [docs/colorrect.md](docs/colorrect.md) | İkon / oyun-içi görsel gap takibi (kahraman, silah taban–evrim, eşya) |
+| [docs/ASSET_SIZES.md](docs/ASSET_SIZES.md) | Karakter / düşman / silah PNG’leri — 512×512 üstü boyut listesi (tarama tablosu) |
 | [docs/vs wiki analizi/](docs/vs%20wiki%20analizi/) | Proje başı **VS + Brotato** wiki notları (arşiv); ürün özeti **`docs/YOL_HARITASI.md`** «Referans — VS / Brotato wiki analizi» + `docs/vs wiki analizi/README.md` |
 
 **Son dokümantasyon odağı (2026-04-22):** Metal buton kapakları (`button1.png`–`button3.png`) — `ui/button_cover_styles.gd` + menüler; özet **`docs/GELISTIRICI_REHBERI.md` §7.1**. *(2026-04-20: ana menü `StyleBoxTexture`; 2026-04-16: müzik döngüsü, meta upgrade scroll, karakter seçimi istat paneli.)*

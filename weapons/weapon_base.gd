@@ -3,8 +3,8 @@ extends Area2D
 
 ## Düşman yokken `attack()` atlanır; tam cooldown yerine kısa aralıkla yeniden kontrol.
 const NO_TARGET_RECHECK_SEC: float = 0.12
-## Genel ateş sıklığı — bekleme süresi çarpılır (~%38; hedef bant %25–50 yavaşlama).
-const GLOBAL_COOLDOWN_SCALE: float = 1.38
+## Genel ateş sıklığı — bekleme süresi çarpılır (tüm silahlar; meta CDR ile çarpılır).
+const GLOBAL_COOLDOWN_SCALE: float = 1.68
 
 var damage = 10
 var cooldown = 1.0
@@ -29,14 +29,15 @@ func _process(delta):
 		if has_targets_for_attack():
 			timer = get_effective_cooldown()
 			attack()
+			AudioManager.notify_combat_music_duck_beat()
 		else:
 			timer = NO_TARGET_RECHECK_SEC
 
 func get_effective_cooldown() -> float:
 	if player == null:
-		return max(0.15, cooldown * GLOBAL_COOLDOWN_SCALE)
+		return max(0.2, cooldown * GLOBAL_COOLDOWN_SCALE)
 	var multiplier = player.get_cooldown_multiplier()
-	return max(0.15, cooldown * multiplier * GLOBAL_COOLDOWN_SCALE)
+	return max(0.2, cooldown * multiplier * GLOBAL_COOLDOWN_SCALE)
 
 func has_targets_for_attack() -> bool:
 	return true

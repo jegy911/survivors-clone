@@ -26,7 +26,7 @@ Yükleme sırası editörde tanımlıdır; `SaveManager` ve `InputRemap` / `Loca
 | **InputRemap** | Klavye yeniden atama; `user://save.cfg` içinde `input_keyboard_overrides`. |
 | **LocalizationManager** | `LANGUAGE_CATALOG` + `locales/*.json`, `locale_changed`. |
 | **AudioManager** | Müzik döngüsü + SFX; `docs/sesler-muzikler-efektler.md`. |
-| **ObjectPool** | Mermi, orb, damage number vb. için havuz. |
+| **ObjectPool** | Mermi, orb, damage number vb. için havuz; havuzdaki `Area2D` için çarpışma sıfırlama + `init()` ile geri yükleme — ayrıntı `docs/GELISTIRICI_REHBERI.md` §4 «Projectile + ObjectPool». |
 | **EnemyRegistry** | Canlı düşman listesi; `get_nodes_in_group("enemies")` yükünü azaltmak için. |
 | **EventBus** | Oyun içi sinyal merkezi. |
 | **AchievementManager** | Başarı takibi. |
@@ -38,7 +38,7 @@ Yükleme sırası editörde tanımlıdır; `SaveManager` ve `InputRemap` / `Loca
 | Yol | İçerik |
 |-----|--------|
 | `main/` | Oyun döngüsü, spawn, dalga, ortam. |
-| `player/` | Oyuncu gövdesi, level-up, loadout mantığı (`player.gd` büyük; yardımcılar ayrı dosyalarda). |
+| `player/` | Oyuncu gövdesi, level-up, loadout mantığı (`player.gd` büyük; yardımcılar ayrı dosyalarda). Koşu HUD envanteri: `PlayerUiHelpers.rebuild_run_loadout_hud` → `CanvasLayer/CategoryPanel` (silah/eşya ikonları + `LVL`, `UpgradeIconCatalog`). |
 | `weapons/`, `projectiles/` | Silah scriptleri / şablon sahneler; dünya vuruşu sahneleri. |
 | `core/` | `SaveManager`, `CharacterData`, `GameplayConstants`, `PlayerLoadoutRegistry`, `EnemyRegistry`, … |
 | `ui/` | Menüler, level-up, ayarlar, game over. |

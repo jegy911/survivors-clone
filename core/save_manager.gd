@@ -7,6 +7,24 @@ signal account_level_up(new_level: int)
 
 const SAVE_PATH: String = "user://save.cfg"
 
+## Koşu laneti (map_select 0..RUN_CURSE_TIER_MAX). **Referans kademe = 1** — denge ve yeni mob buff’ı buna göre; varsayılan yeni koşu `run_curse_tier` **1**.
+const RUN_CURSE_TIER_MAX := 5
+## Tasarım baseline: kademe 1 “normal”; 0 daha yumuşak, 5 daha sert.
+const RUN_CURSE_REFERENCE_TIER := 1
+const RUN_CURSE_SPAWN_PER_TIER := 0.10
+const RUN_CURSE_ENEMY_HP_PER_TIER := 0.10
+const RUN_CURSE_ENEMY_SPEED_PER_TIER := 0.05
+const RUN_CURSE_XP_GAIN_PER_TIER := 0.12
+## Dakika 1+ dalga düşmanı: zaman `_apply_scaling` dışında, tier’a göre ek çarpan (REF = 1’de taban güçlendirme).
+const MOB_GLOBAL_HP_AT_REF := 1.12
+const MOB_GLOBAL_DAMAGE_AT_REF := 1.09
+const MOB_GLOBAL_SPEED_AT_REF := 1.065
+const MOB_GLOBAL_HP_PER_TIER := 0.068
+const MOB_GLOBAL_DAMAGE_PER_TIER := 0.056
+const MOB_GLOBAL_SPEED_PER_TIER := 0.042
+## İlk N saniye gelen dalga düşmanı tek vuruşta ölür (`spawn_manager`).
+const FIRST_MINUTE_ONE_SHOT_SEC := 60.0
+
 var gold: int = 0
 var selected_mode: String = "vs"
 var selected_map: String = "vs_map"
@@ -47,6 +65,8 @@ var settings: Dictionary = {
 	"master_volume": 1.0,
 	"sfx_volume": 1.0,
 	"music_volume": 1.0,
+	## Açıkken silah saldırısı başına kısa müzik seviyesi düşüşü (`AudioManager`).
+	"combat_music_duck": false,
 	"fullscreen": false,
 	"show_vfx": true,
 	"screen_shake": true,
@@ -63,8 +83,8 @@ var settings: Dictionary = {
 	"performance_quality": "high",
 	## Koşu seçimi (map_select): "story" | "fast" | "arena"
 	"run_variant": "story",
-	## 0–5: koşu başı zorluk / lanet kademesi
-	"run_curse_tier": 0,
+	## 0–5: koşu başı zorluk / lanet kademesi (**1** = oyunun normal / denge referansı)
+	"run_curse_tier": 1,
 	## Renk körlüğü: "none" | "friendly"
 	"colorblind_palette": "none",
 	## Arayüz metin/ölçek (~0.85–1.35)
@@ -642,7 +662,65 @@ func get_run_goal_sec() -> float:
 
 
 func get_run_curse_tier() -> int:
-	return clampi(int(settings.get("run_curse_tier", 0)), 0, 5)
+	return clampi(int(settings.get("run_curse_tier", RUN_CURSE_REFERENCE_TIER)), 0, RUN_CURSE_TIER_MAX)
+
+
+## `get_run_curse_tier() - RUN_CURSE_REFERENCE_TIER` (0 = referansla aynı etki katmanı).
+func run_curse_tier_delta() -> float:
+	return float(get_run_curse_tier()) - float(RUN_CURSE_REFERENCE_TIER)
+
+
+## Dalga aralığı bölenü: `1 + RUN_CURSE_SPAWN_PER_TIER × delta` (kademe 1 = 1,00).
+func get_run_spawn_difficulty_mult() -> float:
+	return 1.0 + RUN_CURSE_SPAWN_PER_TIER * run_curse_tier_delta()
+
+
+## UI: spawn baskı yüzdesi (kademe 1 = 100 taban).
+func run_curse_spawn_percent_for_tier(tier: int) -> int:
+	var t: int = clampi(tier, 0, RUN_CURSE_TIER_MAX)
+	var delta: float = float(t) - float(RUN_CURSE_REFERENCE_TIER)
+	return int(round(100.0 * (1.0 + RUN_CURSE_SPAWN_PER_TIER * delta)))
+
+
+func run_curse_enemy_hp_percent_for_tier(tier: int) -> int:
+	var t: int = clampi(tier, 0, RUN_CURSE_TIER_MAX)
+	var delta: float = float(t) - float(RUN_CURSE_REFERENCE_TIER)
+	return int(round(100.0 * (1.0 + RUN_CURSE_ENEMY_HP_PER_TIER * delta)))
+
+
+func run_curse_enemy_speed_percent_for_tier(tier: int) -> int:
+	var t: int = clampi(tier, 0, RUN_CURSE_TIER_MAX)
+	var delta: float = float(t) - float(RUN_CURSE_REFERENCE_TIER)
+	return int(round(100.0 * (1.0 + RUN_CURSE_ENEMY_SPEED_PER_TIER * delta)))
+
+
+func run_curse_xp_gain_percent_for_tier(tier: int) -> int:
+	var t: int = clampi(tier, 0, RUN_CURSE_TIER_MAX)
+	var delta: float = float(t) - float(RUN_CURSE_REFERENCE_TIER)
+	return int(round(100.0 * (1.0 + RUN_CURSE_XP_GAIN_PER_TIER * delta)))
+
+
+func get_run_curse_enemy_hp_mult() -> float:
+	return maxf(1.0 + RUN_CURSE_ENEMY_HP_PER_TIER * run_curse_tier_delta(), 0.55)
+
+
+func get_run_curse_enemy_speed_mult() -> float:
+	return maxf(1.0 + RUN_CURSE_ENEMY_SPEED_PER_TIER * run_curse_tier_delta(), 0.55)
+
+
+func get_global_mob_hp_mult() -> float:
+	var d: float = run_curse_tier_delta()
+	return clampf(MOB_GLOBAL_HP_AT_REF + MOB_GLOBAL_HP_PER_TIER * d, 0.84, 1.52)
+
+
+func get_global_mob_damage_mult() -> float:
+	var d: float = run_curse_tier_delta()
+	return clampf(MOB_GLOBAL_DAMAGE_AT_REF + MOB_GLOBAL_DAMAGE_PER_TIER * d, 0.86, 1.42)
+
+
+func get_global_mob_speed_mult() -> float:
+	var d: float = run_curse_tier_delta()
+	return clampf(MOB_GLOBAL_SPEED_AT_REF + MOB_GLOBAL_SPEED_PER_TIER * d, 0.90, 1.34)
 
 
 func get_mini_boss_times() -> Array:
@@ -680,11 +758,6 @@ func filter_accessibility_orb_color(c: Color) -> Color:
 	if h > 0.22 and h < 0.48:
 		return Color.from_hsv(0.56, minf(s, 0.88), v)
 	return c
-
-
-## Run curse tier (0–5): spawn interval divisor +`10%` per tier (`spawn_manager`); meta `curse_level` ayrıca +`10%`/rank ekler.
-func get_run_spawn_difficulty_mult() -> float:
-	return 1.0 + 0.10 * float(get_run_curse_tier())
 
 
 func reset_meta_upgrades() -> void:

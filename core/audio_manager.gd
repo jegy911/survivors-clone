@@ -26,6 +26,8 @@ var xp_notes = [0, 2, 4, 5, 7, 9, 11, 12] # Do Re Mi Fa Sol La Si Do
 
 var _music_streams: Array[AudioStream] = []
 var current_music: int = 0
+## `combat_music_duck` açıkken 1.0’a doğru sürüklenir; saldırıda anlık düşürülür.
+var _combat_music_duck_linear: float = 1.0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -152,19 +154,37 @@ func stop_music():
 	current_music = 0
 
 
-func apply_volume_settings():
-	var master = SaveManager.settings.get("master_volume", 1.0)
-	var sfx = SaveManager.settings.get("sfx_volume", 1.0)
-	var music = SaveManager.settings.get("music_volume", 1.0)
+func apply_volume_settings() -> void:
+	if not bool(SaveManager.settings.get("combat_music_duck", false)):
+		_combat_music_duck_linear = 1.0
+	var master: float = float(SaveManager.settings.get("master_volume", 1.0))
+	var sfx: float = float(SaveManager.settings.get("sfx_volume", 1.0))
 	AudioServer.set_bus_volume_db(0, linear_to_db(master))
-	var sfx_bus = AudioServer.get_bus_index("SFX")
+	var sfx_bus: int = AudioServer.get_bus_index("SFX")
 	if sfx_bus >= 0:
 		AudioServer.set_bus_volume_db(sfx_bus, linear_to_db(sfx))
 		AudioServer.set_bus_send(sfx_bus, "Master")
-	var music_bus = AudioServer.get_bus_index("Music")
-	if music_bus >= 0:
-		AudioServer.set_bus_volume_db(music_bus, linear_to_db(music))
-		AudioServer.set_bus_send(music_bus, "Master")
+	_refresh_music_bus_volume()
+
+
+func _refresh_music_bus_volume() -> void:
+	var music_bus: int = AudioServer.get_bus_index("Music")
+	if music_bus < 0:
+		return
+	var music_lin: float = float(SaveManager.settings.get("music_volume", 1.0))
+	if bool(SaveManager.settings.get("combat_music_duck", false)):
+		music_lin *= clampf(_combat_music_duck_linear, 0.12, 1.0)
+	AudioServer.set_bus_volume_db(music_bus, linear_to_db(clampf(music_lin, 0.0001, 1.0)))
+	AudioServer.set_bus_send(music_bus, "Master")
+
+
+## `WeaponBase` her başarılı saldırıda; yalnızca ayar açıksa müzik kısılır.
+func notify_combat_music_duck_beat() -> void:
+	if not bool(SaveManager.settings.get("combat_music_duck", false)):
+		return
+	_combat_music_duck_linear = 0.54
+	_refresh_music_bus_volume()
+
 
 func play_shoot():
 	shoot_player.play()
@@ -194,11 +214,18 @@ func play_xp():
 	xp_player.play()
 	xp_note_index += 1
 
-func _process(delta):
+func _process(delta: float) -> void:
 	if xp_note_timer > 0:
 		xp_note_timer -= delta
 	else:
 		xp_note_index = 0
 		xp_streak = 0
+	if bool(SaveManager.settings.get("combat_music_duck", false)):
+		if _combat_music_duck_linear < 1.0:
+			_combat_music_duck_linear = minf(1.0, _combat_music_duck_linear + delta * 2.35)
+			_refresh_music_bus_volume()
+	elif _combat_music_duck_linear < 1.0:
+		_combat_music_duck_linear = 1.0
+		_refresh_music_bus_volume()
 func play_boss():
 	boss_player.play()

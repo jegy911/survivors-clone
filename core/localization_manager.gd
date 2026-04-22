@@ -105,3 +105,14 @@ func get_steam_language_code(locale_code: String) -> String:
 		if str(entry["code"]) == locale_code:
 			return str(entry.get("steam", ""))
 	return ""
+
+
+## Toplu yerelleştirme turuna kadar bazı metinler yalnızca `locales/en.json` içinde tutulur; diğer dillerde `tr()` yerine bunu kullanın.
+func tr_en_source(path: String) -> String:
+	var t: Translation = TranslationServer.get_translation_object(FALLBACK_LOCALE)
+	if t == null:
+		return tr(path)
+	var msg: String = t.get_message(path)
+	if msg.is_empty() or msg == path:
+		return tr(path)
+	return msg

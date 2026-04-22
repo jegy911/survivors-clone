@@ -131,6 +131,7 @@ func spawn_random_enemy(game_timer: float, current_immunity: String) -> void:
 	_make_elite(enemy, game_timer)
 	if current_immunity != "" and randf() < 0.30:
 		_apply_immunity(enemy, current_immunity)
+	_finalize_wave_enemy(enemy, game_timer)
 
 func spawn_mini_boss(_game_timer: float, boss_index: int) -> void:
 	EventBus.boss_spawned.emit()
@@ -190,18 +191,57 @@ func _apply_meta_curse_level(enemy: Node) -> void:
 		enemy.BASE_SPEED *= speed_mult
 
 
-## `SaveManager.settings["run_curse_tier"]` (0–5): +10% HP, +5% move speed per tier (map_select).
+## `run_curse_tier`: referans `SaveManager.RUN_CURSE_REFERENCE_TIER` (1) — delta = tier − ref; `map_select` önizlemesi aynı sabitler.
 func _apply_run_curse_tier(enemy: Node) -> void:
-	var tier: int = SaveManager.get_run_curse_tier()
-	if tier <= 0:
-		return
-	var hp_m: float = 1.0 + 0.10 * float(tier)
-	var spd_m: float = 1.0 + 0.05 * float(tier)
+	var hp_m: float = SaveManager.get_run_curse_enemy_hp_mult()
+	var spd_m: float = SaveManager.get_run_curse_enemy_speed_mult()
 	if enemy.get("hp") != null:
 		enemy.hp = int(round(float(enemy.hp) * hp_m))
 		enemy.max_hp = enemy.hp
 	if enemy.get("BASE_SPEED") != null:
 		enemy.BASE_SPEED *= spd_m
+
+
+func _sync_enemy_speed_from_base(enemy: Node) -> void:
+	if enemy.get("BASE_SPEED") == null or enemy.get("current_speed") == null:
+		return
+	if enemy.get("is_swarm_enemy") != null and enemy.is_swarm_enemy:
+		return
+	enemy.current_speed = enemy.BASE_SPEED
+
+
+func _apply_global_mob_buff(enemy: Node) -> void:
+	var hp_m: float = SaveManager.get_global_mob_hp_mult()
+	var dmg_m: float = SaveManager.get_global_mob_damage_mult()
+	var spd_m: float = SaveManager.get_global_mob_speed_mult()
+	if enemy.get("hp") != null:
+		enemy.hp = maxi(1, int(round(float(enemy.hp) * hp_m)))
+		enemy.max_hp = enemy.hp
+	if enemy.get("DAMAGE") != null:
+		enemy.DAMAGE = maxi(1, int(round(float(enemy.DAMAGE) * dmg_m)))
+	if enemy.get("is_swarm_enemy") != null and enemy.is_swarm_enemy:
+		if enemy.get("swarm_speed_override") != null:
+			enemy.swarm_speed_override *= spd_m
+	elif enemy.get("BASE_SPEED") != null:
+		enemy.BASE_SPEED *= spd_m
+
+
+func _apply_first_minute_one_shot(enemy: Node) -> void:
+	if enemy.get_meta("is_elite", false):
+		return
+	if enemy.get("hp") != null:
+		enemy.hp = 1
+		enemy.max_hp = 1
+	if enemy.has_method("_update_hp_bar"):
+		enemy._update_hp_bar()
+
+
+func _finalize_wave_enemy(enemy: Node, game_timer: float) -> void:
+	if game_timer < SaveManager.FIRST_MINUTE_ONE_SHOT_SEC:
+		_apply_first_minute_one_shot(enemy)
+	else:
+		_apply_global_mob_buff(enemy)
+	_sync_enemy_speed_from_base(enemy)
 
 func _make_elite(enemy: Node, game_timer: float) -> void:
 	if game_timer < 60:
@@ -277,6 +317,8 @@ func spawn_swarm_event(game_timer: float) -> void:
 		_apply_meta_curse_level(enemy)
 		_apply_run_curse_tier(enemy)
 		enemy.make_swarm_enemy(direction, randf_range(160.0, 220.0))
+		enemy.swarm_speed_override *= SaveManager.get_run_curse_enemy_speed_mult()
+		_finalize_wave_enemy(enemy, game_timer)
 
 	players[0].show_floating_text(
 		tr("ui.alerts.swarm_incoming"),
@@ -308,6 +350,7 @@ func spawn_encircle_event(game_timer: float) -> void:
 		_apply_scaling(enemy, game_timer)
 		_apply_meta_curse_level(enemy)
 		_apply_run_curse_tier(enemy)
+		_finalize_wave_enemy(enemy, game_timer)
 
 	players[0].show_floating_text(
 		tr("ui.alerts.encircled"),

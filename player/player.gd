@@ -16,6 +16,10 @@ var BASE_SPEED = 130.0
 var SPEED = 130.0
 ## Yer hareketi üst sınırı (level / meta / tılsım ile taşmasın).
 const MAX_MOVE_SPEED: float = 300.0
+## Koşu içi seviye hızı: `gain_xp(amount)` girdisi (orb/dalga ödülü vb.) önce bu çarpanla indirilir.
+const RUN_XP_GAIN_MULT: float = 0.78
+## `_calc_xp_for_level` tabanına uygulanır; >1 = seviyeler arası daha çok XP gerekir.
+const LEVEL_XP_REQUIREMENT_MULT: float = 1.48
 var hp = 100
 var max_hp = 100
 var bullet_damage = 10
@@ -24,7 +28,8 @@ var shake_duration = 0.0
 
 var xp = 0
 var level = 1
-var xp_to_next_level = 30
+## Lv1 başında `_ready` içinde `_calc_xp_for_level(1)` ile güncellenir (meta başlangıç seviyesi yoksa).
+var xp_to_next_level = 48
 ## Koşu boyunca `gain_xp` ile biriken ham XP (run sonu hesap XP payı için).
 var run_xp_collected: int = 0
 var kill_count = 0
@@ -45,6 +50,26 @@ var _origin_cooldown_bonus = 0.0
 var _origin_armor_bonus = 0
 var _origin_xp_bonus = 0.0
 var collection_regen_timer = 0.0
+## Yalnızca W/S (direction.x ≈ 0) iken hangi yürüyüş animasyonu: son yatay hareket veya son A/D (P1 WASD = p2_*).
+var _facing_walk_left: bool = true
+
+
+func _input(event: InputEvent) -> void:
+	if not event.is_pressed() or event.is_echo():
+		return
+	match player_id:
+		0:
+			if event.is_action_pressed(&"p2_left"):
+				_facing_walk_left = true
+			elif event.is_action_pressed(&"p2_right"):
+				_facing_walk_left = false
+		1:
+			if event.is_action_pressed(&"ui_left"):
+				_facing_walk_left = true
+			elif event.is_action_pressed(&"ui_right"):
+				_facing_walk_left = false
+		_:
+			pass
 
 
 func _ready_damage_tracking():
@@ -103,10 +128,6 @@ var category_hp_bonus = 0
 @onready var xp_bar = $CanvasLayer/XPBar
 @onready var hp_bar_fill = $WorldUI/HPBarFill
 @onready var hp_bar_bg = $WorldUI/HPBarBG
-@onready var attack_label = $CanvasLayer/CategoryPanel/VBoxContainer/AttackLabel
-@onready var defense_label = $CanvasLayer/CategoryPanel/VBoxContainer/DefenseLabel
-@onready var vampire_label = $CanvasLayer/CategoryPanel/VBoxContainer/VampireLabel
-@onready var utility_label = $CanvasLayer/CategoryPanel/VBoxContainer/UtilityLabel
 var _body_base_color = Color.WHITE
 
 @onready var body = $ColorRect
@@ -115,6 +136,8 @@ func _ready():
 	max_hp = 100
 	hp = 100
 	apply_meta_bonuses()
+	if level == 1:
+		xp_to_next_level = _calc_xp_for_level(1)
 	apply_character_bonuses()
 	$CanvasLayer/StatsRow/KillLabel.text = "💀 0"
 	$CanvasLayer/StatsRow/GoldLabel.text = "💰 0"
@@ -124,9 +147,14 @@ func _ready():
 	xp_bar.min_value = 0
 	xp_bar.value = 0
 	xp_bar.show_percentage = false
-	# XP bar boyutunu ekrana göre ayarla
-	xp_bar.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	xp_bar.custom_minimum_size = Vector2(0, 18)
+	# XP çubuğu: ekranın üstü, yatay kenar boşlukları (StatsRow / CategoryPanel aşağı kaydırıldı).
+	xp_bar.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	xp_bar.offset_left = 16.0
+	xp_bar.offset_right = -16.0
+	xp_bar.offset_top = 8.0
+	xp_bar.offset_bottom = 32.0
+	xp_bar.custom_minimum_size = Vector2(0, 22)
+	xp_bar.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	
 	update_hp_bar()
 	update_category_ui()
@@ -135,20 +163,6 @@ func _ready():
 	if SaveManager.game_mode == "local_coop":
 		$CanvasLayer.visible = false
 	
-	# Stats butonu HUD'a ekle
-	var stats_btn = Button.new()
-	stats_btn.text = "📊"
-	stats_btn.custom_minimum_size = Vector2(40, 40)
-	stats_btn.position = Vector2(10, 10)
-	var btn_style = StyleBoxFlat.new()
-	btn_style.bg_color = Color("#1A1A2EAA")
-	btn_style.corner_radius_top_left = 6
-	btn_style.corner_radius_top_right = 6
-	btn_style.corner_radius_bottom_left = 6
-	btn_style.corner_radius_bottom_right = 6
-	stats_btn.add_theme_stylebox_override("normal", btn_style)
-	stats_btn.pressed.connect(_on_stats_button_pressed)
-	$CanvasLayer.add_child(stats_btn)
 	# Co-op: player_id'ye göre input ayarla
 	_setup_input()
 	EventBus.player_damaged.connect(_on_player_damaged)
@@ -248,6 +262,8 @@ func get_effective_move_speed() -> float:
 
 func _physics_process(_delta):
 	var direction = _get_input_direction()
+	if absf(direction.x) > 0.01:
+		_facing_walk_left = direction.x < 0.0
 	velocity = direction.normalized() * get_effective_move_speed()
 	move_and_slide()
 	_update_animation(direction)
@@ -282,18 +298,20 @@ func _update_animation(direction: Vector2):
 	if sprite == null:
 		return
 	if direction == Vector2.ZERO:
-		if sprite.animation == &"walk_left":
-			_try_play_sprite_anim(sprite, &"idle_left")
-			sprite.flip_h = false
-		elif sprite.animation == &"walk_right":
-			_try_play_sprite_anim(sprite, &"idle_right")
+		if sprite.animation == &"walk_left" or sprite.animation == &"walk_right":
+			_try_play_sprite_anim(sprite, &"idle_left" if _facing_walk_left else &"idle_right")
 			sprite.flip_h = false
 	else:
-		if direction.x >= 0:
-			_try_play_sprite_anim(sprite, &"walk_right")
+		var use_left: bool
+		if absf(direction.x) > 0.01:
+			use_left = direction.x < 0.0
+		else:
+			use_left = _facing_walk_left
+		if use_left:
+			_try_play_sprite_anim(sprite, &"walk_left")
 			sprite.flip_h = false
 		else:
-			_try_play_sprite_anim(sprite, &"walk_left")
+			_try_play_sprite_anim(sprite, &"walk_right")
 			sprite.flip_h = false
 
 func _process(delta):
@@ -362,30 +380,8 @@ func update_hp_bar():
 	else:
 		hp_bar_fill.color = Color("#E74C3C")
 
-func update_category_ui():
-	var labels = {
-		"attack": attack_label,
-		"defense": defense_label,
-		"vampire": vampire_label,
-		"utility": utility_label,
-	}
-	var names = {"attack": "⚔", "defense": "🛡", "vampire": "🩸", "utility": "⚡"}
-	var colors = {
-		"attack": Color("#E74C3C"),
-		"defense": Color("#3498DB"),
-		"vampire": Color("#9B59B6"),
-		"utility": Color("#2ECC71"),
-	}
-	for cat in labels:
-		var count = category_counts[cat]
-		var label = labels[cat]
-		if count == 0:
-			label.visible = false
-		else:
-			label.visible = true
-			label.add_theme_color_override("font_color", colors[cat])
-			var stars = " ★★" if count >= 6 else (" ★" if count >= 3 else "")
-			label.text = names[cat] + " " + str(count) + stars
+func update_category_ui() -> void:
+	PlayerUiHelpers.rebuild_run_loadout_hud(self)
 
 func get_luck() -> float:
 	return SaveManager.meta_upgrades["luck_bonus"] * 0.1
@@ -674,11 +670,16 @@ func get_item_description(type: String) -> String:
 	return line
 
 func gain_xp(amount: int):
-	var curse_multiplier = 1.0 + SaveManager.meta_upgrades.get("curse_level", 0) * 1.0 + SaveManager.get_run_curse_tier() * 0.12
+	var scaled: int = maxi(0, int(floor(float(amount) * RUN_XP_GAIN_MULT)))
+	var curse_multiplier: float = (
+		1.0
+		+ SaveManager.meta_upgrades.get("curse_level", 0) * 1.0
+		+ SaveManager.run_curse_tier_delta() * SaveManager.RUN_CURSE_XP_GAIN_PER_TIER
+	)
 	var bonus = 1.0 + SaveManager.meta_upgrades["xp_bonus"] * 0.1 + category_xp_bonus + _origin_xp_bonus
 	if shrine_active:
 		bonus *= 3.0
-	var xp_gain: int = int(amount * bonus * curse_multiplier)
+	var xp_gain: int = int(scaled * bonus * curse_multiplier)
 	run_xp_collected += xp_gain
 	xp += xp_gain
 	if SaveManager.game_mode != "local_coop":
@@ -706,9 +707,6 @@ func _apply_one_level_gain() -> void:
 	var main = get_tree().get_first_node_in_group("main")
 	if main and main.has_method("queue_upgrade"):
 		main.queue_upgrade(self)
-
-func _on_stats_button_pressed() -> void:
-	PlayerUiHelpers.toggle_stats_panel(self)
 
 func _on_upgrade_chosen(upgrade_id: String):
 	if upgrade_id == "skip":
@@ -949,14 +947,16 @@ func _update_screen_shake(delta: float):
 
 
 func _calc_xp_for_level(lvl: int) -> int:
+	var base: int
 	if lvl <= 5:
-		return 18 + lvl * 8
-	if lvl <= 20:
-		return 30 + lvl * 10
+		base = 18 + lvl * 8
+	elif lvl <= 20:
+		base = 30 + lvl * 10
 	elif lvl <= 40:
-		return 230 + (lvl - 20) * 13
+		base = 230 + (lvl - 20) * 13
 	else:
-		return 490 + (lvl - 40) * 16
+		base = 490 + (lvl - 40) * 16
+	return maxi(42, int(ceil(float(base) * LEVEL_XP_REQUIREMENT_MULT)))
 
 func _check_speed_synergy() -> bool:
 	# MoveSpeed ve speed_charm ikisi de max level mi?
@@ -981,11 +981,6 @@ func get_tag_crit_bonus() -> float:
 		elif c >= 3:
 			bonus += 0.10
 	return bonus
-
-
-## `player_ui_helpers.gd` istatistik paneli için; bu sınıfta doğrudan okunmaz (statik analiz uyarısı).
-@warning_ignore("unused_private_class_variable")
-var _stat_panel = null
 
 
 func _setup_player_visuals():

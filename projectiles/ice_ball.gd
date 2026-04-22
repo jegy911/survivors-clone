@@ -3,6 +3,9 @@ extends Area2D
 ## Editörde `Sprite2D.texture` doluysa o kullanılır; değilse bu yol yüklenir.
 const ICE_TEXTURE_PATH := "res://assets/projectiles/ice_ball/ice_ball_projectile.png"
 
+const ACTIVE_LAYER := 1
+const ACTIVE_MASK := 2
+
 var player = null
 var speed = 280.0
 var direction = Vector2.ZERO
@@ -77,6 +80,8 @@ func init(dir: Vector2, dmg: int, shooter = null):
 	if spr:
 		spr.modulate.a = vfx_a
 	_apply_visuals()
+	collision_layer = ACTIVE_LAYER
+	collision_mask = ACTIVE_MASK
 	show()
 
 func reset():
@@ -87,6 +92,8 @@ func reset():
 	var spr := get_node_or_null("Sprite2D") as Sprite2D
 	if spr:
 		spr.modulate.a = 1.0
+	collision_layer = 0
+	collision_mask = 0
 	hide()
 
 func _spawn_freeze_effect():

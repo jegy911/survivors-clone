@@ -1,5 +1,8 @@
 extends Area2D
 
+const ACTIVE_LAYER := 4
+const ACTIVE_MASK := 1
+
 var speed = 250.0
 var direction = Vector2.ZERO
 var damage = 12
@@ -23,10 +26,14 @@ func init(dir: Vector2, dmg: int = 12):
 	direction = dir
 	damage = dmg
 	lifetime = 3.0
+	collision_layer = ACTIVE_LAYER
+	collision_mask = ACTIVE_MASK
 	show()
 
 func reset():
 	direction = Vector2.ZERO
 	damage = 12
 	lifetime = 3.0
+	collision_layer = 0
+	collision_mask = 0
 	hide()

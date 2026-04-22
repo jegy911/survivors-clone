@@ -209,13 +209,13 @@ Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + is
 | Ana menü | `ui/main_menu` | Tam ekran foto: `assets/ui/main_menu_bg.*` (yoksa düz renk + yıldızlar); **buton kapakları:** `assets/button covers/button1.png` → `StyleBoxTexture` (`main_menu.gd`), atlas `region_rect` + yatay nine-patch; Mağaza → `shop_menu` iskelet — ayrıntı **`docs/GELISTIRICI_REHBERI.md` §7.1** |
 | Mağaza (kozmetik / pet / fragman) | `ui/shop_menu` | ❌ Placeholder sekmeler; satın alma UI yok |
 | Karakter seçimi (+ P2) | `ui/character_select*` + `character_select_preview.gd` + `character_select_stats_panel.gd` | Dört rol filtresi; portre = `idle_left` (yoksa yedek) ilk kare, sabit çerçeve; kilit=siyah; koşul açık=silüet; satın alınmış=tam renk; tam ekran arka plan + margin’li layout; sağda meta taban + kahraman bonus özet istatistikleri |
-| Harita / mod | `ui/map_select` | Story / fast mod + lanet slider + harita önizlemesi; arena kilitli |
+| Harita / mod | `ui/map_select` | Story / fast / arena; harita önizlemesi; **koşu laneti** kaydırıcı + EN-only açıklama/ölçek çubukları (`tr_en_source`, `run_curse_stat_bar.gd`) |
 | Level-up kartları | `ui/upgrade_ui` | Kısmi — üç panel + dikey kartlar + envanter `tooltip_text` + `en.json` kabuk metinleri; büyük sprite ikon seti yok |
-| HUD (kill, altın, çubuklar) | `player` + CanvasLayer | ✅ / ❌ |
+| HUD (kill, altın, XP, silah/eşya) | `player` + CanvasLayer | Koşu envanteri: iki satır ikon + `LVL` (`PlayerUiHelpers.rebuild_run_loadout_hud`, teal panel); kill/altın satırı ayrı |
 | Oyun sonu | `ui/game_over` | ✅ |
 | Duraklat | `ui/pause_menu` | ✅ / ❌ |
 | Meta upgrade | `ui/meta_upgrade` | ✅ — üst hizalı sütun + `ScrollContainer` ile kart ızgarası kaydırılabilir |
-| Ayarlar | `ui/settings` | ✅ — Ses sekmesinde müzik parça kontrolleri + müzik sesi kaydırıcısı (`music_volume`) |
+| Ayarlar | `ui/settings` | ✅ — Ses: müzik parça kontrolleri + `music_volume` + isteğe bağlı **`combat_music_duck`** (kısa müzik dip’i; etiket `tr_en_source` → yalnız `en.json`) |
 | Arayüz dili (çeviri) | `locales/*.json`, `LocalizationManager`, Ayarlar → Dil | ✅ `tr` / `en` / `zh_CN`; level-up kabuk `ui.upgrade_ui.*`; run yüzen uyarılar `ui.alerts.*` + co-op kısa HUD `ui.game.*`; karakter seçimi ipucu/butonlar `ui.character_select.*` (`en` rutin); silah/eşya **etki** satırları çoğunlukla kod içi (`player.gd` / `get_description`) |
 | Hasar sayıları | `effects/damage_number` | ✅ |
 | Global font ölçeği (okunabilirlik) | `SaveManager.settings["ui_scale"]`, Ayarlar → Görüntü | Kısmi — bazı ekranlarda (`map_select`, `shop_menu`); tüm HUD/menüde zorunlu değil |

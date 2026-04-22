@@ -43,7 +43,7 @@ func explode():
 		spr_done.modulate = Color.WHITE
 	is_exploding = true
 	is_dead = true
-	_try_drop_gold()
+	_notify_enemy_kill_to_player(null)
 	var enemies_and_player = get_tree().get_nodes_in_group("player")
 	for p in enemies_and_player:
 		if p.global_position.distance_to(global_position) < EXPLOSION_RADIUS:

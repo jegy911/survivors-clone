@@ -38,7 +38,6 @@ func die(killer: Node = null):
 	is_dead = true
 	_notify_enemy_kill_to_player(killer)
 	AudioManager.play_death()
-	_try_drop_gold()
 	if SaveManager.is_heavy_vfx_enabled():
 		var gc := SaveManager.get_particle_burst_count(16)
 		for i in gc:
@@ -61,9 +60,4 @@ func die(killer: Node = null):
 	tween2.tween_callback(_on_death_complete)
 
 func _on_death_complete():
-	SaveManager.register_codex_discovered(get_codex_id())
-	if randf() < XP_DROP_CHANCE:
-		for i in 5:
-			var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
-			orb.init(XP_VALUE / 5, global_position + Vector2(randf_range(-40, 40), randf_range(-40, 40)))
-	queue_free()
+	super._on_death_complete()

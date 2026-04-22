@@ -132,7 +132,7 @@ func reset():
 	_traveled = 0.0
 	_max_travel = 0.0
 	_base_modulate = Color(0.95, 0.35, 0.08, 1)
-	set_deferred("monitoring", false)
+	# `collision_layer` 0 yeterli; `set_deferred("monitoring", false)` kuyrukta kalıp sonraki `init()` ile yarışabiliyordu.
 	collision_layer = 0
 	collision_mask = 0
 	var spr := get_node_or_null("Sprite2D") as Sprite2D

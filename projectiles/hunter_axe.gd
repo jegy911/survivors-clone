@@ -3,6 +3,9 @@ extends Area2D
 
 const TEX_AXE := preload("res://assets/projectiles/axe/boomerang.png")
 
+const ACTIVE_LAYER := 1
+const ACTIVE_MASK := 2
+
 var speed = 350.0
 var direction = Vector2.ZERO
 var damage = 18
@@ -75,6 +78,8 @@ func init(dir: Vector2, dmg: int, player: Node2D, steal_life: bool = false) -> v
 		body.modulate = Color(1.0, 0.5, 0.52, vfx_a)
 	else:
 		body.modulate = Color(1.0, 1.0, 1.0, vfx_a)
+	collision_layer = ACTIVE_LAYER
+	collision_mask = ACTIVE_MASK
 	show()
 
 
@@ -89,4 +94,6 @@ func reset() -> void:
 	body.rotation = 0.0
 	body.modulate = Color.WHITE
 	body.modulate.a = 1.0
+	collision_layer = 0
+	collision_mask = 0
 	hide()

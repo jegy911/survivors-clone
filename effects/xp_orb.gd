@@ -1,5 +1,8 @@
 extends Area2D
 
+const ACTIVE_LAYER := 8
+const ACTIVE_MASK := 1
+
 var xp_value = 10
 var player = null
 var move_speed = 0.0
@@ -64,6 +67,8 @@ func init(value: int, pos: Vector2):
 	_bob_time = randf() * TAU
 	_is_moving = false
 	global_position = pos
+	collision_layer = ACTIVE_LAYER
+	collision_mask = ACTIVE_MASK
 	add_to_group("xp_orbs")
 	show()
 
@@ -82,4 +87,6 @@ func reset():
 	if sprite:
 		sprite.position.y = 0.0
 	remove_from_group("xp_orbs")
+	collision_layer = 0
+	collision_mask = 0
 	hide()

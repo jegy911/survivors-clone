@@ -6,6 +6,7 @@ Oyun içindeki **tüm işitsel içerik** için yaşayan envanter: hangi olay han
 
 - Ana otorite: `core/audio_manager.gd` + sahne `core/audio_manager.tscn` (`AudioStreamPlayer` düğümleri, stream’ler `.tscn` üzerinde).
 - Otobüsler: **SFX** (efektler), **Music** (müzik), ikisi de **Master** altında; hacim `SaveManager.settings` → `ui/settings.gd` içinde `AudioManager.apply_volume_settings()`.
+- **İsteğe bağlı müzik dip’i:** `SaveManager.settings["combat_music_duck"]` (varsayılan **kapalı**). Açıkken her silah `attack()` sonrası `AudioManager.notify_combat_music_duck_beat()` müzik bus linear çarpanını kısa süre düşürür (`_combat_music_duck_linear` + `_refresh_music_bus_volume`); kapalıyken yalnızca `music_volume` uygulanır. Tetik: `weapons/weapon_base.gd` (`attack()` sonrası). Ayar: **Ayarlar → Ses** (`settings.gd`, etiket metni `LocalizationManager.tr_en_source("ui.settings.combat_music_duck")`).
 
 **Kullanım:** Yeni ses ekleyince bu dosyada ilgili bölüme satır ekle; dosya taşınırsa yolu güncelle; ayrıştırılacak bir olay varsa “henüz yok” satırını doldur.
 

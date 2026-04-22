@@ -206,10 +206,18 @@ func _build_ses_tab(parent: Node):
 
 	_add_slider(vbox, tr("ui.settings.music_volume"), settings.get("music_volume", 1.0), func(val):
 		SaveManager.settings["music_volume"] = val
-		var bus = AudioServer.get_bus_index("Music")
-		if bus >= 0:
-			AudioServer.set_bus_volume_db(bus, linear_to_db(val))
+		AudioManager.apply_volume_settings()
 		SaveManager.save_game()
+	)
+
+	_add_toggle(
+		vbox,
+		LocalizationManager.tr_en_source("ui.settings.combat_music_duck"),
+		bool(settings.get("combat_music_duck", false)),
+		func(on: bool):
+			SaveManager.settings["combat_music_duck"] = on
+			AudioManager.apply_volume_settings()
+			SaveManager.save_game()
 	)
 
 func _build_goruntu_tab(parent: Node):

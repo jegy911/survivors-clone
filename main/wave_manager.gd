@@ -238,9 +238,9 @@ func _on_reward_chosen(choice: Dictionary, overlay: Node) -> void:
 				items.shuffle()
 				player.add_item(items[0])
 			"xp":
-				# Co-op: tüm oyuncular XP kazanır
+				# Co-op: tüm oyuncular XP kazanır (tam barın ~%115’i — eski 2× bar çok hızlı level üretiyordu).
 				for p in players:
-					p.gain_xp(p.xp_to_next_level * 2)
+					p.gain_xp(int(ceil(float(p.xp_to_next_level) * 1.15)))
 			"damage":
 				# Co-op: tüm oyuncular güçlenir
 				for p in players:

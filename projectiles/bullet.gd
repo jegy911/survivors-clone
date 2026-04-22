@@ -112,7 +112,6 @@ func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter 
 
 func reset():
 	_hit = false
-	_restore_hit_scan()
 	pierce_count = 0
 	direction = Vector2.ZERO
 	damage = 10
@@ -132,3 +131,5 @@ func reset():
 		cr.visible = true
 	remove_from_group("player_bullets")
 	hide()
+	# Havuzda gizliyken çarpışma kapalı olmalı; aksi halde `area_entered` görünmez mermiyle hasar verir.
+	_disable_hit_scan()

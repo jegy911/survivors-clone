@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 const MAP_IDS_VS := ["vs_map"]
+const CURSE_BAR_SCRIPT: GDScript = preload("res://ui/run_curse_stat_bar.gd")
 
 var _variant: String = "story"
 var _map_id: String = "vs_map"
@@ -11,6 +12,8 @@ var _desc: RichTextLabel
 var _curse_value: Label
 var _mode_entries: Array = []
 var _map_ui_scale: float = 1.0
+## { "kind": String, "bar": Control, "l0": Label, "l1": Label, "l2": Label }
+var _curse_rows: Array = []
 
 
 func _ready() -> void:
@@ -37,7 +40,7 @@ func _ready() -> void:
 	root.add_child(hsplit)
 
 	var left := VBoxContainer.new()
-	left.custom_minimum_size = Vector2(int(300 * s), 0)
+	left.custom_minimum_size = Vector2(int(332 * s), 0)
 	left.add_theme_constant_override("separation", int(14 * s))
 	hsplit.add_child(left)
 
@@ -89,12 +92,15 @@ func _ready() -> void:
 
 	var curse_slider := HSlider.new()
 	curse_slider.min_value = 0
-	curse_slider.max_value = 5
+	curse_slider.max_value = float(SaveManager.RUN_CURSE_TIER_MAX)
 	curse_slider.step = 1
-	curse_slider.value = float(SaveManager.settings.get("run_curse_tier", 0))
-	curse_slider.custom_minimum_size = Vector2(int(260 * s), int(28 * s))
+	curse_slider.value = float(SaveManager.settings.get("run_curse_tier", SaveManager.RUN_CURSE_REFERENCE_TIER))
+	curse_slider.custom_minimum_size = Vector2(int(300 * s), int(28 * s))
 	curse_slider.value_changed.connect(_on_curse_changed)
 	left.add_child(curse_slider)
+
+	var curse_detail := _build_curse_factors_panel(s)
+	left.add_child(curse_detail)
 	_on_curse_changed(curse_slider.value)
 
 	var btn_row := HBoxContainer.new()
@@ -204,7 +210,137 @@ func _select_map(mid: String) -> void:
 
 func _on_curse_changed(v: float) -> void:
 	_curse_tier = int(round(v))
-	_curse_value.text = tr("ui.map_select.curse_value") % _curse_tier
+	var fmt: String = tr("ui.map_select.curse_value")
+	if fmt.count("%") >= 2:
+		_curse_value.text = fmt % [_curse_tier, SaveManager.RUN_CURSE_TIER_MAX]
+	else:
+		_curse_value.text = fmt % _curse_tier
+	_refresh_curse_stat_rows(_curse_tier)
+
+
+func _build_curse_factors_panel(s: float) -> VBoxContainer:
+	_curse_rows.clear()
+	var col := VBoxContainer.new()
+	col.add_theme_constant_override("separation", int(10 * s))
+
+	var intro := Label.new()
+	intro.text = LocalizationManager.tr_en_source("ui.map_select.curse_intro")
+	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	intro.add_theme_font_size_override("font_size", int(11 * s))
+	intro.add_theme_color_override("font_color", Color("#A8B0C4"))
+	intro.custom_minimum_size = Vector2(int(308 * s), 0)
+	col.add_child(intro)
+
+	var note := Label.new()
+	note.text = LocalizationManager.tr_en_source("ui.map_select.curse_meta_note")
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	note.add_theme_font_size_override("font_size", int(10 * s))
+	note.add_theme_color_override("font_color", Color("#6B7280"))
+	note.custom_minimum_size = Vector2(int(308 * s), 0)
+	col.add_child(note)
+
+	var defs: Array[Dictionary] = [
+		{
+			"kind": "spawn",
+			"title": "ui.map_select.curse_stat_spawn_title",
+			"desc": "ui.map_select.curse_stat_spawn_desc",
+		},
+		{
+			"kind": "hp",
+			"title": "ui.map_select.curse_stat_hp_title",
+			"desc": "ui.map_select.curse_stat_hp_desc",
+		},
+		{
+			"kind": "speed",
+			"title": "ui.map_select.curse_stat_speed_title",
+			"desc": "ui.map_select.curse_stat_speed_desc",
+		},
+		{
+			"kind": "xp",
+			"title": "ui.map_select.curse_stat_xp_title",
+			"desc": "ui.map_select.curse_stat_xp_desc",
+		},
+	]
+	for def in defs:
+		col.add_child(_make_one_curse_stat_row(def, s))
+	return col
+
+
+func _make_one_curse_stat_row(def: Dictionary, s: float) -> Control:
+	var wrap := VBoxContainer.new()
+	wrap.add_theme_constant_override("separation", int(4 * s))
+
+	var title := Label.new()
+	title.text = LocalizationManager.tr_en_source(str(def["title"]))
+	title.add_theme_font_size_override("font_size", int(12 * s))
+	title.add_theme_color_override("font_color", Color("#DDE4FF"))
+	wrap.add_child(title)
+
+	var desc := Label.new()
+	desc.text = LocalizationManager.tr_en_source(str(def["desc"]))
+	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	desc.custom_minimum_size = Vector2(int(308 * s), 0)
+	desc.add_theme_font_size_override("font_size", int(10 * s))
+	desc.add_theme_color_override("font_color", Color("#7D8AA6"))
+	wrap.add_child(desc)
+
+	var bar: Control = CURSE_BAR_SCRIPT.new() as Control
+	bar.custom_minimum_size = Vector2(int(300 * s), int(12 * s))
+	wrap.add_child(bar)
+
+	var nums := HBoxContainer.new()
+	nums.add_theme_constant_override("separation", int(6 * s))
+	var l0 := Label.new()
+	var l1 := Label.new()
+	var l2 := Label.new()
+	for L: Label in [l0, l1, l2]:
+		L.add_theme_font_size_override("font_size", int(10 * s))
+		L.add_theme_color_override("font_color", Color("#B8C0D4"))
+	l0.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	l1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	l2.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	l0.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	l1.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	l2.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	nums.add_child(l0)
+	nums.add_child(l1)
+	nums.add_child(l2)
+	wrap.add_child(nums)
+
+	_curse_rows.append({"kind": str(def["kind"]), "bar": bar, "l0": l0, "l1": l1, "l2": l2})
+	return wrap
+
+
+func _refresh_curse_stat_rows(tier: int) -> void:
+	var tmax: int = SaveManager.RUN_CURSE_TIER_MAX
+	for row in _curse_rows:
+		var kind: String = str(row["kind"])
+		var v0: int
+		var v5: int
+		var vc: int
+		match kind:
+			"spawn":
+				v0 = SaveManager.run_curse_spawn_percent_for_tier(0)
+				v5 = SaveManager.run_curse_spawn_percent_for_tier(tmax)
+				vc = SaveManager.run_curse_spawn_percent_for_tier(tier)
+			"hp":
+				v0 = SaveManager.run_curse_enemy_hp_percent_for_tier(0)
+				v5 = SaveManager.run_curse_enemy_hp_percent_for_tier(tmax)
+				vc = SaveManager.run_curse_enemy_hp_percent_for_tier(tier)
+			"speed":
+				v0 = SaveManager.run_curse_enemy_speed_percent_for_tier(0)
+				v5 = SaveManager.run_curse_enemy_speed_percent_for_tier(tmax)
+				vc = SaveManager.run_curse_enemy_speed_percent_for_tier(tier)
+			"xp":
+				v0 = SaveManager.run_curse_xp_gain_percent_for_tier(0)
+				v5 = SaveManager.run_curse_xp_gain_percent_for_tier(tmax)
+				vc = SaveManager.run_curse_xp_gain_percent_for_tier(tier)
+			_:
+				continue
+		(row["bar"] as Node).call("set_scale_values", float(v0), float(v5), float(vc))
+		row["l0"].text = LocalizationManager.tr_en_source("ui.map_select.curse_scale_t0") % v0
+		row["l1"].text = LocalizationManager.tr_en_source("ui.map_select.curse_scale_pick") % vc
+		row["l2"].text = LocalizationManager.tr_en_source("ui.map_select.curse_scale_tmax") % [tmax, v5]
 
 
 func _update_preview() -> void:

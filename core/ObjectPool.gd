@@ -18,6 +18,8 @@ func _ensure_pool(scene_path: String) -> void:
 		obj.set_meta("in_pool", true)
 		add_child(obj)
 		obj.hide()
+		if obj.has_method("reset"):
+			obj.reset()
 		objects.append(obj)
 		free_indices.append(objects.size() - 1)
 	_pools[scene_path] = {"objects": objects, "free": free_indices}

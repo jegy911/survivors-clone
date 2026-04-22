@@ -11,7 +11,7 @@ func _ready():
 	category = "attack"
 	tag = "patlayici"
 	damage = 25
-	cooldown = 0.8
+	cooldown = 1.15
 	max_level = 5
 
 func has_targets_for_attack() -> bool:
@@ -66,9 +66,9 @@ func _chain_lightning(start_enemy: Node):
 func on_upgrade():
 	match level:
 		2: damage = 30; orbit_radius = 90
-		3: damage = 36; cooldown = 0.7
+		3: damage = 36; cooldown = 1.0
 		4: damage = 44; orbit_radius = 110
-		5: damage = 55; cooldown = 0.5; orbit_radius = 130
+		5: damage = 55; cooldown = 0.88; orbit_radius = 130
 
 func get_description() -> String:
 	return tr("ui.upgrade_ui.stats.loadout_weapons.shadow_storm") % [

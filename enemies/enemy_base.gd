@@ -5,7 +5,13 @@ extends Area2D
 var BASE_SPEED = 50.0
 var DAMAGE = 10
 var XP_VALUE = 5
-var XP_DROP_CHANCE = 0.35
+var XP_DROP_CHANCE = 0.28
+## Ölüm başına varsayılan en fazla 1 loot türü; çift düşme bu olasılıkla (~%1).
+const DEATH_LOOT_DOUBLE_CHANCE: float = 0.01
+## Özel eşya (kan antlaşması / dişli / buhar-zaman) toplam ağırlığı — eski bağımsız üst sınır ile uyumlu.
+const DEATH_LOOT_SPECIAL_WEIGHT: float = 0.037
+const DEATH_LOOT_NONE_WEIGHT_NORMAL: float = 0.40
+const DEATH_LOOT_NONE_WEIGHT_ELITE: float = 0.06
 var gold_value = 1
 var elite_gold_value = 2
 var death_scale = 1.4
@@ -190,9 +196,6 @@ func die(killer: Node = null):
 				fire_tween.tween_callback(fire_flash.queue_free)
 	if SaveManager.is_heavy_vfx_enabled():
 		_spawn_particles()
-	call_deferred("_try_drop_gold")
-	call_deferred("_try_drop_chest")
-	call_deferred("_try_drop_special_pickup")
 	var tween = create_tween()
 	tween.tween_property(self, "scale", Vector2(death_scale, death_scale), 0.08)
 	tween.tween_property(self, "scale", Vector2(0.0, 0.0), 0.12)
@@ -208,7 +211,62 @@ func _any_player_can_pickup_cog() -> bool:
 	return false
 
 
-func _try_drop_special_pickup():
+## Ölüm sonunda tek yerden çağrılır: aynı anda birden çok bağımsız düşürme yok (en fazla 1 + ~%1 ile 2).
+func resolve_death_loot() -> void:
+	var max_picks: int = 2 if randf() < DEATH_LOOT_DOUBLE_CHANCE else 1
+	var used: Dictionary = {}
+	for _i in max_picks:
+		var kind: String = _pick_death_loot_kind(used)
+		if kind.is_empty() or kind == "none":
+			continue
+		used[kind] = true
+		match kind:
+			"xp":
+				_spawn_xp_orb_drop()
+			"gold":
+				_spawn_gold_orb_drop()
+			"chest":
+				_spawn_chest_drop()
+			"special":
+				_spawn_special_pickup_drop()
+
+
+func _pick_death_loot_kind(used: Dictionary) -> String:
+	var w_xp: float = 0.0
+	if not used.has("xp"):
+		w_xp = XP_DROP_CHANCE
+	var w_gold: float = 0.0
+	if not used.has("gold"):
+		w_gold = 1.0 if get_meta("is_elite", false) else 0.12
+	var w_chest: float = 0.0
+	if not used.has("chest"):
+		w_chest = 0.20 if get_meta("is_elite", false) else 0.01
+	var w_special: float = 0.0
+	if not used.has("special"):
+		w_special = DEATH_LOOT_SPECIAL_WEIGHT
+	var w_none: float = DEATH_LOOT_NONE_WEIGHT_ELITE if get_meta("is_elite", false) else DEATH_LOOT_NONE_WEIGHT_NORMAL
+	var sum: float = w_xp + w_gold + w_chest + w_special + w_none
+	if sum <= 0.0:
+		return "none"
+	var r: float = randf() * sum
+	if r < w_none:
+		return "none"
+	r -= w_none
+	if r < w_xp:
+		return "xp"
+	r -= w_xp
+	if r < w_gold:
+		return "gold"
+	r -= w_gold
+	if r < w_chest:
+		return "chest"
+	r -= w_chest
+	if r < w_special:
+		return "special"
+	return "none"
+
+
+func _spawn_special_pickup_drop() -> void:
 	var roll = randf()
 	if roll < 0.005:
 		var oath = load("res://effects/blood_oath.tscn").instantiate()
@@ -228,22 +286,14 @@ func _try_drop_special_pickup():
 		get_parent().add_child(pickup)
 		pickup.init(global_position)
 
-func _try_drop_chest():
-	var chest_chance = 0.01
-	if get_meta("is_elite", false):
-		chest_chance = 0.20
-	if randf() > chest_chance:
-		return
+
+func _spawn_chest_drop() -> void:
 	var chest = load("res://effects/chest.tscn").instantiate()
 	get_parent().add_child(chest)
 	chest.init(global_position)
 
-func _try_drop_gold():
-	var drop_chance = 0.12
-	if get_meta("is_elite", false):
-		drop_chance = 1.0
-	if randf() > drop_chance:
-		return
+
+func _spawn_gold_orb_drop() -> void:
 	var orb = ObjectPool.get_object("res://effects/gold_orb.tscn")
 	var v = gold_value
 	if get_meta("is_elite", false):
@@ -255,6 +305,23 @@ func _try_drop_gold():
 		var gold_meta_bonus = SaveManager.meta_upgrades.get("gold_bonus", 0)
 		v += gold_meta_bonus
 	orb.init(v, global_position)
+
+
+func _spawn_xp_orb_drop() -> void:
+	var roll = randf()
+	var xp_val = XP_VALUE
+	var orb_color = Color("#4A90E2")
+	if roll < 0.02:
+		xp_val = XP_VALUE * 8
+		orb_color = Color("#E74C3C")
+	elif roll < 0.10:
+		xp_val = XP_VALUE * 3
+		orb_color = Color("#2ECC71")
+	orb_color = SaveManager.filter_accessibility_orb_color(orb_color)
+	var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
+	orb.init(xp_val, global_position)
+	if orb.get_node_or_null("ColorRect"):
+		orb.get_node("ColorRect").color = orb_color
 
 func _spawn_particles():
 	var n: int = SaveManager.get_particle_burst_count(6)
@@ -287,21 +354,7 @@ func get_codex_id() -> String:
 
 func _on_death_complete():
 	SaveManager.register_codex_discovered(get_codex_id())
-	if randf() < XP_DROP_CHANCE:
-		var roll = randf()
-		var xp_val = XP_VALUE
-		var orb_color = Color("#4A90E2") # mavi
-		if roll < 0.02: # %2 kırmızı
-			xp_val = XP_VALUE * 8
-			orb_color = Color("#E74C3C")
-		elif roll < 0.10: # %8 yeşil
-			xp_val = XP_VALUE * 3
-			orb_color = Color("#2ECC71")
-		orb_color = SaveManager.filter_accessibility_orb_color(orb_color)
-		var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
-		orb.init(xp_val, global_position)
-		if orb.get_node_or_null("ColorRect"):
-			orb.get_node("ColorRect").color = orb_color
+	resolve_death_loot()
 	queue_free()
 
 

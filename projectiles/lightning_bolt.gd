@@ -17,7 +17,7 @@ var _hit: bool = false
 
 
 func _ready() -> void:
-	_restore_collision()
+	_disable_collision()
 
 
 func reset() -> void:
@@ -27,12 +27,17 @@ func reset() -> void:
 	if _sprite:
 		_sprite.rotation = 0.0
 	hide()
-	_restore_collision()
+	_disable_collision()
 
 
 func _restore_collision() -> void:
 	collision_layer = BOLT_LAYER
 	collision_mask = BOLT_MASK
+
+
+func _disable_collision() -> void:
+	collision_layer = 0
+	collision_mask = 0
 
 
 func init(_from_global: Vector2, target_enemy: Node, dmg: int, shooter: Node, style: StringName = &"lightning") -> void:
