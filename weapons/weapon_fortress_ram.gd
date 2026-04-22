@@ -20,27 +20,29 @@ func _ram_cone_has_target() -> bool:
 	if enemies.is_empty() or player == null:
 		return false
 	var nearest: Node2D = null
-	var best := 999999.0
-	var ppos := player.global_position
+	var best: float = 999999.0
+	var ppos: Vector2 = (player as Node2D).global_position
 	for enemy in enemies:
 		if not is_instance_valid(enemy) or not enemy is Node2D:
 			continue
-		var d := ppos.distance_to(enemy.global_position)
+		var e2: Node2D = enemy as Node2D
+		var d: float = ppos.distance_to(e2.global_position)
 		if d < best:
 			best = d
-			nearest = enemy as Node2D
+			nearest = e2
 	if nearest == null:
 		return false
-	var forward := (nearest.global_position - ppos).normalized()
+	var forward: Vector2 = (nearest.global_position - ppos).normalized()
 	if forward == Vector2.ZERO:
 		forward = Vector2.RIGHT
-	var half := deg_to_rad(cone_degrees * 0.5)
-	var r := ram_range * player.get_area_multiplier()
+	var half: float = deg_to_rad(cone_degrees * 0.5)
+	var r: float = ram_range * player.get_area_multiplier()
 	for enemy in enemies:
 		if not is_instance_valid(enemy) or not enemy is Node2D:
 			continue
-		var to_e := enemy.global_position - ppos
-		var dist := to_e.length()
+		var e2b: Node2D = enemy as Node2D
+		var to_e: Vector2 = e2b.global_position - ppos
+		var dist: float = to_e.length()
 		if dist > r or dist < 1.0:
 			continue
 		if forward.angle_to(to_e.normalized()) <= half:
