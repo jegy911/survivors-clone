@@ -24,6 +24,9 @@ func _ready():
 	damage = 15
 	cooldown = 1.6
 
+func has_targets_for_attack() -> bool:
+	return _any_enemy_within_distance(chain_range * player.get_area_multiplier())
+
 func attack() -> void:
 	if _chain_running:
 		return

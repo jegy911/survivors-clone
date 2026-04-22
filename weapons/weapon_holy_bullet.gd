@@ -14,6 +14,10 @@ func _ready():
 	cooldown = 1.0
 	max_level = 5
 
+func has_targets_for_attack() -> bool:
+	const HOLY_ENGAGE := 500.0
+	return _any_enemy_within_distance(HOLY_ENGAGE * player.get_area_multiplier())
+
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
 	if enemies.is_empty():

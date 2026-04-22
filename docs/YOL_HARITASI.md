@@ -3,7 +3,35 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-20 (ana menü buton kapak dokümantasyonu — `GELISTIRICI_REHBERI` §7.1 + `TASARIM` / `README` linkleri)
+**Son güncelleme:** 2026-04-22 (wiki-arşiv özeti bu dosyada «Referans — VS / Brotato wiki analizi»; ayrıca `GameplayConstants` günlük satırı)
+
+---
+
+## Referans — VS / Brotato wiki analizi (arşiv)
+
+Proje başında yazılmış **dört ayrıntılı not** klasöründe: **`docs/vs wiki analizi/`** — Vampire Survivors wiki **üç aşama** (`vs_wiki_analiz_asama1.md`, `vs_wiki_analiz_asama2.md.md`, `vs_wiki_analiz_asama3.md`) + **Brotato arena** (`brotato_arena_analiz.md.md`). Amaç: Ironfall’a **birebir kopya değil**, ilham ve öncülük listesi. Güncel öncelik sırası yine bu dosyadaki **Proje incelemesi**, **Yapılan iş günlüğü** ve **`docs/YAPILACAKLAR_TOPLU.md`** içindeki maddelerdir.
+
+**Klasör indeksi:** `docs/vs wiki analizi/README.md` (dosya adları, tarihsel `.md.md` uzantıları, ana docs’a aktarılan özet başlıkları).
+
+**2026 kod notu:** Aşama 1’de geçen “evrim için passive item MAX kontrolü eksik” ifadesi **güncel kodda karşılanıyor** — `weapons/weapon_evolution.gd` içinde `_meets_item_requirements()` gerekli eşyaların `max_level` eşiğini doğrular.
+
+**Arşivden ürün / sistem tasarımına aktarılabilecek başlıklar (damıtılmış):**
+
+| Alan | İçerik (kısa) |
+|------|----------------|
+| **Harita / run** | Harita başına stat modifier sözlüğü; VS benzeri **mod**lar (Hyper, Hurry, Inverse, Endless) uzun vadede; dakika bazlı **küçük rastgele olay** (rulet yerine sade). |
+| **Dalga / spawn** | **Swarm**, **Encircle**, **Wall** event taslakları (`spawn_manager`, düşman `fixed_direction` vb.) — Aşama 1 §7. |
+| **Pickup** | Alan hasarı, kısa donma, XP “vacuum” darbesi — tema: buhar / dişli / rün (`effects/`, orb akışı). |
+| **Meta ekonomi** | VS PowerUp **fiyat formülü** (`Initial×(1+bought)+floor(20×1.1^totalBought)`) ile `SaveManager` meta maliyetinin **karşılaştırılması** (Aşama 2 §6). |
+| **Kalıcı / keşif** | **Rün taşı** (karaktere bağlı kalıcı minik stat — Golden Egg izi); haritada **Enkaz kapsülü** (Coffin izi, koruyucu dalga → karakter açılışı) — `lore.md` + `TASARIM.md`. |
+| **Run-kartı** | Arcana karşılığı **Rün / Buhar kartı** — run başı + boss anlarında seçim (Aşama 2 §1, steampunk isim örnekleri aynı klasörde). |
+| **Run içi tüccar** | Altınla reroll / eşya / silah satan NPC (`environment_manager` benzeri akış; Aşama 2 §4). |
+| **Koleksiyon** | Evrim tarifleri için **Grimuar** UI; Seal-benzeri kalıcı banish (uzun vade; Aşama 2 §7). |
+| **Arena tam paket** | Brotato: **20 dalga** süre tablosu, wave arası mola + upgrade, **Elite/Horde**, **boss faz / mutasyon**, zorluk kademeleri, max düşman **80–100** önerisi; mevcut **arena v0** (`run_variant` + `ARENA_RUN_GOAL_SEC`, aynı haritada süre hedefi) ile birleştirme hedefi `YAPILACAKLAR_TOPLU` Arena maddesinde. |
+| **Silah / pasif derinlik** | Pierce, **projectile interval**, havuz **weight/rarity**; Growth / Greed / Revival / Duration / Amount pasif tipleri; VS tarzı **level bazlı kahraman pasifi** (Aşama 1 §2–5, Aşama 3 §1 §7). |
+| **Düşman** | Kill resistance, debuff resistance, **Pursuer** benzeri hızlanan tip — matris / `enemy_base` uzun vade. |
+
+Implementasyon öncesi her madde burada ve **`YAPILACAKLAR_TOPLU.md`** «vs wiki analizi» bölümünde **önceliklenmeli**; arşivdeki pseudo-kod doğrudan prod’a alınmadan gözden geçirilmelidir.
 
 ---
 
@@ -39,7 +67,7 @@ Aşağıdaki sıra **öneridir**: P0 → hızlı kullanıcı kazanımı; P4 → 
 | **`get_nodes_in_group("player_bullets")`** | Birkaç efekt; havuz / layer ile hizalama. |
 | **Silah / level-up listeleri** | `upgrade_ui.gd` `WEAPON_UPGRADE_IDS`, `player.gd` `_LEVELUP_WEAPON_IDS`, `collection_data` / kodeks — **yeni silah** eklerken çok dosya; tek veri kaynağı veya doğrulama script’i (teknik borç tablosu). |
 | **`boomerang` vs `hunter_axe`** | ID `boomerang`, sahne `hunter_axe.tscn` — isimlendirme borcu; dokümantasyon + olası gelecekte rename. |
-| **Sabit 600 px** | `weapon_lightning` + `main` co-op mesafesi — ortak sabit. |
+| **Sabit 600 px** | **[x] 2026-04-22:** `core/gameplay_constants.gd` → `GameplayConstants.MAX_COMBAT_RADIUS_PX` (`main.gd` co-op centroid + `weapon_lightning` hedef tavanı). |
 | **`player.gd` boyutu** | 900+ satır; zaten `player_ui_helpers` vb. — mantık bloklarına bölme devam edebilir. |
 | **`upgrade_ui.get_upgrade_text`** | Uzun `match`; yeni silah/eşya eklerken unutulma riski — tablo sürücülü veya `codex` fallback. |
 
@@ -71,7 +99,7 @@ Bugün toplu dokunuşlar yapıldı; olası regresyonlarda buradan iz sür:
 - **Asset:** `assets/projectiles/` (aura, axe, chain, lightning) — commit öncesi `git status` ile `??` kontrol.
 - **Aura:** `weapon_aura.gd` ölçek / `super._process`, `aura_outer_*` sabitleri.
 - **Zincir:** `weapon_chain` sıralı vuruş + gecikme; VFX önce Line2D TILE, sonra **Sprite2D** segment + `chain.png` (yön + uzunluk); renk / solma / `CHAIN_*` sabitleri `combat_projectile_fx.gd`.
-- **Yıldırım:** `weapon_lightning` + `lightning_bolt` (gökten iniş, dikey sprite), `STRIKE_MAX_DIST_FROM_PLAYER` 600, `weapon_lightning.tscn` üst sprite kaldırıldı/gizlendi.
+- **Yıldırım:** `weapon_lightning` + `lightning_bolt` (gökten iniş, dikey sprite), hedef tavanı `GameplayConstants.MAX_COMBAT_RADIUS_PX`, `weapon_lightning.tscn` üst sprite kaldırıldı/gizlendi.
 - **Locale / UI (tamam — 2026-04-18):** `ui.player` birleştirme; run yüzen + level-up loadout + **evrim tarifleri** (`weapon_evolution` → `ui.evolution_defs`); karakter kartı isimleri `codex.character.<id>.name` (`CharacterSelectHelpers`).
 - **Meta / kayıt:** `start_level_bonus` clamp, `SaveManager` normalizasyon; kahraman ID kaydı (`selected_character_id` vb.).
 - **Kalan (ürün verisi, TR):** `CharacterData` kart `name` / `description` — kodeks `codex.character.*` ile aşamalı hizalama (global pazarda ayrı iş paketi).
@@ -87,7 +115,7 @@ Bir sonraki oturumda **“kaldığımız yerden devam”** için özet:
 | **Silah sahneleri** | `PlayerLoadoutRegistry.create_weapon`: önce `weapons/scenes/weapon_<id>.tscn` (25 sahne), yoksa `weapon_*.gd` script düğümü. Mantık `weapons/`, dünya vuruşu `projectiles/` + ObjectPool. |
 | **Balta** | `projectiles/boomerang.*` kaldırıldı → **`projectiles/hunter_axe.tscn`** / `hunter_axe.gd`. Kayıtlı silah kimliği hâlâ `boomerang` / `blood_boomerang` (metinler “Balta”). |
 | **Asset’ler** | `assets/projectiles/` (aura, axe, chain, lightning). Çalışma ağacında bazıları **henüz commit’lenmemiş** olabilir (`git status` → `??`) — bir commit’te toplanmalı. |
-| **Yıldırım** | `lightning_bolt` (ObjectPool): kamera üstünden iniş, sprite **dikey** (`Sprite2D.rotation = 0`), `weapon_lightning.tscn` üzerinde yıldırım ikonu yok; hedef **`STRIKE_MAX_DIST_FROM_PLAYER` = 600 px** (görünür alan hissi; `main.gd` co-op `MAX_PLAYER_DISTANCE` ile aynı tavan fikri). |
+| **Yıldırım** | `lightning_bolt` (ObjectPool): kamera üstünden iniş, sprite **dikey** (`Sprite2D.rotation = 0`), `weapon_lightning.tscn` üzerinde yıldırım ikonu yok; hedef tavanı **`GameplayConstants.MAX_COMBAT_RADIUS_PX`** (`core/gameplay_constants.gd`; co-op centroid tavanı ile aynı değer). |
 | **Zincir** | `CombatProjectileFx.spawn_chain_segment`: `chain.png` ile **Sprite2D** segment (konum ortada, `rotation` segment yönü, `scale.x` = mesafe). |
 
 **Sonraki adım (insan):** Tüm değişiklikleri gözden geçirip `??` dosyaları dâhil **tek veya birkaç anlamlı commit**; aşağıdaki teknik borçlar zorunlu değil.
@@ -100,7 +128,6 @@ Bir sonraki oturumda **“kaldığımız yerden devam”** için özet:
 
 | Alan | Öneri |
 |------|--------|
-| **600 px tek kaynak** | `weapon_lightning.gd` `STRIKE_MAX_DIST_FROM_PLAYER` ile `main.gd` `MAX_PLAYER_DISTANCE` ortak sabitte (`core/` autoload veya küçük `balance_constants.gd`) birleştirilebilir. |
 | **Silah sahnesi sprite politikası** | `weapon_chain.tscn` üstü sprite gizli (zincir VFX segmentte); diğer silahlarda şablon tutarlılığı + `tools/gen_weapon_scenes.py` notu. |
 | **Yıldırım bolt hareketi** | Şu an `move_toward(hedef)` ile hafif çapraz iz mümkün; tam dik iniş için hedef X sabitlenip yalnızca Y indirilebilir. |
 | **ObjectPool** | `lightning_bolt` havuz boyutu / eşzamanlı vuruş sayısı oynanışa göre ayar; kısa not `GELISTIRICI_REHBERI` veya kod yorumu. |
@@ -145,6 +172,8 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-22 | **Wiki-arşiv senkronu** — `docs/vs wiki analizi/` dört dosyanın özeti `YOL_HARITASI` «Referans — VS / Brotato wiki analizi» + `YAPILACAKLAR_TOPLU` + `GELISTIRICI_REHBERI` / `TASARIM` / `lore` / `README` bağlantıları; evrim passive MAX maddesi kodla uyumlu not düzeltmesi. |
+| 2026-04-22 | **600 px tek kaynak** — `core/gameplay_constants.gd` (`class_name GameplayConstants`, `MAX_COMBAT_RADIUS_PX`); `main/main.gd` co-op centroid sınırı + `weapons/weapon_lightning.gd` hedef tavanı; `YAPILACAKLAR_TOPLU` / P2 / teknik borç satırları senkron. |
 | 2026-04-20 | **Ana menü buton kapakları — dokümantasyon** — `assets/button covers/button1.png` + `ui/main_menu.gd` (`StyleBoxTexture`, `region_rect`, yatay `texture_margin`, dikey margin 0 ile dikiş önleme); **`docs/GELISTIRICI_REHBERI.md` §7.1**, `docs/TASARIM.md` (Ana menü satırı), `assets/button covers/README.txt`, `README.md` kısa link. |
 | 2026-04-16 | **Dokümantasyon — ses + görsel takip** — `docs/sesler-muzikler-efektler.md` (tüm SFX / müzik / bölümlü envanter); `docs/colorrect.md` (silah taban–evrim ayrımı, kart + oyun-içi sütunları, eşya tablosu); `README`, `GELISTIRICI_REHBERI`, `TASARIM`, `YAPILACAKLAR_TOPLU`, `ironfall-docs.mdc` link / madde senkronu. |
 | 2026-04-16 | **Müzik + menü UI** — `audio_manager`: `music1`–`music6` döngü, tek `MusicPlayer`, Ayarlar → Ses’te önceki/sonraki + duraklat/devam; `meta_upgrade`: `MarginRoot` + kaydırılabilir kart listesi; `character_select` / P2: tam ekran arka plan, margin’ler, sağda `CharacterSelectStatsPanel` (meta taban + yeşil kahraman bonusları); `locales` `ui.character_select.stats_*`, `music_*`, `music_volume`; `pause_menu` müzik etiketi. |

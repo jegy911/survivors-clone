@@ -17,9 +17,26 @@ func _ready() -> void:
 	damage = 10
 	cooldown = 1.18
 
+func has_targets_for_attack() -> bool:
+	if not hit_cooldowns.is_empty():
+		return true
+	return _donut_has_enemy()
+
+func _donut_has_enemy() -> bool:
+	var area_m: float = player.get_area_multiplier()
+	var inner: float = ring_inner * area_m
+	var outer: float = ring_outer * area_m
+	for enemy in EnemyRegistry.get_enemies():
+		if not is_instance_valid(enemy) or not enemy is Node2D:
+			continue
+		var d: float = player.global_position.distance_to(enemy.global_position)
+		if d > inner and d < outer:
+			return true
+	return false
+
 func attack() -> void:
 	var par: Node = player.get_parent() if is_instance_valid(player) else null
-	if par != null:
+	if par != null and _donut_has_enemy():
 		CombatProjectileFx.spawn_short_lived_projectile_sprite(
 			par, player.global_position, player, ARC_PULSE_FX_TEX, Color(0.78, 0.68, 1.0, 0.92)
 		)

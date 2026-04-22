@@ -12,6 +12,9 @@ func _ready():
 	cooldown = 1.8
 	max_level = 5
 
+func has_targets_for_attack() -> bool:
+	return _any_enemy_within_distance(GameplayConstants.THROW_WEAPON_ENGAGE_RANGE_PX * player.get_area_multiplier())
+
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
 	if enemies.is_empty():

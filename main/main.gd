@@ -345,12 +345,11 @@ func _update_camera(delta: float):
 		if dist > max_dist:
 			max_dist = dist
 	
-	# Oyuncular arası max mesafe sınırı
-	const MAX_PLAYER_DISTANCE = 600.0
-	if max_dist > MAX_PLAYER_DISTANCE:
+	# Oyuncular arası max mesafe sınırı (yıldırım menzil tavanı ile aynı: `GameplayConstants`)
+	if max_dist > GameplayConstants.MAX_COMBAT_RADIUS_PX:
 		for p in players:
 			var dir = (p.global_position - center).normalized()
-			p.global_position = center + dir * MAX_PLAYER_DISTANCE
+			p.global_position = center + dir * GameplayConstants.MAX_COMBAT_RADIUS_PX
 	
 	var screen_size = get_viewport().get_visible_rect().size
 	var target_zoom = clamp(

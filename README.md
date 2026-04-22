@@ -34,6 +34,7 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 | [docs/YAPILACAKLAR_TOPLU.md](docs/YAPILACAKLAR_TOPLU.md) | Açık işlerin düz listesi; biten satır silinir, kaynak `.md` içinde tiklenir |
 | [docs/sesler-muzikler-efektler.md](docs/sesler-muzikler-efektler.md) | Müzik, SFX, tetikleyiciler (`AudioManager`) — yaşayan ses envanteri |
 | [docs/colorrect.md](docs/colorrect.md) | İkon / oyun-içi görsel gap takibi (kahraman, silah taban–evrim, eşya) |
+| [docs/vs wiki analizi/](docs/vs%20wiki%20analizi/) | Proje başı **VS + Brotato** wiki notları (arşiv); ürün özeti **`docs/YOL_HARITASI.md`** «Referans — VS / Brotato wiki analizi» + `docs/vs wiki analizi/README.md` |
 
 **Son dokümantasyon odağı (2026-04-20):** Ana menü aksiyon butonları — `assets/button covers/` + `ui/main_menu.gd` (`StyleBoxTexture`); teknik özet **`docs/GELISTIRICI_REHBERI.md` §7.1**. *(Önceki odağı 2026-04-16: müzik döngüsü, meta upgrade scroll, karakter seçimi istat paneli.)*
 

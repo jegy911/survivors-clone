@@ -13,6 +13,15 @@ func _ready():
 	cooldown = 2.2
 	max_level = 5
 
+func has_targets_for_attack() -> bool:
+	var eff: float = nova_radius * player.get_area_multiplier()
+	var ppos: Vector2 = player.global_position
+	for e in EnemyRegistry.get_enemies():
+		if is_instance_valid(e) and e is Node2D:
+			if ppos.distance_to((e as Node2D).global_position) < eff:
+				return true
+	return false
+
 func attack():
 	var effective_radius = nova_radius * player.get_area_multiplier()
 	var enemies = EnemyRegistry.get_enemies()

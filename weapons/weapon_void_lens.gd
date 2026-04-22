@@ -14,6 +14,19 @@ func _ready():
 	damage = 12
 	cooldown = 1.1
 
+func has_targets_for_attack() -> bool:
+	if not hit_cooldowns.is_empty():
+		return true
+	var R: float = radius * player.get_area_multiplier()
+	var inner: float = 10.0
+	var ppos: Vector2 = player.global_position
+	for e in EnemyRegistry.get_enemies():
+		if is_instance_valid(e) and e is Node2D:
+			var d: float = ppos.distance_to((e as Node2D).global_position)
+			if d > inner and d <= R:
+				return true
+	return false
+
 func attack():
 	var effective_radius = radius * player.get_area_multiplier()
 	var enemies = EnemyRegistry.get_enemies()

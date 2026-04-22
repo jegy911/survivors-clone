@@ -14,6 +14,11 @@ func _ready():
 	damage = 28
 	cooldown = 1.2
 
+func has_targets_for_attack() -> bool:
+	if not hit_cooldowns.is_empty():
+		return true
+	return _any_enemy_within_distance(radius * player.get_area_multiplier())
+
 func attack():
 	var effective_radius = radius * player.get_area_multiplier()
 	var enemies = EnemyRegistry.get_enemies()

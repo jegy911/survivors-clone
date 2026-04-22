@@ -77,6 +77,14 @@ Bu dosya, **oyun evreni ve anlatı** üzerinde bu sohbet ve tasarım sürecinde 
 - Düşman ve boss tasarımları **şeytani uyanış** hiyerarşisi ve **rün bozulması / yozlaşma** temalarıyla ilişkilendirilebilir.
 - Boss sahneleri, anlatıda **Şeytani Kral**’a giden yolun kilometre taşları olarak düşünülür; her boss için kısa bir “kimdir, neyi temsil eder, rün/teknik ilişkisi nedir” maddesi ileride bu dosyaya eklenebilir.
 
+### 4.1 Wiki-arşiv (VS / Brotato) — anlatıya oturtulabilecek motifler
+
+Kaynak: `docs/vs wiki analizi/` (oyun fikrinin başında tutulan referans notları). Oyun metnine aktarırken **isimler uyarlanır**; çöküş sonrası + rün + kalıntı teknoloji çerçevesi (§1–3) ile çelişmemeli.
+
+- **Enkaz kapsülü** — haritada kilitli bir **kalıntı koruma ünitesi**; çevredeki otomatonlar / yozlaşmış korumalar (düşman dalgası) susturulunca içerideki “kayıt” loncaya açılır: yeni kahraman veya kalıcı özellik (VS *Coffin* izi).
+- **Rün taşı** — nadir düşme veya tüccarda; belirli bir kahramana bağlı **kalıcı minik güç artışı** — “eski uygarlığın işlenmiş enerjisi” olarak §1’deki rün ekseniyle örtüşür (VS *Golden Egg* izi).
+- **Buhar / dişli / zaman dişlisi** — özel pickup’lar için **görünen dünya adı**: alan baskını, kısa duraksama, tek darbede XP toplanması vb.; kodeks “dünya” ve `sesler-muzikler-efektler.md` ile hizalanır.
+
 ---
 
 ## 5. Değişiklik günlüğü (özet)
@@ -88,6 +96,7 @@ Bu dosya, **oyun evreni ve anlatı** üzerinde bu sohbet ve tasarım sürecinde 
 | 2026-04-07 | **Göçebe (nomad)** — Yelpaze Bıçak + (koşuda) Kor Kalbi → Kor Yelpazesi (`ember_fan`); kahraman bilgi kartı Hat Kıran formatıyla hizalı; **hiçbir kahramanda `start_item` yok** (yalnız başlangıç silahı). |
 | 2026-04-14 | **Alacakaranlık Hançeri (`dusk`)** — İkiz hançer menzili; Gece Şişesi koşuda toplanır; evrim `veil_daggers` (Peçe Hançerleri); Gölge Yürüyücü ile Arena zaferi sonrası lonca onayı + altın; oyuncu sahnesi `characters/dusk/dusk.tscn` (animasyon isimleri var, sprite frame’leri sonra). |
 | 2026-04-17 | **`dusk` başlangıç yükü** — `start_item` boş; yalnız `dagger`. `night_vial` yalnızca koşuda; kodeks `en` + `character_data` açıklaması güncellendi. |
+| 2026-04-22 | **Wiki-arşiv motifleri** — §4.1: Enkaz kapsülü, Rün taşı, buhar/dişli pickup adları; kaynak `docs/vs wiki analizi/`. |
 
 ---
 

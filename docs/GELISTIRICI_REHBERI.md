@@ -4,7 +4,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 *(İngilizce projelerde eşdeğeri genelde `ARCHITECTURE.md`, `DEVELOPER_GUIDE.md` veya `docs/CONTRIBUTING.md` olarak adlandırılır.)*
 
 **Motor:** Godot 4.x  
-**Son güncelleme:** 2026-04-20 (ana menü buton kapakları — `StyleBoxTexture` / §7.1)
+**Son güncelleme:** 2026-04-22 (wiki-arşiv referans satırı; `WeaponBase` menzil + cooldown; `GameplayConstants` menzilleri — §4)
 
 **Öncelikli plan (audit):** Ürün açıkları, bug / locale kalanları, refaktör ve optimizasyon maddelerinin sıralı özeti → **`docs/YOL_HARITASI.md`** başındaki **«Proje incelemesi — öncelikli plan (audit)»** (P0–P4).  
 **Tek sayfa yapılacaklar:** [x] **`docs/YAPILACAKLAR_TOPLU.md`** — yalnızca açık işler listelenir; madde bitince oradan **silinir**, kaynak dokümanda **[x]** / güncelleme yapılır (iş akışı dosya başında).
@@ -24,6 +24,8 @@ Oyuna veya teknik yapıya dokunan her önemli değişiklikten sonra:
 9. **`docs/sesler-muzikler-efektler.md`** — Yeni ses dosyası, `AudioManager` / `audio_manager.tscn` stream’i, yeni `play_*` tetikleyicisi veya müzik parçası eklendiyse / kaldırıldıysa bu envanteri güncelle.
 
 *(IDE’de Cursor kullanıyorsan: `.cursor/rules` altındaki `ironfall-docs.mdc` kuralı bu disiplini hatırlatır.)*
+
+**Referans (VS / Brotato, proje başı arşiv):** `docs/vs wiki analizi/` — ayrıntılı wiki notları (dört dosya). Ürün damıtması **`docs/YOL_HARITASI.md`** «Referans — VS / Brotato wiki analizi» tablosunda; yapılacaklar **`docs/YAPILACAKLAR_TOPLU.md`** «`docs/vs wiki analizi/`» bölümünde; lore / görsel isimler **`docs/lore.md`**, **`docs/TASARIM.md`**.
 
 ---
 
@@ -137,7 +139,7 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 
 ### Taban
 - **`docs/SILAHLAR_ESYALAR_EVO.md`** — Taban silahlar, evrim silahları ve pasif eşyaların hasar / alan / miktar / cooldown özet tabloları (denge değişince güncelle).
-- **`weapons/weapon_base.gd`** — `WeaponBase`: cooldown, `attack()`, `upgrade()`, `category`, `tag`, `weapon_name`; kök düğüm **`Area2D`** (çarpışma katmanı/maske 0, `monitoring` kapalı — yalnızca editör yerleşimi / isteğe bağlı çarpışma için).
+- **`weapons/weapon_base.gd`** — `WeaponBase`: cooldown, `attack()`, `upgrade()`, `category`, `tag`, `weapon_name`; kök düğüm **`Area2D`** (çarpışma katmanı/maske 0, `monitoring` kapalı — yalnızca editör yerleşimi / isteğe bağlı çarpışma için). **`has_targets_for_attack()`** düşman yokken tam cooldown tüketmeden `NO_TARGET_RECHECK_SEC` ile yeniden dener; alan silahlarında `hit_cooldowns` boşalana kadar `true` kalabilir. **`GLOBAL_COOLDOWN_SCALE`** (~1,38) tüm taban bekleme sürelerini çarpar (`get_effective_cooldown`); alt sınıflar menzil kapısını kendi geometrilerine göre uygular.
 
 ### Yeni silah scripti
 - `weapons/weapon_<isim>.gd`, tercihen **`class_name Weapon...`** (Godot global sınıf).
@@ -171,7 +173,7 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 ### Özel davranışlar
 - **Kaos** karakteri: `apply_character_bonuses` içinde `random_weapons` listesine yeni taban silah eklenmeli.
 - **Projectile + ObjectPool**: Sahne yolu `ObjectPool.get_object(...)` ile alınır; `reset()` havuza dönüşte çağrılır (bkz. `projectiles/bullet.gd`, `fan_blade_shard.gd`). **Yelpaze shard:** menzil = `fire_range × get_area_multiplier`; ömür = menzil ÷ `shard_speed`; `_physics_process` adımı `_max_travel` ile sınırlı; spawn `player.get_directional_attack_spawn` (sprite silüeti); havuzda `collision_layer = 0`.
-- **Taban projeksiyon / silah VFX dokuları** (`assets/projectiles/`): Aura halkası `weapon_aura.gd` (oyuncuya `AuraWeaponRing`); hasar yarıçapı ile dış hizası için silah kökünde **`aura_outer_radius_texels`** / **`aura_outer_texel_auto_factor`** (0 pikselde otomatik dış yarıçap ≈ doku × 0,5 × faktör; meta alan `get_area_multiplier()` ile hem hasar hem halka). Zincir segmenti `CombatProjectileFx.spawn_chain_segment` (`effects/combat_projectile_fx.gd`, `weapon_chain.gd`; sıçrama arası **`chain_step_delay_sec`**; segment başına **Sprite2D** + `chain.png`, mesafe boyunca `scale.x`, yön `rotation`; dikey doku için `CHAIN_TEX_LINKS_ALONG_WIDTH := false`); yıldırım sahnesi **`effects/lightning_hit_fx.tscn`** (+ `lightning_hit_fx.gd`): editördeki `texture` / `scale` korunur, `run()` yalnızca renk / süre uygular; `CombatProjectileFx.spawn_lightning_style_flash` (`weapon_storm.gd`, `weapon_toxic_chain.gd`); yıldırım **silah vuruşu** `projectiles/lightning_bolt.tscn` (ObjectPool; görsel: kamera üst çizgisinde hedef X’inde spawn, düşüş; isabet `lightning_hit_fx`; `weapons/scenes/weapon_lightning.tscn` oyuncu üstü sprite yok; hedef havuzu `STRIKE_MAX_DIST_FROM_PLAYER` 600 px); savrulan balta `projectiles/hunter_axe.tscn` + `assets/projectiles/axe/boomerang.png`. **Not:** Kayıtlı silah kimliği hâlâ `boomerang`; oyuncuya dönük metinlerde “Balta” / “Axe” (`locales`, kodeks). Yeniden üretilebilir silah sahneleri: `python tools/gen_weapon_scenes.py`.
+- **Taban projeksiyon / silah VFX dokuları** (`assets/projectiles/`): Aura halkası `weapon_aura.gd` (oyuncuya `AuraWeaponRing`); hasar yarıçapı ile dış hizası için silah kökünde **`aura_outer_radius_texels`** / **`aura_outer_texel_auto_factor`** (0 pikselde otomatik dış yarıçap ≈ doku × 0,5 × faktör; meta alan `get_area_multiplier()` ile hem hasar hem halka). Zincir segmenti `CombatProjectileFx.spawn_chain_segment` (`effects/combat_projectile_fx.gd`, `weapon_chain.gd`; sıçrama arası **`chain_step_delay_sec`**; segment başına **Sprite2D** + `chain.png`, mesafe boyunca `scale.x`, yön `rotation`; dikey doku için `CHAIN_TEX_LINKS_ALONG_WIDTH := false`); yıldırım sahnesi **`effects/lightning_hit_fx.tscn`** (+ `lightning_hit_fx.gd`): editördeki `texture` / `scale` korunur, `run()` yalnızca renk / süre uygular; `CombatProjectileFx.spawn_lightning_style_flash` (`weapon_storm.gd`, `weapon_toxic_chain.gd`); yıldırım **silah vuruşu** `projectiles/lightning_bolt.tscn` (ObjectPool; görsel: kamera üst çizgisinde hedef X’inde spawn, düşüş; isabet `lightning_hit_fx`; `weapons/scenes/weapon_lightning.tscn` oyuncu üstü sprite yok; hedef havuzu `GameplayConstants.MAX_COMBAT_RADIUS_PX` — `core/gameplay_constants.gd`, co-op centroid tavanı ile aynı); savrulan balta `projectiles/hunter_axe.tscn` + `assets/projectiles/axe/boomerang.png`. **Not:** Kayıtlı silah kimliği hâlâ `boomerang`; oyuncuya dönük metinlerde “Balta” / “Axe” (`locales`, kodeks). Yeniden üretilebilir silah sahneleri: `python tools/gen_weapon_scenes.py`.
 
 ---
 

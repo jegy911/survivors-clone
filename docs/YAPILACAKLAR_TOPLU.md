@@ -6,7 +6,25 @@
 1. **Buradan** ilgili satırı **sil** (tik yok — kalan satır = yapılacak).  
 2. **Kaynak dosyada** aynı maddeyi **[x]** yap, ✓ koy, metni güncelle veya satırı kaldır (`YOL` öncelik tabloları, matris **Var/Kısmi**, `TASARIM` ✅/❌ vb.).
 
-Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`, `TASARIM.md`, `sesler-muzikler-efektler.md`, `colorrect.md`, `KARAKTER_SINIFLARI_VE_TASARIM.md`, `lore.md`, `README.md`.
+Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`, `TASARIM.md`, `sesler-muzikler-efektler.md`, `colorrect.md`, `KARAKTER_SINIFLARI_VE_TASARIM.md`, `lore.md`, `README.md`, **`docs/vs wiki analizi/`** (VS/Brotato referans arşivi — özeti `YOL_HARITASI` «Referans» bölümünde).
+
+---
+
+## `docs/vs wiki analizi/` (arşiv → ürün işleri)
+
+Ayrıntılı tablolar ve pseudo-kod **klasördeki dört `.md` dosyasında**; burada yalnızca **henüz kapanmamış** ve arşivle hizalanan işler. Madde bitince hem buradan sil hem `YOL` / `TASARIM` / `lore` içindeki ilgili notu güncelle.
+
+- VS dalga **event**’leri (swarm / encircle / wall) — `spawn_manager` + düşman davranışı (`fixed_direction` vb.); Aşama 1 §7.
+- Özel **pickup**’lar (tema buhar/dişli: alan hasarı, kısa donma, XP toplama darbesi) — `effects/` + orb; `lore.md` §4.1 isimlendirme.
+- **Harita modifier** sözlüğü (harita başına move/gold/enemy çarpanları) — tek veri kaynağı tasarımı; Aşama 1 §1.
+- Brotato tarzı **arena tam paket** — 20 dalga süre tablosu, wave arası mola + upgrade, elite/horde, boss **faz/mutasyon**, zorluk kademeleri, max düşman 80–100; mevcut arena v0 (`run_variant` + `ARENA_RUN_GOAL_SEC`) ile birleştirme.
+- **Rün / Buhar run kartı** (Arcana karşılığı) — run başı + boss anları; Aşama 2 §1.
+- Run içi **tüccar NPC** — altınla reroll / eşya / silah; Aşama 2 §4.
+- **Grimuar** (evrim tarifleri UI) + meta upgrade **VS fiyat formülü** ile `SaveManager` denklik kontrolü; Aşama 2 §6–7.
+- Haritada **relic / enkaz kapsülü** (kalıcı özellik veya karakter açılışı); Aşama 2 §3 + Aşama 3 §4.
+- Silah **weight/rarity**, **pierce**, atış içi **projectile interval**; pasif tipleri (Growth, Greed, Revival, Duration, Amount); VS tarzı **level bazlı kahraman pasifi**; Aşama 1 §2–5, Aşama 3 §1 §7.
+- **Limit Break → Aşım** kartları (tüm slot MAX sonrası level-up seçenekleri); Aşama 3 §2.
+- Düşman **kill resistance** / debuff dirençleri; Aşama 1 §7 tablo.
 
 ---
 
@@ -29,7 +47,7 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 - Genel rehberlik önceliği (UX + metin).
 - Acil: `git` `??` asset/sahne dosyalarını anlamlı commit(ler) ile topla.
 - **Proje incelemesi (audit) P0 (kalan):** `shop_menu` placeholder beklentisi / oyuncu beklentisi yönetimi.
-- **Audit P2–P4 + teknik borç:** `get_nodes_in_group("player")` / `player_bullets`; silah listeleri tek kaynak; `boomerang`/`hunter_axe` isim; 600 px tek sabit; `player.gd` bölme; `get_upgrade_text` tablolaştırma; `EnemyRegistry` menzil/profil; ObjectPool; ağır VFX; CI isteğe bağlı; yıldırım tam dikey; silah–tscn doğrulama script’i; silah sahne sprite politikası. *(Ayrıntı tablolar: `YOL_HARITASI` «Proje incelemesi» + «Teknik borç».)*
+- **Audit P2–P4 + teknik borç:** `get_nodes_in_group("player")` / `player_bullets`; silah listeleri tek kaynak; `boomerang`/`hunter_axe` isim; `player.gd` bölme; `get_upgrade_text` tablolaştırma; `EnemyRegistry` menzil/profil; ObjectPool; ağır VFX; CI isteğe bağlı; yıldırım tam dikey; silah–tscn doğrulama script’i; silah sahne sprite politikası. *(Ayrıntı tablolar: `YOL_HARITASI` «Proje incelemesi» + «Teknik borç».)*
 
 ---
 

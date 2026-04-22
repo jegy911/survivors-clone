@@ -12,6 +12,41 @@ func _ready():
 	damage = 20
 	cooldown = 2.2
 
+func has_targets_for_attack() -> bool:
+	return _ram_cone_has_target()
+
+func _ram_cone_has_target() -> bool:
+	var enemies := EnemyRegistry.get_enemies()
+	if enemies.is_empty() or player == null:
+		return false
+	var nearest: Node2D = null
+	var best := 999999.0
+	var ppos := player.global_position
+	for enemy in enemies:
+		if not is_instance_valid(enemy) or not enemy is Node2D:
+			continue
+		var d := ppos.distance_to(enemy.global_position)
+		if d < best:
+			best = d
+			nearest = enemy as Node2D
+	if nearest == null:
+		return false
+	var forward := (nearest.global_position - ppos).normalized()
+	if forward == Vector2.ZERO:
+		forward = Vector2.RIGHT
+	var half := deg_to_rad(cone_degrees * 0.5)
+	var r := ram_range * player.get_area_multiplier()
+	for enemy in enemies:
+		if not is_instance_valid(enemy) or not enemy is Node2D:
+			continue
+		var to_e := enemy.global_position - ppos
+		var dist := to_e.length()
+		if dist > r or dist < 1.0:
+			continue
+		if forward.angle_to(to_e.normalized()) <= half:
+			return true
+	return false
+
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
 	if enemies.is_empty():

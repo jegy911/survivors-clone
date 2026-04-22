@@ -14,6 +14,9 @@ func _ready():
 	cooldown = 0.8
 	max_level = 5
 
+func has_targets_for_attack() -> bool:
+	return _any_enemy_within_distance(orbit_radius * player.get_area_multiplier() + 55.0)
+
 func attack():
 	orbit_angle += 0.4
 	var orbit_pos = player.global_position + Vector2(cos(orbit_angle), sin(orbit_angle)) * orbit_radius * player.get_area_multiplier()

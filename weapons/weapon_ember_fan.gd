@@ -17,6 +17,9 @@ func _ready():
 	cooldown = 1.2
 	max_level = 5
 
+func has_targets_for_attack() -> bool:
+	return _any_enemy_within_distance(fire_range * player.get_area_multiplier())
+
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
 	if enemies.is_empty():

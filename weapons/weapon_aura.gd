@@ -24,6 +24,11 @@ func _ready():
 	cooldown = 1.2
 	call_deferred("_ensure_ring_visual")
 
+func has_targets_for_attack() -> bool:
+	if not hit_cooldowns.is_empty():
+		return true
+	return _any_enemy_within_distance(_aura_effective_radius())
+
 func _ensure_ring_visual() -> void:
 	if _ring != null or player == null:
 		return

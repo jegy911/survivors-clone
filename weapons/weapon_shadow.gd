@@ -21,6 +21,9 @@ func _ready():
 		_orb_sprite_template.visible = false
 	call_deferred("_spawn_orbs")
 
+func has_targets_for_attack() -> bool:
+	return _any_enemy_within_distance(orbit_radius * player.get_area_multiplier() + 52.0)
+
 func _spawn_orbs():
 	for orb in orbs:
 		if is_instance_valid(orb):

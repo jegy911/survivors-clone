@@ -14,16 +14,22 @@ func _ready():
 	cooldown = 1.4
 	max_level = 5
 
+func has_targets_for_attack() -> bool:
+	return _any_enemy_within_distance(chain_range * player.get_area_multiplier())
+
 func attack():
 	var enemies = EnemyRegistry.get_enemies()
 	if enemies.is_empty():
 		return
-	
+
+	var eff_r: float = chain_range * player.get_area_multiplier()
 	enemies.sort_custom(func(a, b):
 		return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position)
 	)
-	
+
 	var first = enemies[0]
+	if player.global_position.distance_to(first.global_position) > eff_r:
+		return
 	var final_damage = player.get_total_damage(damage)
 	first.take_damage(final_damage)
 	EventBus.on_damage_dealt.emit(player, first, final_damage)

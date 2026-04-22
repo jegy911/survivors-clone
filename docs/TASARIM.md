@@ -5,7 +5,7 @@ Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.
 Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.  
 **Ses / müzik / SFX dosya ve tetik envanteri** (ayrıntılı): `docs/sesler-muzikler-efektler.md`.
 
-**Son güncelleme:** 2026-04-20 (ana menü buton kapakları — `assets/button covers/` + `GELISTIRICI_REHBERI` §7.1)
+**Son güncelleme:** 2026-04-22 (wiki-arşiv referansı — aşağıdaki «Wiki-arşiv» bölümü; önceki: 2026-04-20 menü kapakları §7.1)
 
 ---
 
@@ -282,6 +282,17 @@ Aşağıdaki maddelerin **kod karşılığı** matriste; burada yalnızca **tasa
 - Oyun içi **fragman** kaydı — ❌.
 - **Steam mağaza** sayfası (capsule, ekran görüntüleri, trailer) — ❌.
 - Early Access / çıkış stratejisi — ürün kararı (görsel paket `TASARIM.md` ile paralel).
+
+---
+
+## Wiki-arşiv (VS / Brotato) — tasarım notları
+
+Kaynak: `docs/vs wiki analizi/` (proje başı üç aşamalı VS özeti + Brotato arena notu). Burada yalnızca **görsel / isimlendirme / ürün sunumu** ile ilgili damıtılmış başlıklar; teknik özet **`YOL_HARITASI.md`** «Referans — VS / Brotato wiki analizi».
+
+- **Sandık görsel hiyerarşisi:** Tema uyumlu tier isimleri (ör. pas rengi / demir / **rün** sandığı) — boss düşüşü ile normal sandığı ayıran ikon + çerçeve seti.
+- **Özel pickup / orb:** “Buhar patlaması” (alan temizleme), “zaman dişlisi” (kısa donma), tek seferlik XP toplama darbesi — ikon (`upgrade_icons` / orb), VFX, kodeks kartı; `sesler-muzikler-efektler.md` ile tetik eşlemesi.
+- **Arena (tam paket):** Brotato referansındaki **dalga süre eğrisi**, elite/horde dalga uyarısı UI, **boss çok faz** (HP eşiği veya süre ile faz değişimi) — Reaper dışı “arena sonu” için ayrı siluet / renk okuması.
+- **Koleksiyon / rehber:** Evrim tariflerini gösteren **grimuar / blueprint** ekranı — mevcut kodeks grid’ine ek sekme veya ayrı menü (wiki Aşama 2 §7).
 
 ---
 

@@ -2,8 +2,6 @@ class_name WeaponLightning
 extends WeaponBase
 
 const LIGHTNING_BOLT_SCENE := "res://projectiles/lightning_bolt.tscn"
-## Oyuncu çevresinde görünür vuruş (main.MAX_PLAYER_DISTANCE ile aynı tavan).
-const STRIKE_MAX_DIST_FROM_PLAYER := 600.0
 
 var chain_count = 2
 var chain_range = 200.0
@@ -17,6 +15,10 @@ func _ready() -> void:
 	category = "attack"
 	damage = 20
 	cooldown = 2.2
+
+
+func has_targets_for_attack() -> bool:
+	return not _enemies_in_strike_radius().is_empty()
 
 
 func attack() -> void:
@@ -38,7 +40,7 @@ func _alive_enemies() -> Array:
 
 
 func _in_strike_radius_from_player(enemy: Node2D) -> bool:
-	return player.global_position.distance_to(enemy.global_position) <= STRIKE_MAX_DIST_FROM_PLAYER
+	return player.global_position.distance_to(enemy.global_position) <= GameplayConstants.MAX_COMBAT_RADIUS_PX
 
 
 func _enemies_in_strike_radius() -> Array:
