@@ -127,16 +127,7 @@ func _style_back_button() -> void:
 	var btn = $MainVBox/BackButton
 	btn.custom_minimum_size = Vector2(220, 52)
 	btn.add_theme_font_size_override("font_size", 18)
-	var st = StyleBoxFlat.new()
-	st.bg_color = Color("#1A5276")
-	st.border_color = Color("#2471A3")
-	st.set_border_width_all(2)
-	st.set_corner_radius_all(10)
-	btn.add_theme_stylebox_override("normal", st)
-	var h = st.duplicate()
-	h.bg_color = Color("#2471A3")
-	btn.add_theme_stylebox_override("hover", h)
-	btn.add_theme_color_override("font_color", Color.WHITE)
+	ButtonCoverStyles.apply(btn, 0, 18, Vector4(18.0, 8.0, 18.0, 8.0))
 
 
 func _build_tab_buttons() -> void:
@@ -144,6 +135,7 @@ func _build_tab_buttons() -> void:
 	for c in row.get_children():
 		c.queue_free()
 	_tab_buttons.clear()
+	var ti := 0
 	for tab_id in CollectionData.TAB_ORDER:
 		var b = Button.new()
 		b.toggle_mode = true
@@ -153,6 +145,8 @@ func _build_tab_buttons() -> void:
 		b.clip_text = true
 		b.text = tr("ui.collection_menu.tab_%s" % tab_id)
 		b.set_meta("tab_id", tab_id)
+		b.set_meta("tab_cover_variant", ti % 3)
+		ti += 1
 		b.pressed.connect(_on_tab_pressed.bind(tab_id))
 		if tab_id == _current_tab:
 			b.button_pressed = true
@@ -162,20 +156,9 @@ func _build_tab_buttons() -> void:
 
 
 func _style_tab_button(btn: Button, on: bool) -> void:
-	var st = StyleBoxFlat.new()
-	if on:
-		st.bg_color = Color("#6C3483")
-		st.border_color = Color("#BB8FCE")
-	else:
-		st.bg_color = Color("#1E1E32")
-		st.border_color = Color("#4A4A6A")
-	st.set_border_width_all(2)
-	st.set_corner_radius_all(8)
-	btn.add_theme_stylebox_override("normal", st)
-	var h = st.duplicate()
-	h.bg_color = Color("#7D3C98")
-	btn.add_theme_stylebox_override("hover", h)
-	btn.add_theme_color_override("font_color", Color.WHITE)
+	var v: int = int(btn.get_meta("tab_cover_variant", 0))
+	var mod := Color(1.12, 1.04, 1.22, 1.0) if on else Color(0.58, 0.58, 0.66, 1.0)
+	ButtonCoverStyles.apply(btn, v, 12, Vector4(6.0, 5.0, 6.0, 5.0), mod)
 
 
 func _on_tab_pressed(tab_id: String) -> void:

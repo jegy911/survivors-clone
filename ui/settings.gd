@@ -97,14 +97,8 @@ func _on_locale_changed(_locale: String) -> void:
 
 func _refresh_chrome() -> void:
 	$VBoxContainer/TitleLabel.text = tr("ui.settings.title")
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/SesTab, tr("ui.settings.tab_audio"))
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/DilTab, tr("ui.settings.tab_language"))
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/GoruntuTab, tr("ui.settings.tab_video"))
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/OynanisTab, tr("ui.settings.tab_gameplay"))
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/KontrolTab, tr("ui.settings.tab_controls"))
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/ProfilTab, tr("ui.settings.tab_profile"))
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/DevToolsTab, tr("ui.settings.tab_dev"))
-	SettingsUiStyles.style_back_button($VBoxContainer/BackButton, tr("ui.settings.back_main"))
+	SettingsUiStyles.refresh_settings_main_tabs($VBoxContainer/TabRow, current_tab)
+	SettingsUiStyles.style_settings_back_button($VBoxContainer/BackButton, tr("ui.settings.back_main"))
 
 func _build_ui():
 	var vbox = $VBoxContainer
@@ -117,13 +111,7 @@ func _build_ui():
 	$VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 36)
 	$VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
 
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/SesTab, tr("ui.settings.tab_audio"))
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/DilTab, tr("ui.settings.tab_language"))
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/GoruntuTab, tr("ui.settings.tab_video"))
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/OynanisTab, tr("ui.settings.tab_gameplay"))
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/KontrolTab, tr("ui.settings.tab_controls"))
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/ProfilTab, tr("ui.settings.tab_profile"))
-	SettingsUiStyles.style_tab_button($VBoxContainer/TabRow/DevToolsTab, tr("ui.settings.tab_dev"))
+	SettingsUiStyles.refresh_settings_main_tabs($VBoxContainer/TabRow, "ses")
 
 	$VBoxContainer/TabRow/DevToolsTab.pressed.connect(func(): _switch_tab("devtools"))
 	$VBoxContainer/TabRow/SesTab.pressed.connect(func(): _switch_tab("ses"))
@@ -133,7 +121,7 @@ func _build_ui():
 	$VBoxContainer/TabRow/KontrolTab.pressed.connect(func(): _switch_tab("kontrol"))
 	$VBoxContainer/TabRow/ProfilTab.pressed.connect(func(): _switch_tab("profil"))
 
-	SettingsUiStyles.style_back_button($VBoxContainer/BackButton, tr("ui.settings.back_main"))
+	SettingsUiStyles.style_settings_back_button($VBoxContainer/BackButton, tr("ui.settings.back_main"))
 	$VBoxContainer/BackButton.pressed.connect(_on_back)
 
 	_switch_tab("ses")
@@ -157,21 +145,7 @@ func _switch_tab(tab: String):
 		"profil": _build_profil_tab(content)
 		"devtools": _build_devtools_tab(content)
 
-	var tabs = {
-		"ses": $VBoxContainer/TabRow/SesTab,
-		"dil": $VBoxContainer/TabRow/DilTab,
-		"goruntu": $VBoxContainer/TabRow/GoruntuTab,
-		"oynanis": $VBoxContainer/TabRow/OynanisTab,
-		"kontrol": $VBoxContainer/TabRow/KontrolTab,
-		"profil": $VBoxContainer/TabRow/ProfilTab,
-		"devtools": $VBoxContainer/TabRow/DevToolsTab,
-	}
-	for t in tabs:
-		var style = StyleBoxFlat.new()
-		style.bg_color = Color("#9B59B6") if t == tab else Color("#1A1A2E")
-		style.corner_radius_top_left = 8
-		style.corner_radius_top_right = 8
-		tabs[t].add_theme_stylebox_override("normal", style)
+	SettingsUiStyles.refresh_settings_main_tabs($VBoxContainer/TabRow, current_tab)
 
 func _build_dil_tab(parent: Node):
 	var vbox = VBoxContainer.new()
@@ -341,10 +315,12 @@ func _build_kontrol_tab(parent: Node) -> void:
 
 	var reset_btn := Button.new()
 	reset_btn.text = tr("ui.settings.reset_keybindings")
+	reset_btn.custom_minimum_size = Vector2(280, 48)
 	reset_btn.pressed.connect(func():
 		InputRemap.reset_to_defaults_and_save()
 		_switch_tab("kontrol")
 	)
+	ButtonCoverStyles.apply(reset_btn, 0, 16, Vector4(20.0, 8.0, 20.0, 8.0))
 	outer.add_child(reset_btn)
 
 	var scroll := ScrollContainer.new()
@@ -358,6 +334,7 @@ func _build_kontrol_tab(parent: Node) -> void:
 	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(vbox)
 
+	var bind_i := 0
 	for action in InputRemap.REMAPPABLE_ACTIONS:
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 16)
@@ -373,6 +350,8 @@ func _build_kontrol_tab(parent: Node) -> void:
 		bind_btn.text = InputRemap.get_keyboard_binding_display(action)
 		var a := action
 		bind_btn.pressed.connect(func(): _begin_rebind(a, bind_btn))
+		ButtonCoverStyles.apply(bind_btn, bind_i % 3, 15, Vector4(14.0, 7.0, 14.0, 7.0))
+		bind_i += 1
 		row.add_child(bind_btn)
 
 	var pad_hint := Label.new()
@@ -526,6 +505,13 @@ func _add_music_playback_row(parent: Node) -> void:
 	resume_btn.text = tr("ui.settings.music_resume")
 	resume_btn.custom_minimum_size = Vector2(100, 40)
 	controls.add_child(resume_btn)
+
+	var narrow := Vector4(8.0, 6.0, 8.0, 6.0)
+	var wide := Vector4(12.0, 7.0, 12.0, 7.0)
+	ButtonCoverStyles.apply(prev_btn, 0, 16, narrow, Color.WHITE, Color.WHITE, true)
+	ButtonCoverStyles.apply(next_btn, 1, 16, narrow, Color.WHITE, Color.WHITE, true)
+	ButtonCoverStyles.apply(pause_btn, 2, 14, wide, Color.WHITE, Color.WHITE, true)
+	ButtonCoverStyles.apply(resume_btn, 0, 14, wide, Color.WHITE, Color.WHITE, true)
 
 	var refresh := func() -> void:
 		var n_tracks: int = AudioManager.get_music_track_count()
@@ -784,14 +770,16 @@ func _build_profil_tab(parent: Node):
 
 	var btn_stats = Button.new()
 	btn_stats.text = tr("ui.settings.reset_stats_confirm") if _confirm_reset_stats else tr("ui.settings.reset_stats")
-	btn_stats.add_theme_color_override("font_color", Color("#E67E22"))
+	btn_stats.custom_minimum_size = Vector2(320, 50)
 	btn_stats.pressed.connect(_on_reset_stats)
+	ButtonCoverStyles.apply(btn_stats, 0, 16, Vector4(18.0, 8.0, 18.0, 8.0), Color.WHITE, Color("#E67E22"))
 	vbox.add_child(btn_stats)
 
 	var btn_full = Button.new()
 	btn_full.text = tr("ui.settings.reset_full_confirm") if _confirm_reset_full else tr("ui.settings.reset_full")
-	btn_full.add_theme_color_override("font_color", Color("#E74C3C"))
+	btn_full.custom_minimum_size = Vector2(320, 50)
 	btn_full.pressed.connect(_on_reset_full)
+	ButtonCoverStyles.apply(btn_full, 2, 16, Vector4(18.0, 8.0, 18.0, 8.0), Color.WHITE, Color("#E74C3C"))
 	vbox.add_child(btn_full)
 
 func _on_reset_stats():
@@ -874,14 +862,14 @@ func _build_devtools_tab(parent: Node):
 		SaveManager.gold += 1000
 		SaveManager.save_game()
 		_switch_tab("devtools")
-	)
+	, 0)
 
 	_add_dev_button(vbox, tr("ui.devtools.max_meta"), func():
 		for key in SaveManager.meta_upgrades:
 			SaveManager.meta_upgrades[key] = 10
 		SaveManager.save_game()
 		_switch_tab("devtools")
-	)
+	, 1)
 
 	_add_dev_button(vbox, tr("ui.devtools.unlock_chars"), func():
 		for char_data in CharacterData.CHARACTERS:
@@ -892,20 +880,20 @@ func _build_devtools_tab(parent: Node):
 				SaveManager.purchased_characters.append(cid)
 		SaveManager.save_game()
 		_switch_tab("devtools")
-	)
+	, 2)
 
 	_add_dev_button(vbox, tr("ui.devtools.gold_zero"), func():
 		SaveManager.gold = 0
 		SaveManager.save_game()
 		_switch_tab("devtools")
-	)
+	, 0)
 
 	_add_dev_button(vbox, tr("ui.devtools.lock_chars"), func():
 		SaveManager.unlocked_characters = ["warrior"]
 		SaveManager.purchased_characters = ["warrior"]
 		SaveManager.save_game()
 		_switch_tab("devtools")
-	)
+	, 1)
 
 	var sep2 = HSeparator.new()
 	vbox.add_child(sep2)
@@ -916,9 +904,10 @@ func _build_devtools_tab(parent: Node):
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vbox.add_child(lbl)
 
-func _add_dev_button(parent: Node, text: String, callback: Callable):
+func _add_dev_button(parent: Node, text: String, callback: Callable, cover_variant: int = 0) -> void:
 	var btn = Button.new()
 	btn.text = text
-	btn.custom_minimum_size = Vector2(0, 45)
+	btn.custom_minimum_size = Vector2(0, 48)
 	btn.pressed.connect(callback)
+	ButtonCoverStyles.apply(btn, cover_variant, 16, Vector4(20.0, 8.0, 20.0, 8.0))
 	parent.add_child(btn)

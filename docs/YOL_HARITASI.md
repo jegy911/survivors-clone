@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-22 (wiki-arşiv özeti; `GameplayConstants`; **`docs/survivors_clone_context.md`** bağlam özeti eklendi)
+**Son güncelleme:** 2026-04-22 (wiki-arşiv; `GameplayConstants`; `survivors_clone_context`; **`ButtonCoverStyles`** + `button1`–`3` tüm menüler)
 
 ---
 
@@ -172,6 +172,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-22 | **Buton kapakları menü geneli** — `ui/button_cover_styles.gd` (`button1`–`3`); ana menü varyant eşlemesi; pause, ayarlar sekmeleri/geri/müzik satırı/kontrol/dev, karakter seçim (sahne + filtre + kart), P2, harita, oyun modu, game over, meta, koleksiyon, shop, level-up reroll/skip; `GELISTIRICI` §7.1 + `assets/button covers/README.txt`. |
 | 2026-04-22 | **Bağlam belgesi + README lisans** — `docs/survivors_clone_context.md` (autoload tablosu, sahne zinciri, dizin işaretleri); `README.md` doküman tablosu + lisans paragrafı (açık lisans yok, telif saklı); `YAPILACAKLAR_TOPLU` / P1 / teknik borç / önemli tablo senkronu. |
 | 2026-04-22 | **Wiki-arşiv senkronu** — `docs/vs wiki analizi/` dört dosyanın özeti `YOL_HARITASI` «Referans — VS / Brotato wiki analizi» + `YAPILACAKLAR_TOPLU` + `GELISTIRICI_REHBERI` / `TASARIM` / `lore` / `README` bağlantıları; evrim passive MAX maddesi kodla uyumlu not düzeltmesi. |
 | 2026-04-22 | **600 px tek kaynak** — `core/gameplay_constants.gd` (`class_name GameplayConstants`, `MAX_COMBAT_RADIUS_PX`); `main/main.gd` co-op centroid sınırı + `weapons/weapon_lightning.gd` hedef tavanı; `YAPILACAKLAR_TOPLU` / P2 / teknik borç satırları senkron. |

@@ -52,13 +52,13 @@ func _ready():
 
 	var solo_btn = _make_btn(
 		tr("ui.game_mode.solo"),
-		Color("#27AE60"))
+		Color("#27AE60"), 0)
 	var local_btn = _make_btn(
 		tr("ui.game_mode.local_coop"),
-		Color("#2471A3"))
+		Color("#2471A3"), 1)
 	var online_btn = _make_btn(
 		tr("ui.game_mode.online"),
-		Color("#6C3483"))
+		Color("#6C3483"), 2)
 	online_btn.disabled = true
 	online_btn.modulate.a = 0.4
 
@@ -71,7 +71,7 @@ func _ready():
 
 	vbox.add_child(HSeparator.new())
 
-	var back_btn = _make_action_btn(tr("ui.game_mode.back"), Color("#922B21"))
+	var back_btn = _make_action_btn(tr("ui.game_mode.back"))
 	back_btn.pressed.connect(_on_back)
 	vbox.add_child(back_btn)
 
@@ -81,43 +81,20 @@ func _ready():
 func _warmup_character_portraits() -> void:
 	await CharacterSelectPreview.warmup_portraits_async(get_tree(), 3)
 
-func _make_btn(text: String, color: Color) -> Button:
+func _make_btn(text: String, color: Color, cover_variant: int) -> Button:
 	var btn = Button.new()
 	btn.text = text
 	btn.custom_minimum_size = Vector2(160, 130)
 	btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	var style = StyleBoxFlat.new()
-	style.bg_color = color.darkened(0.5)
-	style.border_color = color
-	style.border_width_left = 2
-	style.border_width_right = 2
-	style.border_width_top = 2
-	style.border_width_bottom = 2
-	style.corner_radius_top_left = 10
-	style.corner_radius_top_right = 10
-	style.corner_radius_bottom_left = 10
-	style.corner_radius_bottom_right = 10
-	btn.add_theme_stylebox_override("normal", style)
-	var hover = style.duplicate()
-	hover.bg_color = color.darkened(0.2)
-	btn.add_theme_stylebox_override("hover", hover)
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.add_theme_font_size_override("font_size", 15)
+	var tint := Color.WHITE.lerp(color, 0.24)
+	ButtonCoverStyles.apply(btn, cover_variant, 15, Vector4(16.0, 10.0, 16.0, 10.0), tint)
 	return btn
 
-func _make_action_btn(text: String, color: Color) -> Button:
+func _make_action_btn(text: String) -> Button:
 	var btn = Button.new()
 	btn.text = text
-	btn.custom_minimum_size = Vector2(160, 50)
-	var style = StyleBoxFlat.new()
-	style.bg_color = color
-	style.corner_radius_top_left = 8
-	style.corner_radius_top_right = 8
-	style.corner_radius_bottom_left = 8
-	style.corner_radius_bottom_right = 8
-	btn.add_theme_stylebox_override("normal", style)
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.add_theme_font_size_override("font_size", 16)
+	btn.custom_minimum_size = Vector2(200, 52)
+	ButtonCoverStyles.apply(btn, 0, 16, Vector4(20.0, 8.0, 20.0, 8.0))
 	return btn
 
 func _on_mode(mode: String):

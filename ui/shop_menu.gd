@@ -28,13 +28,6 @@ func _apply_texts() -> void:
 	$MainVBox/TabRow/TrailersTab.text = tr("ui.shop.tab_trailers")
 	$MainVBox/PlaceholderLabel.text = tr("ui.shop.placeholder")
 	$MainVBox/BackButton.text = tr("ui.shop.back")
-	for b in [
-		$MainVBox/TabRow/CosmeticsTab,
-		$MainVBox/TabRow/PetsTab,
-		$MainVBox/TabRow/TrailersTab,
-		$MainVBox/BackButton,
-	]:
-		b.add_theme_font_size_override("font_size", int(18 * s))
 	$MainVBox/PlaceholderLabel.add_theme_font_size_override("font_size", int(17 * s))
 	$MainVBox/PlaceholderLabel.add_theme_color_override("font_color", Color("#CCCCCC"))
 	_style_tabs()
@@ -42,21 +35,19 @@ func _apply_texts() -> void:
 
 func _style_tabs() -> void:
 	var tabs := {
-		"cosmetics": $MainVBox/TabRow/CosmeticsTab,
-		"pets": $MainVBox/TabRow/PetsTab,
-		"trailers": $MainVBox/TabRow/TrailersTab,
+		"cosmetics": [$MainVBox/TabRow/CosmeticsTab, 0],
+		"pets": [$MainVBox/TabRow/PetsTab, 1],
+		"trailers": [$MainVBox/TabRow/TrailersTab, 2],
 	}
 	for k in tabs:
-		var btn: Button = tabs[k]
+		var btn: Button = tabs[k][0]
+		var cover_v: int = tabs[k][1]
 		var sel: bool = (k == _tab)
-		var style := StyleBoxFlat.new()
-		style.bg_color = Color("#D68910") if sel else Color("#2A2A3E")
-		style.corner_radius_top_left = 8
-		style.corner_radius_top_right = 8
-		btn.add_theme_stylebox_override("normal", style)
-		var hover := style.duplicate()
-		hover.bg_color = Color("#F4D03F") if sel else Color("#4A4A5E")
-		btn.add_theme_stylebox_override("hover", hover)
+		var s: float = SaveManager.get_ui_scale()
+		var mod := Color(1.15, 1.08, 1.05, 1.0) if sel else Color(0.62, 0.62, 0.68, 1.0)
+		ButtonCoverStyles.apply(btn, cover_v, int(18 * s), Vector4(10.0, 6.0, 10.0, 6.0) * s, mod)
+	var back_b: Button = $MainVBox/BackButton
+	ButtonCoverStyles.apply(back_b, 1, int(18 * SaveManager.get_ui_scale()), Vector4(16.0, 8.0, 16.0, 8.0) * SaveManager.get_ui_scale())
 
 
 func _set_tab(which: String) -> void:

@@ -46,18 +46,10 @@ func _ready():
 	$MarginRoot/VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color("#9B59B6"))
 	update_gold_label()
 
-	# Back butonu
-	var back_style = StyleBoxFlat.new()
-	back_style.bg_color = Color("#1A1A2E")
-	back_style.corner_radius_top_left = 8
-	back_style.corner_radius_top_right = 8
-	back_style.corner_radius_bottom_left = 8
-	back_style.corner_radius_bottom_right = 8
-	$MarginRoot/VBoxContainer/BackButton.add_theme_stylebox_override("normal", back_style)
-	$MarginRoot/VBoxContainer/BackButton.add_theme_color_override("font_color", Color.WHITE)
 	$MarginRoot/VBoxContainer/BackButton.text = tr("ui.meta_screen.back")
-	$MarginRoot/VBoxContainer/BackButton.custom_minimum_size = Vector2(200, 50)
+	$MarginRoot/VBoxContainer/BackButton.custom_minimum_size = Vector2(220, 52)
 	$MarginRoot/VBoxContainer/BackButton.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	ButtonCoverStyles.apply($MarginRoot/VBoxContainer/BackButton, 0, 17, Vector4(18.0, 8.0, 18.0, 8.0))
 	$MarginRoot/VBoxContainer/BackButton.pressed.connect(_on_back)
 
 	var scroll: ScrollContainer = $MarginRoot/VBoxContainer/ScrollContainer
@@ -87,6 +79,7 @@ func build_upgrade_list():
 	grid.add_theme_constant_override("v_separation", 16)
 	list.add_child(grid)
 
+	var upgrade_idx := 0
 	for upgrade in upgrade_defs:
 		var level = SaveManager.meta_upgrades.get(upgrade["id"], 0)
 		var max_level = upgrade["max_level"]
@@ -150,14 +143,17 @@ func build_upgrade_list():
 			btn.disabled = SaveManager.gold < cost
 
 		btn.custom_minimum_size = Vector2(120, 50)
-		var btn_style = StyleBoxFlat.new()
-		btn_style.bg_color = Color("#2A2A2A") if is_maxed else Color("#1A1A2E")
-		btn_style.corner_radius_top_left = 8
-		btn_style.corner_radius_top_right = 8
-		btn_style.corner_radius_bottom_left = 8
-		btn_style.corner_radius_bottom_right = 8
-		btn.add_theme_stylebox_override("normal", btn_style)
-		btn.add_theme_color_override("font_color", Color("#FFD700") if is_maxed else Color.WHITE)
+		var cv: int = upgrade_idx % 3
+		var mod := Color(0.72, 0.72, 0.75, 0.88) if is_maxed else Color.WHITE
+		ButtonCoverStyles.apply(
+			btn,
+			cv,
+			15,
+			Vector4(10.0, 7.0, 10.0, 7.0),
+			mod,
+			Color("#FFD700") if is_maxed else Color.WHITE,
+			true,
+		)
 
 		var upgrade_id = upgrade["id"]
 		btn.pressed.connect(func(): _on_upgrade_pressed(upgrade_id, cost))
@@ -166,29 +162,17 @@ func build_upgrade_list():
 		row.add_child(btn)
 		card.add_child(row)
 		grid.add_child(card)
+		upgrade_idx += 1
 
 	# Reset butonu — listenin en altında
 	var reset_btn = Button.new()
 	if pending_reset:
 		reset_btn.text = tr("ui.meta_screen.reset_confirm")
-		reset_btn.add_theme_color_override("font_color", Color("#E74C3C"))
 	else:
 		reset_btn.text = tr("ui.meta_screen.reset_all")
-		reset_btn.add_theme_color_override("font_color", Color("#E74C3C"))
 	reset_btn.custom_minimum_size = Vector2(300, 55)
 	reset_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	var reset_style = StyleBoxFlat.new()
-	reset_style.bg_color = Color("#2A0A0A")
-	reset_style.border_color = Color("#E74C3C")
-	reset_style.border_width_left = 2
-	reset_style.border_width_right = 2
-	reset_style.border_width_top = 2
-	reset_style.border_width_bottom = 2
-	reset_style.corner_radius_top_left = 8
-	reset_style.corner_radius_top_right = 8
-	reset_style.corner_radius_bottom_left = 8
-	reset_style.corner_radius_bottom_right = 8
-	reset_btn.add_theme_stylebox_override("normal", reset_style)
+	ButtonCoverStyles.apply(reset_btn, 2, 16, Vector4(22.0, 8.0, 22.0, 8.0), Color(1.15, 0.82, 0.82, 1.0), Color("#E74C3C"))
 	reset_btn.pressed.connect(_on_reset_pressed)
 	list.add_child(reset_btn)
 

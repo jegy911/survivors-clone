@@ -10,10 +10,12 @@ var _preview: TextureRect
 var _desc: RichTextLabel
 var _curse_value: Label
 var _mode_entries: Array = []
+var _map_ui_scale: float = 1.0
 
 
 func _ready() -> void:
 	var s: float = SaveManager.get_ui_scale()
+	_map_ui_scale = s
 
 	var bg := ColorRect.new()
 	bg.color = Color("#0A0A14")
@@ -98,8 +100,8 @@ func _ready() -> void:
 	var btn_row := HBoxContainer.new()
 	btn_row.add_theme_constant_override("separation", 12)
 	left.add_child(btn_row)
-	btn_row.add_child(_action_btn(tr("ui.map_select.back"), Color("#922B21"), s))
-	btn_row.add_child(_action_btn(tr("ui.map_select.start"), Color("#1E8449"), s))
+	btn_row.add_child(_action_btn(tr("ui.map_select.back"), s, 1))
+	btn_row.add_child(_action_btn(tr("ui.map_select.start"), s, 0))
 	btn_row.get_child(0).pressed.connect(_on_back)
 	btn_row.get_child(1).pressed.connect(_on_play)
 
@@ -149,6 +151,7 @@ func _register_mode_btn(parent: Node, id: String, tr_key: String, s: float, disa
 	b.custom_minimum_size = Vector2(0, int(40 * s))
 	b.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	b.add_theme_font_size_override("font_size", int(15 * s))
+	b.set_meta("btn_cover_variant", _mode_entries.size() % 3)
 	_style_list_btn(b, false)
 	b.pressed.connect(func(): _set_variant(id))
 	parent.add_child(b)
@@ -156,11 +159,10 @@ func _register_mode_btn(parent: Node, id: String, tr_key: String, s: float, disa
 
 
 func _style_list_btn(b: Button, sel: bool) -> void:
-	var st := StyleBoxFlat.new()
-	st.bg_color = Color("#3d2a5c") if sel else Color("#1A1A2E")
-	st.set_corner_radius_all(8)
-	b.add_theme_stylebox_override("normal", st)
-	b.add_theme_color_override("font_color", Color.WHITE)
+	var v: int = int(b.get_meta("btn_cover_variant", 0))
+	var inset := Vector4(12.0, 6.0, 12.0, 6.0) * _map_ui_scale
+	var mod := Color(1.06, 0.98, 1.12, 1.0) if sel else Color(0.64, 0.64, 0.7, 1.0)
+	ButtonCoverStyles.apply(b, v, int(15.0 * _map_ui_scale), inset, mod)
 
 
 func _sync_mode_styles() -> void:
@@ -182,11 +184,13 @@ func _set_variant(id: String) -> void:
 func _rebuild_map_buttons() -> void:
 	for c in _map_column.get_children():
 		c.queue_free()
-	for mid in MAP_IDS_VS:
+	for idx in MAP_IDS_VS.size():
+		var mid: String = MAP_IDS_VS[idx]
 		var mb := Button.new()
 		mb.text = tr("ui.map_select.map1") if mid == "vs_map" else mid
 		mb.custom_minimum_size = Vector2(0, 36)
 		mb.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		mb.set_meta("btn_cover_variant", idx % 3)
 		_style_list_btn(mb, mid == _map_id)
 		mb.pressed.connect(_select_map.bind(mid))
 		_map_column.add_child(mb)
@@ -217,16 +221,19 @@ func _update_preview() -> void:
 	_desc.text = "[center]" + body + "[/center]"
 
 
-func _action_btn(txt: String, bg: Color, s: float) -> Button:
+func _action_btn(txt: String, s: float, cover_variant: int) -> Button:
 	var b := Button.new()
 	b.text = txt
-	b.custom_minimum_size = Vector2(int(120 * s), int(44 * s))
+	b.custom_minimum_size = Vector2(int(140 * s), int(48 * s))
 	b.add_theme_font_size_override("font_size", int(15 * s))
-	var st := StyleBoxFlat.new()
-	st.bg_color = bg
-	st.set_corner_radius_all(8)
-	b.add_theme_stylebox_override("normal", st)
-	b.add_theme_color_override("font_color", Color.WHITE)
+	ButtonCoverStyles.apply(
+		b,
+		cover_variant,
+		int(15 * s),
+		Vector4(14.0, 7.0, 14.0, 7.0) * s,
+		Color.WHITE,
+		Color.WHITE,
+	)
 	return b
 
 

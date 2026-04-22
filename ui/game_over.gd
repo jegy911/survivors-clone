@@ -76,8 +76,8 @@ func show_stats(time: float, level: int, kills: int, gold_earned_run: int, won: 
 	btn_row.add_theme_constant_override("separation", 20)
 	vbox.add_child(btn_row)
 	
-	var restart_btn = _make_button(tr("ui.game_over.restart"), Color("#1A1A2E"))
-	var menu_btn = _make_button(tr("ui.game_over.menu"), Color("#1A1A2E"))
+	var restart_btn = _make_button(tr("ui.game_over.restart"), 0)
+	var menu_btn = _make_button(tr("ui.game_over.menu"), 1)
 	
 	restart_btn.pressed.connect(_on_restart)
 	menu_btn.pressed.connect(_on_menu)
@@ -103,19 +103,11 @@ func _add_separator(parent: Node):
 	sep.add_theme_color_override("color", Color("#333355"))
 	parent.add_child(sep)
 
-func _make_button(text: String, bg_color: Color) -> Button:
+func _make_button(text: String, cover_variant: int) -> Button:
 	var btn = Button.new()
 	btn.text = text
 	btn.custom_minimum_size = Vector2(220, 55)
-	var style = StyleBoxFlat.new()
-	style.bg_color = bg_color
-	style.corner_radius_top_left = 8
-	style.corner_radius_top_right = 8
-	style.corner_radius_bottom_left = 8
-	style.corner_radius_bottom_right = 8
-	btn.add_theme_stylebox_override("normal", style)
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.add_theme_font_size_override("font_size", 18)
+	ButtonCoverStyles.apply(btn, cover_variant, 18, Vector4(20.0, 8.0, 20.0, 8.0))
 	return btn
 
 func _on_restart():

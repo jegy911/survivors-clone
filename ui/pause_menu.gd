@@ -20,17 +20,16 @@ func _ready():
 	$VBoxContainer/TitleLabel.add_theme_font_size_override("font_size", 42)
 	$VBoxContainer/TitleLabel.add_theme_color_override("font_color", Color.WHITE)
 
-	for btn in [$VBoxContainer/ResumeButton, $VBoxContainer/SettingsButton, $VBoxContainer/MainMenuButton]:
+	var pause_btns: Array[Button] = [
+		$VBoxContainer/ResumeButton,
+		$VBoxContainer/SettingsButton,
+		$VBoxContainer/MainMenuButton,
+	]
+	var cover_i := 0
+	for btn in pause_btns:
 		btn.custom_minimum_size = Vector2(300, 60)
-		var style = StyleBoxFlat.new()
-		style.bg_color = Color("#1A1A2E")
-		style.corner_radius_top_left = 8
-		style.corner_radius_top_right = 8
-		style.corner_radius_bottom_left = 8
-		style.corner_radius_bottom_right = 8
-		btn.add_theme_stylebox_override("normal", style)
-		btn.add_theme_color_override("font_color", Color.WHITE)
-		btn.add_theme_font_size_override("font_size", 20)
+		ButtonCoverStyles.apply(btn, cover_i % 3, 20, Vector4(28.0, 8.0, 28.0, 8.0))
+		cover_i += 1
 
 	$VBoxContainer/ResumeButton.text = tr("ui.pause.resume")
 	$VBoxContainer/SettingsButton.text = tr("ui.pause.settings")
@@ -134,16 +133,9 @@ func _build_settings_panel() -> Control:
 
 	var back_btn = Button.new()
 	back_btn.text = tr("ui.pause.back")
-	back_btn.custom_minimum_size = Vector2(200, 50)
+	back_btn.custom_minimum_size = Vector2(220, 52)
 	back_btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	var back_style = StyleBoxFlat.new()
-	back_style.bg_color = Color("#1A1A2E")
-	back_style.corner_radius_top_left = 8
-	back_style.corner_radius_top_right = 8
-	back_style.corner_radius_bottom_left = 8
-	back_style.corner_radius_bottom_right = 8
-	back_btn.add_theme_stylebox_override("normal", back_style)
-	back_btn.add_theme_color_override("font_color", Color.WHITE)
+	ButtonCoverStyles.apply(back_btn, 1, 17, Vector4(18.0, 8.0, 18.0, 8.0))
 	back_btn.pressed.connect(func():
 		bg.queue_free()
 		$VBoxContainer.visible = true

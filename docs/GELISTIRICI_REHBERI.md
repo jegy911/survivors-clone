@@ -4,7 +4,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 *(İngilizce projelerde eşdeğeri genelde `ARCHITECTURE.md`, `DEVELOPER_GUIDE.md` veya `docs/CONTRIBUTING.md` olarak adlandırılır.)*
 
 **Motor:** Godot 4.x  
-**Son güncelleme:** 2026-04-22 (wiki-arşiv referans satırı; `WeaponBase` menzil + cooldown; `GameplayConstants` menzilleri — §4)
+**Son güncelleme:** 2026-04-22 (`ButtonCoverStyles` + `button1`–`3` menü geneli; wiki-arşiv; `WeaponBase` / `GameplayConstants` — §4)
 
 **Hızlı giriş (yeni geliştirici / AI):** `docs/survivors_clone_context.md` — kısa autoload ve sahne akışı; bu dosya tam mimari rehberdir.
 
@@ -236,26 +236,23 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 
 **Yeni bir Label / buton:** İlgili `.tscn` düğümü + `.gd` içinde `onready` veya `%UniqueName` ile referans.
 
-### 7.1 Ana menü — buton kapakları (`StyleBoxTexture`)
+### 7.1 Buton kapakları (`StyleBoxTexture`, `button1`–`3`)
 
-Ana menüdeki tüm ana aksiyon butonları (Play, Meta, Shop, Codex, Settings, Store, Quit) **tek bir kapak PNG** ile çizilir; kod `ui/main_menu.gd` içinde üretilir (`_build_ui` + dil yenilemesinde `_apply_texts`).
+**Ortak sınıf:** `ui/button_cover_styles.gd` (`class_name ButtonCoverStyles`) — `button1.png` / `button2.png` / `button3.png` preload; `apply(...)`, atlas `Rect2(2, 188, 507, 134)`, yatay `texture_margin_left/right` = **104**, dikey margin **0**. Menülerde çeşitlilik için kapak indeksi **0 / 1 / 2** dönülür.
 
-| Ne | Nerede / ne işe yarar |
-|----|------------------------|
-| **Kapak dokusu** | `const _MAIN_MENU_BTN_COVER := preload("res://assets/button covers/button1.png")` — başka dosya kullanacaksan sabiti ve yolu güncelle. Klasör notu: `assets/button covers/README.txt`. |
-| **Atlas kırpma** | `_button_cover_atlas_region(tex)` → `StyleBoxTexture.region_rect`. `button1.png` tam boyutu 512×512; opak UI şeridi yaklaşık **`Rect2(2, 188, 507, 134)`** (şeffaf çerçeveyi atlamak için). **Yeni PNG** için: düzenleyicide veya `python` + Pillow `Image.open(...).getbbox()` ile opak kutuyu ölçüp bu `Rect2` değerlerini güncelle. |
-| **Nine-patch (yatay)** | `_stylebox_texture_from_button_cover`: `texture_margin_left` / `texture_margin_right` = **104** — sivri uçlar bu dilimde kalır, orta sütun yatay uzar. |
-| **Dikey: margin 0** | `texture_margin_top` ve `texture_margin_bottom` = **0**. Dikey üç dilim (üst / orta / alt) **açma**: metal bevel simetrik olduğundan orta şerit dikey esneyince ekranda yatay **dikiş / çift parça** gibi görünür. Tüm yükseklik tek parça gibi ölçeklenir. |
-| **Yazı içi boşluk** | `content_margin_*` ← `_main_menu_button_text_inset(btn)` (buton adına göre). |
-| **Punto** | `_main_menu_button_font_size(btn)` — dar buton (Quit) / uzun metin (Store) için ayrı değerler. |
-| **Buton yüksekliği** | `_build_ui` içinde `BTN_H`, `PLAY_H`, Quit `custom_minimum_size` — kapak oranı ile birlikte düşün. |
+**Ana menü:** `ui/main_menu.gd` — `_build_ui` + `_apply_texts`; buton başına kapak `_main_menu_cover_variant(btn)` ile atanır; punto / `content_margin` hâlâ `_main_menu_button_font_size` ve `_main_menu_button_text_inset`.
+
+| Ne | Nerede |
+|----|--------|
+| **PNG’ler** | `assets/button covers/README.txt` |
+| **Yeni PNG / atlas** | `ButtonCoverStyles.atlas_region_for(tex)` — üç dosya aynı 512² düzeni varsayar; farklı kırpma gerekiyorsa bu fonksiyonda `tex` yoluna göre dal ekle. |
 
 **Başka bir `buttonX.png` denemek — kısa checklist**
 
-1. PNG’yi `assets/button covers/` altına koy (veya yeni klasör + `preload` yolunu değiştir).
-2. Opak bbox → `_button_cover_atlas_region` içindeki `Rect2` (gerekirse `tex == _MAIN_MENU_BTN_COVER` yerine yeni `preload` sabiti için dal ekle).
-3. Sivri uç genişliğine göre `texture_margin_left` / `right` ayarla; **dikey dikiş istemiyorsan** üst/alt margin’i **0** bırak.
-4. Gerekirse `_main_menu_button_text_inset` ve `_main_menu_button_font_size` ile metni çerçeveye oturt.
+1. PNG’yi `assets/button covers/` altına koy; `ButtonCoverStyles` içindeki `_covers` / preload listesine ekle.
+2. Opak bbox’ı `atlas_region_for` ile hizala (gerekirse Pillow `getbbox()`).
+3. Sivri uç genişliğine göre `stylebox_from_cover` içindeki `texture_margin_left` / `right` ayarla; dikey dikiş istemiyorsan üst/alt **0** kalsın.
+4. İlgili menüde `apply(..., text_inset, font_size)` ile metni çerçeveye oturt.
 
 Tasarım envanteri satırı: `docs/TASARIM.md` → **UI, HUD ve menüler** → Ana menü.
 

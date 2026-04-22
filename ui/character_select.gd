@@ -34,6 +34,10 @@ func _ready():
 	action_row.get_node("BackButton").pressed.connect(_on_back)
 	action_row.get_node("PlayButton").pressed.connect(_on_play)
 	action_row.get_node("PlayButton").disabled = true
+	var back_b: Button = action_row.get_node("BackButton") as Button
+	var play_b: Button = action_row.get_node("PlayButton") as Button
+	ButtonCoverStyles.apply(back_b, 0, 17, Vector4(18.0, 8.0, 18.0, 8.0))
+	ButtonCoverStyles.apply(play_b, 1, 17, Vector4(18.0, 8.0, 18.0, 8.0))
 
 
 func _grid() -> GridContainer:
@@ -84,10 +88,13 @@ func _setup_class_filter_row() -> void:
 	vbox.add_child(row)
 	vbox.move_child(row, insert_at)
 	_class_filter_buttons.clear()
+	var fv := 0
 	for class_id in CharacterData.HERO_CLASS_FILTER_IDS:
 		var btn = Button.new()
 		btn.text = tr("ui.character_select.filter_%s" % class_id)
 		btn.custom_minimum_size = Vector2(104, 36)
+		btn.set_meta("filter_cover_variant", fv % 3)
+		fv += 1
 		var cid: String = class_id
 		btn.pressed.connect(func(): _on_class_filter_pressed(cid))
 		row.add_child(btn)
@@ -95,23 +102,9 @@ func _setup_class_filter_row() -> void:
 	_refresh_class_filter_buttons()
 
 func _style_class_filter_button(btn: Button, active: bool) -> void:
-	var style = StyleBoxFlat.new()
-	style.border_width_left = 2
-	style.border_width_right = 2
-	style.border_width_top = 2
-	style.border_width_bottom = 2
-	style.corner_radius_top_left = 8
-	style.corner_radius_top_right = 8
-	style.corner_radius_bottom_left = 8
-	style.corner_radius_bottom_right = 8
-	if active:
-		style.bg_color = _filter_accent.darkened(0.45)
-		style.border_color = _filter_accent
-	else:
-		style.bg_color = Color("#252538")
-		style.border_color = Color("#444466")
-	btn.add_theme_stylebox_override("normal", style)
-	btn.add_theme_color_override("font_color", Color.WHITE)
+	var v: int = int(btn.get_meta("filter_cover_variant", 0))
+	var mod := Color(1.12, 1.02, 1.22, 1.0) if active else Color(0.62, 0.62, 0.68, 1.0)
+	ButtonCoverStyles.apply(btn, v, 12, Vector4(8.0, 5.0, 8.0, 5.0), mod)
 
 func _refresh_class_filter_buttons() -> void:
 	for class_id in _class_filter_buttons:
@@ -210,7 +203,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			desc_label.text = CharacterSelectHelpers.rich_description_unlocked(char_data)
 			desc_label.add_theme_color_override("font_color", Color("#B0B0B0"))
 
-			var btn = _make_button(tr("ui.character_select.btn_select"), Color("#3498DB"))
+			var btn = _make_button(tr("ui.character_select.btn_select"), Color("#3498DB"), 0)
 			var idx = i
 			btn.pressed.connect(func(): _on_select(idx))
 			vbox.add_child(char_visual)
@@ -228,7 +221,7 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 			var cost = char_data["cost"]
 			var can_afford = SaveManager.gold >= cost
 			var buy_color = Color("#27AE60") if can_afford else Color("#7F8C8D")
-			var btn = _make_button(tr("ui.character_select.btn_buy") % int(cost), buy_color)
+			var btn = _make_button(tr("ui.character_select.btn_buy") % int(cost), buy_color, 2)
 			btn.disabled = not can_afford
 			btn.pressed.connect(func(): _on_purchase(cid))
 			vbox.add_child(char_visual)
@@ -252,23 +245,12 @@ func _build_card(i: int, char_data: Dictionary, state: String) -> PanelContainer
 	card.add_child(vbox)
 	return card
 
-func _make_button(label_text: String, color: Color) -> Button:
+func _make_button(label_text: String, color: Color, cover_variant: int) -> Button:
 	var btn = Button.new()
 	btn.text = label_text
 	btn.custom_minimum_size = Vector2(140, 50)
-	var style = StyleBoxFlat.new()
-	style.bg_color = color.darkened(0.3)
-	style.border_color = color
-	style.border_width_left = 2
-	style.border_width_right = 2
-	style.border_width_top = 2
-	style.border_width_bottom = 2
-	style.corner_radius_top_left = 8
-	style.corner_radius_top_right = 8
-	style.corner_radius_bottom_left = 8
-	style.corner_radius_bottom_right = 8
-	btn.add_theme_stylebox_override("normal", style)
-	btn.add_theme_color_override("font_color", Color.WHITE)
+	var tint := Color.WHITE.lerp(color, 0.26)
+	ButtonCoverStyles.apply(btn, cover_variant, 15, Vector4(12.0, 7.0, 12.0, 7.0), tint)
 	btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	return btn
 

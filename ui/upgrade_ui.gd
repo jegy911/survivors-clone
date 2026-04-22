@@ -170,6 +170,7 @@ func _bind_editor_root(editor: Control) -> void:
 		_reroll_btn.pressed.connect(_on_reroll)
 	if not _skip_btn.pressed.is_connected(_on_skip):
 		_skip_btn.pressed.connect(_on_skip)
+	_apply_action_row_button_covers()
 	_editor_refresh_static_labels()
 	_editor_apply_shell_styles()
 
@@ -202,9 +203,7 @@ func _editor_apply_shell_styles() -> void:
 		c.add_theme_stylebox_override("panel", _style_flat_panel(Color(0.11, 0.12, 0.18), Color(0.65, 0.7, 0.75), 1))
 		var iw: PanelContainer = c.get_meta("icon_wrap") as PanelContainer
 		iw.add_theme_stylebox_override("panel", _style_flat_panel(_SLOT_BG, Color(0.4, 0.45, 0.5), 1))
-	var rb: StyleBoxFlat = _style_flat_panel(Color(0.1, 0.12, 0.2))
-	_reroll_btn.add_theme_stylebox_override("normal", rb)
-	_skip_btn.add_theme_stylebox_override("normal", rb)
+	_apply_action_row_button_covers()
 
 
 func _wire_upgrade_card(panel: PanelContainer, index: int) -> void:
@@ -238,6 +237,18 @@ func _apply_action_tooltips() -> void:
 		_reroll_btn.tooltip_text = tr("ui.upgrade_ui.tooltip_reroll_pool")
 	if _skip_btn:
 		_skip_btn.tooltip_text = tr("ui.upgrade_ui.tooltip_skip_gold")
+
+
+func _apply_action_row_button_covers() -> void:
+	if _reroll_btn == null or not is_instance_valid(_reroll_btn):
+		return
+	if _skip_btn == null or not is_instance_valid(_skip_btn):
+		return
+	var s: float = SaveManager.get_ui_scale()
+	var fs: int = int(15 * s)
+	var inset: Vector4 = Vector4(12.0, 7.0, 12.0, 7.0) * s
+	ButtonCoverStyles.apply(_reroll_btn, 1, fs, inset, Color.WHITE, Color.WHITE, true)
+	ButtonCoverStyles.apply(_skip_btn, 2, fs, inset, Color.WHITE, Color.WHITE, true)
 
 
 func _build_ui_shell() -> void:
@@ -351,17 +362,14 @@ func _build_ui_shell() -> void:
 
 	_reroll_btn = Button.new()
 	_reroll_btn.custom_minimum_size = Vector2(160, 42)
-	_reroll_btn.add_theme_stylebox_override("normal", _style_flat_panel(Color(0.1, 0.12, 0.2)))
-	_reroll_btn.add_theme_color_override("font_color", Color.WHITE)
 	action.add_child(_reroll_btn)
 	_reroll_btn.pressed.connect(_on_reroll)
 
 	_skip_btn = Button.new()
 	_skip_btn.custom_minimum_size = Vector2(160, 42)
-	_skip_btn.add_theme_stylebox_override("normal", _style_flat_panel(Color(0.1, 0.12, 0.2)))
-	_skip_btn.add_theme_color_override("font_color", Color.WHITE)
 	action.add_child(_skip_btn)
 	_skip_btn.pressed.connect(_on_skip)
+	_apply_action_row_button_covers()
 
 	# --- Right: stats ---
 	var right := VBoxContainer.new()
@@ -396,6 +404,7 @@ func _apply_ui_scale() -> void:
 		_outer_margin.add_theme_constant_override("margin_right", int(16 * s))
 		_outer_margin.add_theme_constant_override("margin_top", int(20 * s))
 		_outer_margin.add_theme_constant_override("margin_bottom", int(20 * s))
+	_apply_action_row_button_covers()
 
 
 func _make_section_header(locale_key: String) -> Control:
@@ -1000,6 +1009,7 @@ func refresh_buttons() -> void:
 	_reroll_btn.disabled = reroll_count <= 0
 	_skip_btn.text = tr("ui.upgrade_ui.skip") % skip_count
 	_skip_btn.disabled = skip_count <= 0
+	_apply_action_row_button_covers()
 
 
 func show_upgrades(player: Node) -> void:

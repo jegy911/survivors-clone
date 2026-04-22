@@ -1,33 +1,36 @@
 class_name SettingsUiStyles
 extends RefCounted
-## Ayarlar ekranı sekme ve düğüm stilleri (settings.gd ile paylaşılır).
+## Ayarlar üst sekme satırı + geri düğmesi; kapak PNG’leri `ButtonCoverStyles` ile.
 
 
-static func style_tab_button(btn: Button, text: String) -> void:
-	btn.text = text
-	btn.custom_minimum_size = Vector2(160, 50)
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("#1A1A2E")
-	style.corner_radius_top_left = 8
-	style.corner_radius_top_right = 8
-	style.corner_radius_bottom_left = 0
-	style.corner_radius_bottom_right = 0
-	btn.add_theme_stylebox_override("normal", style)
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.add_theme_font_size_override("font_size", 15)
+static func refresh_settings_main_tabs(tab_row: Node, current_tab_id: String) -> void:
+	var rows: Array = [
+		["SesTab", "ses", "ui.settings.tab_audio"],
+		["DilTab", "dil", "ui.settings.tab_language"],
+		["GoruntuTab", "goruntu", "ui.settings.tab_video"],
+		["OynanisTab", "oynanis", "ui.settings.tab_gameplay"],
+		["KontrolTab", "kontrol", "ui.settings.tab_controls"],
+		["ProfilTab", "profil", "ui.settings.tab_profile"],
+		["DevToolsTab", "devtools", "ui.settings.tab_dev"],
+	]
+	var cover_variants: Array[int] = [0, 1, 2, 0, 1, 2, 0]
+	var i := 0
+	for r in rows:
+		var node_name: String = r[0]
+		var tid: String = r[1]
+		var btn := tab_row.get_node_or_null(node_name) as Button
+		if btn == null:
+			continue
+		btn.text = tr(r[2])
+		btn.custom_minimum_size = Vector2(160, 50)
+		var sel: bool = (tid == current_tab_id)
+		var mod := Color(1.1, 1.04, 1.2, 1.0) if sel else Color(0.66, 0.66, 0.72, 1.0)
+		ButtonCoverStyles.apply(btn, cover_variants[i], 15, Vector4(10.0, 6.0, 10.0, 6.0), mod)
+		i += 1
 
 
-static func style_back_button(btn: Button, back_text: String) -> void:
+static func style_settings_back_button(btn: Button, back_text: String) -> void:
 	btn.text = back_text
-	btn.custom_minimum_size = Vector2(200, 50)
+	btn.custom_minimum_size = Vector2(220, 52)
 	btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color("#1A1A2E")
-	style.corner_radius_top_left = 8
-	style.corner_radius_top_right = 8
-	style.corner_radius_bottom_left = 8
-	style.corner_radius_bottom_right = 8
-	btn.add_theme_stylebox_override("normal", style)
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.add_theme_font_size_override("font_size", 16)
-
+	ButtonCoverStyles.apply(btn, 1, 17, Vector4(18.0, 8.0, 18.0, 8.0), Color.WHITE, Color.WHITE)

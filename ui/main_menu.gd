@@ -2,8 +2,6 @@ extends CanvasLayer
 
 const IRONFALL_STEAM_STORE_URL := "https://store.steampowered.com/app/4602570/Ironfall/"
 
-const _MAIN_MENU_BTN_COVER := preload("res://assets/button covers/button1.png")
-
 ## Oynat / meta / mağaza / Steam mağaza sayfası / kodeks / ayar / çıkış — `_build_ui` içinde `MenuRoot` altına yerleşir.
 var _menu_root: Control
 var _stats_line_label: Label
@@ -61,11 +59,24 @@ func _button_style_configs() -> Array:
 	]
 
 
-## PNG atlas içindeki opak çerçeve (512² dosyada şeffaf boşluk var); nine-patch uçları inceltmesin.
-func _button_cover_atlas_region(tex: Texture2D) -> Rect2:
-	if tex == _MAIN_MENU_BTN_COVER:
-		return Rect2(2, 188, 507, 134)
-	return Rect2(0, 0, float(tex.get_width()), float(tex.get_height()))
+func _main_menu_cover_variant(btn: Button) -> int:
+	match btn.name:
+		"StartButton":
+			return 0
+		"UpgradeButton":
+			return 1
+		"ShopButton":
+			return 2
+		"SteamStoreButton":
+			return 0
+		"CollectionButton":
+			return 1
+		"SettingsButton":
+			return 2
+		"QuitButton":
+			return 0
+		_:
+			return 0
 
 
 ## StyleBoxTexture içindeki metin iç boşluğu (x=left, y=top, z=right, w=bottom).
@@ -93,43 +104,11 @@ func _main_menu_button_font_size(btn: Button) -> int:
 			return 19
 
 
-func _stylebox_texture_from_button_cover(texture: Texture2D, mod: Color, text_inset: Vector4) -> StyleBoxTexture:
-	var sb := StyleBoxTexture.new()
-	sb.texture = texture
-	sb.region_rect = _button_cover_atlas_region(texture)
-	sb.modulate_color = mod
-	sb.axis_stretch_horizontal = StyleBoxTexture.AXIS_STRETCH_MODE_STRETCH
-	sb.axis_stretch_vertical = StyleBoxTexture.AXIS_STRETCH_MODE_STRETCH
-	## Sadece yatay 3 dilim: uç süsler sabit, orta yatay uzar. Dikey margin 0 = tüm yükseklik tek
-	## parça (üst/orta/alt nine-patch dilimi yok); aksi halde bevel ortasında dikiş çizgisi oluşuyordu.
-	sb.texture_margin_left = 104
-	sb.texture_margin_top = 0.0
-	sb.texture_margin_right = 104
-	sb.texture_margin_bottom = 0.0
-	sb.draw_center = true
-	sb.content_margin_left = text_inset.x
-	sb.content_margin_top = text_inset.y
-	sb.content_margin_right = text_inset.z
-	sb.content_margin_bottom = text_inset.w
-	return sb
-
-
 func _apply_main_menu_button_cover_style(btn: Button) -> void:
 	if btn == null or not is_instance_valid(btn):
 		return
-	var tex: Texture2D = _MAIN_MENU_BTN_COVER
 	var inset := _main_menu_button_text_inset(btn)
-	var normal := _stylebox_texture_from_button_cover(tex, Color.WHITE, inset)
-	var hover := normal.duplicate() as StyleBoxTexture
-	hover.modulate_color = Color(1.08, 1.06, 1.04, 1.0)
-	var pressed := normal.duplicate() as StyleBoxTexture
-	pressed.modulate_color = Color(0.94, 0.94, 0.96, 1.0)
-	btn.add_theme_stylebox_override("normal", normal)
-	btn.add_theme_stylebox_override("hover", hover)
-	btn.add_theme_stylebox_override("pressed", pressed)
-	btn.add_theme_font_size_override("font_size", _main_menu_button_font_size(btn))
-	btn.add_theme_color_override("font_color", Color.WHITE)
-	btn.add_theme_constant_override("h_separation", 8)
+	ButtonCoverStyles.apply(btn, _main_menu_cover_variant(btn), _main_menu_button_font_size(btn), inset)
 
 
 func _apply_main_menu_background() -> void:
@@ -404,17 +383,7 @@ func _build_steam_wishlist_dialog(screen_size: Vector2) -> void:
 	_wishlist_ok_button.name = "OkButton"
 	_wishlist_ok_button.custom_minimum_size = Vector2(200.0, 44.0)
 	_wishlist_ok_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	var ok_style := StyleBoxFlat.new()
-	ok_style.bg_color = Color("#1B2838")
-	ok_style.border_color = Color("#66C0F4")
-	ok_style.set_border_width_all(2)
-	ok_style.set_corner_radius_all(8)
-	_wishlist_ok_button.add_theme_stylebox_override("normal", ok_style)
-	var ok_hover := ok_style.duplicate()
-	ok_hover.bg_color = Color("#2A475E")
-	_wishlist_ok_button.add_theme_stylebox_override("hover", ok_hover)
-	_wishlist_ok_button.add_theme_color_override("font_color", Color.WHITE)
-	_wishlist_ok_button.add_theme_font_size_override("font_size", 18)
+	ButtonCoverStyles.apply(_wishlist_ok_button, 1, 18, Vector4(22.0, 8.0, 22.0, 8.0))
 	vbox.add_child(_wishlist_ok_button)
 
 	_wishlist_ok_button.pressed.connect(_on_wishlist_ok_pressed)
