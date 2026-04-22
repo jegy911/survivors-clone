@@ -66,8 +66,21 @@ func get_music_track_count() -> int:
 	return _music_streams.size()
 
 
-func _on_game_started():
+## Koşu başında menüden gelen parçayı koru; yalnız hiç çalmıyorsa `music1`.
+func _on_game_started() -> void:
+	if current_music > 0:
+		if music_player.stream_paused:
+			music_player.stream_paused = false
+		elif not music_player.has_stream_playback():
+			play_music(current_music)
+		return
 	play_music(1)
+
+
+func get_music_track_basename(track: int) -> String:
+	if track < 1 or track > MUSIC_TRACK_COUNT:
+		return "-"
+	return "music%d" % track
 
 
 func play_music(track: int) -> void:

@@ -500,6 +500,13 @@ func _add_music_playback_row(parent: Node) -> void:
 	next_btn.tooltip_text = tr("ui.settings.music_next_tooltip")
 	controls.add_child(next_btn)
 
+	var name_label = Label.new()
+	name_label.custom_minimum_size = Vector2(88, 0)
+	name_label.add_theme_color_override("font_color", Color.WHITE)
+	name_label.add_theme_font_size_override("font_size", 18)
+	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	controls.add_child(name_label)
+
 	var pause_btn = Button.new()
 	pause_btn.text = tr("ui.settings.music_pause")
 	pause_btn.custom_minimum_size = Vector2(100, 40)
@@ -522,8 +529,10 @@ func _add_music_playback_row(parent: Node) -> void:
 		var cur: int = AudioManager.current_music
 		if cur <= 0 or n_tracks <= 0:
 			track_label.text = "- / %d" % maxi(n_tracks, 1)
+			name_label.text = "-"
 		else:
 			track_label.text = "%d / %d" % [cur, n_tracks]
+			name_label.text = AudioManager.get_music_track_basename(cur)
 		var playing: bool = AudioManager.is_music_playing()
 		var paused: bool = AudioManager.is_music_paused()
 		pause_btn.disabled = not playing or paused
