@@ -31,7 +31,6 @@ Ayrıntılı tablolar ve pseudo-kod **klasördeki dört `.md` dosyasında**; bur
 ## `docs/YOL_HARITASI.md`
 
 - Evrim sistemi derinleştirme (kombinasyonlar, denge, UI, kenar durumlar). *(2026-04-17: `death_laser` / `frost_nova` tarifeleri `weapon_evolution.gd` + Frost Nova yansıtma; kalan: kodeks evrim sekmesi, genel denge.)*
-- Bağlam belgesi: `survivors_clone_context.md` (autoload / akış özeti).
 - Lore — hikâye, boss, harita metinleri (`TASARIM.md` ile). *(2026-04-18: `lore.md` özeti + Çöküş → ana menü + kodeks `en.json` “World” metinleri.)*
 - Arena modu (**tam** paket) — ayrı arena haritası, dalga savunma ritmi, ödül ekonomisi. *(v0: `map_select` + `run_variant` **arena** + ~10 dk; **2026-04-18** `wave_manager` + `spawn_manager` arena tempo cilası.)*
 - P2P / co-op destek kahramanları (takım buff mekaniği).
@@ -113,9 +112,3 @@ Ayrıntılı tablolar ve pseudo-kod **klasördeki dört `.md` dosyasında**; bur
 
 - Ana saldırı kod adı (`bullet` → evren adı) lore ile hizalama.
 - Boss başına kısa “kimdir / ne temsil eder” maddeleri.
-
----
-
-## `README.md`
-
-- Lisans bölümü (`*(İleride eklenecekse…)*`).

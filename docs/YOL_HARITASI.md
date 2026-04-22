@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-22 (wiki-arşiv özeti bu dosyada «Referans — VS / Brotato wiki analizi»; ayrıca `GameplayConstants` günlük satırı)
+**Son güncelleme:** 2026-04-22 (wiki-arşiv özeti; `GameplayConstants`; **`docs/survivors_clone_context.md`** bağlam özeti eklendi)
 
 ---
 
@@ -56,7 +56,7 @@ Aşağıdaki sıra **öneridir**: P0 → hızlı kullanıcı kazanımı; P4 → 
 | **Co-op giriş** | İkinci oyuncu giriş haritası **Kısmi** (matris #2). |
 | **Evrim + kodeks** | Tarif **metinleri** `ui.evolution_defs.*` + `tr()` **2026-04-18** (`weapon_evolution` yalnız `requires_*`). `death_laser` / `frost_nova` + Frost Nova yansıtma **2026-04-17**; kodekste ayrı **Evrim** sekmesi hâlâ yok; genel evrim derinleştirme `[ ]`. |
 | **Sınıf → oyun** | `hero_class` filtre + kartta rol (`codex.character.*.role`) **2026-04-17**; **çarpan/denge bağlama** `[ ]`. |
-| **Bağlam belgesi** | `survivors_clone_context.md` (veya eşdeğeri) yok — yeni geliştirici / AI için özet. |
+| **Bağlam belgesi** | **Tamamlandı (2026-04-22):** `docs/survivors_clone_context.md` — kısa autoload / sahne akışı; ayrıntı `GELISTIRICI_REHBERI` §1–2. |
 | **Arena / lore / rehber** | Arena v0: `map_select` + `run_variant` **arena** + `ARENA_RUN_GOAL_SEC`; **2026-04-18** `wave_manager` / `spawn_manager` ile daha sıkı tempo. Lore: ana menü + kodeks dünya özeti (`en.json`); boss/harita anlatısı uzun vadeli. |
 
 ### P2 — Refaktör / tekrarlayan kod / isim borcu
@@ -133,7 +133,7 @@ Bir sonraki oturumda **“kaldığımız yerden devam”** için özet:
 | **ObjectPool** | `lightning_bolt` havuz boyutu / eşzamanlı vuruş sayısı oynanışa göre ayar; kısa not `GELISTIRICI_REHBERI` veya kod yorumu. |
 | **`EnemyRegistry` + menzil** | Tüm liste üzerinden mesafe; sürü çok büyürse profil → ızgara / seyrek güncelleme değerlendirilir. |
 | **Doğrulama aracı** | `WEAPON_SCRIPT_BY_ID` anahtarları için eşleşen `weapons/scenes/weapon_<id>.tscn` varlığını kontrol eden küçük script (CI opsiyonel). |
-| **Bağlam belgesi** | Aşağıdaki plan tablosunda `[ ]` kalan **`survivors_clone_context.md`** (autoload / akış özeti). |
+| **Bağlam belgesi** | **[x] 2026-04-22:** `docs/survivors_clone_context.md` (autoload / akış özeti). |
 
 ---
 
@@ -172,6 +172,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-22 | **Bağlam belgesi + README lisans** — `docs/survivors_clone_context.md` (autoload tablosu, sahne zinciri, dizin işaretleri); `README.md` doküman tablosu + lisans paragrafı (açık lisans yok, telif saklı); `YAPILACAKLAR_TOPLU` / P1 / teknik borç / önemli tablo senkronu. |
 | 2026-04-22 | **Wiki-arşiv senkronu** — `docs/vs wiki analizi/` dört dosyanın özeti `YOL_HARITASI` «Referans — VS / Brotato wiki analizi» + `YAPILACAKLAR_TOPLU` + `GELISTIRICI_REHBERI` / `TASARIM` / `lore` / `README` bağlantıları; evrim passive MAX maddesi kodla uyumlu not düzeltmesi. |
 | 2026-04-22 | **600 px tek kaynak** — `core/gameplay_constants.gd` (`class_name GameplayConstants`, `MAX_COMBAT_RADIUS_PX`); `main/main.gd` co-op centroid sınırı + `weapons/weapon_lightning.gd` hedef tavanı; `YAPILACAKLAR_TOPLU` / P2 / teknik borç satırları senkron. |
 | 2026-04-20 | **Ana menü buton kapakları — dokümantasyon** — `assets/button covers/button1.png` + `ui/main_menu.gd` (`StyleBoxTexture`, `region_rect`, yatay `texture_margin`, dikey margin 0 ile dikiş önleme); **`docs/GELISTIRICI_REHBERI.md` §7.1**, `docs/TASARIM.md` (Ana menü satırı), `assets/button covers/README.txt`, `README.md` kısa link. |
@@ -268,7 +269,7 @@ Teknik ayar anahtarları: `GELISTIRICI_REHBERI.md` §15.
 | [x] | **Dil sistemi (localization)** — `LocalizationManager`, `LANGUAGE_CATALOG`, `tr` / `en` / `zh_CN`, Ayarlar → Dil, OS ilk kurulum, parity script; *yeni diller sonraya bırakıldı.* |
 | [ ] | **Evrim sistemi derinleştirme** — Kombinasyonlar, denge, UI, kenar durumlar. *(2026-04: doğrulama, locale, cog 4. slot, reroll/pick_count, havuz sırası; yeni evrim/denge için devam.)* |
 | [x] | **README.md** — GitHub için özet, Godot ile çalıştırma, `docs/` linkleri. |
-| [ ] | **Bağlam belgesi** — `survivors_clone_context.md` (veya eşdeğeri): Ironfall, yeni sistemler, autoload özeti. |
+| [x] | **Bağlam belgesi** — `docs/survivors_clone_context.md`: Ironfall, autoload / sahne akışı, dizin işaretleri; derinlik `GELISTIRICI_REHBERI`. *(2026-04-22.)* |
 
 ---
 

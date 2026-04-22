@@ -32,6 +32,7 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 | [docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md](docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md) | Erişilebilirlik + bağlılık (20+20), Var/Kısmi/Yok |
 | [docs/KARAKTER_SINIFLARI_VE_TASARIM.md](docs/KARAKTER_SINIFLARI_VE_TASARIM.md) | Karakter sınıfları (Controller / Fighter / Mage / Tank), co-op destek vizyonu, kahraman taslak tablosu |
 | [docs/YAPILACAKLAR_TOPLU.md](docs/YAPILACAKLAR_TOPLU.md) | Açık işlerin düz listesi; biten satır silinir, kaynak `.md` içinde tiklenir |
+| [docs/survivors_clone_context.md](docs/survivors_clone_context.md) | Kısa repo / autoload / sahne akışı özeti (yeni geliştirici veya AI girişi) |
 | [docs/sesler-muzikler-efektler.md](docs/sesler-muzikler-efektler.md) | Müzik, SFX, tetikleyiciler (`AudioManager`) — yaşayan ses envanteri |
 | [docs/colorrect.md](docs/colorrect.md) | İkon / oyun-içi görsel gap takibi (kahraman, silah taban–evrim, eşya) |
 | [docs/vs wiki analizi/](docs/vs%20wiki%20analizi/) | Proje başı **VS + Brotato** wiki notları (arşiv); ürün özeti **`docs/YOL_HARITASI.md`** «Referans — VS / Brotato wiki analizi» + `docs/vs wiki analizi/README.md` |
@@ -50,4 +51,4 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 
 ## Lisans
 
-*(İleride eklenecekse buraya yazın.)*
+Bu depodaki kaynak kodu, oyun varlıkları ve dokümantasyon **henüz kamuya açık bir lisansla yayınlanmamıştır**; telif hakları saklıdır. Dağıtım veya yeniden kullanım koşulları netleştiğinde kökte bir `LICENSE` dosyası eklenebilir ve bu bölüm güncellenir.

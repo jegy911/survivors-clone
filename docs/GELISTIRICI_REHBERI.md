@@ -6,6 +6,8 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 **Motor:** Godot 4.x  
 **Son güncelleme:** 2026-04-22 (wiki-arşiv referans satırı; `WeaponBase` menzil + cooldown; `GameplayConstants` menzilleri — §4)
 
+**Hızlı giriş (yeni geliştirici / AI):** `docs/survivors_clone_context.md` — kısa autoload ve sahne akışı; bu dosya tam mimari rehberdir.
+
 **Öncelikli plan (audit):** Ürün açıkları, bug / locale kalanları, refaktör ve optimizasyon maddelerinin sıralı özeti → **`docs/YOL_HARITASI.md`** başındaki **«Proje incelemesi — öncelikli plan (audit)»** (P0–P4).  
 **Tek sayfa yapılacaklar:** [x] **`docs/YAPILACAKLAR_TOPLU.md`** — yalnızca açık işler listelenir; madde bitince oradan **silinir**, kaynak dokümanda **[x]** / güncelleme yapılır (iş akışı dosya başında).
 
