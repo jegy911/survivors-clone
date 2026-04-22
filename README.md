@@ -37,7 +37,7 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 | [docs/colorrect.md](docs/colorrect.md) | İkon / oyun-içi görsel gap takibi (kahraman, silah taban–evrim, eşya) |
 | [docs/vs wiki analizi/](docs/vs%20wiki%20analizi/) | Proje başı **VS + Brotato** wiki notları (arşiv); ürün özeti **`docs/YOL_HARITASI.md`** «Referans — VS / Brotato wiki analizi» + `docs/vs wiki analizi/README.md` |
 
-**Son dokümantasyon odağı (2026-04-20):** Ana menü aksiyon butonları — `assets/button covers/` + `ui/main_menu.gd` (`StyleBoxTexture`); teknik özet **`docs/GELISTIRICI_REHBERI.md` §7.1**. *(Önceki odağı 2026-04-16: müzik döngüsü, meta upgrade scroll, karakter seçimi istat paneli.)*
+**Son dokümantasyon odağı (2026-04-22):** Metal buton kapakları (`button1.png`–`button3.png`) — `ui/button_cover_styles.gd` + menüler; özet **`docs/GELISTIRICI_REHBERI.md` §7.1**. *(2026-04-20: ana menü `StyleBoxTexture`; 2026-04-16: müzik döngüsü, meta upgrade scroll, karakter seçimi istat paneli.)*
 
 **Yerelleştirme:** `locales/tr.json`, `en.json`, `zh_CN.json` — `LocalizationManager` + `LANGUAGE_CATALOG`. Anahtar kontrolü: `python locales/check_locale_parity.py` (referans `en.json`). Yeni diller şimdilik plan aşamasında; tablo `GELISTIRICI_REHBERI.md` içinde.
 
@@ -47,7 +47,7 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 
 **Ana menü arka planı:** İsteğe bağlı tam ekran görsel — `assets/ui/main_menu_bg.png` (veya `.jpg` / `.webp`). Ayrıntı: `assets/ui/README_MAIN_MENU_BG.txt`.
 
-**Ana menü buton kapakları:** `assets/button covers/` (şu an `button1.png` — `StyleBoxTexture` ile). Özet ve yeni PNG checklist: **`docs/GELISTIRICI_REHBERI.md` §7.1**; klasör girişi: `assets/button covers/README.txt`.
+**Buton kapakları:** `assets/button covers/` (`button1`–`button3.png`, `ui/button_cover_styles.gd`). Checklist: **`docs/GELISTIRICI_REHBERI.md` §7.1**; klasör: `assets/button covers/README.txt`.
 
 ## Lisans
 
