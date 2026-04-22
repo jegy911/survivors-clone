@@ -229,10 +229,10 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
 | Harita | `ui/map_select.gd` |
 | Level-up | `ui/upgrade_ui.gd` — kart ikonları `UpgradeIconCatalog` (`assets/ui/upgrade_icons/README.txt`); silah envanter slotu evrim PNG yedeği: `try_weapon_with_evolution_fallback` |
 | HUD (kill, altın, çubuklar) | `player/player.gd` + `player` sahnesindeki `CanvasLayer` düğümleri |
-| Oyun sonu / duraklat | `ui/game_over.gd`, `pause_menu.gd` |
+| Oyun sonu / duraklat | `ui/game_over.gd`, `pause_menu.gd` — duraklatmadan **Ayarlar** → tam `settings.tscn` (`meta from_game`), geri `restore_after_settings()` |
 | Meta upgrade | `ui/meta_upgrade.gd` + `meta_upgrade.tscn` — `OuterMargin` + üst `VBox`, kart alanı `ScrollContainer` ile kaydırılabilir |
 | Koleksiyon (kodeks) | `ui/collection_menu.gd` / `.tscn` |
-| Ayarlar | `ui/settings.gd` (+ sekme stilleri `ui/settings_ui_styles.gd`); **Ses:** müzik parça satırı (önceki/sonraki, duraklat/devam) + `music_volume` kaydırıcısı; ESC/geri: `core/menu_input.gd` (`MenuInput`) + ilgili menülerde `_unhandled_input` |
+| Ayarlar | `ui/settings.tscn` + `settings.gd` (+ `settings_ui_styles.gd`); ana menü ve koşu içi duraklat aynı sahne — koşu: `set_meta("from_game", true)` (`pause_menu`), geri `ui.pause.back`; **Ses:** müzik parça satırı + `music_volume`; ESC: `MenuInput` |
 
 **Yeni bir Label / buton:** İlgili `.tscn` düğümü + `.gd` içinde `onready` veya `%UniqueName` ile referans.
 

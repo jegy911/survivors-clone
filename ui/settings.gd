@@ -12,6 +12,8 @@ var _rebind_btn: Button = null
 
 func _ready():
 	set_process_unhandled_input(true)
+	if get_meta("from_game", false):
+		process_mode = Node.PROCESS_MODE_ALWAYS
 	var screen_size = get_viewport().get_visible_rect().size
 	$Background.size = screen_size
 	$Background.color = Color("#0D0D1A")
@@ -22,6 +24,8 @@ func _ready():
 		SaveManager.level_up.connect(_on_save_manager_account_level_profile_vfx)
 
 	_build_ui()
+	if get_meta("from_game", false):
+		SettingsUiStyles.style_settings_back_button($VBoxContainer/BackButton, tr("ui.pause.back"))
 
 
 func _exit_tree() -> void:
@@ -622,12 +626,11 @@ func _flash_profil_account_progress_bar(bar: ProgressBar) -> void:
 
 func _on_back():
 	AudioManager.apply_volume_settings()
-	var from_game = get_meta("from_game", false)
-	if from_game:
+	if get_meta("from_game", false):
 		get_tree().paused = true
-		var pause_menu = preload("res://ui/pause_menu.tscn").instantiate()
-		pause_menu.process_mode = Node.PROCESS_MODE_ALWAYS
-		get_tree().root.add_child(pause_menu)
+		for n in get_tree().get_nodes_in_group("pause_menu_overlay"):
+			if n.has_method("restore_after_settings"):
+				n.restore_after_settings()
 		queue_free()
 	else:
 		get_tree().change_scene_to_file("res://ui/main_menu.tscn")
