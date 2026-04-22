@@ -31,9 +31,8 @@ func _ready():
 	action_row.get_node("PlayButton").pressed.connect(_on_play)
 	action_row.get_node("PlayButton").disabled = true
 	var back_b: Button = action_row.get_node("BackButton") as Button
-	var play_b: Button = action_row.get_node("PlayButton") as Button
 	ButtonCoverStyles.apply(back_b, 2, 17, Vector4(18.0, 8.0, 18.0, 8.0))
-	ButtonCoverStyles.apply(play_b, 0, 17, Vector4(18.0, 8.0, 18.0, 8.0))
+	_apply_play_button_cover()
 	$Panel/OuterMargin/MainVBox/GoldMargin/GoldLabel.text = "💰 " + str(SaveManager.gold)
 
 
@@ -68,6 +67,17 @@ func _refresh_stats_panel() -> void:
 func _play_button() -> Button:
 	return $Panel/OuterMargin/MainVBox/ActionMargin/ActionRow/PlayButton as Button
 
+
+func _apply_play_button_cover() -> void:
+	var pb: Button = _play_button()
+	if pb == null or not is_instance_valid(pb):
+		return
+	pb.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	pb.custom_minimum_size = Vector2(200, 52)
+	ButtonCoverStyles.apply(pb, 0, 17, Vector4(20.0, 9.0, 20.0, 9.0), Color.WHITE, Color.WHITE, true)
+	pb.add_theme_color_override("font_disabled_color", Color(0.78, 0.78, 0.84, 0.92))
+
+
 func _setup_class_filter_row() -> void:
 	var vbox: VBoxContainer = $Panel/OuterMargin/MainVBox
 	if vbox.get_node_or_null("ClassFilterRow"):
@@ -81,13 +91,11 @@ func _setup_class_filter_row() -> void:
 	vbox.add_child(row)
 	vbox.move_child(row, insert_at)
 	_class_filter_buttons.clear()
-	var fv := 0
 	for class_id in CharacterData.HERO_CLASS_FILTER_IDS:
 		var btn = Button.new()
 		btn.text = tr("ui.character_select.filter_%s" % class_id)
-		btn.custom_minimum_size = Vector2(104, 36)
-		btn.set_meta("filter_cover_variant", fv % 3)
-		fv += 1
+		btn.custom_minimum_size = Vector2(118, 38)
+		btn.clip_text = true
 		var cid: String = class_id
 		btn.pressed.connect(func(): _on_class_filter_pressed(cid))
 		row.add_child(btn)
@@ -95,9 +103,30 @@ func _setup_class_filter_row() -> void:
 	_refresh_class_filter_buttons()
 
 func _style_class_filter_button(btn: Button, active: bool) -> void:
-	var v: int = int(btn.get_meta("filter_cover_variant", 0))
-	var mod := Color(1.05, 1.08, 1.2, 1.0) if active else Color(0.62, 0.64, 0.7, 1.0)
-	ButtonCoverStyles.apply(btn, v, 12, Vector4(8.0, 5.0, 8.0, 5.0), mod)
+	var style := StyleBoxFlat.new()
+	style.border_width_left = 2
+	style.border_width_right = 2
+	style.border_width_top = 2
+	style.border_width_bottom = 2
+	style.corner_radius_top_left = 8
+	style.corner_radius_top_right = 8
+	style.corner_radius_bottom_left = 8
+	style.corner_radius_bottom_right = 8
+	if active:
+		style.bg_color = _filter_accent.darkened(0.48)
+		style.border_color = _filter_accent
+	else:
+		style.bg_color = Color("#252538")
+		style.border_color = Color("#4A4A6A")
+	btn.add_theme_stylebox_override("normal", style)
+	var hover := style.duplicate() as StyleBoxFlat
+	if active:
+		hover.bg_color = _filter_accent.darkened(0.35)
+	else:
+		hover.bg_color = Color("#2E2E44")
+	btn.add_theme_stylebox_override("hover", hover)
+	btn.add_theme_font_size_override("font_size", 13)
+	btn.add_theme_color_override("font_color", Color.WHITE)
 
 func _refresh_class_filter_buttons() -> void:
 	for class_id in _class_filter_buttons:
@@ -115,6 +144,7 @@ func _on_class_filter_pressed(class_id: String) -> void:
 		if _active_hero_class != "" and str(cd.get("hero_class", "")) != _active_hero_class:
 			selected_index = -1
 			_play_button().disabled = true
+			_apply_play_button_cover()
 	build_characters()
 
 func _character_visible_for_filter(char_index: int, char_data: Dictionary) -> bool:
@@ -139,6 +169,7 @@ func build_characters() -> void:
 	if selected_index >= 0:
 		_update_selection_borders()
 	_refresh_stats_panel()
+	_apply_play_button_cover()
 
 func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContainer:
 	var card = PanelContainer.new()
@@ -195,10 +226,10 @@ func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContaine
 		desc_label.add_theme_color_override("font_color", Color("#B0B0B0"))
 		var btn: Button
 		if i == selected_index:
-			btn = _make_button(tr("ui.character_select.btn_ready"), Color("#27AE60"), 1)
+			btn = _make_button(tr("ui.character_select.btn_ready"), Color("#27AE60"), 1, false)
 			_play_button().disabled = false
 		else:
-			btn = _make_button(tr("ui.character_select.btn_select"), Color("#2471A3"), 2)
+			btn = _make_button(tr("ui.character_select.btn_select"), Color("#2471A3"), 2, false)
 		var idx = i
 		btn.pressed.connect(func(): _on_select(idx))
 		vbox.add_child(char_visual)
@@ -209,12 +240,22 @@ func _build_card(i: int, char_data: Dictionary, is_taken: bool) -> PanelContaine
 	card.add_child(vbox)
 	return card
 
-func _make_button(label_text: String, color: Color, cover_variant: int) -> Button:
+func _make_button(label_text: String, color: Color, cover_variant: int, with_disabled_style: bool) -> Button:
 	var btn = Button.new()
 	btn.text = label_text
-	btn.custom_minimum_size = Vector2(140, 50)
-	var tint := Color.WHITE.lerp(color, 0.26)
-	ButtonCoverStyles.apply(btn, cover_variant, 15, Vector4(12.0, 7.0, 12.0, 7.0), tint)
+	btn.custom_minimum_size = Vector2(168, 54)
+	btn.alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var tint := Color.WHITE.lerp(color, 0.22)
+	ButtonCoverStyles.apply(
+		btn,
+		cover_variant,
+		14,
+		Vector4(18.0, 14.0, 18.0, 14.0),
+		tint,
+		Color.WHITE,
+		with_disabled_style,
+	)
+	btn.add_theme_color_override("font_disabled_color", Color(0.72, 0.72, 0.76, 0.92))
 	btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	return btn
 

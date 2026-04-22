@@ -21,7 +21,7 @@ static func refresh_settings_main_tabs(tab_row: Node, current_tab_id: String) ->
 		var btn := tab_row.get_node_or_null(node_name) as Button
 		if btn == null:
 			continue
-		btn.text = tr(r[2])
+		btn.text = TranslationServer.translate(StringName(r[2]))
 		btn.custom_minimum_size = Vector2(160, 50)
 		var sel: bool = (tid == current_tab_id)
 		var mod := Color(1.1, 1.04, 1.2, 1.0) if sel else Color(0.66, 0.66, 0.72, 1.0)
