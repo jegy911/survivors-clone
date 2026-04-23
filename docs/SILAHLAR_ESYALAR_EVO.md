@@ -130,23 +130,19 @@ Saha shard görseli: `assets/projectiles/fan_blade/shard.png` → `projectiles/f
 
 ### Çekim çapası (`gravity_anchor`)
 
-| Lv | Hasar | Yarıçap | Çekim gücü | CD |
-|----|-------|---------|------------|-----|
-| 1 | 8 | 118 | 10 | 1.3 |
-| 2 | 10 | 118 | 12 | 1.3 |
-| 3 | 10 | 132 | 12 | 1.1 |
-| 4 | 13 | 132 | 14 | 1.1 |
-| 5 | 16 | 148 | 16 | 0.95 |
+Sürekli çekim tablosu kaldırıldı. **Periyodik tekillik:** `weapons/weapon_gravity_anchor.gd` + `weapons/center_cataclysm_helper.gd` — süre dolunca kamera merkezinde sprite büyür, **600 px** yarıçap içindeki düşmanlara **99999** hasar. Aralık: Lv1 **60 s**, her seviye **−5 s** (alt sınır **4 s**). Görsel: `assets/projectiles/gravity_anchor/gravity_anchor_projectile.png`.
 
 ### Kale gürzü (`bastion_flail`)
 
-| Lv | Hasar | Yarıçap | İtme | CD |
-|----|-------|---------|------|-----|
-| 1 | 18 | 92 | 6 | 1.4 |
-| 2 | 22 | 100 | 6 | 1.4 |
-| 3 | 22 | 100 | 8 | 1.2 |
-| 4 | 28 | 112 | 8 | 1.2 |
-| 5 | 35 | 112 | 10 | 1.0 |
+Düşük taban hasar, **yüksek itme**; savurma **3 s** (≈ **3.75 tur**), bekleme **9 s**. `OrbitPivot` + `Sprite2D` + baş `FlailHitbox` (`weapon_bastion_flail.tscn`); hasar yalnız çarpışan düşmana. `radius` seviye ile büyür; alan çarpanı hitbox ölçeğine girer.
+
+| Lv | Hasar (taban) | Yarıçap stat | İtme | Not |
+|----|----------------|--------------|------|-----|
+| 1 | 5 | 92 | 18 | — |
+| 2 | 6 | 100 | 18 | — |
+| 3 | 6 | 100 | 22 | — |
+| 4 | 8 | 112 | 22 | — |
+| 5 | 10 | 112 | 28 | — |
 
 ### Kalkan hamlesi (`shield_ram`)
 
@@ -268,13 +264,7 @@ Projeksiyon: `projectiles/dagger.tscn` (`bullet.gd`); yakın hedefe sırayla; ta
 
 ### Uçurum merceği (`void_lens`)
 
-| Lv | Hasar | Yarıçap | Çekim gücü | CD |
-|----|-------|---------|------------|-----|
-| 1 | 12 | 158 | 14 | 1.1 |
-| 2 | 15 | 158 | 16 | 1.1 |
-| 3 | 15 | 172 | 16 | 0.9 |
-| 4 | 18 | 172 | 18 | 0.9 |
-| 5 | 23 | 188 | 20 | 0.8 |
+`gravity_anchor` ile aynı tekillik hattı; menzil **800 px**, aralık Lv1 **30 s**, her seviye **−2.5 s** (alt sınır **3 s**), yine **99999**. Görsel: `assets/projectiles/void_lens/void_lens_projectile.png`. Kart ikonu: `assets/ui/upgrade_icons/evolutions/void_lens.png`.
 
 ### Hisar zinciri (`citadel_flail`)
 

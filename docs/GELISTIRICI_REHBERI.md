@@ -315,13 +315,15 @@ Oyun içi uzun `description` / `codex.character.<id>` metni (Açılış, origin 
 ## 10. Checklist: yeni taban silah
 
 1. `weapons/weapon_*.gd` + `class_name`.
-2. `core/player_loadout_registry.gd` — `WEAPON_SCRIPT_BY_ID` içine aynı string ID.
-3. `player/player.gd` — `_LEVELUP_WEAPON_IDS` (ve Kaos için `random_weapons` listesi); açıklama `get_weapon_description` → `codex`.
-4. `ui/upgrade_ui.gd` — `WEAPON_UPGRADE_IDS`, `ITEM_UPGRADE_IDS`, `get_upgrade_text` (yardımcı / hata ayıklama).
-5. Varsa projectile: `projectiles/*.tscn` + script, `ObjectPool` uyumu; hedef seçiminde tercihen `EnemyRegistry.get_enemies()`.
-6. Kaos: `apply_character_bonuses` içindeki `random_weapons` listesi.
-7. `core/collection_data.gd` — `WEAPON_ENTRIES` (kodeks sekmesi).
-8. `locales/en.json` + `locales/codex_sources/codex_extensions_en.json` — `codex.weapon.<id>.name/desc` (dil dondurması: yalnız İngilizce dosyalar).
+2. **Tekillik çifti (`gravity_anchor` / `void_lens`):** `weapons/center_cataclysm_helper.gd` — ekran ortası büyüme tween’i + yarıçap içi instakill; süre/menzil sabitleri ilgili `weapon_*.gd` içinde. Dokular `assets/projectiles/gravity_anchor/`, `void_lens/`. Evrim ikonu `void_lens` → `assets/ui/upgrade_icons/evolutions/void_lens.png`.
+3. **Kale gürzü (`bastion_flail`):** `weapons/scenes/weapon_bastion_flail.tscn` — `OrbitPivot`, `Sprite2D`, `FlailHitbox`; mantık `weapon_bastion_flail.gd`.
+4. `core/player_loadout_registry.gd` — `WEAPON_SCRIPT_BY_ID` içine aynı string ID.
+5. `player/player.gd` — `_LEVELUP_WEAPON_IDS` (ve Kaos için `random_weapons` listesi); açıklama `get_weapon_description` → `codex`.
+6. `ui/upgrade_ui.gd` — `WEAPON_UPGRADE_IDS`, `ITEM_UPGRADE_IDS`, `get_upgrade_text` (yardımcı / hata ayıklama).
+7. Varsa projectile: `projectiles/*.tscn` + script, `ObjectPool` uyumu; hedef seçiminde tercihen `EnemyRegistry.get_enemies()`.
+8. Kaos: `apply_character_bonuses` içindeki `random_weapons` listesi.
+9. `core/collection_data.gd` — `WEAPON_ENTRIES` (kodeks sekmesi).
+10. `locales/en.json` + `locales/codex_sources/codex_extensions_en.json` — `codex.weapon.<id>.name/desc` (dil dondurması: yalnız İngilizce dosyalar).
 
 ---
 

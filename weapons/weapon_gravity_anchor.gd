@@ -1,75 +1,69 @@
 class_name WeaponGravityAnchor
 extends WeaponBase
 
-var radius = 118.0
-var pull_strength = 10.0
-var hit_cooldowns = {}
-const HIT_INTERVAL = 0.95
+const TEX_PULSE := preload("res://assets/projectiles/gravity_anchor/gravity_anchor_projectile.png")
+## Menzil sabit; alan çarpanı uygulanmaz.
+const CATA_RADIUS_PX: float = 600.0
+## Lv1 60 sn; her seviye −5 sn.
+const CATA_INTERVAL_LV1_SEC: float = 60.0
+const CATA_INTERVAL_PER_LEVEL_SEC: float = 5.0
 
-func _ready():
+var _time_until_cataclysm: float = 0.0
+var _pulse_busy: bool = false
+
+func _ready() -> void:
 	super._ready()
 	weapon_name = "Çekim Çapası"
 	tag = "buyu"
 	category = "utility"
-	damage = 8
-	cooldown = 1.3
+	damage = 0
+	cooldown = 999.0
+	_time_until_cataclysm = get_cataclysm_interval_sec()
+
+
+func get_cataclysm_interval_sec() -> float:
+	return maxf(4.0, CATA_INTERVAL_LV1_SEC - float(level - 1) * CATA_INTERVAL_PER_LEVEL_SEC)
+
+
+func get_cataclysm_radius_px() -> float:
+	return CATA_RADIUS_PX
+
+
+func _process(delta: float) -> void:
+	super._process(delta)
+	if player == null or not is_instance_valid(player):
+		return
+	if _pulse_busy:
+		return
+	_time_until_cataclysm -= delta
+	if _time_until_cataclysm <= 0.0:
+		_pulse_busy = true
+		var center: Vector2 = CenterCataclysmHelper.screen_center_global(player)
+		CenterCataclysmHelper.spawn_grow_pulse(
+			self, player, TEX_PULSE, center, get_cataclysm_radius_px(), 0.22, 1.08, 0.42
+		)
+
+
+func _on_cataclysm_pulse_finished() -> void:
+	_pulse_busy = false
+	_time_until_cataclysm = get_cataclysm_interval_sec()
+
 
 func has_targets_for_attack() -> bool:
-	if not hit_cooldowns.is_empty():
-		return true
-	var R: float = radius * player.get_area_multiplier()
-	var inner: float = 12.0
-	var ppos: Vector2 = player.global_position
-	for e in EnemyRegistry.get_enemies():
-		if is_instance_valid(e) and e is Node2D:
-			var d: float = ppos.distance_to((e as Node2D).global_position)
-			if d > inner and d <= R:
-				return true
 	return false
 
-func attack():
-	var effective_radius = radius * player.get_area_multiplier()
-	var enemies = EnemyRegistry.get_enemies()
-	for key in hit_cooldowns.keys():
-		hit_cooldowns[key] -= get_effective_cooldown()
-		if hit_cooldowns[key] <= 0:
-			hit_cooldowns.erase(key)
-	var ppos = player.global_position
-	for enemy in enemies:
-		var dist = ppos.distance_to(enemy.global_position)
-		if dist > effective_radius or dist < 12.0:
-			continue
-		var dir = (ppos - enemy.global_position).normalized()
-		enemy.global_position += dir * pull_strength
-		var enemy_id = enemy.get_instance_id()
-		if hit_cooldowns.has(enemy_id):
-			continue
-		var final_damage = player.get_total_damage(damage)
-		enemy.take_damage(final_damage, player)
-		EventBus.on_damage_dealt.emit(player, enemy, final_damage)
-		hit_cooldowns[enemy_id] = HIT_INTERVAL
 
-func on_upgrade():
-	match level:
-		2:
-			pull_strength = 12.0
-			damage = 10
-		3:
-			radius = 132.0
-			cooldown = 1.1
-		4:
-			pull_strength = 14.0
-			damage = 13
-		5:
-			radius = 148.0
-			pull_strength = 16.0
-			damage = 16
-			cooldown = 0.95
+func attack() -> void:
+	pass
+
+
+func on_upgrade() -> void:
+	_time_until_cataclysm = get_cataclysm_interval_sec()
+
 
 func get_description() -> String:
 	return tr("ui.upgrade_ui.stats.loadout_weapons.gravity_anchor") % [
 		level,
-		int(radius * player.get_area_multiplier()),
-		damage,
-		snappedf(get_effective_cooldown(), 0.01),
+		int(get_cataclysm_radius_px()),
+		int(round(get_cataclysm_interval_sec())),
 	]

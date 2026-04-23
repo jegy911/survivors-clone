@@ -117,7 +117,9 @@ Her düşman `.tscn` içinde **`AnimatedSprite2D`** + atlas / spritesheet ile **
 | holy_bullet | ✅ `bullet.gd` + `armor_piercing` kıvılcımı | ✅ `upgrade_icons/evolutions/holy_bullet.png` (`try_weapon_with_evolution_fallback` ile aynı ada) | ✅ Mermi hattı | Kısmi |
 | fan_blade | ✅ | ✅ `upgrade_icons/weapons/fan_blade.png` | ✅ `assets/projectiles/fan_blade/shard.png` + sahne `Sprite2D` / `CollisionShape2D` (kullanıcı); menzil = `fire_range×area`, hareket taşması yok | Spawn `get_directional_attack_spawn`; nomad ölçekleriyle uyumlu |
 | arc_pulse | ✅ | ✅ `upgrade_icons/weapons/arc_pulse.png` | ✅ / kısmi — silaha özel projeksiyon hattı | Kısmi |
-| hex_sigil, gravity_anchor, bastion_flail, shield_ram, binding_circle, void_lens, citadel_flail, fortress_ram | ✅ (silah başına sahne/kod) | ✅ ilgili `weapons/*.png` mevcutsa | Silaha göre ✅ veya / + not `projectiles/` / `GELISTIRICI_REHBERI` | Kısmi / ❌ satır içi |
+| hex_sigil, shield_ram, binding_circle, citadel_flail, fortress_ram | ✅ (silah başına sahne/kod) | ✅ ilgili `weapons/*.png` mevcutsa | Silaha göre `projectiles/` / sahne sprite | Kısmi olabilir |
+| gravity_anchor, void_lens | ✅ `weapon_*.gd` + `center_cataclysm_helper.gd` | gravity ✓ weapons; void_lens ✓ `evolutions/void_lens.png` | Runtime tekillik PNG (`assets/projectiles/...`) | ✅ oyun-içi tekillik |
+| bastion_flail | ✅ `weapon_bastion_flail.gd` + sahne | ✅ `weapons/bastion_flail.png` | `OrbitPivot` + gürz `Sprite2D` + `FlailHitbox` | ✅ |
 | veil_daggers, toxic_chain, death_laser, blood_boomerang, storm, shadow_storm, frost_nova, ember_fan, arc_surge | ✅ evrim / türev hatlar | Evrim PNG’leri (`evolutions/*.png`) kısmi set | Çoğunlukla taban silah projectile’ını paylaşır veya ek VFX | Çoğunlukla kısmi — kart / saha ayrımı `upgrade_icons` + bu tablo |
 
 *(“✅ / kısmi” = çalışıyor; final sanat veya tek tip ikon seti eksik olabilir.)*

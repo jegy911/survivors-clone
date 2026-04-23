@@ -1,22 +1,19 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://dk855himy8610"]
 
-[ext_resource type="Script" path="res://weapons/weapon_bastion_flail.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://b0dw2kv8kw28j" path="res://weapons/weapon_bastion_flail.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cat7uydsracwu" path="res://assets/projectiles/bastion_flail/bastion_flail_projectile.png" id="2_33k5f"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_placeholder"]
-radius = 28.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_flail_head"]
+radius = 26.0
 
-[node name="WeaponBastionFlail" type="Area2D"]
+[node name="WeaponBastionFlail" type="Area2D" unique_id=975187180]
 collision_layer = 0
 collision_mask = 0
 monitoring = false
 monitorable = false
 script = ExtResource("1_script")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_placeholder")
-
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 0
+[node name="ColorRect" type="ColorRect" parent="." unique_id=496311619]
 visible = false
 offset_left = -40.0
 offset_top = -40.0
@@ -24,5 +21,22 @@ offset_right = 40.0
 offset_bottom = 40.0
 color = Color(0.45, 0.85, 1, 0.18)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-visible = false
+[node name="OrbitPivot" type="Node2D" parent="." unique_id=630902902]
+position = Vector2(0, -26)
+
+[node name="Sprite2D" type="Sprite2D" parent="OrbitPivot" unique_id=887889716]
+z_index = 2
+position = Vector2(0, -104)
+rotation = 4.712389
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_33k5f")
+
+[node name="FlailHitbox" type="Area2D" parent="OrbitPivot" unique_id=1602571031]
+position = Vector2(0, -104)
+collision_layer = 4
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OrbitPivot/FlailHitbox" unique_id=1072826725]
+shape = SubResource("CircleShape2D_flail_head")

@@ -26,7 +26,7 @@
 
 **Kart / kodeks ikon:** yukarıdaki PNG gerçekten var mı (evrim silahlarında çoğunlukla `evolutions/`).
 
-**Oyun-içi görsel:** `assets/projectiles/...`, anlamlı `Sprite2D` + doku (sahne veya kod), veya `projectiles/*.tscn` içi sprite; yalnızca gizli `ColorRect` / saf yarıçap hasarı / runtime `ColorRect` ✗ sayılır.
+**Oyun-içi görsel:** `assets/projectiles/...`, anlamlı `Sprite2D` + doku (sahne veya kod), veya `projectiles/*.tscn` içi sprite; **runtime** olarak ana dünyaya eklenen tekillik / mermi sprite’ı da ✓ (ör. `weapons/center_cataclysm_helper.gd`). Yalnızca gizli `ColorRect` + anlamlı sprite/hitbox yok + saf yarıçap hasarı ✗ sayılır.
 
 Evrim kimlikleri tek kaynak: `weapons/weapon_evolution.gd` → `EVOLUTIONS`.
 
@@ -36,8 +36,8 @@ Level-up havuzundan doğrudan seçilen / evrim **sonucu olmayan** silah sahneler
 
 | Sahne | Silah ID | Kart / kodeks ikon | Oyun-içi görsel |
 |-------|----------|-------------------|-----------------|
-| `weapon_bastion_flail.tscn` | bastion_flail | ✓ | ✗ |
-| `weapon_gravity_anchor.tscn` | gravity_anchor | ✓ | ✗ |
+| `weapon_bastion_flail.tscn` | bastion_flail | ✓ | ✓ `OrbitPivot` + `Sprite2D` (`bastion_flail_projectile.png`) + baş `FlailHitbox` |
+| `weapon_gravity_anchor.tscn` | gravity_anchor | ✓ | ✓ runtime tekillik: `gravity_anchor_projectile.png` (`center_cataclysm_helper.gd`) |
 | `weapon_hex_sigil.tscn` | hex_sigil | ✓ | ✗ |
 | `weapon_ice_ball.tscn` | ice_ball | ✗ | ✓ |
 | `weapon_shield_ram.tscn` | shield_ram | ✓ | ✗ |
@@ -55,12 +55,12 @@ Yalnızca `EVOLUTIONS` ile elde edilen silah id’leri; sahneleri yine `weapons/
 | `weapon_frost_nova.tscn` | frost_nova | ✗ | ✗ |
 | `weapon_shadow_storm.tscn` | shadow_storm | ✗ | ✗ |
 | `weapon_veil_daggers.tscn` | veil_daggers | ✗ | ✓ |
-| `weapon_void_lens.tscn` | void_lens | ✗ | ✗ |
+| `weapon_void_lens.tscn` | void_lens | ✓ `evolutions/void_lens.png` (`try_weapon_with_evolution_fallback`) | ✓ runtime tekillik: `void_lens_projectile.png` (`center_cataclysm_helper.gd`) |
 
 **Son tarama (kart + oyun-içi ✓ — gap tablosundan çıkarıldı):**
 
-- **Taban:** `arc_pulse`, `aura`, `bullet`, `chain`, `boomerang`, `dagger`, `fan_blade`, `laser`, `lightning`, `shadow`
-- **Evrim:** `arc_surge`, `blood_boomerang`, `death_laser`, `holy_bullet`, `storm`, `toxic_chain`
+- **Taban:** `arc_pulse`, `aura`, `bullet`, `chain`, `boomerang`, `dagger`, `fan_blade`, `laser`, `lightning`, `shadow`, `bastion_flail`, `gravity_anchor`
+- **Evrim:** `arc_surge`, `blood_boomerang`, `death_laser`, `holy_bullet`, `storm`, `toxic_chain`, `void_lens`
 
 Runtime `ColorRect` (sahne envanteri değil): `weapon_frost_nova.gd`, `weapon_shadow.gd`, `weapon_shadow_storm.gd`.
 
