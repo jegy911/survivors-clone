@@ -1,6 +1,6 @@
 # ColorRect — hızlı takip
 
-**Kullanım:** Bir satır tamamlanınca **satırı sil**; yeni gap açılırsa **ekle**. Detay için `docs/TASARIM.md`. Ses dosyası / SFX tetikleyicisi için `docs/sesler-muzikler-efektler.md`.
+**Kullanım:** **Kart ✓ ve oyun-içi görsel ✓** aynı satırda ise o silah satırını bu tablolardan **sil**; silah `id`’sini aşağıdaki **Son tarama** listesine ekle. Kısmi gap (ör. ✓|✗) **satırda kalır**. Yeni gap açılırsa satır **ekle**. Detay: `docs/TASARIM.md`. SFX: `docs/sesler-muzikler-efektler.md`.
 
 **İşaretler:** ✓ = var (dosya veya anlamlı oyun-içi görsel), ✗ = yok / henüz yok.
 
@@ -32,37 +32,34 @@ Evrim kimlikleri tek kaynak: `weapons/weapon_evolution.gd` → `EVOLUTIONS`.
 
 ### Taban silahlar
 
-Level-up havuzundan doğrudan seçilen / evrim **sonucu olmayan** silah sahneleri (gap tablosu).
+Level-up havuzundan doğrudan seçilen / evrim **sonucu olmayan** silah sahneleri — **yalnızca en az bir ✗ kalanlar** (ikisi ✓ olunca satır silinir).
 
 | Sahne | Silah ID | Kart / kodeks ikon | Oyun-içi görsel |
 |-------|----------|-------------------|-----------------|
-| `weapon_bastion_flail.tscn` | bastion_flail | ✓ | ✓ `OrbitPivot` + `Sprite2D` (`bastion_flail_projectile.png`) + baş `FlailHitbox` |
-| `weapon_gravity_anchor.tscn` | gravity_anchor | ✓ | ✓ runtime tekillik: `gravity_anchor_projectile.png` (`center_cataclysm_helper.gd`) |
-| `weapon_hex_sigil.tscn` | hex_sigil | ✓ | ✗ |
-| `weapon_ice_ball.tscn` | ice_ball | ✗ | ✓ |
-| `weapon_shield_ram.tscn` | shield_ram | ✓ | ✗ |
+| `weapon_hex_sigil.tscn` | hex_sigil | ✓ | ✗ (yalnızca yarıçap / yavaş; sahne `Sprite2D` gizli) |
+| `weapon_ice_ball.tscn` | ice_ball | ✗ (`weapons/ice_ball.png` yok) | ✓ `projectiles/ice_ball.tscn` |
+| `weapon_shield_ram.tscn` | shield_ram | ✓ | ✗ (koni hasarı; sahne `Sprite2D` gizli, ayrı sanat yok) |
 
 ### Evrim silahları
 
-Yalnızca `EVOLUTIONS` ile elde edilen silah id’leri; sahneleri yine `weapons/scenes/weapon_<id>.tscn`.
+Yalnızca `EVOLUTIONS` ile elde edilen silah id’leri — **yalnızca en az bir ✗ kalanlar**.
 
 | Sahne | Silah ID | Kart / kodeks ikon | Oyun-içi görsel |
 |-------|----------|-------------------|-----------------|
-| `weapon_binding_circle.tscn` | binding_circle | ✗ | ✗ |
+| `weapon_binding_circle.tscn` | binding_circle | ✗ (`evolutions/binding_circle.png` yok) | ✗ |
 | `weapon_citadel_flail.tscn` | citadel_flail | ✗ | ✗ |
-| `weapon_ember_fan.tscn` | ember_fan | ✗ | ✓ |
+| `weapon_ember_fan.tscn` | ember_fan | ✗ (`evolutions/ember_fan.png` yok) | ✓ |
 | `weapon_fortress_ram.tscn` | fortress_ram | ✗ | ✗ |
-| `weapon_frost_nova.tscn` | frost_nova | ✗ | ✗ |
-| `weapon_shadow_storm.tscn` | shadow_storm | ✗ | ✗ |
-| `weapon_veil_daggers.tscn` | veil_daggers | ✗ | ✓ |
-| `weapon_void_lens.tscn` | void_lens | ✓ `evolutions/void_lens.png` (`try_weapon_with_evolution_fallback`) | ✓ runtime tekillik: `void_lens_projectile.png` (`center_cataclysm_helper.gd`) |
+| `weapon_frost_nova.tscn` | frost_nova | ✗ | ✗ (kodda yarı saydam `ColorRect` alan; doku yok) |
+| `weapon_shadow_storm.tscn` | shadow_storm | ✗ (`evolutions/shadow_storm.png` yok) | ✗ (kodda kısa ömürlü `ColorRect` orb; doku yok) |
+| `weapon_veil_daggers.tscn` | veil_daggers | ✗ (`evolutions/veil_daggers.png` yok) | ✓ |
 
-**Son tarama (kart + oyun-içi ✓ — gap tablosundan çıkarıldı):**
+**Son tarama (kart ✓ + oyun-içi ✓ — yukarıdaki gap tablolarında artık satır yok):**
 
 - **Taban:** `arc_pulse`, `aura`, `bullet`, `chain`, `boomerang`, `dagger`, `fan_blade`, `laser`, `lightning`, `shadow`, `bastion_flail`, `gravity_anchor`
 - **Evrim:** `arc_surge`, `blood_boomerang`, `death_laser`, `holy_bullet`, `storm`, `toxic_chain`, `void_lens`
 
-Runtime `ColorRect` (sahne envanteri değil): `weapon_frost_nova.gd`, `weapon_shadow.gd`, `weapon_shadow_storm.gd`.
+Runtime `ColorRect` / geçici blok (sahne `.tscn` dışı, “kalıcı sanat” değil): `weapon_frost_nova.gd`, `weapon_shadow.gd`, `weapon_shadow_storm.gd`.
 
 ---
 
