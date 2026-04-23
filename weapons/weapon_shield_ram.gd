@@ -1,6 +1,12 @@
 class_name WeaponShieldRam
 extends WeaponBase
 
+const TEX_RAM := preload("res://assets/projectiles/shield_ram/shield_ram_projectile.png")
+
+## Koni boyunca sprite ölçeği çarpanı (doku boyutuna göre).
+@export var ram_visual_length_mult: float = 1.05
+@export var ram_visual_fade_sec: float = 0.22
+
 var ram_range = 108.0
 var cone_degrees = 72.0
 
@@ -80,6 +86,7 @@ func attack():
 		enemy.take_damage(final_damage, player)
 		EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 		enemy.global_position += dir * 10.0
+	_spawn_ram_projectile_fx(ppos, forward, r)
 
 func on_upgrade():
 	match level:
@@ -96,6 +103,30 @@ func on_upgrade():
 			damage = 40
 			cooldown = 1.6
 			cone_degrees = 88.0
+
+func _spawn_ram_projectile_fx(ppos: Vector2, forward: Vector2, cone_range: float) -> void:
+	if player == null or not is_instance_valid(player):
+		return
+	var host: Node = player.get_parent()
+	if host == null:
+		return
+	var spr := Sprite2D.new()
+	spr.texture = TEX_RAM
+	spr.centered = true
+	spr.global_position = ppos + forward * (cone_range * 0.38)
+	spr.rotation = forward.angle() + PI * 0.5
+	var twd: float = maxf(1.0, float(TEX_RAM.get_width()))
+	var scale_x: float = maxf(0.12, cone_range * ram_visual_length_mult / twd)
+	spr.scale = Vector2(scale_x, scale_x * 0.55)
+	var vfx_a: float = 1.0
+	if player.has_method("get_player_vfx_opacity"):
+		vfx_a = clampf(float(player.get_player_vfx_opacity()), 0.0, 1.0)
+	spr.modulate = Color(1.0, 1.0, 1.0, 0.92 * vfx_a)
+	spr.z_index = 15
+	host.add_child(spr)
+	var tw: Tween = spr.create_tween()
+	tw.tween_property(spr, "modulate:a", 0.0, ram_visual_fade_sec).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+
 
 func get_description() -> String:
 	return tr("ui.upgrade_ui.stats.loadout_weapons.shield_ram") % [

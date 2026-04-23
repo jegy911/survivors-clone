@@ -36,9 +36,7 @@ Level-up havuzundan doğrudan seçilen / evrim **sonucu olmayan** silah sahneler
 
 | Sahne | Silah ID | Kart / kodeks ikon | Oyun-içi görsel |
 |-------|----------|-------------------|-----------------|
-| `weapon_hex_sigil.tscn` | hex_sigil | ✓ | ✗ (yalnızca yarıçap / yavaş; sahne `Sprite2D` gizli) |
-| `weapon_ice_ball.tscn` | ice_ball | ✗ (`weapons/ice_ball.png` yok) | ✓ `projectiles/ice_ball.tscn` |
-| `weapon_shield_ram.tscn` | shield_ram | ✓ | ✗ (koni hasarı; sahne `Sprite2D` gizli, ayrı sanat yok) |
+| *(taban gap yok)* | — | — | — |
 
 ### Evrim silahları
 
@@ -49,15 +47,14 @@ Yalnızca `EVOLUTIONS` ile elde edilen silah id’leri — **yalnızca en az bir
 | `weapon_binding_circle.tscn` | binding_circle | ✗ (`evolutions/binding_circle.png` yok) | ✗ |
 | `weapon_citadel_flail.tscn` | citadel_flail | ✗ | ✗ |
 | `weapon_ember_fan.tscn` | ember_fan | ✗ (`evolutions/ember_fan.png` yok) | ✓ |
-| `weapon_fortress_ram.tscn` | fortress_ram | ✗ | ✗ |
 | `weapon_frost_nova.tscn` | frost_nova | ✗ | ✗ (kodda yarı saydam `ColorRect` alan; doku yok) |
 | `weapon_shadow_storm.tscn` | shadow_storm | ✗ (`evolutions/shadow_storm.png` yok) | ✗ (kodda kısa ömürlü `ColorRect` orb; doku yok) |
 | `weapon_veil_daggers.tscn` | veil_daggers | ✗ (`evolutions/veil_daggers.png` yok) | ✓ |
 
 **Son tarama (kart ✓ + oyun-içi ✓ — yukarıdaki gap tablolarında artık satır yok):**
 
-- **Taban:** `arc_pulse`, `aura`, `bullet`, `chain`, `boomerang`, `dagger`, `fan_blade`, `laser`, `lightning`, `shadow`, `bastion_flail`, `gravity_anchor`
-- **Evrim:** `arc_surge`, `blood_boomerang`, `death_laser`, `holy_bullet`, `storm`, `toxic_chain`, `void_lens`
+- **Taban:** `arc_pulse`, `aura`, `bullet`, `chain`, `boomerang`, `dagger`, `fan_blade`, `hex_sigil`, `ice_ball`, `laser`, `lightning`, `shadow`, `shield_ram`, `bastion_flail`, `gravity_anchor`
+- **Evrim:** `arc_surge`, `blood_boomerang`, `death_laser`, `fortress_ram`, `holy_bullet`, `storm`, `toxic_chain`, `void_lens`
 
 Runtime `ColorRect` / geçici blok (sahne `.tscn` dışı, “kalıcı sanat” değil): `weapon_frost_nova.gd`, `weapon_shadow.gd`, `weapon_shadow_storm.gd`.
 
