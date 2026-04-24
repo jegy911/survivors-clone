@@ -12,7 +12,7 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 
 ## `docs/vs wiki analizi/` (arşiv → ürün işleri)
 
-Ayrıntılı tablolar ve pseudo-kod **klasördeki dört `.md` dosyasında**; burada yalnızca **henüz kapanmamış** ve arşivle hizalanan işler. Madde bitince hem buradan sil hem `YOL` / `TASARIM` / `lore` içindeki ilgili notu güncelle.
+Ayrıntılı tablolar ve pseudo-kod **dört analiz belgesinde** (`vs_wiki_analiz_asama1.md`, `vs_wiki_analiz_asama2.md.md`, `vs_wiki_analiz_asama3.md`, `brotato_arena_analiz.md.md`) + **`README.md` indeks**; burada yalnızca **henüz kapanmamış** ve arşivle hizalanan işler. Madde bitince hem buradan sil hem `YOL` / `TASARIM` / `lore` içindeki ilgili notu güncelle.
 
 - VS dalga **event**’leri (swarm / encircle / wall) — `spawn_manager` + düşman davranışı (`fixed_direction` vb.); Aşama 1 §7.
 - Özel **pickup**’lar (tema buhar/dişli: alan hasarı, kısa donma, XP toplama darbesi) — `effects/` + orb; `lore.md` §4.1 isimlendirme.
@@ -85,7 +85,7 @@ Ayrıntılı tablolar ve pseudo-kod **klasördeki dört `.md` dosyasında**; bur
 
 ## `docs/TASARIM.md`
 
-- Meta UI: profil genişlemesi, rank (YOL ile örtüşür). *(Hesap seviye / global XP **2026-04-19** + juiciness **2026-04-16**: tween, `level_up` sesi, Game Over vurgusu — tamam.)*
+- Meta UI: kozmetik profil (takma ad, çerçeve, arka plan) + rekabet **rank** (YOL ile örtüşür). *(Hesap seviyesi / global XP + Ayarlar → Profil + juiciness **2026-04-19** / **2026-04-16** — `TASARIM` «Meta UI» tablosunda Var; açık iş: kozmetik + rank.)*
 - Kodeks evrim sekmesi; oyun içi sözlük; idle görev menüsü.
 - `shadow` / `laser` / `holy_bullet` vb. **final** sprite / kart sanatı (`TASARIM` tablo). *(2026-04-18: vuruş okunabilirliği — `CombatProjectileFx.spawn_hit_sparks` + silah/lazer/holy mermi cilası.)*
 - `fan_blade` / `fan_blade_shard`: final sprite (Polygon2D yerine).

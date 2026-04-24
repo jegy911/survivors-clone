@@ -2,7 +2,7 @@
 
 Karakter / düşman / silah ile ilgili PNG taraması. **En az bir kenar** 512 px üzerindeyse listelenir.
 
-Kökler: `assets/character assets`, `assets/enemy assets`, `assets/projectiles`, `assets/warrior assetleri`, `assets/büyücü`, `assets/vampir`, `weapons`, `assets/ui/upgrade_icons/weapons`.
+Kökler: `assets/character assets` (içinde `warrior assets` ve diğer kahraman klasörleri dâhil), `assets/enemy assets`, `assets/projectiles`, `assets/büyücü`, `assets/vampir`, `weapons`, `assets/ui/upgrade_icons/weapons`. *(Eski notlardaki `assets/warrior assetleri` yolu yok; savaşçı görselleri yukarıdaki `assets/character assets/.../warrior assets` altında.)*
 
 **Toplam:** 58 dosya
 

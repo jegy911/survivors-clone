@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-22 (wiki-arşiv; `GameplayConstants`; `survivors_clone_context`; **`ButtonCoverStyles`** + `button1`–`3` tüm menüler)
+**Son güncelleme:** 2026-04-24 (`TASARIM` yol/ikon/odak satırları, `YAPILACAKLAR` Meta UI; `ASSET_SIZES` / wiki arşivi; önceki: 2026-04-22)
 
 ---
 
@@ -172,6 +172,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-24 | **Dokümantasyon — yol/depo + TASARIM denetim** — `ASSET_SIZES` kök; `TASARIM`: Meta UI, savaşçı/düşman asset yolları, `dusk_striker`+`arcanist` satırları, `ice_ball` ikon ✅, odak kaybı duraklatma **Var** (`main.gd`); `YAPILACAKLAR_TOPLU` Meta UI maddesi + wiki README; arşiv dört + README. |
 | 2026-04-23 | **Koşu HUD — sol üst istatistik butonu kaldırıldı** — `player.gd` 📊 butonu; `player_ui_helpers.gd` içindeki `toggle_stats_panel` / HUD panel kodu (etiket satırı hatası kaynağı) silindi; `GELISTIRICI` `player/` satırı. |
 | 2026-04-23 | **Düşman ölüm loot’u — tek seçim** — `enemy_base`: `resolve_death_loot` + `DEATH_LOOT_DOUBLE_CHANCE` (~%1 ikinci tür); boss tek XP küresi + sandık; giant `super._on_death_complete`; exploder kill bildirimi; `GELISTIRICI` düşürme satırı. |
 | 2026-04-23 | **Koşu içi seviye / XP nerfi** — `player.gd`: `RUN_XP_GAIN_MULT`, `LEVEL_XP_REQUIREMENT_MULT`, `_calc_xp_for_level` çarpımlı eşik, Lv1 bar hizası; `wave_manager` dalga XP ödülü 2×→~1.15× bar; `enemy_base` varsayılan `XP_DROP_CHANCE`; `GELISTIRICI` / matris / günlük. |

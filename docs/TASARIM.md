@@ -5,7 +5,7 @@ Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.
 Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.  
 **Ses / müzik / SFX dosya ve tetik envanteri** (ayrıntılı): `docs/sesler-muzikler-efektler.md`.
 
-**Son güncelleme:** 2026-04-22 (wiki-arşiv referansı — aşağıdaki «Wiki-arşiv» bölümü; önceki: 2026-04-20 menü kapakları §7.1)
+**Son güncelleme:** 2026-04-24 (Karakter/düşman yolları, `ice_ball` ikon, odak kaybı duraklatma; Meta UI; önceki: 2026-04-22 wiki-arşiv, menü kapakları §7.1)
 
 ---
 
@@ -15,8 +15,9 @@ Oyuncunun statü hissi ve yönlendirme için ürün maddeleri `docs/YOL_HARITASI
 
 | Hedef | Tasarım / UI durumu |
 |--------|----------------------|
-| Profil genişlemesi (takma ad, ikon, çerçeve, arka plan) | Henüz yok; Ayarlar → Profil şu an istatistik + başarılar. |
-| Hesap seviyesi / rank | Henüz yok. |
+| Profil genişlemesi (takma ad, kozmetik ikon, çerçeve, arka plan) | Henüz yok. |
+| Hesap seviyesi / meta XP (Ayarlar → Profil) | **Var** — seviye, ilerleme, toplam bankalı XP; istatistik + başarılar aynı ekranda. |
+| Rekabet / görünen **rank** veya lider tablosu | **Henüz yok** |
 | Kodeks — evrim sekmesi veya alt bölüm | Run içi evrim var; koleksiyon menüsünde ayrı evrim sekmesi yok. |
 | Oyun içi sözlük (cooldown, area, vb.) | Planlı; kodeks içi veya ayrı giriş. |
 | Idle-benzeri görev menüsü (C) | Planlı; ana menü akışına entegrasyon tasarım aşamasında. |
@@ -56,14 +57,14 @@ Koleksiyon ve level-up tarafında tutarlı takip için tablolarda beş sütun ku
 
 | Karakter ID | Özel karakter görseli (sahne + asset klasörü) | Not |
 |-------------|-----------------------------------------------|-----|
-| warrior | ✅ | `assets/warrior assetleri/` |
+| warrior | ✅ | `assets/character assets/warrior assets/` |
 | mage | ✅ | `assets/büyücü/` |
 | vampire | ✅ | `assets/vampir/` |
 | hunter | ✅ | `assets/character assets/hunter assets/` |
 | stormer | ✅ | `assets/character assets/stormer assets/` |
 | frost | ✅ | `assets/character assets/Frost assets/` |
 | shadow_walker | ✅ | `assets/character assets/sw assets/` — `characters/shadow_walker/shadow_walker.tscn` |
-| dusk | ✅ | `assets/character assets/dusk assets/` — `characters/dusk/dusk.tscn` (`AnimatedSprite2D` + idle/walk/run). |
+| dusk_striker | ✅ | `assets/character assets/dusk assets/` — `characters/dusk/dusk.tscn` (`CharacterData` `id` = `dusk_striker`, klasör `dusk/`) |
 | engineer | ✅ | `assets/character assets/engineer assets/` |
 | paladin | ✅ | `assets/character assets/paladin assets/` |
 | blood_prince | ✅ | `assets/character assets/bp assets/` |
@@ -75,6 +76,7 @@ Koleksiyon ve level-up tarafında tutarlı takip için tablolarda beş sütun ku
 | grav_binder | ✅ | `assets/character assets/grav_binder/` — `characters/grav_binder/grav_binder.tscn`. |
 | ironclad | ✅ | `assets/character assets/ironclad assets/` — `characters/ironclad/ironclad.tscn`. |
 | linebreaker | ✅ | `assets/character assets/linebreaker/` — `characters/linebreaker/linebreaker.tscn`. |
+| arcanist | ✅ | `assets/character assets/arcanist assets/` — `characters/arcanist/arcanist.tscn` |
 
 **Teknik not:** `characters/warrior/omega.tscn` savaşçı asset’lerini kullanan yedek/legacy sahne; oyun `characters/omega/omega.tscn` ile spawn ediyor — tasarım envanterinde ana Omega ✅ satırı geçerlidir.
 
@@ -86,7 +88,7 @@ Her düşman `.tscn` içinde **`AnimatedSprite2D`** + atlas / spritesheet ile **
 
 | Tür / sahne | Sprite / animasyon seti | Not |
 |-------------|-------------------------|-----|
-| enemy | ✅ | `assets/warrior assetleri/enemy1.png` |
+| enemy | ✅ | `assets/enemy assets/enemy1 assets/enemy1.png` |
 | fast_enemy | ✅ | `assets/enemy2/spritesheet (13).png` |
 | dasher | ✅ | `assets/enemy assets/dasher assets/` |
 | ranged_enemy | ✅ | `assets/enemy assets/ranged assets/` |
@@ -111,7 +113,7 @@ Her düşman `.tscn` içinde **`AnimatedSprite2D`** + atlas / spritesheet ile **
 | chain | ✅ `weapon_chain.gd` + `CombatProjectileFx.spawn_chain_segment` | ✅ `upgrade_icons/weapons/chain.png` | ✅ Segment Sprite2D + `assets/projectiles/chain/chain.png` | ✅ |
 | boomerang | ✅ Oyun içi ID `boomerang` | ✅ `upgrade_icons/weapons/boomerang.png` | ✅ `projectiles/hunter_axe.tscn` + `assets/projectiles/axe/boomerang.png` | ✅ |
 | lightning | ✅ Ana hat + storm/toxic varyantları | ✅ `upgrade_icons/weapons/lightning.png` | ✅ `projectiles/lightning_bolt.tscn` + `lightning_hit_fx` | ✅ / kısmi |
-| ice_ball | ✅ | ❌ (PNG yok) | ✅ `projectiles/ice_ball.tscn` | ✅ / kısmi |
+| ice_ball | ✅ | ✅ `upgrade_icons/weapons/ice_ball.png` | ✅ `projectiles/ice_ball.tscn` | ✅ / kısmi |
 | shadow | ✅ Orbit isabet + sparks | ✅ `upgrade_icons/weapons/shadow.png` | ✅ / kısmi — `spawn_hit_sparks` odaklı | Kısmi — final mermi sprite ayrı |
 | laser | ✅ Işın katmanları | ✅ `upgrade_icons/weapons/laser.png` | ✅ / kısmi — ışın geometrisi kodda | Kısmi — final sanat |
 | holy_bullet | ✅ `bullet.gd` + `armor_piercing` kıvılcımı | ✅ `upgrade_icons/evolutions/holy_bullet.png` (`try_weapon_with_evolution_fallback` ile aynı ada) | ✅ Mermi hattı | Kısmi |
@@ -221,7 +223,7 @@ Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + is
 | Arayüz dili (çeviri) | `locales/*.json`, `LocalizationManager`, Ayarlar → Dil | ✅ `tr` / `en` / `zh_CN`; level-up kabuk `ui.upgrade_ui.*`; run yüzen uyarılar `ui.alerts.*` + co-op kısa HUD `ui.game.*`; karakter seçimi ipucu/butonlar `ui.character_select.*` (`en` rutin); silah/eşya **etki** satırları çoğunlukla kod içi (`player.gd` / `get_description`) |
 | Hasar sayıları | `effects/damage_number` | ✅ |
 | Global font ölçeği (okunabilirlik) | `SaveManager.settings["ui_scale"]`, Ayarlar → Görüntü | Kısmi — bazı ekranlarda (`map_select`, `shop_menu`); tüm HUD/menüde zorunlu değil |
-| Otomatik pause (odak kaybı) | — | Davranış yok; UI tasarımı gerektirmez ama ürün kararı |
+| Otomatik pause (odak kaybı) | `main.gd` + `SaveManager` | **Var** — pencere odağı kaybında (`focus_exited`) isteğe bağlı duraklatma: `SaveManager.settings["pause_on_focus_loss"]` (varsayılan açık); `pause_menu` + `get_tree().paused` *(matris «Otomatik duraklatma» satırıyla aynı)* |
 
 ---
 
