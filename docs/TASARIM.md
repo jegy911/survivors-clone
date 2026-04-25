@@ -5,7 +5,7 @@ Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.
 Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.  
 **Ses / müzik / SFX dosya ve tetik envanteri** (ayrıntılı): `docs/sesler-muzikler-efektler.md`.
 
-**Son güncelleme:** 2026-04-24 (Karakter/düşman yolları, `ice_ball` ikon, odak kaybı duraklatma; Meta UI; önceki: 2026-04-22 wiki-arşiv, menü kapakları §7.1)
+**Son güncelleme:** 2026-04-25 (XP 3 tür + dünya/ spawn tam tasarım envanteri; `colorrect` dünya tablosu; önceki: 2026-04-24)
 
 ---
 
@@ -182,13 +182,52 @@ Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + is
 
 ## Pickup, orb ve dünya objeleri
 
-| Öğe | Spritesheet / animasyon / cilalı görsel |
-|-----|----------------------------------------|
-| XP orb (`effects/xp_orb`) | ❌ | Hedef: spritesheet ile orb animasyonu |
-| Gold orb (`effects/gold_orb`) | ❌ | Aynı |
-| Sandık (`effects/chest`) | ❌ | Özel açılış animasyonu / ritüel yok |
-| Cog shard | ✅ / ❌ | Sahne var; polish açık |
-| Time gear, blood oath, shrine, steam bomb, poison trap, freeze barrel, destructible crate | ✅ / ❌ | Çoğu fonksiyonel; tutarlı stil geçişi hedefi |
+Kod, düşen ve spawn edilen tüm cisimlerin listesi. **✅** doku/anim var veya oyunu taşıyor, **Kısmi** = ColorRect/emoji/placeholder, **❌** = ayrı sanat / ritüel / tutarlı tema henüz yok.
+
+### XP orbları — **üç ayrı XP türü** (tasarım hedefi)
+
+Bunlar ayrı tscn değil; `effects/xp_orb.tscn` + `enemy_base._spawn_xp_orb_drop()` ağırlıklarla aynı sahneyi **3 çarpan + hedef renk** ile doldurur (`XP_VALUE=5` taban):
+
+| Üretim (olasılık) | XP çarpanı | Renk (kod) | Amaç: `assets/effects/…` ayrı tasarım? |
+|-------------------|------------|------------|----------------------------------------|
+| Standart (~%90) | 1× | mavi `#4A90E2` | Ayrı **Tür 1** orb sprite/anim; erişilebilirlik: `filter_accessibility_orb_color` |
+| Zengin (~%8) | 3× | yeşil `#2ECC71` | Ayrı **Tür 2** (yüksek değer hissi) |
+| Nadir (~%2) | 8× | kırmızı `#E74C3C` | Ayrı **Tür 3** (ödül hissi) |
+
+**Teknik (şu an):** oyun `Sprite2D` + mevcut `assets/effects/xp.png`; gizli `ColorRect` rengi değiştirilir; görünür tür ayrımı yok. Üç türü ürün olarak farklı göstermek için: tier başına ayrı doku / 3 ayrı küçük sahne, veya aynı *mesh* çerçevesinde 3 stil. Boss düşen tek küre: `enemies/boss.gd` sadece `init(XP_VALUE)`; boss’a özel görsel istersen ayrı maddesini not et.
+
+| Kısım | Konum / içerik | Görsel / efekt (şu an) | Tasarım bacağı |
+|--------|----------------|-------------------------|----------------|
+| Altın küre | `effects/gold_orb` | `Sprite2D` + `assets/effects/gold.png` | Ayrı animasyon, parıltı, bırak anı: **Kısmi / ❌** |
+| Sandık | `effects/chest.tscn` | Yalnızca `ColorRect` + açılış `tween` (kod) | Kutu modu, ritüel, ikon, tier: **❌** |
+
+**Ölümden düşen (enemy_base) — tscn/üretim** | Açıklama | Görsel durum
+|---|---|---
+| Düşen XP küresi | yukarıdaki 3 tür | Üç ayrı tasarım (yukarı) |
+| Altın küresi | `gold_orb` | yukarı |
+| Sandık | `chest` | yukarı |
+| Blood Oath | `blood_oath.tscn` — sadece `ColorRect` | **❌** ayrı sanat |
+| Cog shard | `cog_shard.tscn` — `ColorRect` | **Kısmi** (sahne var) |
+| Steam bomb / Time gear | `steam_bomb.tscn` / `time_gear.tscn` | **❌** ColorRect yok sayılabilecek; dünya bacağı tasarlayın |
+
+**ORTAM (environment_manager) — programatik, çoğunlukla ColorRect** | Açıklama | Görsel
+|---|---|---
+| Vakum orb | Kodda anlık `Node2D` + cyan kare, nabız | **❌** ayrı sprite/ikon; şu an sadece renk + floating metin **🌀 VAKUM!** |
+| Buz fıçısı (freeze) | `freeze_barrel.gd` — mavi kare, patlamada büyük mavi alan (ColorRect) | **❌** prop + alan VFX’si ayrı sanat |
+| Zehir tuzağı (poison) | `poison_trap.gd` — yeşil kare, zehir bulutu | **❌** aynı |
+| Risk / Şeytan sunağı | `shrine_of_risk.gd` — mor/kan kırmızı kare, emoji `⚠` / `☠` | **❌** tütsü / alınlık hiyerarşi vs. ileri sanat |
+| Kırılabilir sandık (crate) | `destructible_crate.gd` — kahverengi + sarı sınır | **❌** ayrı kutu mesh/sprite; içerik: bounce/speed/… floating |
+| Enkaz önbelleği (ruin) | `environment_manager` içinde 28×28 kahverengi+altın glow pulse | **❌** ayrı “hazine”/enkaz cismi; ödül metni floating |
+
+**Eşya yordamları (oyun-içi, pasif sınıf, çoğunlukla veri) — ayrı dünya mesh’i yok:** `item_blood_pool` Alan ColorRect; diğer pasiflerin çoğu sadece istat / proc. Detay: `colorrect.md` eşya satırları.
+
+**Düşman mermileri (projectiles) — ayrı tabloda; final sanat açık:** `projectiles/bullet|dagger|hunter_axe|ice_ball|lightning_bolt|fan_blade_shard|enemy_bullet` — aşağıdaki «Projectile ve düşman mermisi» + silah bölümlerinde takip.
+
+**Hasar sayıları (floating `damage_number`)** — `effects/damage_number` — oyunu taşır; özel stil, damage type renk ayrımı, büyük kritik: **Kısmi / açık**
+
+**Görünmeyen / sadece kod (burada satır açmaya gerek yok):** `effects/combat_projectile_fx.gd`, `effects/lightning_hit_fx.tscn` — isabet/çizim yardımcıları; ayrı “cisim” değil, silah/chain sanatı ile birleşir.
+
+**Kısa not:** Tüm yukarıdakiler, loadout/level-up ekranı ve silah tscn’leri dışındadır. Silah/ikon eksiği: `colorrect.md`. Aynı «dünya / spawn» envanteri, `colorrect.md` sonunda kısa özet tabloda yinelenir.
 
 ---
 

@@ -1,6 +1,8 @@
 # ColorRect — hızlı takip
 
-**Kullanım:** **Kart ✓ ve oyun-içi görsel ✓** aynı satırda ise o silah satırını bu tablolardan **sil**; silah `id`’sini aşağıdaki **Son tarama** listesine ekle. Kısmi gap (ör. ✓|✗) **satırda kalır**. Yeni gap açılırsa satır **ekle**. Detay: `docs/TASARIM.md`. SFX: `docs/sesler-muzikler-efektler.md`.
+**Kullanım (silah / kahraman / eşya):** **Kart ✓ ve oyun-içi görsel ✓** aynı satırda ise o silah satırını bu tablolardan **sil**; silah `id`’sini aşağıdaki **Son tarama** listesine ekle. Kısmi gap (ör. ✓|✗) **satırda kalır**. Yeni gap açılırsa satır **ekle**. Detay: `docs/TASARIM.md`. SFX: `docs/sesler-muzikler-efektler.md`.
+
+**Dünya, orb, sandık, environment spawn:** Tam liste ve XP **3 tür** tasarım hedefi — **`docs/TASARIM.md` → bölüm «Pickup, orb ve dünya objeleri»** (aşağıda sadece özet).
 
 **İşaretler:** ✓ = var (dosya veya anlamlı oyun-içi görsel), ✗ = yok / henüz yok.
 
@@ -90,3 +92,26 @@ Pasif eşyalar `items/item_<id>.gd` ile yüklenir; **`.tscn` yok**. İleride dü
 | iron_bulwark | ✗ | ✗ |
 | night_vial | ✗ | ✗ |
 | field_lens | ✓ | ✗ |
+
+---
+
+## Dünya / spawn cisimleri — oyun-içi görsel bacağı (özet)
+
+*(Öznitelik, olasılık, kod yolu: `TASARIM` ana tablo. Burada: henüz ayrı “ürün” sanatı yok denecek yerler — ✗ = tasarlanacak / değiştirilecek placeholder.)*
+
+| Cisim / sistem | Görsel durum (kısa) | Kod / not |
+|----------------|--------------------|-----------|
+| **XP 1× / 3× / 8×** (3 tür) | Aynı `assets/effects/xp.png` — tür ayrısı yok; **3 ayrı tasarım** hedef | `enemy_base.gd` `_spawn_xp_orb_drop` |
+| Altın küre | Doku var; anim/parıltı açık | `gold_orb` |
+| Sandık | ColorRect | `chest` |
+| Kan yemini (Blood Oath) | ColorRect | `blood_oath` |
+| Dişli parçası (Cog) | ColorRect | `cog_shard` |
+| Zaman dişlisi / Buhar bombası | ColorRect | `time_gear` / `steam_bomb` |
+| Vakum toplayıcı | Cyan kare (runtime) | `environment_manager` |
+| Buz fıçısı / Zehir | Kare + alan rekt’ler | `freeze_barrel` / `poison_trap` |
+| Risk / Şeytan sunağı | Kare + emoji | `shrine_of_risk` |
+| Kırılabilir kutu (crate) | ColorRect’ler | `destructible_crate` |
+| Enkaz (ruin cache) | Brown/gold rekt’ler | `environment_manager` `_spawn_ruin_cache` |
+| Yuzen hasar metni | Çalışır, tema / kritik ayrımı açık | `damage_number` |
+| Düşman mermileri + oyuncu mermileri | Ayrı tablo `TASARIM` «Projectile»; bir kısmı kısmi / final yok | `projectiles/*.tscn` |
+| Pasif eşyalar (dünya) | `blood_pool` vb. çoğunluk yok/ColorRect; üstte eşya tablosu | `items/*` |
