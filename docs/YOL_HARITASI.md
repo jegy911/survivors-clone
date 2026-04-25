@@ -172,7 +172,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
-| 2026-04-25 | **Dünya & XP tasarım envanteri** — `TASARIM` «Pickup, orb…»: 3 XP türü (1×/3×/8×) tasarım hedefi + tüm drop/spawn/ortam cismi; `colorrect` dünya özeti; `GELISTIRICI`/`TASARIM` senkron. |
+| 2026-04-25 | **Dünya & XP tasarım envanteri** — `TASARIM` «Pickup, orb…» + `colorrect` **Dünya/spawn** tablosu: **İşlev / görev** sütunu (vakum, sandık, sunak, time gear, steam bomb, blood oath, …); 3 XP türü; `GELISTIRICI`/`TASARIM` senkron. |
 | 2026-04-24 | **Dokümantasyon — yol/depo + TASARIM denetim** — `ASSET_SIZES` kök; `TASARIM`: Meta UI, savaşçı/düşman asset yolları, `dusk_striker`+`arcanist` satırları, `ice_ball` ikon ✅, odak kaybı duraklatma **Var** (`main.gd`); `YAPILACAKLAR_TOPLU` Meta UI maddesi + wiki README; arşiv dört + README. |
 | 2026-04-23 | **Koşu HUD — sol üst istatistik butonu kaldırıldı** — `player.gd` 📊 butonu; `player_ui_helpers.gd` içindeki `toggle_stats_panel` / HUD panel kodu (etiket satırı hatası kaynağı) silindi; `GELISTIRICI` `player/` satırı. |
 | 2026-04-23 | **Düşman ölüm loot’u — tek seçim** — `enemy_base`: `resolve_death_loot` + `DEATH_LOOT_DOUBLE_CHANCE` (~%1 ikinci tür); boss tek XP küresi + sandık; giant `super._on_death_complete`; exploder kill bildirimi; `GELISTIRICI` düşürme satırı. |

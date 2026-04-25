@@ -97,21 +97,24 @@ Pasif eşyalar `items/item_<id>.gd` ile yüklenir; **`.tscn` yok**. İleride dü
 
 ## Dünya / spawn cisimleri — oyun-içi görsel bacağı (özet)
 
-*(Öznitelik, olasılık, kod yolu: `TASARIM` ana tablo. Burada: henüz ayrı “ürün” sanatı yok denecek yerler — ✗ = tasarlanacak / değiştirilecek placeholder.)*
+*(Olasılık, kod: `TASARIM` ana tablo. Görsel sütununda: ✗ = ileride değiştirilecek placeholder.)*
 
-| Cisim / sistem | Görsel durum (kısa) | Kod / not |
-|----------------|--------------------|-----------|
-| **XP 1× / 3× / 8×** (3 tür) | Aynı `assets/effects/xp.png` — tür ayrısı yok; **3 ayrı tasarım** hedef | `enemy_base.gd` `_spawn_xp_orb_drop` |
-| Altın küre | Doku var; anim/parıltı açık | `gold_orb` |
-| Sandık | ColorRect | `chest` |
-| Kan yemini (Blood Oath) | ColorRect | `blood_oath` |
-| Dişli parçası (Cog) | ColorRect | `cog_shard` |
-| Zaman dişlisi / Buhar bombası | ColorRect | `time_gear` / `steam_bomb` |
-| Vakum toplayıcı | Cyan kare (runtime) | `environment_manager` |
-| Buz fıçısı / Zehir | Kare + alan rekt’ler | `freeze_barrel` / `poison_trap` |
-| Risk / Şeytan sunağı | Kare + emoji | `shrine_of_risk` |
-| Kırılabilir kutu (crate) | ColorRect’ler | `destructible_crate` |
-| Enkaz (ruin cache) | Brown/gold rekt’ler | `environment_manager` `_spawn_ruin_cache` |
-| Yuzen hasar metni | Çalışır, tema / kritik ayrımı açık | `damage_number` |
-| Düşman mermileri + oyuncu mermileri | Ayrı tablo `TASARIM` «Projectile»; bir kısmı kısmi / final yok | `projectiles/*.tscn` |
-| Pasif eşyalar (dünya) | `blood_pool` vb. çoğunluk yok/ColorRect; üstte eşya tablosu | `items/*` |
+| Cisim / sistem | İşlev / görev | Görsel durum (kısa) | Kod / not |
+|----------------|--------------|--------------------|-----------|
+| **XP 1× / 3× / 8×** (3 tür) | Oyuncu topladıkça **seviye XP** verir (1×, 3× veya 8×; co-op’ta diğer oyuncu yarım pay). P2’ye sızma: `xp_orb.gd`. | Aynı `xp.png`; **3 ayrı tasarım** hedef | `enemy_base.gd` `_spawn_xp_orb_drop` |
+| Altın küre | **Altın** toplama; miktar (elite vb.) + şans/ meta bonusları ile. | Doku var; anim/parıltı açık | `gold_orb` |
+| Sandık | Yaklaşınca açılır: **rastgele eşya**, veya **altın**, veya **%15 can**; istat: `chests_opened`. | ColorRect; ritüel sanat açık | `chest.gd` |
+| Kan yemini (Blood Oath) | **Solo:** +25 altın. **Co-op:** iki oyuncu yeterince yakınsa **kan yemini** buff’ı (`activate_blood_oath`); değilse yine altın uyarısı. | ColorRect | `blood_oath` |
+| Dişli parçası (Cog) | Sınır varken **cog toplar**; cog ekonomisi/ilerleme (limit `can_collect_more` ile). | ColorRect | `cog_shard` |
+| Zaman dişlisi | Toplanınca **tüm düşmanları 10 sn dondurur** (slow tam). | ColorRect | `time_gear.gd` |
+| Buhar bombası | Toplanınca **sahadaki normal düşmanları** öldürür (boss hariç); öldürme sayısı metni. | ColorRect | `steam_bomb.gd` |
+| Vakum toplayıcı | Alana giren: ekrandaki tüm **XP** ve **altın** orblarına vakum çekimi (`vacuum_attract`); kısa süre sonra kaybolur. | Cyan kare (runtime) | `environment_manager` |
+| Buz fıçısı (freeze) | Mermi tetikler: alanda **yavaşlatma** yayan patlama (büyük mavi alan). | Kare + alan | `freeze_barrel` |
+| Zehir tuzağı | Mermi tetikler: alana **zehir DoT** bırakan bulut. | Kare + alan | `poison_trap` |
+| Risk sunağı | Rastgele: **%200 XP+altın**, düşman hız/yoğunluk maliyeti (~60 s); “risk” türü. | Kare + `⚠` | `shrine_of_risk` |
+| Şeytan sunağı | Rastgele: **%35 can** gider, karşılığı **rastgele silah veya eşyayı** max yapar. | Kare + `☠` | `shrine_of_risk` |
+| Kırılabilir kutu (crate) | Mermi kırar (3 isabet); ödül: kısa **bounce mermi**, hız, hasar, iyileşme (rastgele). | ColorRect’ler | `destructible_crate` |
+| Enkaz (ruin cache) | Açınca: yükseltilmeye uygun **silah veya eşya** +1 seviye, yoksa +50 **altın**. | Brown/gold rekt | `environment_manager` `_spawn_ruin_cache` |
+| Yuzen hasar metni | Vuruş/iyileşme sayısını ekranda gösterir. | Tema / kritik ayrımı açık | `damage_number` |
+| Düşman mermileri + oyuncu mermileri | Hasar iletir; tür `TASARIM` «Projectile». | Bir kısmı kısmi / final açık | `projectiles/*.tscn` |
+| Pasif eşyalar (dünya) | `blood_pool` vb.: çoğunluk sadece **veri/ColorRect** proc; ayrı mesh yok. | Üstte eşya tablosu | `items/*` |
