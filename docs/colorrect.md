@@ -70,28 +70,30 @@ Pasif eşyalar `items/item_<id>.gd` ile yüklenir; **`.tscn` yok**. İleride dü
 
 **Oyun-içi görsel:** Oyunda dünyaya eklenen görünür node / partikül / özel efekt doku yolu (yalnızca sayısal pasif etki ✗).
 
-| Eşya ID | Kart / kodeks ikon | Oyun-içi görsel |
-|---------|-------------------|-----------------|
-| lifesteal | ✗ | ✗ |
-| armor | ✗ | ✗ |
-| crit | ✗ | ✗ |
-| explosion | ✗ | ✗ |
-| magnet | ✗ | ✗ |
-| poison | ✗ | ✗ |
-| shield | ✗ | ✗ |
-| speed_charm | ✗ | ✗ |
-| blood_pool | ✗ | ✓ |
-| luck_stone | ✗ | ✗ |
-| turbine | ✗ | ✗ |
-| steam_armor | ✗ | ✗ |
-| energy_cell | ✗ | ✗ |
-| ember_heart | ✗ | ✗ |
-| glyph_charm | ✗ | ✗ |
-| resonance_stone | ✗ | ✗ |
-| rampart_plate | ✗ | ✗ |
-| iron_bulwark | ✗ | ✗ |
-| night_vial | ✗ | ✗ |
-| field_lens | ✓ | ✗ |
+**İşlev / görev:** Pasifin oyunda yaptığı iş (kısa özet; ayrıntı `items/item_<id>.gd` ve locale metinleri).
+
+| Eşya ID | İşlev / görev | Kart / kodeks ikon | Oyun-içi görsel |
+|---------|----------------|-------------------|-----------------|
+| lifesteal | Verilen hasarın bir kısmı kadar can (vuruş başına) | ✗ | ✗ |
+| armor | Alınan hasarı zırh değeriyle azaltma | ✗ | ✗ |
+| crit | Kritik vuruş şansı; krit çarpanı | ✗ | ✗ |
+| explosion | Düşman ölünce şansla alan hasarı patlaması | ✗ | ✗ |
+| magnet | XP orb çekim menzili artışı | ✗ | ✗ |
+| poison | Vuruşta düşmana zehir DoT uygulama | ✗ | ✗ |
+| shield | Bekleme sonrası tek seferlik hasar absorbe (kalkan) | ✗ | ✗ |
+| speed_charm | Düşman öldürünce geçici hareket hızı | ✗ | ✗ |
+| blood_pool | Öldürünce şansla süreli alan DoT (dünyada ColorRect havuzu) | ✗ | ✓ |
+| luck_stone | Ek krit şansı + altın toplama bonusu | ✗ | ✗ |
+| turbine | Son hareket süresine göre biriken hasar bonusu | ✗ | ✗ |
+| steam_armor | Hasar alınca kısa yenilmezlik, sonra bekleme | ✗ | ✗ |
+| energy_cell | Periyodik: tüm silahları anında ateş + ardından geçici yavaş cooldown | ✗ | ✗ |
+| ember_heart | Düşman öldürünce sabit can iyileşmesi | ✗ | ✗ |
+| glyph_charm | Alınan hasara ek «ward» / zırh katkısı (`take_damage`) | ✗ | ✗ |
+| resonance_stone | XP + altın pickup çekim yarıçapı (magnet bonusu ile toplanır) | ✗ | ✗ |
+| rampart_plate | Ek zırh değeri (savunma) | ✗ | ✗ |
+| iron_bulwark | Düz (flat) hasar kesintisi | ✗ | ✗ |
+| night_vial | Hafif pickup çekim yarıçapı (evrim yolu / loadout) | ✗ | ✗ |
+| field_lens | Alan ölçekli silahlara `%` alan bonusu (`get_area_multiplier`) | ✓ | ✗ |
 
 ---
 
