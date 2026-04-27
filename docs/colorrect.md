@@ -1,12 +1,12 @@
 # ColorRect — hızlı takip
 
-**Kullanım (silah / kahraman / eşya):** **Kart ✓ ve oyun-içi görsel ✓** aynı satırda ise o silah satırını bu tablolardan **sil**; silah `id`’sini aşağıdaki **Son tarama** listesine ekle. Kısmi gap (ör. ✓|✗) **satırda kalır**. Yeni gap açılırsa satır **ekle**. Detay: `docs/TASARIM.md`. SFX: `docs/sesler-muzikler-efektler.md`.
+**Kullanım (silah / kahraman / eşya):** Bir satırda **Kart ✓ + Oyun-içi görsel ✓** tamamlandıysa o satırı tablodan **sil**; ilgili `id` değerini aşağıdaki **Son tarama** listesine ekle. Kısmi gap (ör. ✓|✗) **satırda kalır**. Yeni gap açılırsa yeni satır **ekle**. Detay: `docs/TASARIM.md`. SFX envanteri: `docs/sesler-muzikler-efektler.md`.
 
-**Dünya, orb, sandık, environment spawn:** Tam liste ve XP **3 tür** tasarım hedefi — **`docs/TASARIM.md` → bölüm «Pickup, orb ve dünya objeleri»** (aşağıda sadece özet).
+**Dünya, orb, sandık, environment spawn:** Tam liste ve XP **3 tür** hedefi için ana kaynak: **`docs/TASARIM.md` -> "Pickup, orb ve dünya objeleri"** (burada kısa özet tutulur).
 
 **İşaretler:** ✓ = var (dosya veya anlamlı oyun-içi görsel), ✗ = yok / henüz yok.
 
-**Not:** Kahraman sahnelerinde kök `ColorRect` çoğunlukla `player.gd` gövde rengi; bu dosya özellikle **eksik ikon** ve **eksik oyun-içi silah/eşya görseli** takibi içindir.
+**Not:** Kahraman sahnelerindeki kök `ColorRect` çoğunlukla `player.gd` gövde rengi içindir; bu dosya özellikle **eksik ikon** ve **eksik oyun-içi silah/eşya görseli** takibi içindir.
 
 ---
 
@@ -24,13 +24,13 @@
 
 ## Silah sahneleri (`weapons/scenes/`)
 
-**Silah ID:** dosya adından `weapon_` önekini ve `.tscn` uzantısını çıkar → örn. `weapon_bastion_flail.tscn` → `bastion_flail` → ikon yolu `res://assets/ui/upgrade_icons/weapons/bastion_flail.png`; yoksa `.../evolutions/<aynı_id>.png` (`arc_surge` gibi). Kod: `UpgradeIconCatalog.try_weapon_with_evolution_fallback`.
+**Silah ID:** Dosya adından `weapon_` önekini ve `.tscn` uzantısını çıkar -> örn. `weapon_bastion_flail.tscn` -> `bastion_flail` -> ikon yolu `res://assets/ui/upgrade_icons/weapons/bastion_flail.png`; yoksa `.../evolutions/<aynı_id>.png` (`arc_surge` gibi). Kod: `UpgradeIconCatalog.try_weapon_with_evolution_fallback`.
 
-**Kart / kodeks ikon:** yukarıdaki PNG gerçekten var mı (evrim silahlarında çoğunlukla `evolutions/`).
+**Kart / kodeks ikon:** Yukarıdaki PNG gerçekten var mı (evrim silahlarında çoğunlukla `evolutions/`).
 
-**Oyun-içi görsel:** `assets/projectiles/...`, anlamlı `Sprite2D` + doku (sahne veya kod), veya `projectiles/*.tscn` içi sprite; **runtime** olarak ana dünyaya eklenen tekillik / mermi sprite’ı da ✓ (ör. `weapons/center_cataclysm_helper.gd`). Yalnızca gizli `ColorRect` + anlamlı sprite/hitbox yok + saf yarıçap hasarı ✗ sayılır.
+**Oyun-içi görsel:** `assets/projectiles/...`, anlamlı `Sprite2D` + doku (sahne veya kod), veya `projectiles/*.tscn` içi sprite; **runtime** olarak ana dünyaya eklenen tekillik / mermi sprite'ı da ✓ (örn. `weapons/center_cataclysm_helper.gd`). Yalnızca gizli `ColorRect` + anlamlı sprite/hitbox yok + saf yarıçap hasarı = ✗.
 
-Evrim kimlikleri tek kaynak: `weapons/weapon_evolution.gd` → `EVOLUTIONS`.
+Evrim kimlikleri tek kaynak: `weapons/weapon_evolution.gd` -> `EVOLUTIONS`.
 
 ### Taban silahlar
 
@@ -42,7 +42,7 @@ Level-up havuzundan doğrudan seçilen / evrim **sonucu olmayan** silah sahneler
 
 ### Evrim silahları
 
-Yalnızca `EVOLUTIONS` ile elde edilen silah id’leri — **yalnızca en az bir ✗ kalanlar**.
+Yalnızca `EVOLUTIONS` ile elde edilen silah ID'leri — **yalnızca en az bir ✗ kalanlar**.
 
 | Sahne | Silah ID | Kart / kodeks ikon | Oyun-içi görsel |
 |-------|----------|-------------------|-----------------|
@@ -61,10 +61,11 @@ Runtime `ColorRect` / geçici blok (sahne `.tscn` dışı, “kalıcı sanat” 
 ## Eşyalar (`items/` — sahne yok, script + ikon)
 
 Pasif eşyalar `items/item_<id>.gd` ile yüklenir; **`.tscn` yok**. İleride dünyada görünür efekt / özel doku eklendikçe **Oyun-içi görsel** sütununu güncelle.
+Bu tabloda yalnızca **en az bir ✗** kalan satırlar tutulur (ikisi de ✓ olunca satır silinir).
 
 **Kart / kodeks ikon:** `res://assets/ui/upgrade_icons/items/<id>.png` (`UpgradeIconCatalog.try_item`).
 
-**Oyun-içi görsel:** Oyunda dünyaya eklenen görünür node / partikül / özel efekt doku yolu (yalnızca sayısal pasif etki ✗).
+**Oyun-içi görsel:** Oyunda dünyaya eklenen görünür node / partikül / özel efekt doku yolu (yalnızca sayısal pasif etki = ✗).
 
 **İşlev / görev:** Pasifin oyunda yaptığı iş (kısa özet; ayrıntı `items/item_<id>.gd` ve locale metinleri).
 
@@ -73,23 +74,22 @@ Pasif eşyalar `items/item_<id>.gd` ile yüklenir; **`.tscn` yok**. İleride dü
 | lifesteal | Verilen hasarın bir kısmı kadar can (vuruş başına) | ✓ | ✗ |
 | armor | Alınan hasarı zırh değeriyle azaltma | ✓ | ✗ |
 | crit | Kritik vuruş şansı; krit çarpanı | ✓ | ✗ |
-| explosion | Düşman ölünce şansla alan hasarı patlaması | ✓ | ✓ (`explosion_burst.png` patlama anı) |
 | magnet | XP orb çekim menzili artışı | ✓ | ✗ |
 | poison | Vuruşta düşmana zehir DoT uygulama | ✓ | ✗ |
 | shield | Bekleme sonrası tek seferlik hasar absorbe (kalkan) | ✓ | ✗ |
-| speed_charm | Düşman öldürünce geçici hareket hızı | ✓ | ✓ (`speed_charm_effect.png`, boost + yürürken ayak altı) |
-| blood_pool | Öldürünce şansla süreli alan DoT | ✓ | ✓ (`blood_pool_ripple.png` havuzu) |
 | luck_stone | Ek krit şansı + altın toplama bonusu | ✓ | ✗ |
 | turbine | Son hareket süresine göre biriken hasar bonusu | ✓ | ✗ |
 | steam_armor | Hasar alınca kısa yenilmezlik, sonra bekleme | ✓ | ✗ |
 | energy_cell | Periyodik: tüm silahları anında ateş + ardından geçici yavaş cooldown | ✓ | ✗ |
 | ember_heart | Düşman öldürünce sabit can iyileşmesi | ✗ | ✗ |
-| glyph_charm | Alınan hasara ek «ward» / zırh katkısı (`take_damage`) | ✗ | ✗ |
+| glyph_charm | Alınan hasara ek "ward" / zırh katkısı (`take_damage`) | ✗ | ✗ |
 | resonance_stone | XP + altın pickup çekim yarıçapı (magnet bonusu ile toplanır) | ✗ | ✗ |
 | rampart_plate | Ek zırh değeri (savunma) | ✗ | ✗ |
 | iron_bulwark | Düz (flat) hasar kesintisi | ✗ | ✗ |
 | night_vial | Hafif pickup çekim yarıçapı (evrim yolu / loadout) | ✗ | ✗ |
 | field_lens | Alan ölçekli silahlara `%` alan bonusu (`get_area_multiplier`) | ✓ | ✗ |
+
+**Listeden çıkan (✓ + ✓ tamam):** `explosion`, `speed_charm`, `blood_pool`
 
 ---
 
@@ -112,7 +112,7 @@ Pasif eşyalar `items/item_<id>.gd` ile yüklenir; **`.tscn` yok**. İleride dü
 | Risk sunağı | Rastgele: **%200 XP+altın**, düşman hız/yoğunluk maliyeti (~60 s); “risk” türü. | Kare + `⚠` | `shrine_of_risk` |
 | Şeytan sunağı | Rastgele: **%35 can** gider, karşılığı **rastgele silah veya eşyayı** max yapar. | Kare + `☠` | `shrine_of_risk` |
 | Kırılabilir kutu (crate) | Mermi kırar (3 isabet); ödül: kısa **bounce mermi**, hız, hasar, iyileşme (rastgele). | ColorRect’ler | `destructible_crate` |
-| Enkaz (ruin cache) | Açınca: yükseltilmeye uygun **silah veya eşya** +1 seviye, yoksa +50 **altın**. | Brown/gold rekt | `environment_manager` `_spawn_ruin_cache` |
-| Yuzen hasar metni | Vuruş/iyileşme sayısını ekranda gösterir. | Tema / kritik ayrımı açık | `damage_number` |
+| Enkaz (ruin cache) | Açınca: yükseltmeye uygun **silah veya eşya** +1 seviye, yoksa +50 **altın**. | Brown/gold rect | `environment_manager` `_spawn_ruin_cache` |
+| Yüzen hasar metni | Vuruş/iyileşme sayısını ekranda gösterir. | Tema / kritik ayrımı açık | `damage_number` |
 | Düşman mermileri + oyuncu mermileri | Hasar iletir; tür `TASARIM` «Projectile». | Bir kısmı kısmi / final açık | `projectiles/*.tscn` |
 | Pasif eşyalar (dünya) | `blood_pool` vb.: çoğunluk sadece **veri/ColorRect** proc; ayrı mesh yok. | Üstte eşya tablosu | `items/*` |
