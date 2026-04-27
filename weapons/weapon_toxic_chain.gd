@@ -25,7 +25,7 @@ func attack():
 	var first_enemy = enemies[0]
 	if player.global_position.distance_to(first_enemy.global_position) > eff_r:
 		return
-	var final_damage = player.get_total_damage(damage)
+	var final_damage = player.get_total_damage(damage, first_enemy)
 	first_enemy.take_damage(final_damage, player)
 	first_enemy.apply_poison(8, 4.0)
 	_spawn_lightning(first_enemy.global_position)

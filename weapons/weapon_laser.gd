@@ -49,7 +49,7 @@ func attack():
 				continue
 			var dot = to_enemy.normalized().dot(d)
 			if dot > 0.92:
-				var final_damage = player.get_total_damage(damage)
+				var final_damage = player.get_total_damage(damage, enemy)
 				enemy.take_damage(final_damage, player)
 				EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 				hit_enemies.append(enemy)

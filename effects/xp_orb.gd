@@ -3,11 +3,16 @@ extends Area2D
 const ACTIVE_LAYER := 8
 const ACTIVE_MASK := 1
 
+## 0 = standart (1×) `xp.png`; 1 = yeşil (3×); 2 = kırmızı (8×) — `enemy_base._spawn_xp_orb_drop`.
+const TEX_NORMAL := preload("res://assets/effects/xp.png")
+const TEX_GREEN := preload("res://assets/effects/green_xp.png")
+const TEX_RED := preload("res://assets/effects/red_xp.png")
+
 var xp_value = 10
 var player = null
 var move_speed = 0.0
 var base_attract_radius = 100.0
-var collect_radius = 20.0
+var collect_radius = 28.0
 var _bob_time = 0.0
 var _is_moving = false
 
@@ -60,7 +65,7 @@ func _get_nearest_player() -> Node:
 			nearest = p
 	return nearest
 
-func init(value: int, pos: Vector2):
+func init(value: int, pos: Vector2, orb_tier: int = 0):
 	xp_value = max(1, value)
 	move_speed = 0.0
 	player = null
@@ -69,8 +74,26 @@ func init(value: int, pos: Vector2):
 	global_position = pos
 	collision_layer = ACTIVE_LAYER
 	collision_mask = ACTIVE_MASK
+	_apply_orb_visual(clampi(orb_tier, 0, 2))
 	add_to_group("xp_orbs")
 	show()
+
+
+func _apply_orb_visual(tier: int) -> void:
+	var sprite: Sprite2D = get_node_or_null("Sprite2D") as Sprite2D
+	if sprite == null:
+		return
+	match tier:
+		1:
+			sprite.texture = TEX_GREEN
+		2:
+			sprite.texture = TEX_RED
+		_:
+			sprite.texture = TEX_NORMAL
+	sprite.modulate = Color.WHITE
+	if SaveManager.get_colorblind_mode() == "friendly" and tier != 0:
+		var semantic := Color("#2ECC71") if tier == 1 else Color("#E74C3C")
+		sprite.modulate = SaveManager.filter_accessibility_orb_color(semantic)
 
 func vacuum_attract():
 	move_speed = 900.0
@@ -83,9 +106,11 @@ func reset():
 	player = null
 	_bob_time = 0.0
 	_is_moving = false
-	var sprite = get_node_or_null("Sprite2D")
+	var sprite = get_node_or_null("Sprite2D") as Sprite2D
 	if sprite:
 		sprite.position.y = 0.0
+		sprite.texture = TEX_NORMAL
+		sprite.modulate = Color.WHITE
 	remove_from_group("xp_orbs")
 	collision_layer = 0
 	collision_mask = 0

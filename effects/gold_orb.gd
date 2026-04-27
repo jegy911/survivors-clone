@@ -35,7 +35,7 @@ func _process(delta):
 
 	var all_players = get_tree().get_nodes_in_group("player")
 	for p in all_players:
-		if global_position.distance_to(p.global_position) < 15:
+		if global_position.distance_to(p.global_position) < 26:
 			var p1 = get_tree().get_nodes_in_group("player").filter(
 				func(x): return x.player_id == 0)
 			if not p1.is_empty():

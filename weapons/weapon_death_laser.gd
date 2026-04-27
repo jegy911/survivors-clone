@@ -40,7 +40,7 @@ func attack():
 			continue
 		var dot: float = dir.dot(to_enemy.normalized())
 		if dot > 0.90:
-			var final_damage: int = player.get_total_damage(int(damage * 1.5))
+			var final_damage: int = player.get_total_damage(int(damage * 1.5), enemy)
 			enemy.take_damage(final_damage, player)
 			EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 			hit_any = true

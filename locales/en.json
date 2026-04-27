@@ -316,7 +316,7 @@
       "item_label": "🛡 Passive",
       "item_desc": "Random\npassive item",
       "xp_label": "⭐ XP",
-      "xp_desc": "Instant\n2 level-ups",
+      "xp_desc": "~1 level bar\ninstant XP",
       "damage_label": "⚔ Power",
       "damage_desc": "+%d damage"
     },

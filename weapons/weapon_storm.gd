@@ -30,7 +30,7 @@ func attack():
 	var first = enemies[0]
 	if player.global_position.distance_to(first.global_position) > eff_r:
 		return
-	var final_damage = player.get_total_damage(damage)
+	var final_damage = player.get_total_damage(damage, first)
 	first.take_damage(final_damage)
 	EventBus.on_damage_dealt.emit(player, first, final_damage)
 	_spawn_flash(first.global_position)

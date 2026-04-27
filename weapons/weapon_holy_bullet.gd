@@ -26,11 +26,11 @@ func attack():
 		return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position)
 	)
 	for i in min(bullet_count, enemies.size()):
+		var atk: Dictionary = player.roll_attack_damage(damage)
 		var bullet = ObjectPool.get_object("res://projectiles/bullet.tscn")
 		bullet.global_position = player.global_position
 		var dir = (enemies[i].global_position - player.global_position).normalized()
-		var final_damage = player.get_total_damage(damage)
-		bullet.init(dir, final_damage, true, player, HOLY_PROJECTILE_TEX)
+		bullet.init(dir, atk.damage, true, player, HOLY_PROJECTILE_TEX, atk.crit)
 
 func on_upgrade():
 	match level:

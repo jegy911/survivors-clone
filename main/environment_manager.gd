@@ -1,5 +1,7 @@
 extends Node
 
+const VACUUM_ICON := preload("res://assets/ui/upgrade_icons/items/magnet.png")
+
 var vacuum_spawn_timer = 120.0
 var trap_spawn_timer = 30.0
 var shrine_spawn_timer = 90.0
@@ -55,18 +57,20 @@ func _spawn_vacuum_orb():
 	if player == null:
 		return
 	var orb_node = Node2D.new()
-	var body = ColorRect.new()
-	body.size = Vector2(20, 20)
-	body.position = Vector2(-10, -10)
-	body.color = Color("#00FFFF")
+	var body := Sprite2D.new()
+	body.texture = VACUUM_ICON
+	body.centered = true
+	body.scale = Vector2(0.07, 0.07)
 	body.name = "Body"
 	orb_node.add_child(body)
 	var area = Area2D.new()
 	area.collision_layer = 0
 	area.collision_mask = 1
+	area.monitorable = true
+	area.monitoring = true
 	var shape = CollisionShape2D.new()
 	var circle = CircleShape2D.new()
-	circle.radius = 18.0
+	circle.radius = 28.0
 	shape.shape = circle
 	area.add_child(shape)
 	orb_node.add_child(area)
@@ -75,8 +79,8 @@ func _spawn_vacuum_orb():
 	orb_node.global_position = player.global_position + Vector2(cos(angle), sin(angle)) * randf_range(100.0, 250.0)
 	var pulse = body.create_tween()
 	pulse.set_loops()
-	pulse.tween_property(body, "modulate:a", 0.3, 0.4)
-	pulse.tween_property(body, "modulate:a", 1.0, 0.4)
+	pulse.tween_property(body, "modulate:a", 0.45, 0.45)
+	pulse.tween_property(body, "modulate:a", 1.0, 0.45)
 	area.body_entered.connect(_on_vacuum_collected.bind(orb_node, area))
 
 func _on_vacuum_collected(body: Node, orb_node: Node, _area: Node):

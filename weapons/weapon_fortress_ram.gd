@@ -81,7 +81,7 @@ func attack():
 		var dir = to_e.normalized()
 		if forward.angle_to(dir) > half:
 			continue
-		var final_damage = player.get_total_damage(damage)
+		var final_damage = player.get_total_damage(damage, enemy)
 		enemy.take_damage(final_damage, player)
 		EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 		enemy.global_position += dir * 14.0

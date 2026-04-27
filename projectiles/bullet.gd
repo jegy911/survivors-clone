@@ -13,6 +13,7 @@ var _hit = false
 var pierce_count = 0
 var _pierce_remaining = 0
 var _default_bullet_texture: Texture2D
+var _was_crit_roll: bool = false
 
 func _ready():
 	$ColorRect.color = Color("#FFD700")
@@ -30,6 +31,15 @@ func _on_area_entered(area: Area2D):
 		return
 	if area.is_in_group("player"):
 		return
+	var hit_center: Vector2 = area.global_position if area is Node2D else global_position
+	if _was_crit_roll:
+		EventBus.hit_stop_requested.emit(2)
+		var par_hit: Node = get_parent()
+		if par_hit:
+			CombatProjectileFx.spawn_crit_burst(par_hit, hit_center + Vector2(0, -28), player as Node2D)
+		if is_instance_valid(player):
+			player.show_floating_text(tr("ui.player.crit_floating"), hit_center + Vector2(0, -52), Color("#FFD700"), 24)
+		_was_crit_roll = false
 	area.take_damage(damage, player if is_instance_valid(player) else null)
 	if armor_piercing:
 		var par_hit: Node = get_parent()
@@ -78,8 +88,9 @@ func _restore_hit_scan() -> void:
 	collision_layer = BULLET_COLLISION_LAYER
 	collision_mask = BULLET_COLLISION_MASK
 
-func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter = null, projectile_texture: Texture2D = null):
+func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter = null, projectile_texture: Texture2D = null, crit_roll: bool = false):
 	_hit = false
+	_was_crit_roll = crit_roll
 	_pierce_remaining = pierce_count
 	_restore_hit_scan()
 	direction = dir
@@ -112,6 +123,7 @@ func init(dir: Vector2, dmg: int = 10, is_armor_piercing: bool = false, shooter 
 
 func reset():
 	_hit = false
+	_was_crit_roll = false
 	pierce_count = 0
 	direction = Vector2.ZERO
 	damage = 10

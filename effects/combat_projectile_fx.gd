@@ -1,6 +1,8 @@
 extends RefCounted
 class_name CombatProjectileFx
 
+const TEX_CRIT_BURST := preload("res://assets/effects/crit_burst.png")
+
 const LIGHTNING_HIT_FX := preload("res://effects/lightning_hit_fx.tscn")
 const TEX_CHAIN := preload("res://assets/projectiles/chain/chain.png")
 ## `true`: zincir halkaları dokunun **genişliği** boyunca (+X yönü); `false`: **yükseklik** boyunca (dikey PNG için).
@@ -9,6 +11,31 @@ const CHAIN_TEX_LINKS_ALONG_WIDTH := true
 const CHAIN_SEGMENT_THICKNESS := 0.22
 ## Renk çarpanı (1 = değişmez); >1 biraz daha “dolu” görünür.
 const CHAIN_MODULATE_RGB_BOOST := 1.12
+
+
+## Krit PNG — isabet / düşman üstü kısa patlama (metin `player.show_floating_text` ile).
+static func spawn_crit_burst(parent: Node, global_pos: Vector2, shooter: Node2D) -> void:
+	if parent == null or TEX_CRIT_BURST == null:
+		return
+	var spr := Sprite2D.new()
+	spr.texture = TEX_CRIT_BURST
+	spr.centered = true
+	spr.global_position = global_pos
+	spr.z_index = 115
+	spr.z_as_relative = false
+	var dim: float = maxf(float(TEX_CRIT_BURST.get_width()), 1.0)
+	var sc: float = 72.0 / dim
+	spr.scale = Vector2(sc, sc)
+	var vfx_a := 1.0
+	if shooter != null and shooter.has_method("get_player_vfx_opacity"):
+		vfx_a = float(shooter.call("get_player_vfx_opacity"))
+	spr.modulate = Color(1, 1, 1, minf(1.0, vfx_a))
+	parent.add_child(spr)
+	var tw := spr.create_tween()
+	tw.set_parallel(true)
+	tw.tween_property(spr, "scale", Vector2(sc * 1.15, sc * 1.15), 0.14)
+	tw.tween_property(spr, "modulate:a", 0.0, 0.22)
+	tw.chain().tween_callback(spr.queue_free)
 ## Solma: daha uzun süre tam opak kalır.
 const CHAIN_FADE_DURATION_SEC := 0.42
 

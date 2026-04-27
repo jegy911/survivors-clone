@@ -23,11 +23,11 @@ func attack():
 		return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position)
 	)
 	for i in min(boomerang_count, enemies.size()):
+		var atk: Dictionary = player.roll_attack_damage(damage)
 		var b = ObjectPool.get_object("res://projectiles/hunter_axe.tscn")
 		b.global_position = player.global_position
 		var dir = (enemies[i].global_position - player.global_position).normalized()
-		var final_damage = player.get_total_damage(damage)
-		b.init(dir, final_damage, player, true)
+		b.init(dir, atk.damage, player, true, atk.crit)
 
 func on_upgrade():
 	match level:

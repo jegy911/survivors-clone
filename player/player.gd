@@ -524,8 +524,13 @@ func recalculate_category_bonus():
 	
 	update_category_ui()
 
-func get_total_damage(base_damage: int) -> int:
-	# Adrenalin: can azaldıkça ateş hızı değil, hasar artar
+## Mermi / fan shard gibi atış başına ayrı krit zarı; `crit` bayrağı `true` ise isabet anında düşman üstü VFX.
+func roll_attack_damage(base_damage: int) -> Dictionary:
+	var info = _compute_attack_damage_internal(base_damage)
+	return {"damage": info.damage, "crit": info.crit}
+
+
+func _compute_attack_damage_internal(base_damage: int) -> Dictionary:
 	var adrenaline_rank = SaveManager.meta_upgrades.get("adrenaline", 0)
 	var adrenaline_bonus = 0
 	if adrenaline_rank > 0:
@@ -534,21 +539,35 @@ func get_total_damage(base_damage: int) -> int:
 	var turbine_bonus = 0
 	if active_items.has("turbine"):
 		turbine_bonus = active_items["turbine"].get_damage_bonus()
-	var dmg = base_damage + bullet_damage + category_damage_bonus + momentum_bonus + adrenaline_bonus + turbine_bonus
-	var crit_chance = category_crit_bonus + get_tag_crit_bonus()
+	var dmg: int = base_damage + bullet_damage + category_damage_bonus + momentum_bonus + adrenaline_bonus + turbine_bonus
+	var crit_chance: float = category_crit_bonus + get_tag_crit_bonus()
 	if active_items.has("crit"):
 		crit_chance += active_items["crit"].crit_chance
 	if active_items.has("luck_stone"):
 		crit_chance += active_items["luck_stone"].get_crit_bonus()
+	var is_crit := false
 	if randf() < crit_chance:
-		var meta_crit = SaveManager.meta_upgrades.get("crit_damage_bonus", 0) * 0.25
-		var crit_multiplier = 2.0 + meta_crit
+		is_crit = true
+		var meta_crit: float = float(SaveManager.meta_upgrades.get("crit_damage_bonus", 0)) * 0.25
+		var crit_multiplier: float = 2.0 + meta_crit
 		if active_items.has("crit"):
 			crit_multiplier = active_items["crit"].crit_multiplier + meta_crit
-		dmg = int(dmg * crit_multiplier)
+		dmg = int(float(dmg) * crit_multiplier)
+	return {"damage": dmg, "crit": is_crit}
+
+
+func get_total_damage(base_damage: int, crit_visual_target: Node = null) -> int:
+	var info = _compute_attack_damage_internal(base_damage)
+	if info.crit:
 		EventBus.hit_stop_requested.emit(2)
-		show_floating_text(tr("ui.player.crit_floating"), global_position + Vector2(0, -70), Color("#FFD700"), 28)
-	return dmg
+		var fx_pos: Vector2 = global_position + Vector2(0, -70)
+		if crit_visual_target != null and is_instance_valid(crit_visual_target) and crit_visual_target is Node2D:
+			fx_pos = (crit_visual_target as Node2D).global_position + Vector2(0, -38)
+		var par: Node = get_parent()
+		if par != null:
+			CombatProjectileFx.spawn_crit_burst(par, fx_pos, self)
+		show_floating_text(tr("ui.player.crit_floating"), fx_pos + Vector2(0, -26), Color("#FFD700"), 26)
+	return info.damage
 
 
 func on_enemy_killed(enemy_position: Vector2):

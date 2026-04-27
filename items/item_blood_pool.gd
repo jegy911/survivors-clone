@@ -1,6 +1,8 @@
 class_name ItemBloodPool
 extends PassiveItem
 
+const POOL_TEX := preload("res://assets/effects/blood_pool_ripple.png")
+
 var pool_damage = 8
 var pool_radius = 60.0
 var pool_duration = 3.0
@@ -27,31 +29,37 @@ func on_enemy_killed(position: Vector2):
 func _spawn_pool(pos: Vector2):
 	var effective_radius = pool_radius * player.get_area_multiplier()
 	var effective_duration = pool_duration * player.get_duration_multiplier()
-	
+
 	var vfx_a = player.get_player_vfx_opacity() if player else 1.0
-	var pool = ColorRect.new()
-	pool.size = Vector2(effective_radius * 2, effective_radius * 2)
-	pool.position = pos - Vector2(effective_radius, effective_radius)
-	pool.color = Color(0.5, 0.0, 0.0, 0.4 * vfx_a)
+	var pool := Sprite2D.new()
+	pool.texture = POOL_TEX
+	pool.centered = true
+	pool.global_position = pos
+	pool.z_index = -2
+	var dim: float = maxf(float(POOL_TEX.get_width()), 1.0)
+	var sc: float = (effective_radius * 2.0) / dim
+	pool.scale = Vector2(sc, sc)
+	pool.modulate = Color(1.0, 1.0, 1.0, 0.72 * vfx_a)
 	player.get_parent().add_child(pool)
-	
+
 	var tween = pool.create_tween()
 	tween.tween_property(pool, "modulate:a", 0.0, effective_duration)
 	tween.tween_callback(pool.queue_free)
-	
+
 	var damage_timer = Timer.new()
 	damage_timer.wait_time = 0.5
 	damage_timer.autostart = true
 	pool.add_child(damage_timer)
-	
+
 	var dmg = pool_damage
 	var radius = effective_radius
+	var center_pos: Vector2 = pos
 	damage_timer.timeout.connect(func():
 		if not is_instance_valid(pool):
 			return
 		var enemies = EnemyRegistry.get_enemies()
 		for enemy in enemies:
-			if enemy.global_position.distance_to(pos) <= radius:
+			if enemy.global_position.distance_to(center_pos) <= radius:
 				if enemy.has_method("take_explosion_damage"):
 					enemy.take_explosion_damage(dmg)
 	)

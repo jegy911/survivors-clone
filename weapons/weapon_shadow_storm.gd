@@ -1,6 +1,8 @@
 class_name WeaponShadowStorm
 extends WeaponBase
 
+const ORBIT_SHARD_TEXTURE := preload("res://assets/projectiles/shadow_storm/orbit_shard.png")
+
 var orbit_radius = 80.0
 var orbit_angle = 0.0
 var lightning_cooldown = 0.0
@@ -24,18 +26,24 @@ func attack():
 	var enemies = EnemyRegistry.get_enemies()
 	for enemy in enemies:
 		if enemy.global_position.distance_to(orbit_pos) < 40:
-			var final_damage = player.get_total_damage(damage)
+			var final_damage = player.get_total_damage(damage, enemy)
 			enemy.take_damage(final_damage, player)
 			EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 			# Yıldırım zinciri tetikle
 			_chain_lightning(enemy)
 	
 	# Görsel
-	var orb = ColorRect.new()
-	orb.size = Vector2(14, 14)
-	orb.color = Color("#8E44AD")
-	orb.global_position = orbit_pos - Vector2(7, 7)
-	orb.modulate.a = player.get_player_vfx_opacity() if player else 1.0
+	var vfx_a: float = player.get_player_vfx_opacity() if player else 1.0
+	var orb: CanvasItem
+	var spr := Sprite2D.new()
+	spr.texture = ORBIT_SHARD_TEXTURE
+	spr.centered = true
+	spr.global_position = orbit_pos
+	var dim: float = maxf(float(ORBIT_SHARD_TEXTURE.get_width()), 1.0)
+	var sc: float = 22.0 / dim
+	spr.scale = Vector2(sc, sc)
+	spr.modulate = Color(1, 1, 1, vfx_a)
+	orb = spr
 	player.get_parent().add_child(orb)
 	var tween = orb.create_tween()
 	tween.tween_property(orb, "modulate:a", 0.0, 0.3)
@@ -57,7 +65,7 @@ func _chain_lightning(start_enemy: Node):
 				next = e
 		if next == null:
 			break
-		var final_damage = player.get_total_damage(int(damage * 0.4))
+		var final_damage = player.get_total_damage(int(damage * 0.4), next)
 		next.take_damage(final_damage)
 		EventBus.on_damage_dealt.emit(player, next, final_damage)
 		hit.append(next)

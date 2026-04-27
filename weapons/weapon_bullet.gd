@@ -36,11 +36,11 @@ func attack():
 	
 	var effective_count = bullet_count + get_effective_multi_attack()
 	for i in min(effective_count, in_range.size()):
+		var atk: Dictionary = player.roll_attack_damage(damage)
 		var bullet = ObjectPool.get_object("res://projectiles/bullet.tscn")
 		bullet.global_position = player.global_position
 		var dir = (in_range[i].global_position - player.global_position).normalized()
-		var final_damage = player.get_total_damage(damage)
-		bullet.init(dir, final_damage, false, player)
+		bullet.init(dir, atk.damage, false, player, null, atk.crit)
 
 func on_upgrade():
 	match level:

@@ -6,6 +6,7 @@ var explosion_damage = 0
 var trigger_chance = 0.50
 var exploded_positions = []
 var damage_number_scene = preload("res://effects/damage_number.tscn")
+const EXPLOSION_BURST_TEX := preload("res://assets/effects/explosion_burst.png")
 
 func _ready():
 	item_name = "Patlama"
@@ -32,6 +33,20 @@ func on_enemy_killed(position: Vector2):
 
 func _do_explosion(position: Vector2):
 	var effective_radius = explosion_radius * player.get_area_multiplier()
+	var par: Node = player.get_parent() if player else null
+	if par != null:
+		var spr := Sprite2D.new()
+		spr.texture = EXPLOSION_BURST_TEX
+		spr.centered = true
+		spr.global_position = position
+		var bd: float = maxf(float(EXPLOSION_BURST_TEX.get_width()), 1.0)
+		var sc: float = (effective_radius * 2.0) / bd
+		spr.scale = Vector2(sc, sc)
+		spr.modulate.a = 0.65
+		par.add_child(spr)
+		var ftw := spr.create_tween()
+		ftw.parallel().tween_property(spr, "modulate:a", 0.0, 0.38)
+		ftw.tween_callback(spr.queue_free)
 	var enemies = EnemyRegistry.get_enemies()
 	for enemy in enemies:
 		if not is_instance_valid(enemy):

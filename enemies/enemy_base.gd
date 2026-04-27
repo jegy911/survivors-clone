@@ -310,18 +310,15 @@ func _spawn_gold_orb_drop() -> void:
 func _spawn_xp_orb_drop() -> void:
 	var roll = randf()
 	var xp_val = XP_VALUE
-	var orb_color = Color("#4A90E2")
+	var orb_tier := 0
 	if roll < 0.02:
 		xp_val = XP_VALUE * 8
-		orb_color = Color("#E74C3C")
+		orb_tier = 2
 	elif roll < 0.10:
 		xp_val = XP_VALUE * 3
-		orb_color = Color("#2ECC71")
-	orb_color = SaveManager.filter_accessibility_orb_color(orb_color)
+		orb_tier = 1
 	var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
-	orb.init(xp_val, global_position)
-	if orb.get_node_or_null("ColorRect"):
-		orb.get_node("ColorRect").color = orb_color
+	orb.init(xp_val, global_position, orb_tier)
 
 func _spawn_particles():
 	var n: int = SaveManager.get_particle_burst_count(6)

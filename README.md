@@ -35,6 +35,7 @@ Yeni taban silah **ikiz hançer** (`dagger`): `weapons/weapon_dagger.gd`, `weapo
 | [docs/survivors_clone_context.md](docs/survivors_clone_context.md) | Kısa repo / autoload / sahne akışı özeti (yeni geliştirici veya AI girişi) |
 | [docs/sesler-muzikler-efektler.md](docs/sesler-muzikler-efektler.md) | Müzik, SFX, tetikleyiciler (`AudioManager`) — yaşayan ses envanteri |
 | [docs/colorrect.md](docs/colorrect.md) | İkon / oyun-içi görsel gap takibi (kahraman, silah taban–evrim, eşya) |
+| [docs/OLCEKLEME_ONERI.md](docs/OLCEKLEME_ONERI.md) | Denge: % / düz artış çerçevesi (alan, süre, magnet, örnekler) — taslak |
 | [docs/ASSET_SIZES.md](docs/ASSET_SIZES.md) | Karakter / düşman / silah PNG’leri — 512×512 üstü boyut listesi (tarama tablosu) |
 | [docs/vs wiki analizi/](docs/vs%20wiki%20analizi/) | Proje başı **VS + Brotato** wiki notları (arşiv); ürün özeti **`docs/YOL_HARITASI.md`** «Referans — VS / Brotato wiki analizi» + `docs/vs wiki analizi/README.md` |
 

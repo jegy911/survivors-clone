@@ -1,6 +1,8 @@
 class_name WeaponFrostNova
 extends WeaponBase
 
+const NOVA_RING_TEXTURE := preload("res://assets/projectiles/frost_nova/nova_ring.png")
+
 var nova_radius = 120.0
 var reflect_damage = 0.2
 
@@ -27,18 +29,23 @@ func attack():
 	var enemies = EnemyRegistry.get_enemies()
 	for enemy in enemies:
 		if enemy.global_position.distance_to(player.global_position) < effective_radius:
-			var final_damage = player.get_total_damage(damage)
+			var final_damage = player.get_total_damage(damage, enemy)
 			enemy.take_damage(final_damage, player)
 			EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 			if enemy.has_method("apply_slow"):
 				enemy.apply_slow(0.15, 2.5)
 	
-	# Alan görsel
-	var nova = ColorRect.new()
-	nova.size = Vector2(effective_radius * 2, effective_radius * 2)
-	nova.color = Color("#00BFFF")
-	nova.modulate.a = 0.35 * (player.get_player_vfx_opacity() if player else 1.0)
-	nova.global_position = player.global_position - Vector2(effective_radius, effective_radius)
+	# Alan görsel — dokulu halka
+	var vfx_a: float = player.get_player_vfx_opacity() if player else 1.0
+	var spr := Sprite2D.new()
+	spr.texture = NOVA_RING_TEXTURE
+	spr.centered = true
+	spr.global_position = player.global_position
+	var d: float = maxf(float(NOVA_RING_TEXTURE.get_width()), 1.0)
+	var s: float = (effective_radius * 2.0) / d
+	spr.scale = Vector2(s, s)
+	spr.modulate = Color(1, 1, 1, 0.55 * vfx_a)
+	var nova: CanvasItem = spr
 	player.get_parent().add_child(nova)
 	var tween = nova.create_tween()
 	tween.tween_property(nova, "modulate:a", 0.0, 0.5)

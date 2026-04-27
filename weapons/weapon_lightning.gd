@@ -67,7 +67,7 @@ func _run_lightning_strikes() -> void:
 
 		var strike_origin: Vector2 = origin
 		var target_pos: Vector2 = current.global_position
-		var final_damage: int = player.get_total_damage(damage)
+		var final_damage: int = player.get_total_damage(damage, current)
 		var bolt: Node = ObjectPool.get_object(LIGHTNING_BOLT_SCENE)
 		if bolt.has_method("init"):
 			bolt.call("init", strike_origin, current, final_damage, player, &"lightning")

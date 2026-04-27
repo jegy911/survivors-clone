@@ -49,16 +49,19 @@ func attack():
 	var shard_life: float = eff_reach / maxf(shard_speed, 1.0)
 	for ang in angles:
 		var dir = base_dir.rotated(ang)
+		var atk: Dictionary = player.roll_attack_damage(damage)
 		var shard = ObjectPool.get_object("res://projectiles/fan_blade_shard.tscn")
 		shard.global_position = player.get_directional_attack_spawn(dir)
 		shard.init(
 			dir,
-			player.get_total_damage(damage),
+			atk.damage,
 			player,
 			pierce,
 			ember_tint,
 			shard_speed,
-			shard_life
+			shard_life,
+			true,
+			atk.crit
 		)
 
 func on_upgrade():

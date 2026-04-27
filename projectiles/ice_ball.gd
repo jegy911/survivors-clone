@@ -11,6 +11,7 @@ var speed = 280.0
 var direction = Vector2.ZERO
 var damage = 15
 var lifetime = 2.5
+var _was_crit_shot: bool = false
 
 @onready var body = $ColorRect
 
@@ -58,6 +59,15 @@ func _physics_process(delta):
 	rotation = direction.angle()
 	for area in get_overlapping_areas():
 		if area.has_method("take_damage") and not area.is_in_group("player"):
+			var hc: Vector2 = area.global_position if area is Node2D else global_position
+			if _was_crit_shot and player != null:
+				EventBus.hit_stop_requested.emit(2)
+				var par_hit: Node = player.get_parent()
+				if par_hit:
+					CombatProjectileFx.spawn_crit_burst(par_hit, hc + Vector2(0, -26), player as Node2D)
+				if player.has_method("show_floating_text"):
+					player.show_floating_text(tr("ui.player.crit_floating"), hc + Vector2(0, -48), Color("#FFD700"), 24)
+				_was_crit_shot = false
 			area.take_damage(damage)
 			if player:
 				EventBus.on_damage_dealt.emit(player, area, damage)
@@ -68,10 +78,11 @@ func _physics_process(delta):
 			ObjectPool.return_object(self)
 			return
 
-func init(dir: Vector2, dmg: int, shooter = null):
+func init(dir: Vector2, dmg: int, shooter = null, crit_roll: bool = false):
 	player = shooter
 	direction = dir
 	damage = dmg
+	_was_crit_shot = crit_roll
 	lifetime = 2.5
 	rotation = 0.0
 	var vfx_a = player.get_player_vfx_opacity() if player else 1.0
@@ -87,6 +98,7 @@ func init(dir: Vector2, dmg: int, shooter = null):
 func reset():
 	direction = Vector2.ZERO
 	damage = 15
+	_was_crit_shot = false
 	lifetime = 2.5
 	body.modulate.a = 1.0
 	var spr := get_node_or_null("Sprite2D") as Sprite2D

@@ -29,7 +29,7 @@ func _process(delta):
 	var all_players := get_tree().get_nodes_in_group("player")
 	var in_range: Array[Node] = []
 	for p in all_players:
-		if global_position.distance_to(p.global_position) < 15.0:
+		if global_position.distance_to(p.global_position) < 24.0:
 			in_range.append(p)
 	for p in in_range:
 		if p.has_method("can_collect_more_cog_shards") and p.can_collect_more_cog_shards():

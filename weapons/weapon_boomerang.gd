@@ -23,11 +23,11 @@ func attack():
 	)
 	var effective_count = boomerang_count + get_effective_multi_attack()
 	for i in min(effective_count, enemies.size()):
+		var atk: Dictionary = player.roll_attack_damage(damage)
 		var b = ObjectPool.get_object("res://projectiles/hunter_axe.tscn")
 		b.global_position = player.global_position
 		var dir = (enemies[i].global_position - player.global_position).normalized()
-		var final_damage = player.get_total_damage(damage)
-		b.init(dir, final_damage, player)
+		b.init(dir, atk.damage, player, false, atk.crit)
 
 func on_upgrade():
 	match level:

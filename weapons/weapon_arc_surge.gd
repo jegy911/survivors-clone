@@ -58,7 +58,7 @@ func attack() -> void:
 		var dist: float = player.global_position.distance_to(enemy.global_position)
 		if dist < inner or dist > outer:
 			continue
-		var final_damage: int = player.get_total_damage(damage)
+		var final_damage: int = player.get_total_damage(damage, enemy)
 		enemy.take_damage(final_damage, player)
 		EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 		hit_cooldowns[eid] = HIT_INTERVAL

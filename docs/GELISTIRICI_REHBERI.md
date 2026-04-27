@@ -160,7 +160,8 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
   - Arayüz: üç sütun (envanter ızgarası + dikey kartlar + istatistik / meta özeti); veri `Player` ve `SaveManager` üzerinden; envanter slotlarında `tooltip_text`.
   - **`ui/upgrade_ui.tscn`**: Kök altında **`EditorRoot`** varsa düzen (`MarginContainer` / kartlar / butonlar) editörden taşınır; betik `_bind_editor_root` ile bağlanır; yoksa kod `_build_ui_shell()` ile oluşturur. Reroll/skip: `player.run_levelup_rerolls_left` / `run_levelup_skips_left` **koşu boyunca** azalan havuz (meta `reroll_bonus` / `skip_bonus` yalnızca koşu başı toplamına eklenir). Temel slot 6+6; meta `weapon_slot_bonus` / `item_slot_bonus` en fazla 2’şer rank (+1 slot/rank).
   - Yeni yüzey metinleri (dil dondurması sırasında): `locales/en.json` → `ui.upgrade_ui.*`.
-  - İkon PNG’leri: `assets/ui/upgrade_icons/` (alt klasörler + `README.txt`); yükleme `UpgradeIconCatalog` (`core/upgrade_icon_catalog.gd`).
+  - İkon PNG’leri: `assets/ui/upgrade_icons/` (alt klasörler + `README.txt`); yükleme `UpgradeIconCatalog` (`core/upgrade_icon_catalog.gd`). Toplu ham PNG düşümü için geçici klasör: **`assets/inbox/`** (`README.txt`) — buradan hedef alt klasörlere taşınıp sahne/kod bağlanır.
+  - **Denge / ölçek taslağı:** `docs/OLCEKLEME_ONERI.md` — alan/süre/magnet için `%` vs düz (+N) çerçevesi ve örnek tablo (ürün kararına göre kodla birleştirilir).
   - **Aura görsel halkası** (`weapon_aura.gd`): `AuraWeaponRing` artık **silah düğümünün** çocuğu (`add_child` silahta); level-up önizlemesi yeni silah için oyuncuya geçici child eklemez (kodeks metni).
 
 ### Evrim

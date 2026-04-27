@@ -46,19 +46,15 @@ Yalnızca `EVOLUTIONS` ile elde edilen silah id’leri — **yalnızca en az bir
 
 | Sahne | Silah ID | Kart / kodeks ikon | Oyun-içi görsel |
 |-------|----------|-------------------|-----------------|
-| `weapon_binding_circle.tscn` | binding_circle | ✗ (`evolutions/binding_circle.png` yok) | ✗ |
-| `weapon_citadel_flail.tscn` | citadel_flail | ✗ | ✗ |
-| `weapon_ember_fan.tscn` | ember_fan | ✗ (`evolutions/ember_fan.png` yok) | ✓ |
-| `weapon_frost_nova.tscn` | frost_nova | ✗ | ✗ (kodda yarı saydam `ColorRect` alan; doku yok) |
-| `weapon_shadow_storm.tscn` | shadow_storm | ✗ (`evolutions/shadow_storm.png` yok) | ✗ (kodda kısa ömürlü `ColorRect` orb; doku yok) |
-| `weapon_veil_daggers.tscn` | veil_daggers | ✗ (`evolutions/veil_daggers.png` yok) | ✓ |
+| `weapon_binding_circle.tscn` | binding_circle | ✓ | ✗ (alan hasarı; `projectiles/binding_circle/glyph.png` envanter, sahada özel mesh yok) |
+| `weapon_citadel_flail.tscn` | citadel_flail | ✓ | ✗ (aynı; `citadel_flail/head.png` envanter) |
 
 **Son tarama (kart ✓ + oyun-içi ✓ — yukarıdaki gap tablolarında artık satır yok):**
 
 - **Taban:** `arc_pulse`, `aura`, `bullet`, `chain`, `boomerang`, `dagger`, `fan_blade`, `hex_sigil`, `ice_ball`, `laser`, `lightning`, `shadow`, `shield_ram`, `bastion_flail`, `gravity_anchor`
-- **Evrim:** `arc_surge`, `blood_boomerang`, `death_laser`, `fortress_ram`, `holy_bullet`, `storm`, `toxic_chain`, `void_lens`
+- **Evrim:** `arc_surge`, `blood_boomerang`, `death_laser`, `ember_fan`, `fortress_ram`, `frost_nova`, `holy_bullet`, `shadow_storm`, `storm`, `toxic_chain`, `veil_daggers`, `void_lens`
 
-Runtime `ColorRect` / geçici blok (sahne `.tscn` dışı, “kalıcı sanat” değil): `weapon_frost_nova.gd`, `weapon_shadow.gd`, `weapon_shadow_storm.gd`.
+Runtime `ColorRect` / geçici blok (sahne `.tscn` dışı, “kalıcı sanat” değil): `weapon_shadow.gd`.
 
 ---
 
@@ -74,19 +70,19 @@ Pasif eşyalar `items/item_<id>.gd` ile yüklenir; **`.tscn` yok**. İleride dü
 
 | Eşya ID | İşlev / görev | Kart / kodeks ikon | Oyun-içi görsel |
 |---------|----------------|-------------------|-----------------|
-| lifesteal | Verilen hasarın bir kısmı kadar can (vuruş başına) | ✗ | ✗ |
-| armor | Alınan hasarı zırh değeriyle azaltma | ✗ | ✗ |
-| crit | Kritik vuruş şansı; krit çarpanı | ✗ | ✗ |
-| explosion | Düşman ölünce şansla alan hasarı patlaması | ✗ | ✗ |
-| magnet | XP orb çekim menzili artışı | ✗ | ✗ |
-| poison | Vuruşta düşmana zehir DoT uygulama | ✗ | ✗ |
-| shield | Bekleme sonrası tek seferlik hasar absorbe (kalkan) | ✗ | ✗ |
-| speed_charm | Düşman öldürünce geçici hareket hızı | ✗ | ✗ |
-| blood_pool | Öldürünce şansla süreli alan DoT (dünyada ColorRect havuzu) | ✗ | ✓ |
-| luck_stone | Ek krit şansı + altın toplama bonusu | ✗ | ✗ |
-| turbine | Son hareket süresine göre biriken hasar bonusu | ✗ | ✗ |
-| steam_armor | Hasar alınca kısa yenilmezlik, sonra bekleme | ✗ | ✗ |
-| energy_cell | Periyodik: tüm silahları anında ateş + ardından geçici yavaş cooldown | ✗ | ✗ |
+| lifesteal | Verilen hasarın bir kısmı kadar can (vuruş başına) | ✓ | ✗ |
+| armor | Alınan hasarı zırh değeriyle azaltma | ✓ | ✗ |
+| crit | Kritik vuruş şansı; krit çarpanı | ✓ | ✗ |
+| explosion | Düşman ölünce şansla alan hasarı patlaması | ✓ | ✓ (`explosion_burst.png` patlama anı) |
+| magnet | XP orb çekim menzili artışı | ✓ | ✗ |
+| poison | Vuruşta düşmana zehir DoT uygulama | ✓ | ✗ |
+| shield | Bekleme sonrası tek seferlik hasar absorbe (kalkan) | ✓ | ✗ |
+| speed_charm | Düşman öldürünce geçici hareket hızı | ✓ | ✓ (`speed_charm_effect.png`, boost + yürürken ayak altı) |
+| blood_pool | Öldürünce şansla süreli alan DoT | ✓ | ✓ (`blood_pool_ripple.png` havuzu) |
+| luck_stone | Ek krit şansı + altın toplama bonusu | ✓ | ✗ |
+| turbine | Son hareket süresine göre biriken hasar bonusu | ✓ | ✗ |
+| steam_armor | Hasar alınca kısa yenilmezlik, sonra bekleme | ✓ | ✗ |
+| energy_cell | Periyodik: tüm silahları anında ateş + ardından geçici yavaş cooldown | ✓ | ✗ |
 | ember_heart | Düşman öldürünce sabit can iyileşmesi | ✗ | ✗ |
 | glyph_charm | Alınan hasara ek «ward» / zırh katkısı (`take_damage`) | ✗ | ✗ |
 | resonance_stone | XP + altın pickup çekim yarıçapı (magnet bonusu ile toplanır) | ✗ | ✗ |
@@ -103,15 +99,15 @@ Pasif eşyalar `items/item_<id>.gd` ile yüklenir; **`.tscn` yok**. İleride dü
 
 | Cisim / sistem | İşlev / görev | Görsel durum (kısa) | Kod / not |
 |----------------|--------------|--------------------|-----------|
-| **XP 1× / 3× / 8×** (3 tür) | Oyuncu topladıkça **seviye XP** verir (1×, 3× veya 8×; co-op’ta diğer oyuncu yarım pay). P2’ye sızma: `xp_orb.gd`. | Aynı `xp.png`; **3 ayrı tasarım** hedef | `enemy_base.gd` `_spawn_xp_orb_drop` |
+| **XP 1× / 3× / 8×** (3 tür) | Oyuncu topladıkça **seviye XP** verir (1×, 3× veya 8×; co-op’ta diğer oyuncu yarım pay). P2’ye sızma: `xp_orb.gd`. | `xp.png` / `green_xp.png` / `red_xp.png` (`xp_orb` tier) | `enemy_base.gd` `_spawn_xp_orb_drop` |
 | Altın küre | **Altın** toplama; miktar (elite vb.) + şans/ meta bonusları ile. | Doku var; anim/parıltı açık | `gold_orb` |
 | Sandık | Yaklaşınca açılır: **rastgele eşya**, veya **altın**, veya **%15 can**; istat: `chests_opened`. | ColorRect; ritüel sanat açık | `chest.gd` |
 | Kan yemini (Blood Oath) | **Solo:** +25 altın. **Co-op:** iki oyuncu yeterince yakınsa **kan yemini** buff’ı (`activate_blood_oath`); değilse yine altın uyarısı. | ColorRect | `blood_oath` |
-| Dişli parçası (Cog) | Sınır varken **cog toplar**; cog ekonomisi/ilerleme (limit `can_collect_more` ile). | ColorRect | `cog_shard` |
-| Zaman dişlisi | Toplanınca **tüm düşmanları 10 sn dondurur** (slow tam). | ColorRect | `time_gear.gd` |
-| Buhar bombası | Toplanınca **sahadaki normal düşmanları** öldürür (boss hariç); öldürme sayısı metni. | ColorRect | `steam_bomb.gd` |
+| Dişli parçası (Cog) | Sınır varken **cog toplar**; cog ekonomisi/ilerleme (limit `can_collect_more` ile). | `cog.png` sprite | `cog_shard` |
+| Zaman dişlisi | Toplanınca **tüm düşmanları 10 sn dondurur** (slow tam). | `time_gear_icon.png` sprite | `time_gear.gd` |
+| Buhar bombası | Toplanınca **sahadaki normal düşmanları** öldürür (boss hariç); öldürme sayısı metni. | `steam_bomb_icon.png` sprite | `steam_bomb.gd` |
 | Vakum toplayıcı | Alana giren: ekrandaki tüm **XP** ve **altın** orblarına vakum çekimi (`vacuum_attract`); kısa süre sonra kaybolur. | Cyan kare (runtime) | `environment_manager` |
-| Buz fıçısı (freeze) | Mermi tetikler: alanda **yavaşlatma** yayan patlama (büyük mavi alan). | Kare + alan | `freeze_barrel` |
+| Buz fıçısı (freeze) | Mermi tetikler: alanda **yavaşlatma** yayan patlama (büyük mavi alan). | Varil `freeze_barrel_icon` + patlama `freeze_burst` | `freeze_barrel` |
 | Zehir tuzağı | Mermi tetikler: alana **zehir DoT** bırakan bulut. | Kare + alan | `poison_trap` |
 | Risk sunağı | Rastgele: **%200 XP+altın**, düşman hız/yoğunluk maliyeti (~60 s); “risk” türü. | Kare + `⚠` | `shrine_of_risk` |
 | Şeytan sunağı | Rastgele: **%35 can** gider, karşılığı **rastgele silah veya eşyayı** max yapar. | Kare + `☠` | `shrine_of_risk` |

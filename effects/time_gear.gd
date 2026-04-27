@@ -6,7 +6,11 @@ var base_attract_radius = 80.0
 
 func _ready():
 	add_to_group("pickups")
-	if get_node_or_null("ColorRect"):
+	var spr := get_node_or_null("Sprite2D") as Sprite2D
+	if spr != null and spr.texture != null:
+		spr.centered = true
+	elif get_node_or_null("ColorRect"):
+		get_node("ColorRect").visible = true
 		get_node("ColorRect").color = Color("#00BFFF")
 		get_node("ColorRect").size = Vector2(16, 16)
 		get_node("ColorRect").position = Vector2(-8, -8)

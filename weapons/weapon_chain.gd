@@ -37,23 +37,21 @@ func attack() -> void:
 	_run_chain_sequence(enemies)
 
 
-func _run_chain_sequence(enemies: Array) -> void:
-	enemies.sort_custom(func(a, b):
-		return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position)
-	)
-
-	var hit_enemies: Array = []
+func _run_chain_sequence(_enemies: Array) -> void:
+	var hit_ids: Array[int] = []
 	var current_pos: Vector2 = player.global_position
 	var current_damage: float = float(damage)
 	var effective_chain: int = chain_count + get_effective_multi_attack()
 	var effective_range: float = chain_range * player.get_area_multiplier()
-	var max_hits: int = mini(effective_chain, enemies.size())
 
-	for i in max_hits:
-		var nearest = null
+	for i in effective_chain:
+		var nearest: Node = null
 		var nearest_dist: float = 999999.0
-		for enemy in enemies:
-			if enemy in hit_enemies:
+		for enemy in EnemyRegistry.get_enemies():
+			if not is_instance_valid(enemy):
+				continue
+			var eid: int = enemy.get_instance_id()
+			if hit_ids.has(eid):
 				continue
 			var dist: float = current_pos.distance_to(enemy.global_position)
 			if dist < nearest_dist and dist < effective_range:
@@ -61,21 +59,27 @@ func _run_chain_sequence(enemies: Array) -> void:
 				nearest = enemy
 		if nearest == null:
 			break
+		if not is_instance_valid(nearest):
+			break
 
-		var final_damage: int = player.get_total_damage(int(current_damage))
+		var hit_id: int = nearest.get_instance_id()
+		var hit_pos: Vector2 = nearest.global_position
+		var final_damage: int = player.get_total_damage(int(current_damage), nearest)
 		nearest.take_damage(final_damage)
-		EventBus.on_damage_dealt.emit(player, nearest, final_damage)
-		hit_enemies.append(nearest)
+		if is_instance_valid(nearest):
+			EventBus.on_damage_dealt.emit(player, nearest, final_damage)
+		hit_ids.append(hit_id)
+
 		var green_intensity: float = 0.45 + (float(i) / float(maxi(effective_chain, 1))) * 0.55
 		## Tam opak segment; VFX biraz daha parlak (saydam hissi azalır).
 		var seg_color := Color(0.28, green_intensity, 0.48, 1.0)
 		CombatProjectileFx.spawn_chain_segment(
-			player.get_parent(), current_pos, nearest.global_position, player, seg_color
+			player.get_parent(), current_pos, hit_pos, player, seg_color
 		)
-		current_pos = nearest.global_position
+		current_pos = hit_pos
 		current_damage *= bounce_multiplier
 
-		if i < max_hits - 1 and chain_step_delay_sec > 0.0:
+		if i < effective_chain - 1 and chain_step_delay_sec > 0.0:
 			await get_tree().create_timer(chain_step_delay_sec).timeout
 
 	_chain_running = false

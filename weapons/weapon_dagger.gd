@@ -31,12 +31,12 @@ func attack() -> void:
 	AudioManager.play_shoot()
 	var effective_count: int = dagger_count + get_effective_multi_attack()
 	for i in min(effective_count, in_range.size()):
+		var atk: Dictionary = player.roll_attack_damage(damage)
 		var proj: Node = ObjectPool.get_object("res://projectiles/dagger.tscn")
 		proj.pierce_count = 0
 		proj.global_position = player.global_position
 		var dir: Vector2 = (in_range[i].global_position - player.global_position).normalized()
-		var final_damage: int = player.get_total_damage(damage)
-		proj.init(dir, final_damage, false, player)
+		proj.init(dir, atk.damage, false, player, null, atk.crit)
 
 func on_upgrade() -> void:
 	match level:

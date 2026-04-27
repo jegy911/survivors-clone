@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-25 (`TASARIM` + `colorrect` — XP 3 tür, dünya/spawn tam tasarım envanteri; önceki: 2026-04-24)
+**Son güncelleme:** 2026-04-25 (`assets/inbox` → kalıcı `effects` / `upgrade_icons` / `projectiles` dağıtımı)
 
 ---
 
@@ -172,11 +172,17 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-25 | **`assets/inbox` dağıtımı** — Tüm ham PNG’ler silah/eşya/evrim ikonları (`upgrade_icons`), VFX (`explosion_burst`, `crit_burst`, `blood_pool_ripple`, `poison_burst`, `magnet_pulse`, `speed_charm_effect`, dondurma/buhar/zaman pickup görselleri), projeksiyon dokuları (`binding_circle/glyph`, `veil_shard`, `citadel_flail/head`, `ember_shard`, `nova_ring`, `orbit_shard`) ile üzerine yazıldı; inbox temizlendi (`README.txt` kaldı). |
+| 2026-04-25 | **`speed_charm` ayak efekti** — `assets/effects/speed_charm_effect.png`; `item_speed_charm.gd`: kill boost aktifken yürürken (`velocity`) oyuncunun altında `Sprite2D`, `get_player_vfx_opacity`; `colorrect` / `TASARIM` / erişilebilirlik matrisi #4. |
+| 2026-04-25 | **Kan havuzu / krit VFX / vakum ikon / pickup + ölçek önerisi** — `blood_pool` sprite havuzu; krit `crit_burst` + mermi/fan/buz/balta; `roll_attack_damage` + `get_total_damage(..., hedef)`; vakum `magnet.png` + geniş çarpışma; XP/altın/cog toplama yarıçapı; `docs/OLCEKLEME_ONERI.md`. |
+| 2026-04-25 | **`assets/inbox` → dağıtım + dalga XP** — Cog özel düşüş oranı eski değerlere döndü; `wave_manager` XP ödülü ~1× bar (`en.json` metni); inbox PNG’ler → `upgrade_icons` / `effects` / `projectiles`; ember/frost/shadow/veil/buhar/zaman/buz + patlama VFX; `colorrect`/`TASARIM`/`GELISTIRICI` inbox notu. |
+| 2026-04-25 | **Zincir + Cog görseli** — `weapon_chain` `await` sonrası serbest düşman ref’i: canlı `EnemyRegistry` taraması, `hit_ids`, vuruş `global_position` kopyası; `cog_shard.tscn` + `cog.png`; `TASARIM` / `colorrect` Cog satırları. |
+| 2026-04-25 | **XP orb — 3 doku** — `assets/effects/green_xp.png` + `red_xp.png` (3× / 8×); `xp_orb.gd` `init(..., tier)` + friendly `modulate`; `enemy_base` tier; `boss` tier 0; `TASARIM` / `colorrect` teknik satırı. |
 | 2026-04-25 | **Dünya & XP tasarım envanteri** — `TASARIM` «Pickup, orb…» + `colorrect` **Dünya/spawn** tablosu: **İşlev / görev** sütunu (vakum, sandık, sunak, time gear, steam bomb, blood oath, …); 3 XP türü; `GELISTIRICI`/`TASARIM` senkron. |
 | 2026-04-24 | **Dokümantasyon — yol/depo + TASARIM denetim** — `ASSET_SIZES` kök; `TASARIM`: Meta UI, savaşçı/düşman asset yolları, `dusk_striker`+`arcanist` satırları, `ice_ball` ikon ✅, odak kaybı duraklatma **Var** (`main.gd`); `YAPILACAKLAR_TOPLU` Meta UI maddesi + wiki README; arşiv dört + README. |
 | 2026-04-23 | **Koşu HUD — sol üst istatistik butonu kaldırıldı** — `player.gd` 📊 butonu; `player_ui_helpers.gd` içindeki `toggle_stats_panel` / HUD panel kodu (etiket satırı hatası kaynağı) silindi; `GELISTIRICI` `player/` satırı. |
 | 2026-04-23 | **Düşman ölüm loot’u — tek seçim** — `enemy_base`: `resolve_death_loot` + `DEATH_LOOT_DOUBLE_CHANCE` (~%1 ikinci tür); boss tek XP küresi + sandık; giant `super._on_death_complete`; exploder kill bildirimi; `GELISTIRICI` düşürme satırı. |
-| 2026-04-23 | **Koşu içi seviye / XP nerfi** — `player.gd`: `RUN_XP_GAIN_MULT`, `LEVEL_XP_REQUIREMENT_MULT`, `_calc_xp_for_level` çarpımlı eşik, Lv1 bar hizası; `wave_manager` dalga XP ödülü 2×→~1.15× bar; `enemy_base` varsayılan `XP_DROP_CHANCE`; `GELISTIRICI` / matris / günlük. |
+| 2026-04-23 | **Koşu içi seviye / XP nerfi** — `player.gd`: `RUN_XP_GAIN_MULT`, `LEVEL_XP_REQUIREMENT_MULT`, `_calc_xp_for_level` çarpımlı eşik, Lv1 bar hizası; `wave_manager` dalga XP ödülü (sonradan ~1× bar); `enemy_base` varsayılan `XP_DROP_CHANCE`; `GELISTIRICI` / matris / günlük. |
 | 2026-04-23 | **Silah cooldown genel yavaşlatma** — `WeaponBase.GLOBAL_COOLDOWN_SCALE` 1.68; taban bekleme tabanı ≥0.20s; `weapon_lightning` taban/upgrade CD artışı; `weapon_shadow_storm` salvo aralığı; `SILAHLAR_ESYALAR_EVO` yıldırım + gölge fırtınası CD satırları + CD notu. |
 | 2026-04-23 | **ObjectPool + havuzlu `Area2D` çarpışması** — Görünmez mermiyle hayalet hasar önlemi: `bullet`/`lightning_bolt` reset politikası; `ObjectPool._ensure_pool` ilk `reset()`; `fan_blade_shard` ertelenmiş `monitoring` kaldırıldı; `hunter_axe`, `ice_ball`, `enemy_bullet`, `gold_orb`, `xp_orb` havuzda çarpışma sıfır + `init()` ile geri yükleme; `GELISTIRICI_REHBERI` §Projectile + §8 orb checklist. |
 | 2026-04-22 | **Buton kapakları menü geneli** — `ui/button_cover_styles.gd` (`button1`–`3`); ana menü varyant eşlemesi; pause, ayarlar sekmeleri/geri/müzik satırı/kontrol/dev, karakter seçim (sahne + filtre + kart), P2, harita, oyun modu, game over, meta, koleksiyon, shop, level-up reroll/skip; `GELISTIRICI` §7.1 + `assets/button covers/README.txt`. |

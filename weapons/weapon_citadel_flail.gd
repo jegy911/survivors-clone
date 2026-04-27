@@ -33,7 +33,7 @@ func attack():
 			continue
 		if ppos.distance_to(enemy.global_position) > effective_radius:
 			continue
-		var final_damage = player.get_total_damage(damage)
+		var final_damage = player.get_total_damage(damage, enemy)
 		enemy.take_damage(final_damage, player)
 		EventBus.on_damage_dealt.emit(player, enemy, final_damage)
 		var kb = (enemy.global_position - ppos).normalized() * knockback

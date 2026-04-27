@@ -41,10 +41,7 @@ func flash():
 func resolve_death_loot() -> void:
 	## Mini-boss: tek XP küresi (toplam değer korunur) + sahne sandığı — ayrı altın küresi yok.
 	var orb = ObjectPool.get_object("res://effects/xp_orb.tscn")
-	var orb_color: Color = SaveManager.filter_accessibility_orb_color(Color("#4A90E2"))
-	orb.init(XP_VALUE, global_position)
-	if orb.get_node_or_null("ColorRect"):
-		orb.get_node("ColorRect").color = orb_color
+	orb.init(XP_VALUE, global_position, 0)
 	_spawn_boss_chest()
 
 

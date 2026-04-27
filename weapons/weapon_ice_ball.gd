@@ -22,11 +22,11 @@ func attack():
 		return player.global_position.distance_to(a.global_position) < player.global_position.distance_to(b.global_position)
 	)
 	for i in min(ball_count, enemies.size()):
+		var atk: Dictionary = player.roll_attack_damage(damage)
 		var ball = ObjectPool.get_object("res://projectiles/ice_ball.tscn")
 		ball.global_position = player.global_position
 		var dir = (enemies[i].global_position - player.global_position).normalized()
-		var final_damage = player.get_total_damage(damage)
-		ball.init(dir, final_damage, player)
+		ball.init(dir, atk.damage, player, atk.crit)
 
 func on_upgrade():
 	match level:

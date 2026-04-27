@@ -5,7 +5,7 @@ Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.
 Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.  
 **Ses / müzik / SFX dosya ve tetik envanteri** (ayrıntılı): `docs/sesler-muzikler-efektler.md`.
 
-**Son güncelleme:** 2026-04-25 (XP 3 tür + dünya/ spawn tam tasarım envanteri; `colorrect` dünya tablosu; önceki: 2026-04-24)
+**Son güncelleme:** 2026-04-25 (+ `assets/inbox` PNG dağıtımı: ikonlar, pickup sprite’ları, ember/frost/shadow/veil saha görselleri; buhar/zaman/buz fıçısı; patlama pasif VFX)
 
 ---
 
@@ -162,7 +162,7 @@ Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + is
 | lifesteal | ✅ | ❌ | / | ❌ |
 | poison | ✅ | ❌ | / | ❌ |
 | shield | ✅ | ❌ | / | ❌ |
-| speed_charm | ✅ | ❌ | / | ❌ |
+| speed_charm | ✅ | ❌ | / | Kısmi (`speed_charm_effect.png` ayak-altı boost+hareket) |
 | blood_pool | ✅ | ❌ | / | ❌ |
 | luck_stone | ✅ | ❌ | / | ❌ |
 | turbine | ✅ | ❌ | / | ❌ |
@@ -194,7 +194,7 @@ Bunlar ayrı tscn değil; `effects/xp_orb.tscn` + `enemy_base._spawn_xp_orb_drop
 | Zengin (~%8) | 3× | yeşil `#2ECC71` | Ayrı **Tür 2** (yüksek değer hissi) |
 | Nadir (~%2) | 8× | kırmızı `#E74C3C` | Ayrı **Tür 3** (ödül hissi) |
 
-**Teknik (şu an):** oyun `Sprite2D` + mevcut `assets/effects/xp.png`; gizli `ColorRect` rengi değiştirilir; görünür tür ayrımı yok. Üç türü ürün olarak farklı göstermek için: tier başına ayrı doku / 3 ayrı küçük sahne, veya aynı *mesh* çerçevesinde 3 stil. Boss düşen tek küre: `enemies/boss.gd` sadece `init(XP_VALUE)`; boss’a özel görsel istersen ayrı maddesini not et.
+**Teknik (şu an):** `effects/xp_orb.gd` tier (`0|1|2`) ile `Sprite2D` dokusunu seçer: **`xp.png`** (1×), **`green_xp.png`** (3×), **`red_xp.png`** (8×). Erişilebilirlik «friendly» paletinde yalnızca 3× / 8× için `Sprite2D.modulate` ← `filter_accessibility_orb_color` (yeşil / kırmızı semantic). Gizli `ColorRect` artık tür için kullanılmıyor. Boss tek küre: `init(XP_VALUE, pos, 0)` → standart doku.
 
 | Kısım | Konum / içerik | Görsel / efekt (şu an) | Tasarım bacağı |
 |--------|----------------|-------------------------|----------------|
@@ -207,13 +207,13 @@ Bunlar ayrı tscn değil; `effects/xp_orb.tscn` + `enemy_base._spawn_xp_orb_drop
 | Altın küresi | `gold_orb` | yukarı |
 | Sandık | `chest` | yukarı |
 | Blood Oath | `blood_oath.tscn` — sadece `ColorRect` | **❌** ayrı sanat |
-| Cog shard | `cog_shard.tscn` — `ColorRect` | **Kısmi** (sahne var) |
-| Steam bomb / Time gear | `steam_bomb.tscn` / `time_gear.tscn` | **❌** ColorRect yok sayılabilecek; dünya bacağı tasarlayın |
+| Cog shard | `cog_shard.tscn` — `Sprite2D` + `assets/effects/cog.png` | **Kısmi** (doku var; parıltı/bırak VFX açık) |
+| Steam bomb / Time gear | `steam_bomb.tscn` / `time_gear.tscn` | `Sprite2D` + `steam_bomb_icon` / `time_gear_icon`; parıltı/bırak açık |
 
 **ORTAM (environment_manager) — programatik, çoğunlukla ColorRect** | Açıklama | Görsel
 |---|---|---
-| Vakum orb | Kodda anlık `Node2D` + cyan kare, nabız | **❌** ayrı sprite/ikon; şu an sadece renk + floating metin **🌀 VAKUM!** |
-| Buz fıçısı (freeze) | `freeze_barrel.gd` — mavi kare, patlamada büyük mavi alan (ColorRect) | **❌** prop + alan VFX’si ayrı sanat |
+| Vakum orb | `Node2D` + `Sprite2D` `magnet.png` (mıknatıs pickup), toplamada tüm XP/altın `vacuum_attract` | Yüzen metin **🌀 VAKUM!**; polisaj: ayrı VFX / ses ince ayarı açık |
+| Buz fıçısı (freeze) | `freeze_barrel.gd` — varil `freeze_barrel_icon`, patlama `freeze_burst` | **Kısmi** (parçacık / ritüel açık) |
 | Zehir tuzağı (poison) | `poison_trap.gd` — yeşil kare, zehir bulutu | **❌** aynı |
 | Risk / Şeytan sunağı | `shrine_of_risk.gd` — mor/kan kırmızı kare, emoji `⚠` / `☠` | **❌** tütsü / alınlık hiyerarşi vs. ileri sanat |
 | Kırılabilir sandık (crate) | `destructible_crate.gd` — kahverengi + sarı sınır | **❌** ayrı kutu mesh/sprite; içerik: bounce/speed/… floating |

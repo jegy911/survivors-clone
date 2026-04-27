@@ -137,7 +137,7 @@ func _flail_damage_step(delta: float) -> void:
 		var enemy_id: int = area.get_instance_id()
 		if hit_cooldowns.has(enemy_id):
 			continue
-		var final_damage: int = player.get_total_damage(damage)
+		var final_damage: int = player.get_total_damage(damage, area)
 		area.take_damage(final_damage, player)
 		EventBus.on_damage_dealt.emit(player, area, final_damage)
 		var away: Vector2 = area.global_position - kb_origin
