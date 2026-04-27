@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-28 (`colorrect` dünya/spawn görsel takip tablosu + level-up kart tip etiketi)
+**Son güncelleme:** 2026-04-28 (`YAPILACAKLAR_TOPLU` — Godot sahne/VFX takip maddesi)
 
 ---
 
@@ -172,6 +172,10 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-28 | **YAPILACAKLAR — Godot 2D sahneleştirme takibi** — Kod-spawn VFX (`blood_pool`, `speed_charm`, `binding_circle`, `citadel_flail`) için `.tscn` şablonlarına taşıma maddesi `docs/YAPILACAKLAR_TOPLU.md` bölümüne eklendi (oturum sonu). |
+| 2026-04-28 | **`blood_pool` görünürlük** — `item_blood_pool.gd`: havuz `z_index=-2` zeminin (`main` zemin `-1`) altında kalıyordu → `0`; ölüm noktası + ayak hizası offset; `GELISTIRICI` zemin notu. |
+| 2026-04-28 | **`citadel_flail` oyunda görünür alan** — `weapon_citadel_flail.gd`: `head.png` ile sürekli menzil halkası (`binding_circle` ile aynı ölçek politikası); `docs/colorrect` evrim gap tablosu boş; Son tarama + `citadel_flail`. |
+| 2026-04-28 | **`binding_circle` oyunda görünür alan** — `weapon_binding_circle.gd`: `glyph.png` ile sürekli halka (`Aura` benzeri ölçek), `get_player_vfx_opacity`; `docs/colorrect` gap satırı → Son tarama. |
 | 2026-04-28 | **ColorRect + level-up kart tip etiketi** — `docs/colorrect.md` dünya/spawn bölümü `Kart / kodeks ikon` + `Oyun-içi görsel` işaret tablosuna çevrildi; `ui/upgrade_ui.gd` kart isimleri başına `[WEAPON]` / `[ITEM]` / `[STAT]` öneki eklendi. |
 | 2026-04-25 | **`assets/inbox` dağıtımı** — Tüm ham PNG’ler silah/eşya/evrim ikonları (`upgrade_icons`), VFX (`explosion_burst`, `crit_burst`, `blood_pool_ripple`, `poison_burst`, `magnet_pulse`, `speed_charm_effect`, dondurma/buhar/zaman pickup görselleri), projeksiyon dokuları (`binding_circle/glyph`, `veil_shard`, `citadel_flail/head`, `ember_shard`, `nova_ring`, `orbit_shard`) ile üzerine yazıldı; inbox temizlendi (`README.txt` kaldı). |
 | 2026-04-25 | **`speed_charm` ayak efekti** — `assets/effects/speed_charm_effect.png`; `item_speed_charm.gd`: kill boost aktifken yürürken (`velocity`) oyuncunun altında `Sprite2D`, `get_player_vfx_opacity`; `colorrect` / `TASARIM` / erişilebilirlik matrisi #4. |

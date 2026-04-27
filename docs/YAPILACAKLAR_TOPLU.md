@@ -10,6 +10,20 @@ Kaynaklar: `GELISTIRICI_REHBERI.md`, `YOL_HARITASI.md`, `ERISILEBILIRLIK_VE_BAGL
 
 ---
 
+## Godot 2D editör uyumu — kod ile spawn edilen VFX’leri sahneleştir *(2026-04-28 oturumu, takip)*
+
+Bugün çoğu görsel **GDScript ile `Sprite2D.new()`** ile üretildi; tasarımcı Godot **2D sekmesinden ölçek/yerleşim/CollisionShape** ile oynayabilsin diye küçük **`.tscn` şablonlarına** taşınmalı (instantiate + parametre ile bağlama).
+
+- **`item_blood_pool`** — dünya kan lekesi (`blood_pool_ripple.png`): örn. `effects/blood_pool_fx.tscn` (Sprite2D + opsiyonel Area2D); süre/fade parametreleri dışardan; **`main` zemin `z_index=-1`** — sahne kökünde dünya efekti için **`z_index` ≥ 0** koru (`GELISTIRICI_REHBERI.md` uyarısı).
+- **`item_speed_charm`** — oyuncu ayak altı efekt (`speed_charm_effect.png`): alt sahne veya `CharacterBody2D` altına bağlı şablon; hareket + boost mantığı kodda kalabilir.
+- **`weapon_binding_circle`** — sürekli alan halkası (`glyph.png`): `Node2D`/Sprite alt sahne; radius senkronu kodda (`BindingCircleRing` yerine sahne kökü).
+- **`weapon_citadel_flail`** — sürekli menzil halkası (`head.png`): aynı model (`CitadelFlailRangeRing`).
+- İsteğe bağlı denge — **`blood_pool`** `trigger_chance` (Lv1 ~%15) oyuncuya “hiç çıkmıyor” hissi veriyorsa artış veya garantili ilk kill testi.
+
+Madde tamamlanınca buradan sil + `docs/GELISTIRICI_REHBERI.md` §silah/item VFX ile kısa not güncelle.
+
+---
+
 ## `docs/vs wiki analizi/` (arşiv → ürün işleri)
 
 Ayrıntılı tablolar ve pseudo-kod **dört analiz belgesinde** (`vs_wiki_analiz_asama1.md`, `vs_wiki_analiz_asama2.md.md`, `vs_wiki_analiz_asama3.md`, `brotato_arena_analiz.md.md`) + **`README.md` indeks**; burada yalnızca **henüz kapanmamış** ve arşivle hizalanan işler. Madde bitince hem buradan sil hem `YOL` / `TASARIM` / `lore` içindeki ilgili notu güncelle.

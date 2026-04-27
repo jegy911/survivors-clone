@@ -4,7 +4,7 @@ Bu belge, projenin **nasıl işlediğini**, dosyaların **birbirine nasıl bağl
 *(İngilizce projelerde eşdeğeri genelde `ARCHITECTURE.md`, `DEVELOPER_GUIDE.md` veya `docs/CONTRIBUTING.md` olarak adlandırılır.)*
 
 **Motor:** Godot 4.x  
-**Son güncelleme:** 2026-04-22 (`ButtonCoverStyles` + `button1`–`3` menü geneli; wiki-arşiv; `WeaponBase` / `GameplayConstants` — §4)
+**Son güncelleme:** 2026-04-28 (`blood_pool` zemin üstü z-index; `weapon_citadel_flail` / `weapon_binding_circle` alan halkası; önceki: `ButtonCoverStyles` — §4)
 
 **Hızlı giriş (yeni geliştirici / AI):** `docs/survivors_clone_context.md` — kısa autoload ve sahne akışı; bu dosya tam mimari rehberdir.
 
@@ -163,6 +163,8 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
   - İkon PNG’leri: `assets/ui/upgrade_icons/` (alt klasörler + `README.txt`); yükleme `UpgradeIconCatalog` (`core/upgrade_icon_catalog.gd`). Toplu ham PNG düşümü için geçici klasör: **`assets/inbox/`** (`README.txt`) — buradan hedef alt klasörlere taşınıp sahne/kod bağlanır.
   - **Denge / ölçek taslağı:** `docs/OLCEKLEME_ONERI.md` — alan/süre/magnet için `%` vs düz (+N) çerçevesi ve örnek tablo (ürün kararına göre kodla birleştirilir).
   - **Aura görsel halkası** (`weapon_aura.gd`): `AuraWeaponRing` artık **silah düğümünün** çocuğu (`add_child` silahta); level-up önizlemesi yeni silah için oyuncuya geçici child eklemez (kodeks metni).
+  - **Bağlayıcı Halka alan göstergesi** (`weapon_binding_circle.gd`): `BindingCircleRing` → `assets/projectiles/binding_circle/glyph.png`; ölçek `radius × get_area_multiplier()` (Aura’daki otomatik dış yarıçap yaklaşımı); `get_player_vfx_opacity()`.
+  - **Hisar Zinciri alan göstergesi** (`weapon_citadel_flail.gd`): `CitadelFlailRangeRing` → `assets/projectiles/citadel_flail/head.png`; aynı ölçek / opaklık politikası (`binding_circle` ile paralel).
 
 ### Evrim
 - **`weapons/weapon_evolution.gd`**
@@ -197,6 +199,7 @@ Kısa el sıkışma (bugün ne teslim edildi, sırada ne var): **`docs/YOL_HARIT
   - `_on_upgrade_chosen` → item ID listesi ile uyumlu olmalı.
   - `get_item_description(type)` → `codex.item.<id>.name/desc` + `ui.player.loadout.*`.
   - Oyun olayları: örn. `on_enemy_killed` içinde `active_items.has("...")` ile özel item metodu çağrısı.
+  - **Kan havuzu dünya görseli** (`items/item_blood_pool.gd`): `blood_pool_ripple.png` sahneye `player.get_parent()` altına eklenir — **`main/main.tscn` zemini `Sprite2D` `z_index=-1`** olduğundan havuz **`z_index=-2`** gibi değerler zeminin *altında* kalır / görünmez; dünya leke efektleri **`z_index` 0 veya üzeri** kullan (`item_explosion` varsayılan 0 ile çalışır).
 
 ### Dünya ödülleri
 - Örn. **`effects/chest.gd`** içindeki rastgele item listeleri; boss / dalga ödülleri varsa aynı ID tutarlılığı.

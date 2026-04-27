@@ -31,11 +31,14 @@ func _spawn_pool(pos: Vector2):
 	var effective_duration = pool_duration * player.get_duration_multiplier()
 
 	var vfx_a = player.get_player_vfx_opacity() if player else 1.0
+	# Ölüm noktası gövde merkezi; leke ayak/hizaya otursun diye hafif aşağı.
+	var center_pos: Vector2 = pos + Vector2(0.0, 28.0)
 	var pool := Sprite2D.new()
 	pool.texture = POOL_TEX
 	pool.centered = true
-	pool.global_position = pos
-	pool.z_index = -2
+	pool.global_position = center_pos
+	# Ana sahnede zemin `Sprite2D` z_index=-1 — -2 yapılırsa efekt zeminin altında kalır.
+	pool.z_index = 0
 	var dim: float = maxf(float(POOL_TEX.get_width()), 1.0)
 	var sc: float = (effective_radius * 2.0) / dim
 	pool.scale = Vector2(sc, sc)
@@ -53,7 +56,6 @@ func _spawn_pool(pos: Vector2):
 
 	var dmg = pool_damage
 	var radius = effective_radius
-	var center_pos: Vector2 = pos
 	damage_timer.timeout.connect(func():
 		if not is_instance_valid(pool):
 			return
