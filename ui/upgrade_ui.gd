@@ -756,6 +756,16 @@ func _upgrade_display_name(id: String, is_evo: bool) -> String:
 	return _stat_upgrade_text(id).split("\n")[0]
 
 
+func _upgrade_type_prefix(id: String, is_evo: bool) -> String:
+	if is_evo or WeaponEvolution.EVOLUTIONS.has(id) or id in WEAPON_UPGRADE_IDS:
+		return "[WEAPON]"
+	if id in ITEM_UPGRADE_IDS:
+		return "[ITEM]"
+	if id in STAT_UPGRADES:
+		return "[STAT]"
+	return "[UPGRADE]"
+
+
 func _preview_effect_text(upgrade: Dictionary) -> String:
 	var id: String = str(upgrade.get("id", ""))
 	var is_evo: bool = upgrade.get("is_evolution", false) or WeaponEvolution.EVOLUTIONS.has(id)
@@ -991,7 +1001,8 @@ func refresh_buttons() -> void:
 		_populate_icon_wrap(icon_wrap, _texture_for_upgrade_card(id, is_evo), _glyph_for_upgrade(id, is_evo))
 
 		var name_l: Label = panel.get_meta("name_label")
-		name_l.text = _upgrade_display_name(upgrade.get("id", ""), is_evo)
+		var prefix: String = _upgrade_type_prefix(id, is_evo)
+		name_l.text = "%s %s" % [prefix, _upgrade_display_name(id, is_evo)]
 
 		var delta: Label = panel.get_meta("delta_label")
 		delta.text = _preview_effect_text(upgrade)

@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-25 (`assets/inbox` → kalıcı `effects` / `upgrade_icons` / `projectiles` dağıtımı)
+**Son güncelleme:** 2026-04-28 (`colorrect` dünya/spawn görsel takip tablosu + level-up kart tip etiketi)
 
 ---
 
@@ -172,6 +172,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-28 | **ColorRect + level-up kart tip etiketi** — `docs/colorrect.md` dünya/spawn bölümü `Kart / kodeks ikon` + `Oyun-içi görsel` işaret tablosuna çevrildi; `ui/upgrade_ui.gd` kart isimleri başına `[WEAPON]` / `[ITEM]` / `[STAT]` öneki eklendi. |
 | 2026-04-25 | **`assets/inbox` dağıtımı** — Tüm ham PNG’ler silah/eşya/evrim ikonları (`upgrade_icons`), VFX (`explosion_burst`, `crit_burst`, `blood_pool_ripple`, `poison_burst`, `magnet_pulse`, `speed_charm_effect`, dondurma/buhar/zaman pickup görselleri), projeksiyon dokuları (`binding_circle/glyph`, `veil_shard`, `citadel_flail/head`, `ember_shard`, `nova_ring`, `orbit_shard`) ile üzerine yazıldı; inbox temizlendi (`README.txt` kaldı). |
 | 2026-04-25 | **`speed_charm` ayak efekti** — `assets/effects/speed_charm_effect.png`; `item_speed_charm.gd`: kill boost aktifken yürürken (`velocity`) oyuncunun altında `Sprite2D`, `get_player_vfx_opacity`; `colorrect` / `TASARIM` / erişilebilirlik matrisi #4. |
 | 2026-04-25 | **Kan havuzu / krit VFX / vakum ikon / pickup + ölçek önerisi** — `blood_pool` sprite havuzu; krit `crit_burst` + mermi/fan/buz/balta; `roll_attack_damage` + `get_total_damage(..., hedef)`; vakum `magnet.png` + geniş çarpışma; XP/altın/cog toplama yarıçapı; `docs/OLCEKLEME_ONERI.md`. |

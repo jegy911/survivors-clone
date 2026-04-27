@@ -95,24 +95,24 @@ Bu tabloda yalnızca **en az bir ✗** kalan satırlar tutulur (ikisi de ✓ olu
 
 ## Dünya / spawn cisimleri — oyun-içi görsel bacağı (özet)
 
-*(Olasılık, kod: `TASARIM` ana tablo. Görsel sütununda: ✗ = ileride değiştirilecek placeholder.)*
+*(Olasılık, kod ve kapsamın tamamı: `docs/TASARIM.md`. Burada istenen hızlı takip için yalnız görsel sütunları tutulur.)*
 
-| Cisim / sistem | İşlev / görev | Görsel durum (kısa) | Kod / not |
-|----------------|--------------|--------------------|-----------|
-| **XP 1× / 3× / 8×** (3 tür) | Oyuncu topladıkça **seviye XP** verir (1×, 3× veya 8×; co-op’ta diğer oyuncu yarım pay). P2’ye sızma: `xp_orb.gd`. | `xp.png` / `green_xp.png` / `red_xp.png` (`xp_orb` tier) | `enemy_base.gd` `_spawn_xp_orb_drop` |
-| Altın küre | **Altın** toplama; miktar (elite vb.) + şans/ meta bonusları ile. | Doku var; anim/parıltı açık | `gold_orb` |
-| Sandık | Yaklaşınca açılır: **rastgele eşya**, veya **altın**, veya **%15 can**; istat: `chests_opened`. | ColorRect; ritüel sanat açık | `chest.gd` |
-| Kan yemini (Blood Oath) | **Solo:** +25 altın. **Co-op:** iki oyuncu yeterince yakınsa **kan yemini** buff’ı (`activate_blood_oath`); değilse yine altın uyarısı. | ColorRect | `blood_oath` |
-| Dişli parçası (Cog) | Sınır varken **cog toplar**; cog ekonomisi/ilerleme (limit `can_collect_more` ile). | `cog.png` sprite | `cog_shard` |
-| Zaman dişlisi | Toplanınca **tüm düşmanları 10 sn dondurur** (slow tam). | `time_gear_icon.png` sprite | `time_gear.gd` |
-| Buhar bombası | Toplanınca **sahadaki normal düşmanları** öldürür (boss hariç); öldürme sayısı metni. | `steam_bomb_icon.png` sprite | `steam_bomb.gd` |
-| Vakum toplayıcı | Alana giren: ekrandaki tüm **XP** ve **altın** orblarına vakum çekimi (`vacuum_attract`); kısa süre sonra kaybolur. | Cyan kare (runtime) | `environment_manager` |
-| Buz fıçısı (freeze) | Mermi tetikler: alanda **yavaşlatma** yayan patlama (büyük mavi alan). | Varil `freeze_barrel_icon` + patlama `freeze_burst` | `freeze_barrel` |
-| Zehir tuzağı | Mermi tetikler: alana **zehir DoT** bırakan bulut. | Kare + alan | `poison_trap` |
-| Risk sunağı | Rastgele: **%200 XP+altın**, düşman hız/yoğunluk maliyeti (~60 s); “risk” türü. | Kare + `⚠` | `shrine_of_risk` |
-| Şeytan sunağı | Rastgele: **%35 can** gider, karşılığı **rastgele silah veya eşyayı** max yapar. | Kare + `☠` | `shrine_of_risk` |
-| Kırılabilir kutu (crate) | Mermi kırar (3 isabet); ödül: kısa **bounce mermi**, hız, hasar, iyileşme (rastgele). | ColorRect’ler | `destructible_crate` |
-| Enkaz (ruin cache) | Açınca: yükseltmeye uygun **silah veya eşya** +1 seviye, yoksa +50 **altın**. | Brown/gold rect | `environment_manager` `_spawn_ruin_cache` |
-| Yüzen hasar metni | Vuruş/iyileşme sayısını ekranda gösterir. | Tema / kritik ayrımı açık | `damage_number` |
-| Düşman mermileri + oyuncu mermileri | Hasar iletir; tür `TASARIM` «Projectile». | Bir kısmı kısmi / final açık | `projectiles/*.tscn` |
-| Pasif eşyalar (dünya) | `blood_pool` vb.: çoğunluk sadece **veri/ColorRect** proc; ayrı mesh yok. | Üstte eşya tablosu | `items/*` |
+| Cisim / sistem | Kart / kodeks ikon | Oyun-içi görsel | Not (kısa) |
+|----------------|-------------------|-----------------|------------|
+| **XP 1× / 3× / 8×** (3 tür) | ✗ | ✓ | `xp.png` / `green_xp.png` / `red_xp.png` |
+| Altın küre | ✗ | ✓ | `gold.png` |
+| Sandık | ✗ | ✗ | ColorRect placeholder |
+| Kan yemini (Blood Oath) | ✗ | ✗ | ColorRect placeholder |
+| Dişli parçası (Cog) | ✗ | ✓ | `cog.png` sprite |
+| Zaman dişlisi | ✗ | ✓ | `time_gear_icon.png` sprite |
+| Buhar bombası | ✗ | ✓ | `steam_bomb_icon.png` sprite |
+| Vakum toplayıcı | ✗ | ✗ | runtime cyan kare |
+| Buz fıçısı (freeze) | ✗ | ✓ | `freeze_barrel_icon` + `freeze_burst` |
+| Zehir tuzağı | ✗ | ✗ | kare + alan efekti |
+| Risk sunağı | ✗ | ✗ | kare + `⚠` placeholder |
+| Şeytan sunağı | ✗ | ✗ | kare + `☠` placeholder |
+| Kırılabilir kutu (crate) | ✗ | ✗ | ColorRect placeholder |
+| Enkaz (ruin cache) | ✗ | ✗ | brown/gold rect placeholder |
+| Yüzen hasar metni | ✗ | ✓ | tema + kritik varyantı |
+| Düşman mermileri + oyuncu mermileri | ✗ | ✓ | `projectiles/*.tscn` (kısmi/final karışık) |
+| Pasif eşyalar (dünya) | ✗ | ✗ | çoğu veri/proc, ayrı mesh yok |
