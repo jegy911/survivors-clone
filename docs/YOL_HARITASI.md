@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-28 (`YAPILACAKLAR_TOPLU` — Godot sahne/VFX takip maddesi)
+**Son güncelleme:** 2026-04-28 (`inbox` yeni item ikonları dağıtımı)
 
 ---
 
@@ -172,6 +172,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-28 | **`assets/inbox` yeni item ikonları** — `ember_heart`, `glyph_charm`, `resonance_stone`, `rampart_plate`, `iron_bulwark` PNG'leri `assets/ui/upgrade_icons/items/` altına taşındı; inbox temizlendi (`README.txt` kaldı); `colorrect` + `TASARIM` ikon sütunları güncellendi. |
 | 2026-04-28 | **YAPILACAKLAR — Godot 2D sahneleştirme takibi** — Kod-spawn VFX (`blood_pool`, `speed_charm`, `binding_circle`, `citadel_flail`) için `.tscn` şablonlarına taşıma maddesi `docs/YAPILACAKLAR_TOPLU.md` bölümüne eklendi (oturum sonu). |
 | 2026-04-28 | **`blood_pool` görünürlük** — `item_blood_pool.gd`: havuz `z_index=-2` zeminin (`main` zemin `-1`) altında kalıyordu → `0`; ölüm noktası + ayak hizası offset; `GELISTIRICI` zemin notu. |
 | 2026-04-28 | **`citadel_flail` oyunda görünür alan** — `weapon_citadel_flail.gd`: `head.png` ile sürekli menzil halkası (`binding_circle` ile aynı ölçek politikası); `docs/colorrect` evrim gap tablosu boş; Son tarama + `citadel_flail`. |

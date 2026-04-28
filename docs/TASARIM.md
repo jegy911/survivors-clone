@@ -168,11 +168,11 @@ Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + is
 | turbine | ✅ | ❌ | / | ❌ |
 | steam_armor | ✅ | ❌ | / | ❌ |
 | energy_cell | ✅ | ❌ | / | ❌ |
-| ember_heart | ✅ | ❌ | / | ❌ |
-| glyph_charm | ✅ | ❌ | / | ❌ |
-| resonance_stone | ✅ | ❌ | / | ❌ |
-| rampart_plate | ✅ | ❌ | / | ❌ |
-| iron_bulwark | ✅ | ❌ | / | ❌ |
+| ember_heart | ✅ | ✅ `upgrade_icons/items/ember_heart.png` | / | ❌ |
+| glyph_charm | ✅ | ✅ `upgrade_icons/items/glyph_charm.png` | / | ❌ |
+| resonance_stone | ✅ | ✅ `upgrade_icons/items/resonance_stone.png` | / | ❌ |
+| rampart_plate | ✅ | ✅ `upgrade_icons/items/rampart_plate.png` | / | ❌ |
+| iron_bulwark | ✅ | ✅ `upgrade_icons/items/iron_bulwark.png` | / | ❌ |
 | night_vial | ✅ | ❌ | / | ❌ |
 | field_lens | ✅ | ✅ `upgrade_icons/items/field_lens.png` | / | Kısmi |
 

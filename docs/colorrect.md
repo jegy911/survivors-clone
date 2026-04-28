@@ -80,11 +80,11 @@ Bu tabloda yalnızca **en az bir ✗** kalan satırlar tutulur (ikisi de ✓ olu
 | turbine | Son hareket süresine göre biriken hasar bonusu | ✓ | ✗ |
 | steam_armor | Hasar alınca kısa yenilmezlik, sonra bekleme | ✓ | ✗ |
 | energy_cell | Periyodik: tüm silahları anında ateş + ardından geçici yavaş cooldown | ✓ | ✗ |
-| ember_heart | Düşman öldürünce sabit can iyileşmesi | ✗ | ✗ |
-| glyph_charm | Alınan hasara ek "ward" / zırh katkısı (`take_damage`) | ✗ | ✗ |
-| resonance_stone | XP + altın pickup çekim yarıçapı (magnet bonusu ile toplanır) | ✗ | ✗ |
-| rampart_plate | Ek zırh değeri (savunma) | ✗ | ✗ |
-| iron_bulwark | Düz (flat) hasar kesintisi | ✗ | ✗ |
+| ember_heart | Düşman öldürünce sabit can iyileşmesi | ✓ | ✗ |
+| glyph_charm | Alınan hasara ek "ward" / zırh katkısı (`take_damage`) | ✓ | ✗ |
+| resonance_stone | XP + altın pickup çekim yarıçapı (magnet bonusu ile toplanır) | ✓ | ✗ |
+| rampart_plate | Ek zırh değeri (savunma) | ✓ | ✗ |
+| iron_bulwark | Düz (flat) hasar kesintisi | ✓ | ✗ |
 | night_vial | Hafif pickup çekim yarıçapı (evrim yolu / loadout) | ✗ | ✗ |
 | field_lens | Alan ölçekli silahlara `%` alan bonusu (`get_area_multiplier`) | ✓ | ✗ |
 
