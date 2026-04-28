@@ -173,7 +173,7 @@ Level-up ekranı: **Megabonk tarzı üç sütun** (envanter + dikey kartlar + is
 | resonance_stone | ✅ | ✅ `upgrade_icons/items/resonance_stone.png` | / | ❌ |
 | rampart_plate | ✅ | ✅ `upgrade_icons/items/rampart_plate.png` | / | ❌ |
 | iron_bulwark | ✅ | ✅ `upgrade_icons/items/iron_bulwark.png` | / | ❌ |
-| night_vial | ✅ | ❌ | / | ❌ |
+| night_vial | ✅ | ✅ `upgrade_icons/items/night_vial.png` | / | ❌ |
 | field_lens | ✅ | ✅ `upgrade_icons/items/field_lens.png` | / | Kısmi |
 
 `items/item_vampire.gd` — oyunda bağlı değil (yalnızca dosya); envanter satırı yok.

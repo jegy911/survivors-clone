@@ -85,7 +85,7 @@ Bu tabloda yalnızca **en az bir ✗** kalan satırlar tutulur (ikisi de ✓ olu
 | resonance_stone | XP + altın pickup çekim yarıçapı (magnet bonusu ile toplanır) | ✓ | ✗ |
 | rampart_plate | Ek zırh değeri (savunma) | ✓ | ✗ |
 | iron_bulwark | Düz (flat) hasar kesintisi | ✓ | ✗ |
-| night_vial | Hafif pickup çekim yarıçapı (evrim yolu / loadout) | ✗ | ✗ |
+| night_vial | Hafif pickup çekim yarıçapı (evrim yolu / loadout) | ✓ | ✗ |
 | field_lens | Alan ölçekli silahlara `%` alan bonusu (`get_area_multiplier`) | ✓ | ✗ |
 
 **Listeden çıkan (✓ + ✓ tamam):** `explosion`, `speed_charm`, `blood_pool`
