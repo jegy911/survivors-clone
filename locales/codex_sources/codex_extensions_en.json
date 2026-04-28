@@ -65,5 +65,24 @@
     "vs_map": {"name": "Fallen Kingdom", "desc": "Story map—open field, 30-minute survival arc, bosses on the clock."},
     "map2": {"name": "Map II", "desc": "Reserved slot. Coming in a future update."},
     "map3": {"name": "Map III", "desc": "Reserved slot. Coming in a future update."}
+  },
+  "world_item": {
+    "xp_orb": {"name": "XP Orbs (1x / 3x / 8x)", "desc": "Primary run progression currency. Orb tier controls XP burst size; co-op shares part of gains."},
+    "gold_orb": {"name": "Gold Orb", "desc": "Collect for run gold. Amount scales with enemy type, luck/growth layers, and event outcomes."},
+    "chest": {"name": "Chest", "desc": "On open: random item, gold reward, or heal chunk depending on roll table."},
+    "blood_oath": {"name": "Blood Oath", "desc": "Pickup event. Solo grants gold; in co-op can trigger Blood Oath buff if both players are close."},
+    "cog_shard": {"name": "Cog Shard", "desc": "Special shard tracked by cog systems. Feeds run-specific bonus and economy hooks."},
+    "time_gear": {"name": "Time Gear", "desc": "Pickup that freezes/slows all enemies for a short global control window."},
+    "steam_bomb": {"name": "Steam Bomb", "desc": "Pickup that wipes normal enemies on screen (bosses excluded)."},
+    "vacuum_collector": {"name": "Vacuum Collector", "desc": "Triggers global attract on XP and gold orbs for quick cleanup after heavy fights."},
+    "freeze_barrel": {"name": "Freeze Barrel", "desc": "Breakable world object; when triggered, emits a large slow/freeze pulse."},
+    "poison_trap": {"name": "Poison Trap", "desc": "Triggered trap that leaves poison area pressure over time."},
+    "shrine_risk": {"name": "Shrine of Risk", "desc": "Tradeoff shrine: higher rewards in exchange for temporary enemy pressure."},
+    "shrine_devil": {"name": "Devil Shrine", "desc": "High-risk shrine that spends HP for powerful upgrade outcomes."},
+    "destructible_crate": {"name": "Destructible Crate", "desc": "Breakable world crate with random utility/combat bonus drops."},
+    "ruin_cache": {"name": "Ruin Cache", "desc": "World cache that grants upgrade progress or fallback gold if no valid upgrade is found."},
+    "damage_number": {"name": "Floating Damage Number", "desc": "Visual combat feedback text for damage/heal/crit events."},
+    "projectiles_system": {"name": "Projectile Systems", "desc": "Shared projectile layer for player/enemy shots with pooling, hit logic, and impact feedback."},
+    "passive_world_effects": {"name": "Passive World Effects", "desc": "Item-driven world VFX such as blood pools, charm trails, and temporary field effects."}
   }
 }

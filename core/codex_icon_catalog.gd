@@ -40,6 +40,20 @@ const BOSS_FALLBACK_TEXTURES: Dictionary = {
 	"reaper": "res://assets/enemy assets/boss assets/bosswalkleft.png",
 }
 
+## Kodeks `world_item` id → mevcut dünya/spawn temsilci dokuları.
+const WORLD_ITEM_TEXTURES: Dictionary = {
+	"xp_orb": "res://assets/effects/xp.png",
+	"gold_orb": "res://assets/effects/gold.png",
+	"cog_shard": "res://assets/effects/cog.png",
+	"time_gear": "res://assets/effects/time_gear_icon.png",
+	"steam_bomb": "res://assets/effects/steam_bomb_icon.png",
+	"vacuum_collector": "res://assets/effects/magnet_pulse.png",
+	"freeze_barrel": "res://assets/effects/freeze_barrel_icon.png",
+	"poison_trap": "res://assets/effects/poison_burst.png",
+	"projectiles_system": "res://assets/projectiles/bullet/indir.png",
+	"passive_world_effects": "res://assets/effects/blood_pool_ripple.png",
+}
+
 
 static func _path_codex(tab: String, id: String) -> String:
 	return "%s/%s/%s.png" % [CODEX_ROOT, tab, id]
@@ -92,6 +106,9 @@ static func _candidate_paths(tab: String, id: String) -> PackedStringArray:
 				out.append(str(BOSS_FALLBACK_TEXTURES[id]))
 		CollectionData.TAB_GLOSSARY:
 			out.append("res://assets/ui/glossary_icons/%s.png" % id)
+		CollectionData.TAB_WORLD_ITEM:
+			if WORLD_ITEM_TEXTURES.has(id):
+				out.append(str(WORLD_ITEM_TEXTURES[id]))
 		_:
 			pass
 	return out

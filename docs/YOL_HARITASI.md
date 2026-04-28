@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-28 (`Ayarlar > Dev` kodeks %100 açma butonu)
+**Son güncelleme:** 2026-04-28 (`ASSET_SIZES: assets geneli 512x512 dışı tarama`)
 
 ---
 
@@ -172,6 +172,8 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-28 | **`ASSET_SIZES` tam tarama güncellemesi** — `assets/` altındaki görseller (`png/jpg/jpeg/webp/bmp/gif/tga`) yeniden tarandı; kural `512x512 olmayanlar` olarak netleştirildi; tablo tüm `512x512` dışı dosyalarla güncellendi (ör. `assets/effects/xp.png` `677x369`). |
+| 2026-04-28 | **Kodex — World Items sekmesi + Glossary güncellemesi** — `CollectionData` içine `TAB_WORLD_ITEM` + `WORLD_ITEM_ENTRIES` eklendi (kaynak: `docs/colorrect.md` Dünya/spawn cisimleri); `ui.collection_menu` için yeni sekme locale anahtarı açıldı; `codex.world_item.*` açıklamaları ve `ui.glossary` kapsamı oyun statlarının tamamını kapsayacak şekilde genişletildi (`max_hp`, `move_speed`, `lifesteal`, `overheal`, `bounce`, `shrine`, `projectile_count`, `xp_gain`, `gold_gain`, `regen`, `revival`, `weapon_slots`, `item_slots`, `curse` dahil). |
 | 2026-04-28 | **Ayarlar > Dev: Kodeks %100 Aç** — `ui/settings.gd` dev sekmesine `ui.devtools.unlock_codex_full` butonu eklendi; tek tıkla `codex_discovered`/`codex_weapons`/`codex_items`/`codex_maps` + karakter kilitleri açılıyor (`CollectionData` dizileri üzerinden). |
 | 2026-04-28 | **TR locale güncellemesi (istek üzerine)** — `locales/tr.json` ve `locales/codex_sources/codex_extensions_tr.json`, `en` kaynak dosyalarındaki anahtar yapısıyla hizalandı (eksikler EN fallback ile eklendi, eski ekstra anahtarlar temizlendi). |
 | 2026-04-28 | **`assets/inbox` night_vial ikonu** — `night_vial_icon.png` → `assets/ui/upgrade_icons/items/night_vial.png`; inbox temizlendi (`README.txt` kaldı); `colorrect` + `TASARIM` ikon sütunları güncellendi. |

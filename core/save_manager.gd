@@ -576,6 +576,8 @@ func is_codex_entry_unlocked(entry: Dictionary) -> bool:
 			return unlocked_characters.has(id)
 		"map":
 			return codex_maps.has(id)
+		"world_item":
+			return true
 		"glossary":
 			return true
 		_:

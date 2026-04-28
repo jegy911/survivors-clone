@@ -512,6 +512,7 @@
       "tab_item": "Items",
       "tab_character": "Heroes",
       "tab_map": "Maps",
+      "tab_world_item": "World Items",
       "back": "← Main menu",
       "pick_title": "Choose an entry",
       "pick_desc": "Use the tabs: foes, bosses, weapons, items, heroes, maps, glossary. Locked cards hint at how to reveal them.",
@@ -524,6 +525,7 @@
       "locked_desc_item": "Obtain this item in a run.",
       "locked_desc_character": "Unlock this hero through progression (or secret conditions).",
       "locked_desc_map": "Start a run on this map to add it to your codex.",
+      "locked_desc_world_item": "World/Spawn entries are always available for reference.",
       "locked_desc_glossary": "Glossary entries are always available.",
       "tab_glossary": "Glossary",
       "world_info_hint": "Lore sketch: a high-tech age shattered by the Collapse — runes and relics rule the rubble. The full primer sits on the main menu under World — the Collapse."
@@ -560,6 +562,78 @@
       "crit_chance": {
         "title": "Crit chance",
         "body": "Crit chance is the probability that a hit rolls as a critical strike. Critical hits use your crit damage multiplier (meta and items can raise it). Some evolved weapons treat every hit as a critical strike."
+      },
+      "armor": {
+        "title": "Armor (flat reduction)",
+        "body": "Armor cuts incoming damage by a flat amount after hit calculation. Sources stack (base armor, Armor item, Glyph Charm ward, Rampart Plate, Iron Bulwark)."
+      },
+      "crit_damage": {
+        "title": "Crit damage multiplier",
+        "body": "When a hit crits, final Might is multiplied by crit damage. Base is 2.0x; meta and Crit item can raise it further."
+      },
+      "pickup_radius": {
+        "title": "Pickup radius",
+        "body": "Pickup radius controls how far XP/gold/world pickups start moving toward you. Magnet, Resonance Stone, and Night Vial increase it."
+      },
+      "pierce": {
+        "title": "Pierce",
+        "body": "Pierce lets a projectile continue through targets instead of disappearing on first hit. Evolutions like Veil Daggers gain extra pierce stacks."
+      },
+      "max_hp": {
+        "title": "Max HP",
+        "body": "Max HP is your health ceiling. Higher Max HP gives you more room for mistakes and increases the value of healing effects."
+      },
+      "move_speed": {
+        "title": "Move speed",
+        "body": "Move speed controls repositioning, kiting, and pickup routes. It affects survivability as much as damage in dense waves."
+      },
+      "lifesteal": {
+        "title": "Lifesteal",
+        "body": "Lifesteal converts a percentage of dealt damage into healing. It scales with your outgoing damage and hit frequency."
+      },
+      "overheal": {
+        "title": "Overheal shield",
+        "body": "When you heal at full HP, extra healing can become shield value (if overheal sources are active). This adds a temporary safety buffer above normal HP."
+      },
+      "bounce": {
+        "title": "Bounce",
+        "body": "Bounce means a hit or projectile can jump/ricochet to extra targets. It improves wave clear when enemies are grouped."
+      },
+      "shrine": {
+        "title": "Shrine power",
+        "body": "Shrine-related effects track temporary world buffs/debuffs from shrine interactions. Exact impact depends on the shrine type and current run state."
+      },
+      "projectile_count": {
+        "title": "Projectile count (multi-shot)",
+        "body": "Projectile count is how many shots/blades/orbs a weapon emits per attack cycle. More projectiles usually means wider coverage and faster clear."
+      },
+      "xp_gain": {
+        "title": "XP gain",
+        "body": "XP gain increases how quickly you level during a run. It affects level-up timing and access to upgrades/evolutions."
+      },
+      "gold_gain": {
+        "title": "Gold gain",
+        "body": "Gold gain covers both flat and multiplier sources that increase run gold income from kills and pickups."
+      },
+      "regen": {
+        "title": "Regeneration",
+        "body": "Regeneration restores HP over time without hitting enemies. It helps stabilize between pressure spikes."
+      },
+      "revival": {
+        "title": "Revival",
+        "body": "Revival grants an extra life in a run. When lethal damage is taken, you return with partial HP if a revive charge is available."
+      },
+      "weapon_slots": {
+        "title": "Weapon slots",
+        "body": "Weapon slots define how many distinct weapons you can carry at once. More slots allow broader synergies and easier evolution paths."
+      },
+      "item_slots": {
+        "title": "Item slots",
+        "body": "Item slots define how many passive items you can carry at once. More slots increase build flexibility and stat layering."
+      },
+      "curse": {
+        "title": "Curse (difficulty pressure)",
+        "body": "Curse raises enemy pressure (spawn pace and/or enemy power depending on system layer) while improving some rewards. Higher curse means riskier but faster-paced runs."
       }
     }
   },
@@ -968,6 +1042,76 @@
       "map3": {
         "name": "Map III",
         "desc": "Reserved slot. Coming in a future update."
+      }
+    },
+    "world_item": {
+      "xp_orb": {
+        "name": "XP Orbs (1x / 3x / 8x)",
+        "desc": "Primary run progression currency. Orb tier controls XP burst size; co-op shares part of gains."
+      },
+      "gold_orb": {
+        "name": "Gold Orb",
+        "desc": "Collect for run gold. Amount scales with enemy type, luck/growth layers, and event outcomes."
+      },
+      "chest": {
+        "name": "Chest",
+        "desc": "On open: random item, gold reward, or heal chunk depending on roll table."
+      },
+      "blood_oath": {
+        "name": "Blood Oath",
+        "desc": "Pickup event. Solo grants gold; in co-op can trigger Blood Oath buff if both players are close."
+      },
+      "cog_shard": {
+        "name": "Cog Shard",
+        "desc": "Special shard tracked by cog systems. Feeds run-specific bonus and economy hooks."
+      },
+      "time_gear": {
+        "name": "Time Gear",
+        "desc": "Pickup that freezes/slows all enemies for a short global control window."
+      },
+      "steam_bomb": {
+        "name": "Steam Bomb",
+        "desc": "Pickup that wipes normal enemies on screen (bosses excluded)."
+      },
+      "vacuum_collector": {
+        "name": "Vacuum Collector",
+        "desc": "Triggers global attract on XP and gold orbs for quick cleanup after heavy fights."
+      },
+      "freeze_barrel": {
+        "name": "Freeze Barrel",
+        "desc": "Breakable world object; when triggered, emits a large slow/freeze pulse."
+      },
+      "poison_trap": {
+        "name": "Poison Trap",
+        "desc": "Triggered trap that leaves poison area pressure over time."
+      },
+      "shrine_risk": {
+        "name": "Shrine of Risk",
+        "desc": "Tradeoff shrine: higher rewards in exchange for temporary enemy pressure."
+      },
+      "shrine_devil": {
+        "name": "Devil Shrine",
+        "desc": "High-risk shrine that spends HP for powerful upgrade outcomes."
+      },
+      "destructible_crate": {
+        "name": "Destructible Crate",
+        "desc": "Breakable world crate with random utility/combat bonus drops."
+      },
+      "ruin_cache": {
+        "name": "Ruin Cache",
+        "desc": "World cache that grants upgrade progress or fallback gold if no valid upgrade is found."
+      },
+      "damage_number": {
+        "name": "Floating Damage Number",
+        "desc": "Visual combat feedback text for damage/heal/crit events."
+      },
+      "projectiles_system": {
+        "name": "Projectile Systems",
+        "desc": "Shared projectile layer for player/enemy shots with pooling, hit logic, and impact feedback."
+      },
+      "passive_world_effects": {
+        "name": "Passive World Effects",
+        "desc": "Item-driven world VFX such as blood pools, charm trails, and temporary field effects."
       }
     }
   },

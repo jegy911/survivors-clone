@@ -8,16 +8,21 @@ const TAB_WEAPON := "weapon"
 const TAB_ITEM := "item"
 const TAB_CHARACTER := "character"
 const TAB_MAP := "map"
+const TAB_WORLD_ITEM := "world_item"
 const TAB_GLOSSARY := "glossary"
 
 ## Ana menü / kodeks sekmeleri sırası (UI ile aynı).
 const TAB_ORDER: Array[String] = [
-	TAB_ENEMY, TAB_BOSS, TAB_WEAPON, TAB_ITEM, TAB_CHARACTER, TAB_MAP, TAB_GLOSSARY,
+	TAB_ENEMY, TAB_BOSS, TAB_WEAPON, TAB_ITEM, TAB_CHARACTER, TAB_MAP, TAB_WORLD_ITEM, TAB_GLOSSARY,
 ]
 
 ## Stat / HUD terimleri — metinler `locales/en.json` → `ui.glossary.<id>.title|body`.
 const GLOSSARY_TERM_IDS: PackedStringArray = [
 	"area", "cooldown", "might", "growth", "duration", "luck", "magnet", "crit_chance",
+	"armor", "crit_damage", "pickup_radius", "pierce",
+	"max_hp", "move_speed", "lifesteal", "overheal", "bounce", "shrine",
+	"projectile_count", "xp_gain", "gold_gain", "regen", "revival",
+	"weapon_slots", "item_slots", "curse",
 ]
 
 
@@ -120,6 +125,27 @@ const MAP_ENTRIES: Array = [
 	{"id": "map3", "tab": TAB_MAP, "emoji": "🗺", "accent": "#5D6D7E"},
 ]
 
+## Dünya / spawn cisimleri (kaynak: `docs/colorrect.md` Dünya-spawn tablosu).
+const WORLD_ITEM_ENTRIES: Array = [
+	{"id": "xp_orb", "tab": TAB_WORLD_ITEM, "emoji": "⭐", "accent": "#2ECC71"},
+	{"id": "gold_orb", "tab": TAB_WORLD_ITEM, "emoji": "💰", "accent": "#F1C40F"},
+	{"id": "chest", "tab": TAB_WORLD_ITEM, "emoji": "📦", "accent": "#D35400"},
+	{"id": "blood_oath", "tab": TAB_WORLD_ITEM, "emoji": "🩸", "accent": "#C0392B"},
+	{"id": "cog_shard", "tab": TAB_WORLD_ITEM, "emoji": "⚙", "accent": "#95A5A6"},
+	{"id": "time_gear", "tab": TAB_WORLD_ITEM, "emoji": "⏱", "accent": "#5DADE2"},
+	{"id": "steam_bomb", "tab": TAB_WORLD_ITEM, "emoji": "💣", "accent": "#E67E22"},
+	{"id": "vacuum_collector", "tab": TAB_WORLD_ITEM, "emoji": "🧲", "accent": "#3498DB"},
+	{"id": "freeze_barrel", "tab": TAB_WORLD_ITEM, "emoji": "🧊", "accent": "#AED6F1"},
+	{"id": "poison_trap", "tab": TAB_WORLD_ITEM, "emoji": "☣", "accent": "#27AE60"},
+	{"id": "shrine_risk", "tab": TAB_WORLD_ITEM, "emoji": "⚠", "accent": "#E74C3C"},
+	{"id": "shrine_devil", "tab": TAB_WORLD_ITEM, "emoji": "☠", "accent": "#7D3C98"},
+	{"id": "destructible_crate", "tab": TAB_WORLD_ITEM, "emoji": "🪵", "accent": "#AF7AC5"},
+	{"id": "ruin_cache", "tab": TAB_WORLD_ITEM, "emoji": "🏺", "accent": "#A04000"},
+	{"id": "damage_number", "tab": TAB_WORLD_ITEM, "emoji": "🔢", "accent": "#ECF0F1"},
+	{"id": "projectiles_system", "tab": TAB_WORLD_ITEM, "emoji": "🎯", "accent": "#F39C12"},
+	{"id": "passive_world_effects", "tab": TAB_WORLD_ITEM, "emoji": "🫧", "accent": "#48C9B0"},
+]
+
 static func _char_emoji(char_id: String) -> String:
 	var m = {
 		"warrior": "⚔",
@@ -169,6 +195,7 @@ static func all_entries() -> Array:
 	a.append_array(ITEM_ENTRIES)
 	a.append_array(character_entries())
 	a.append_array(MAP_ENTRIES)
+	a.append_array(WORLD_ITEM_ENTRIES)
 	a.append_array(glossary_entries())
 	return a
 
