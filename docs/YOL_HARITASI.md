@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-28 (`inbox` night_vial ikonu dağıtımı)
+**Son güncelleme:** 2026-04-28 (`Ayarlar > Dev` kodeks %100 açma butonu)
 
 ---
 
@@ -172,6 +172,8 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-28 | **Ayarlar > Dev: Kodeks %100 Aç** — `ui/settings.gd` dev sekmesine `ui.devtools.unlock_codex_full` butonu eklendi; tek tıkla `codex_discovered`/`codex_weapons`/`codex_items`/`codex_maps` + karakter kilitleri açılıyor (`CollectionData` dizileri üzerinden). |
+| 2026-04-28 | **TR locale güncellemesi (istek üzerine)** — `locales/tr.json` ve `locales/codex_sources/codex_extensions_tr.json`, `en` kaynak dosyalarındaki anahtar yapısıyla hizalandı (eksikler EN fallback ile eklendi, eski ekstra anahtarlar temizlendi). |
 | 2026-04-28 | **`assets/inbox` night_vial ikonu** — `night_vial_icon.png` → `assets/ui/upgrade_icons/items/night_vial.png`; inbox temizlendi (`README.txt` kaldı); `colorrect` + `TASARIM` ikon sütunları güncellendi. |
 | 2026-04-28 | **`assets/inbox` yeni item ikonları** — `ember_heart`, `glyph_charm`, `resonance_stone`, `rampart_plate`, `iron_bulwark` PNG'leri `assets/ui/upgrade_icons/items/` altına taşındı; inbox temizlendi (`README.txt` kaldı); `colorrect` + `TASARIM` ikon sütunları güncellendi. |
 | 2026-04-28 | **YAPILACAKLAR — Godot 2D sahneleştirme takibi** — Kod-spawn VFX (`blood_pool`, `speed_charm`, `binding_circle`, `citadel_flail`) için `.tscn` şablonlarına taşıma maddesi `docs/YAPILACAKLAR_TOPLU.md` bölümüne eklendi (oturum sonu). |

@@ -499,6 +499,7 @@
       "add_gold": "💰 +1000 Gold",
       "max_meta": "⬆ Max All Upgrades",
       "unlock_chars": "🔓 Unlock All Characters",
+      "unlock_codex_full": "📖 Unlock Codex %100",
       "gold_zero": "💸 Zero Gold",
       "lock_chars": "🔒 Reset Characters"
     },

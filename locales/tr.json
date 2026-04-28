@@ -14,7 +14,9 @@
       "collection": "📖  KODEKS",
       "settings": "⚙  AYARLAR",
       "quit": "✕  ÇIKIŞ",
-      "omega_unlock": "????? UNLOCKED"
+      "omega_unlock": "????? UNLOCKED",
+      "world_info_title": "World — the Collapse",
+      "world_info_body": "Humanity once commanded astonishing machines: energy arms, rune-laced shields, and motor harnesses.\n\nThe Collapse came with a waking darkness — ruin rode on corrupted rune-craft. Cities fell; feudal scrap now wraps ancient power.\n\nSurvivors still heft relics and rites from the old age, grinding toward the Devil King's throne — one desperate run at a time."
     },
     "intro_splash": {
       "press_to_start": "Devam etmek için bir tuşa basın veya tıklayın"
@@ -41,6 +43,19 @@
       "arena1": "⬡ ARENA 1\n\nYakında...",
       "curse_label": "☠ Koşu laneti (zorluk)",
       "curse_value": "Seviye %d — 0 daha sakin, 5 çok yoğun",
+      "curse_intro": "Run curse is only for this run. Tier 1 is the design baseline (default). Tier 0 is gentler; higher tiers tighten spawns, buff enemy HP and move speed, and shift XP from kills. After the first minute, wave enemies also get a separate global HP/damage/speed buff (not the time-based scaling).",
+      "curse_meta_note": "Permanent Meta “Curse” adds extra pressure (spawn + minimum on-screen enemies). The numbers on the bars are from this slider only.",
+      "curse_stat_spawn_title": "Spawn pressure (index)",
+      "curse_stat_spawn_desc": "Spawn interval is divided by this value, relative to tier 1: tier 1 = 100% index; each step away changes by 10% (tier 0 slightly calmer, tier 5 busier). Higher = shorter gaps between spawns.",
+      "curse_stat_hp_title": "Enemy HP (curse layer)",
+      "curse_stat_hp_desc": "±10% HP per step vs tier 1 (after time-based scaling). Applies to regular enemies, mini-bosses, and Reaper. Wave enemies also get a separate post–first-minute global HP buff.",
+      "curse_stat_speed_title": "Enemy move speed",
+      "curse_stat_speed_desc": "±5% move speed per step vs tier 1 (BASE_SPEED; swarm rows use their speed override for curse + global buffs).",
+      "curse_stat_xp_title": "XP from kills (multiplier slice)",
+      "curse_stat_xp_desc": "±12% per step vs tier 1 on the XP multiplier slice (1 + Meta Curse + this). Bar shows the run-curse-only curve anchored at tier 1.",
+      "curse_scale_t0": "T0: %d",
+      "curse_scale_pick": "→ %d",
+      "curse_scale_tmax": "T%d: %d",
       "desc_story": "Klasik Ironfall temposu. Süre dolunca Reaper ile yüzleşirsin. Bol şans!",
       "desc_fast": "Sıkıştırılmış dalgalar ve bosslar. Reaper daha erken gelir — 10–15 dakikalık seanslar için ideal.",
       "desc_arena": "Aynı haritada kısa hedef süre (10 dk). Süreye ulaştıktan sonra ölüm ekranında koşu kazanılmış sayılır; Gölge Yürüyücü ile bir kez kazanmak Alacakaranlık Hançeri açılışını ilerletir.",
@@ -79,6 +94,7 @@
       "music": "Müzik",
       "music_playback": "Müzik parçası",
       "music_volume": "Müzik sesi",
+      "combat_music_duck": "Combat music dip (brief lower on weapon attack)",
       "music_pause": "Duraklat",
       "music_resume": "Devam",
       "music_prev_tooltip": "Önceki parça",
@@ -104,6 +120,11 @@
       "lang_tr": "Türkçe",
       "lang_en": "English",
       "lang_zh_CN": "Basitleştirilmiş Çince",
+      "profile_account_title": "📈 Account level (global XP)",
+      "profile_account_level": "Current level: %d",
+      "profile_account_total_xp": "Total account XP earned (lifetime): %d",
+      "profile_account_next_threshold": "XP required for next level: %d",
+      "profile_account_progress": "Progress to next level: %d / %d",
       "stats_title": "📊 İSTATİSTİKLER",
       "achievements_title": "🏅 BAŞARIMLAR",
       "ach_progress": "%d / %d tamamlandı",
@@ -156,12 +177,39 @@
       "filter_controller": "Kontrolör",
       "taken_by_p1": "P1 tarafından seçildi",
       "locked_p1": "🔒 P1",
+      "btn_select": "Select",
+      "btn_ready": "✅ Ready!",
+      "btn_buy": "Buy\n💰 %d",
       "stats_run_base": "Başlangıç (meta ile)",
       "stats_hero_bonus": "Seçilen kahraman bonusları",
       "stats_select_hint": "Yeşil bonusları görmek için bir kahraman seç.",
       "stats_origin_tag": "Köken",
       "stats_origin_single_weapon": "+Tek silah slotu (Köken)",
       "stats_origin_slow_double": "+Yavaşlatma süresi x2 (Köken)",
+      "unlock_line": "🔒 %s",
+      "unlock_secret_placeholder": "???",
+      "unlock": {
+        "warrior": "",
+        "mage": "Kill a total of 50 enemies",
+        "vampire": "Survive 2 minutes as Warrior",
+        "hunter": "Kill 100 enemies",
+        "stormer": "Survive 5 minutes",
+        "frost": "Kill a tank enemy",
+        "shadow_walker": "Kill a total of 300 enemies",
+        "engineer": "Survive 8 minutes",
+        "paladin": "Obtain an evolution weapon",
+        "blood_prince": "Survive 5 minutes as Vampire",
+        "nomad": "Kill a total of 175 enemies",
+        "death_knight": "Kill 1000 enemies in a single run",
+        "chaos": "Play with 5 different characters",
+        "omega": "There is a secret code...",
+        "sigil_warden": "Kill a total of 220 enemies",
+        "grav_binder": "Survive 6 minutes 30 seconds",
+        "ironclad": "Kill a tank enemy",
+        "linebreaker": "Survive 7 minutes 30 seconds",
+        "dusk": "Win an Arena run as Shadow Walker before the goal time",
+        "arcanist": "Kill a total of 195 enemies"
+      },
       "line_start_weapon": "⚔ Başlangıç: %s",
       "line_start_item": "🛡 Eşya: %s",
       "line_bonus_damage": "🗡 +%d hasar",
@@ -177,9 +225,17 @@
         "all_weapons_1hp": "☠ 1 HP ile oyna, tüm silahlar aktif",
         "damage_double": "⚔ Hasar 2x",
         "random_weapons": "🎲 Rastgele silahlarla başla"
+      },
+      "hero_class_label": {
+        "fighter": "Fighter",
+        "mage": "Mage",
+        "controller": "Controller",
+        "tank": "Tank",
+        "special": "Special"
       }
     },
     "player": {
+      "loadout_slot_lvl": "LVL %d",
       "crit_floating": "KRİTİK!",
       "hud_stats_title": "📊 İSTATİSTİK",
       "stat_damage": "⚔ Hasar",
@@ -231,11 +287,24 @@
       "kills": "💀 Öldürülen Düşman: %d",
       "kpm": "⚡ Dakikada Öldürme: %s",
       "gold_earned": "💰 Kazanılan Altın: +%d",
+      "account_xp_banked": "🌟 Account XP gained: +%d (20 percent of run combat XP)",
       "restart": "🔄 Tekrar Oyna",
       "menu": "🏠 Ana Menü"
     },
     "hud": {
       "wave_counter": "Dalga: %d"
+    },
+    "game": {
+      "level_format": "Lv %d",
+      "kill_format": "💀 %d"
+    },
+    "alerts": {
+      "immunity_rotation": "⚠ IMMUNITY: %s",
+      "reaper_approaching": "☠ DEATH APPROACHES...",
+      "reaper_spawned": "☠ REAPER #%d",
+      "siege": "⚠ SIEGE!",
+      "swarm_incoming": "⚠ SWARM INCOMING!",
+      "encircled": "☠ YOU ARE SURROUNDED!"
     },
     "wave_reward": {
       "title": "⚡ %d. DALGA TAMAMLANDI!",
@@ -261,8 +330,112 @@
       "stat_speed": "Hareket Hızı +20\nHareket hızını artırır",
       "stat_max_hp": "Max Can +25\nMaksimum canı artırır",
       "stat_heal": "Anında +20 Can\nHemen can yeniler",
+      "stats": {
+        "magnet_desc": "Magnet Lv%d | +%d px pickup radius (XP orbs)",
+        "night_vial_desc": "Night Vial Lv%d\n+%d px pickup radius (XP / gold)",
+        "resonance_stone_desc": "Resonance Stone Lv%d\n+%d px pickup radius (pull-in)",
+        "death_laser_desc": "Death Laser Lv%d | %d base Might (every hit crit) | %d px beam | %.2fs Cooldown",
+        "weapon_fallback_line": "%s | Lv %d",
+        "loadout_weapons": {
+          "bullet": "Bullet Lv%d | ×%d projectiles | %d base Might | %d px range | %.2fs Cooldown",
+          "dagger": "Twin Daggers Lv%d | ×%d knives | %d Might each | %d px range | %.2fs Cooldown",
+          "aura": "Aura Lv%d | %d px Area radius | %d base Might | %.2fs Cooldown | applies slow",
+          "chain": "Chain Lv%d | %d jumps | %d base Might | %d px jump range | %.2fs Cooldown",
+          "boomerang": "Axe Lv%d | ×%d axes | %d base Might | %.2fs Cooldown",
+          "lightning": "Lightning Lv%d | %d strikes | %d base Might | %d px leap range | %.2fs Cooldown",
+          "ice_ball": "Ice Ball Lv%d | ×%d orbs | %d base Might | %.2fs Cooldown | slows on hit",
+          "shadow": "Shadow Lv%d | ×%d orbits | %d base Might | %.2fs Cooldown",
+          "laser": "Laser Lv%d | %d px beam | %d base Might | %.2fs Cooldown",
+          "fan_blade": "Fan Blade Lv%d | ×%d shards | %d Might | %d px reach | %d° cone | %.2fs Cooldown",
+          "hex_sigil": "Hex Sigil Lv%d | %d px Area | %d base Might | %.2fs Cooldown | slows",
+          "gravity_anchor": "Gravity Anchor Lv%d | screen-center singularity %d px | every %ds (Lv1 60s, −5s/level)",
+          "bastion_flail": "Bastion Flail Lv%d | %d px Area | %d base Might | heavy knockback | %ds spin / %ds pause",
+          "shield_ram": "Shield Ram Lv%d | %d px cone depth | %d° cone | %d base Might | %.2fs Cooldown",
+          "holy_bullet": "Holy Bullet Lv%d | ×%d shots | %d base Might | %.2fs Cooldown | breaks armor",
+          "toxic_chain": "Toxic Chain Lv%d | ×%d jumps | %d base Might | %d px jump range | %.2fs Cooldown | spreads poison",
+          "blood_boomerang": "Blood Axe Lv%d | ×%d axes | %d base Might | %.2fs Cooldown | lifesteal on hit",
+          "storm": "Storm Lv%d | ×%d jumps | %d base Might | %d px jump range | %.2fs Cooldown | bonus bolts on kills",
+          "shadow_storm": "Shadow Storm Lv%d | %d base Might | %d px orbit | %.2fs Cooldown | hits can chain lightning",
+          "frost_nova": "Frost Nova Lv%d | %d px Area | %d base Might | freeze/slow on impact | %.2fs Cooldown",
+          "ember_fan": "Ember Fan Lv%d | ×%d shards | %d base Might | piercing | %.2fs Cooldown",
+          "binding_circle": "Binding Circle Lv%d | %d px Area | %d base Might | heavy slow | %.2fs Cooldown",
+          "void_lens": "Void Lens Lv%d | screen-center singularity %d px | every %.1fs (Lv1 30s, −2.5s/level)",
+          "citadel_flail": "Citadel Flail Lv%d | %d px Area | %d base Might | strong knockback | %.2fs Cooldown",
+          "fortress_ram": "Fortress Ram Lv%d | %d px cone depth | %d° wide cone | %d base Might | %.2fs Cooldown",
+          "veil_daggers": "Veil Daggers Lv%d | ×%d knives | %d base Might | %d pierce stacks | %d px range | %.2fs Cooldown",
+          "arc_pulse": "Arc Ring Lv%d | inner %d / outer %d px band | %d base Might | %.2fs Cooldown",
+          "arc_surge": "Arc Surge Lv%d | inner %d / outer %d px band | %d base Might | %.2fs Cooldown"
+        },
+        "loadout_items": {
+          "generic_level": "%s | Lv %d",
+          "armor": "Armor Lv%d\n−%.1f damage taken (flat)",
+          "rampart_plate": "Rampart Plate Lv%d\n−%.1f damage taken (flat)",
+          "glyph_charm": "Glyph Charm Lv%d\n−%.1f damage taken (ward, flat)",
+          "iron_bulwark": "Iron Bulwark Lv%d\n−%d damage taken (flat)",
+          "lifesteal": "Lifesteal Lv%d\nOn hit: heal for %d%% of dealt damage as HP",
+          "speed_charm": "Speed Charm Lv%d\nOn kill: +%d move speed for %.1fs",
+          "blood_pool": "Blood Pool Lv%d\nOn kill chance: %d px Area pool | %d damage per tick",
+          "energy_cell": "Energy Cell Lv%d\nEvery %.1fs: burst all weapons, then %.1fs slow phase",
+          "explosion": "Explosion Lv%d\nOn kill chance: %d px Area | %d damage blast",
+          "poison": "Poison Lv%d\nOn hit: %d damage/s DoT for %.1fs Duration",
+          "shield": "Shield Lv%d\nAbsorbs up to %d damage per proc | %.1fs Cooldown",
+          "steam_armor": "Steam Armor Lv%d\n%.1fs invulnerability on hit | %.1fs Cooldown",
+          "ember_heart": "Ember Heart Lv%d\nOn kill: +%d HP",
+          "vampire": "Vampirism Lv%d\nOn kill: +%d HP",
+          "luck_stone": "Luck Stone Lv%d\n+%d%% crit chance | +%d gold per kill (Growth)",
+          "turbine": "Turbine Lv%d\nWhile moving: +%d Might (current) | max +%d Might",
+          "crit": "Crit Lv%d | +%d%% crit chance (×%.1f crit Might)",
+          "field_lens": "Field Lens Lv%d\n+%d%% Area (multiplier)"
+        }
+      },
+      "tooltip_reroll_pool": "Rerolls you start this run with. Each reroll spends from this pool for the whole run (not per level-up).",
+      "tooltip_skip_gold": "Skips you start this run with. Skip closes this screen without picking a card and grants +25 gold. Each skip spends from this pool for the whole run.",
       "evolution_pick_title": "⚡ EVRİM",
-      "evolution_floating": "⚡ EVRİM: %s!"
+      "evolution_floating": "⚡ EVRİM: %s!",
+      "panel_inventory": "Inventory",
+      "panel_upgrades": "Upgrade offers",
+      "panel_stats": "Stats",
+      "weapons_header": "Weapons",
+      "items_header": "Items",
+      "slot_weapon_empty": "Empty weapon slot — pick a weapon card to fill it.",
+      "slot_item_empty": "Empty item slot — pick an item card to fill it.",
+      "rarity_new": "New",
+      "rarity_stat": "Stat",
+      "rarity_uncommon": "Uncommon",
+      "rarity_rare": "Rare",
+      "rarity_evolution": "Evolution",
+      "rarity_common": "Common",
+      "badge_new": "NEW",
+      "badge_evo": "EVO",
+      "badge_pick": "PICK",
+      "badge_max": "MAX",
+      "badge_level": "Lv %d",
+      "evo_body": "Transforms your loadout when picked.",
+      "delta_move_speed": "Move speed: %d → %d",
+      "delta_max_hp": "Max HP: %d → %d",
+      "delta_heal": "HP after heal: %d → %d",
+      "delta_line_before": "Now:",
+      "delta_line_after": "After pick:",
+      "preview_unavailable": "Preview unavailable for this option.",
+      "statlist_max_hp": "Max HP",
+      "statlist_current_hp": "Current HP",
+      "statlist_crit_chance": "Crit chance",
+      "statlist_crit_damage": "Crit damage",
+      "statlist_duration": "Duration mult.",
+      "statlist_multi_shot": "Extra projectiles",
+      "statlist_luck": "Luck (approx.)",
+      "meta_header": "Meta (Save)",
+      "meta_xp": "XP bonus",
+      "meta_gold": "Gold bonus",
+      "meta_magnet_meta": "Meta magnet bonus",
+      "meta_cooldown_rank": "Cooldown upgrade rank",
+      "meta_area_rank": "Area upgrade rank",
+      "meta_duration_rank": "Duration upgrade rank",
+      "meta_multi_rank": "Multi-shot rank",
+      "meta_weapon_slots": "Weapon slots (max)",
+      "meta_item_slots": "Item slots (max)",
+      "meta_rerolls": "Rerolls left (this run)",
+      "meta_skips": "Skips left (this run)"
     },
     "evolution_defs": {
       "holy_bullet": {
@@ -316,6 +489,10 @@
       "veil_daggers": {
         "name": "Peçe Hançerleri",
         "desc": "İkiz Hançer (MAX) + Gece Şişesi (MAX) → Peçe Hançerleri\nDaha çok hançer, delme ve biraz daha uzun menzil"
+      },
+      "arc_surge": {
+        "name": "Arc Surge",
+        "desc": "Arc Ring (MAX) + Field Lens (MAX) → Arc Surge\nWider donut, faster ticks, higher Might."
       }
     },
     "devtools": {
@@ -345,7 +522,44 @@
       "locked_desc_weapon": "Bu silahı koşuda al (level-up, sandık veya başlangıç yükü).",
       "locked_desc_item": "Bu eşyayı koşuda al.",
       "locked_desc_character": "Bu kahramanı ilerleme (veya gizli koşullar) ile aç.",
-      "locked_desc_map": "Bu haritada bir koşu başlat; kodekse işlensin."
+      "locked_desc_map": "Bu haritada bir koşu başlat; kodekse işlensin.",
+      "locked_desc_glossary": "Glossary entries are always available.",
+      "tab_glossary": "Glossary",
+      "world_info_hint": "Lore sketch: a high-tech age shattered by the Collapse — runes and relics rule the rubble. The full primer sits on the main menu under World — the Collapse."
+    },
+    "glossary": {
+      "area": {
+        "title": "Area",
+        "body": "Area scales the size of weapon radii, cones, beams, and similar hit zones. It stacks with meta upgrades and some hero passives. Larger area hits more enemies at once but does not always increase single-target damage."
+      },
+      "cooldown": {
+        "title": "Cooldown",
+        "body": "Cooldown is the time between activations of a weapon or item effect. Lower cooldown means faster attacks. Meta upgrades, some items, and hero passives can reduce cooldown; weapons also enforce a small minimum interval so burst never becomes instant."
+      },
+      "might": {
+        "title": "Might (damage)",
+        "body": "Might is your overall outgoing damage pressure: flat weapon damage, category bonuses, momentum, adrenaline, crit multiplier on critical hits, and similar effects. The level-up stats panel labels the main line as Damage; it is the number fed into each hit before enemy armor."
+      },
+      "growth": {
+        "title": "Growth (gold multiplier)",
+        "body": "Growth here means the meta upgrade line that increases gold earned from enemies (shown as Gold Multiplier in the meta shop). It is separate from XP bonuses and from pickup magnet range."
+      },
+      "duration": {
+        "title": "Duration",
+        "body": "Duration multiplies how long lasting effects run—slows, poison ticks, shrines, and similar timers. It does not change raw weapon hit damage unless the skill explicitly scales with effect length."
+      },
+      "luck": {
+        "title": "Luck",
+        "body": "Luck nudges the odds of seeing rarer upgrade cards and slightly better rolls during level-ups. It is approximate and run-scoped; it does not guarantee a specific weapon."
+      },
+      "magnet": {
+        "title": "Magnet",
+        "body": "Magnet increases how far you pull in XP orbs, gold, and pickups. Meta magnet stacks with item-based pickup bonuses where applicable."
+      },
+      "crit_chance": {
+        "title": "Crit chance",
+        "body": "Crit chance is the probability that a hit rolls as a critical strike. Critical hits use your crit damage multiplier (meta and items can raise it). Some evolved weapons treat every hit as a critical strike."
+      }
     }
   },
   "achievement": {
@@ -547,6 +761,14 @@
       "ember_fan": {
         "name": "Kor Yelpazesi",
         "desc": "Evrim: daha geniş yay ve delici kor parçaları."
+      },
+      "arc_pulse": {
+        "name": "Arc Ring",
+        "desc": "Donut-shaped arc pulse: damages enemies between an inner safe radius and an outer ring. Scales with Area."
+      },
+      "arc_surge": {
+        "name": "Arc Surge",
+        "desc": "Evolved arc ring: wider band, faster ticks, higher Might—Field Lens resonance at full power."
       }
     },
     "item": {
@@ -625,84 +847,112 @@
       "iron_bulwark": {
         "name": "Demir Siper",
         "desc": "Demir savunma pasifi; kalkan koşusu evrimleriyle uyumlu."
+      },
+      "field_lens": {
+        "name": "Field Lens",
+        "desc": "Focus lens that widens your Area multiplier. Pairs with Arc Ring for the Arc Surge evolution."
       }
     },
     "character": {
       "warrior": {
         "name": "Savaşçı",
-        "desc": "Dengeli dövüşçü; +5 düz hasar, +8 köken (muharebe alışkanlığı). İyi başlangıç."
+        "desc": "Dengeli dövüşçü; +5 düz hasar, +8 köken (muharebe alışkanlığı). İyi başlangıç.",
+        "role": "Close-range sustained fighting—flat damage and durability lean."
       },
       "mage": {
         "name": "Büyücü",
-        "desc": "Aura ile başlar, ekstra max can. Alan kontrolü oynanışı."
+        "desc": "Aura ile başlar, ekstra max can. Alan kontrolü oynanışı.",
+        "role": "AoE damage and aura start—mage positioning fantasy."
       },
       "vampire": {
         "name": "Vampir",
-        "desc": "Kan içen avcı.\nSilah: chain (Zincir — sıçrayan vuruş)\nEşya: lifesteal (Can Çalma — koşuda toplanır; Zehirli Zincir evrimi)\nEvrim: toxic_chain (Zehirli Zincir)\nAçılış: Savaşçı ile 2 dk hayatta kal → 175 altın; origin: can çalma +%10"
+        "desc": "Kan içen avcı.\nSilah: chain (Zincir — sıçrayan vuruş)\nEşya: lifesteal (Can Çalma — koşuda toplanır; Zehirli Zincir evrimi)\nEvrim: toxic_chain (Zehirli Zincir)\nAçılış: Savaşçı ile 2 dk hayatta kal → 175 altın; origin: can çalma +%10",
+        "role": "Close-range chain bruiser with lifesteal—fighter tempo."
       },
       "hunter": {
         "name": "Avcı",
-        "desc": "Balta ustası; can çalma sinerjisi."
+        "desc": "Balta ustası; can çalma sinerjisi.",
+        "role": "Thrown axe skirmisher—medium reach fighter."
       },
       "stormer": {
         "name": "Fırtına",
-        "desc": "Yıldırım odağı; cooldown bonusları."
+        "desc": "Yıldırım odağı; cooldown bonusları.",
+        "role": "Lightning and ability cadence—burst-leaning mage."
       },
       "frost": {
         "name": "Buzcu",
-        "desc": "Yavaşlatma uzmanı; çift süre, buz topu başlangıcı."
+        "desc": "Yavaşlatma uzmanı; çift süre, buz topu başlangıcı.",
+        "role": "Slows and crowd control—controller identity."
       },
       "shadow_walker": {
         "name": "Gölge Yürüyücü",
-        "desc": "Yüksek hızlı suikastçı; gölge küreleri."
+        "desc": "Yüksek hızlı suikastçı; gölge küreleri.",
+        "role": "Mobility plus shadow damage—assassin-fighter blend."
       },
-      "dusk_striker": {
-        "name": "Alacakaranlık Hançeri",
-        "desc": "İkiz hançer suikastçısı; Gölge Yürüyücü ritminde mobilite.\n\nSilah: dagger (İkiz Hançer — yakındaki düşmanlara sırayla ince fırlatma; tabanda iki adet, toplam taban hasar tek mermi vuruşunun altında, bekleme süresi mermiden kısa)\nEşya: night_vial (Gece Şişesi — küçük XP/altın çekim yarıçapı; tek başına hafif rahatlık, başka build’lerde de iş görür)\nEvrim: veil_daggers (Peçe Hançerleri — İkiz Hançer MAX + Gece Şişesi MAX; daha çok hançer, delme, biraz daha uzun menzil)\nAçılış: Gölge Yürüyücü ile Arena’da hedef sürede kazan → kilit açılır → 380 altın; origin_bonus: hız +%22, max can -%18"
+      "dusk": {
+        "name": "Dusk Striker",
+        "desc": "Twin-dagger skirmisher; Shadow Walker–paced mobility.\n\nWeapon: dagger (Twin Daggers — thin throws to nearest foes in order; starts with two, lower base damage per volley than a single Bullet shot, slightly shorter cooldown)\nNight Vial (night_vial): found during a run (level-up, chest, etc.); at Twin Daggers MAX + Night Vial MAX, evolve into Veil Daggers.\nEvolution: veil_daggers (Veil Daggers — more blades, pierce, longer reach)\nUnlock: Win an Arena run (reach the time goal) with Shadow Walker on your roster → unlock → 380 gold; origin: +22% speed, −18% max HP",
+        "role": "Twin Daggers start; Night Vial on the run; Veil Daggers evolution; Arena + Shadow Walker unlock cadence—fighter skirmisher."
       },
       "engineer": {
         "name": "Mühendis",
-        "desc": "Lazer ve alan bonusu; cam topa yakın."
+        "desc": "Lazer ve alan bonusu; cam topa yakın.",
+        "role": "Laser and area control—skill-shot mage fantasy."
       },
       "paladin": {
         "name": "Paladin",
-        "desc": "Tank kutsal savaşçı; zırh ve Kutsal Mermi."
+        "desc": "Tank kutsal savaşçı; zırh ve Kutsal Mermi.",
+        "role": "Armor, holy bullet, frontline—tank anchor."
       },
       "blood_prince": {
         "name": "Kan Prensi",
-        "desc": "XP açgözlüsü; Kan Baltası fantezisi."
+        "desc": "XP açgözlüsü; Kan Baltası fantezisi.",
+        "role": "Aggressive fighter from vampire lineage."
       },
       "nomad": {
         "name": "Göçebe",
-        "desc": "Sürgün yakın dövüşçü.\nSilah: fan_blade (Yelpaze Bıçak — geniş yakın fan)\nEşya: ember_heart (Kor Kalbi — kor pasifi; Kor Yelpazesi evrimiyle eşlenir)\nEvrim: ember_fan (Kor Yelpazesi)\nAçılış: 175 düşman öldür → 350 altın; origin: +5 düz hasar"
+        "desc": "Sürgün yakın dövüşçü.\nSilah: fan_blade (Yelpaze Bıçak — geniş yakın fan)\nEşya: ember_heart (Kor Kalbi — kor pasifi; Kor Yelpazesi evrimiyle eşlenir)\nEvrim: ember_fan (Kor Yelpazesi)\nAçılış: 175 düşman öldür → 350 altın; origin: +5 düz hasar",
+        "role": "Fan Blade start; Ember Heart on the run; Ember Fan evolution—mobile fighter."
       },
       "sigil_warden": {
         "name": "Mühür Ustası",
-        "desc": "Mühür ve bağlama.\nSilah: hex_sigil (Altıgön Mühür)\nEşya: glyph_charm (Rün Tılsımı)\nEvrim: binding_circle (Bağlayıcı Halka)\nAçılış: 220 öldürme → 400 altın; origin: alan +%12, hız -%8"
+        "desc": "Mühür ve bağlama.\nSilah: hex_sigil (Altıgön Mühür)\nEşya: glyph_charm (Rün Tılsımı)\nEvrim: binding_circle (Bağlayıcı Halka)\nAçılış: 220 öldürme → 400 altın; origin: alan +%12, hız -%8",
+        "role": "Sigil zones, slows, and binding evolution—controller."
       },
       "grav_binder": {
         "name": "Eğim Bağlayıcı",
-        "desc": "Çekim alanı ustası.\nSilah: gravity_anchor (Çekim Çapası)\nEşya: resonance_stone (Rezonans Taşı)\nEvrim: void_lens (Uçurum Merceği)\nAçılış: 6 dk 30 sn hayatta kal → 430 altın; origin: cooldown -%12, max can -%10"
+        "desc": "Çekim alanı ustası.\nSilah: gravity_anchor (Çekim Çapası)\nEşya: resonance_stone (Rezonans Taşı)\nEvrim: void_lens (Uçurum Merceği)\nAçılış: 6 dk 30 sn hayatta kal → 430 altın; origin: cooldown -%12, max can -%10",
+        "role": "Pull fields and crowd squeeze plus resonance—controller."
       },
       "ironclad": {
         "name": "Tam Zırhlı",
-        "desc": "Ön hat siperi.\nSilah: bastion_flail (Kale Gürzü)\nEşya: rampart_plate (Rampa Plakası)\nEvrim: citadel_flail (Hisar Zinciri)\nAçılış: 1 tank öldür → 480 altın; origin: +3 zırh, hız -%10"
+        "desc": "Ön hat siperi.\nSilah: bastion_flail (Kale Gürzü)\nEşya: rampart_plate (Rampa Plakası)\nEvrim: citadel_flail (Hisar Zinciri)\nAçılış: 1 tank öldür → 480 altın; origin: +3 zırh, hız -%10",
+        "role": "Bastion flail plus rampart plates—knockback frontline tank."
       },
       "linebreaker": {
         "name": "Hat Kıran",
-        "desc": "Kalkan hamlesiyle hat yarar.\nSilah: shield_ram (Kalkan Hamlesi — koni darbesi)\nEşya: iron_bulwark (Demir Siper — zırh)\nEvrim: fortress_ram (Kale Sur Koşusu)\nAçılış: 450 sn hayatta kalma → 520 altın; origin: max can +%12, hasar -%6"
+        "desc": "Kalkan hamlesiyle hat yarar.\nSilah: shield_ram (Kalkan Hamlesi — koni darbesi)\nEşya: iron_bulwark (Demir Siper — zırh)\nEvrim: fortress_ram (Kale Sur Koşusu)\nAçılış: 450 sn hayatta kalma → 520 altın; origin: max can +%12, hasar -%6",
+        "role": "Shield ram cone and iron bulwark—line-breaking tank."
+      },
+      "arcanist": {
+        "name": "Arcanist",
+        "desc": "Donut arc mage—unique spacing fantasy.\nWeapon: arc_pulse (Arc Ring — damage in an annulus; scales with Area)\nItem: field_lens (Field Lens — found in-run; adds Area%; pairs with Arc Surge evolution)\nEvolution: arc_surge (Arc Surge)\nUnlock: 195 total kills → 385 gold; origin: +18% XP, −12% max HP",
+        "role": "Arc Ring start; Field Lens on the run; Arc Surge evolution—XP-leaning mage with ring control."
       },
       "death_knight": {
         "name": "Ölüm Şövalyesi",
-        "desc": "Gizli: Ölüm Lazeri başlangıcı, dev hasar, sert bedeller."
+        "desc": "Gizli: Ölüm Lazeri başlangıcı, dev hasar, sert bedeller.",
+        "role": "High risk / high reward burst—fighter with special rules."
       },
       "chaos": {
         "name": "Kaos",
-        "desc": "Gizli: rastgele silahlarla başla—saf varyans koşuları."
+        "desc": "Gizli: rastgele silahlarla başla—saf varyans koşuları.",
+        "role": "Random weapon start—special roster fantasy outside the four classes."
       },
       "omega": {
         "name": "Omega",
-        "desc": "Gizli: tüm silahlar, 1 can. Uzman ve gösteriş koşuları."
+        "desc": "Gizli: tüm silahlar, 1 can. Uzman ve gösteriş koşuları.",
+        "role": "Full loadout at 1 HP—special challenge pick."
       }
     },
     "map": {
@@ -804,6 +1054,14 @@
     "skip_bonus": {
       "name": "⏭ Ekstra Skip",
       "desc": "Level up'ta +1 skip hakkı\n(max rank: +3 skip)"
+    },
+    "weapon_slot_bonus": {
+      "name": "🔢 Weapon Slot",
+      "desc": "+1 max weapon slot per rank (max 2 ranks).\nBase 6 + up to 2 here = 8 weapon slots."
+    },
+    "item_slot_bonus": {
+      "name": "🧰 Item Slot",
+      "desc": "+1 max item slot per rank (max 2 ranks).\nBase 6 + up to 2 here = 8 item slots."
     },
     "speed_bonus": {
       "name": "👟 Hareket Hızı",

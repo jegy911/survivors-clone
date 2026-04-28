@@ -902,6 +902,49 @@ func _build_devtools_tab(parent: Node):
 		_switch_tab("devtools")
 	, 2)
 
+	_add_dev_button(vbox, LocalizationManager.tr_en_source("ui.devtools.unlock_codex_full"), func():
+		# Codex %100: düşman/boss, silah, eşya, harita + karakter sekmesi.
+		SaveManager.codex_discovered = []
+		for e in CollectionData.ENEMY_ENTRIES:
+			var eid: String = str(e.get("id", ""))
+			if not eid.is_empty():
+				SaveManager.codex_discovered.append(eid)
+		for e in CollectionData.BOSS_ENTRIES:
+			var bid: String = str(e.get("id", ""))
+			if not bid.is_empty() and not SaveManager.codex_discovered.has(bid):
+				SaveManager.codex_discovered.append(bid)
+
+		SaveManager.codex_weapons = []
+		for e in CollectionData.WEAPON_ENTRIES:
+			var wid: String = str(e.get("id", ""))
+			if not wid.is_empty():
+				SaveManager.codex_weapons.append(wid)
+
+		SaveManager.codex_items = []
+		for e in CollectionData.ITEM_ENTRIES:
+			var iid: String = str(e.get("id", ""))
+			if not iid.is_empty():
+				SaveManager.codex_items.append(iid)
+
+		SaveManager.codex_maps = []
+		for e in CollectionData.MAP_ENTRIES:
+			var mid: String = str(e.get("id", ""))
+			if not mid.is_empty():
+				SaveManager.codex_maps.append(mid)
+
+		for char_data in CharacterData.CHARACTERS:
+			var cid: String = str(char_data.get("id", ""))
+			if cid.is_empty():
+				continue
+			if not SaveManager.unlocked_characters.has(cid):
+				SaveManager.unlocked_characters.append(cid)
+			if not SaveManager.purchased_characters.has(cid):
+				SaveManager.purchased_characters.append(cid)
+
+		SaveManager.save_game()
+		_switch_tab("devtools")
+	, 2)
+
 	_add_dev_button(vbox, tr("ui.devtools.gold_zero"), func():
 		SaveManager.gold = 0
 		SaveManager.save_game()

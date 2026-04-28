@@ -1,66 +1,246 @@
 {
   "weapon": {
-    "bullet": {"name": "Mermi", "desc": "Düz menzilli atışlar. Temel baskı silahın."},
-    "dagger": {"name": "İkiz Hançer", "desc": "En yakın düşmanlara sırayla ince fırlatılabilir bıçaklar. Tabanda iki adet; tek mermiye göre toplam hasar daha düşük, bekleme süresi biraz daha kısa."},
-    "aura": {"name": "Aura", "desc": "Karakterinin etrafında hasar alanı. Alanı sen kontrol edersin."},
-    "chain": {"name": "Zincir", "desc": "Hedefler arasında sıçrayan zincir. Kalabalık dalgalarda güçlü."},
-    "boomerang": {"name": "Balta", "desc": "Savrulup geri döner; peşinden gelen sürülere ceza keser."},
-    "lightning": {"name": "Yıldırım", "desc": "Yakındaki düşmanlara iniş. Tek hedef patlaması."},
-    "ice_ball": {"name": "Buz Topu", "desc": "Yavaşlatan mermi. Tank ve dalıcıları uzakta tut."},
-    "shadow": {"name": "Gölge", "desc": "Etrafında dönen gölge küreleri. Yakın mesafe sürekli hasar."},
-    "laser": {"name": "Lazer", "desc": "Çizgide delen ışın. Hizalanırsa hat temizler."},
-    "fan_blade": {"name": "Yelpaze Bıçak", "desc": "Geniş yakın fan. Yüzüne yapışan her şeyi doğrar."},
-    "holy_bullet": {"name": "Kutsal Mermi", "desc": "Evrim: ekstra hasar ve zırh kırma."},
-    "toxic_chain": {"name": "Zehirli Zincir", "desc": "Evrim: sıçrarken zehir yayar."},
-    "death_laser": {"name": "Ölüm Lazeri", "desc": "Evrim: her tik kritik, dev menzil."},
-    "blood_boomerang": {"name": "Kan Baltası", "desc": "Evrim: vuruş başına can çalar."},
-    "storm": {"name": "Fırtına", "desc": "Evrim: öldürmede ekstra yıldırım."},
-    "shadow_storm": {"name": "Gölge Fırtınası", "desc": "Evrim: gölge vuruşları yıldırım zinciri tetikleyebilir."},
-    "frost_nova": {"name": "Buz Novası", "desc": "Evrim: vuruşta alan dondurma + yansıtma oyunu."},
-    "ember_fan": {"name": "Kor Yelpazesi", "desc": "Evrim: daha geniş yay ve delici kor parçaları."},
-    "veil_daggers": {"name": "Peçe Hançerleri", "desc": "Evrim: daha çok hedefe hançer, delerek ikinci isabet, biraz daha uzun menzil; Gece Şişesi ile birlikte tamamlanır."}
+    "bullet": {
+      "name": "Mermi",
+      "desc": "Düz menzilli atışlar. Temel baskı silahın."
+    },
+    "dagger": {
+      "name": "İkiz Hançer",
+      "desc": "En yakın düşmanlara sırayla ince fırlatılabilir bıçaklar. Tabanda iki adet; tek mermiye göre toplam hasar daha düşük, bekleme süresi biraz daha kısa."
+    },
+    "aura": {
+      "name": "Aura",
+      "desc": "Karakterinin etrafında hasar alanı. Alanı sen kontrol edersin."
+    },
+    "chain": {
+      "name": "Zincir",
+      "desc": "Hedefler arasında sıçrayan zincir. Kalabalık dalgalarda güçlü."
+    },
+    "boomerang": {
+      "name": "Balta",
+      "desc": "Savrulup geri döner; peşinden gelen sürülere ceza keser."
+    },
+    "lightning": {
+      "name": "Yıldırım",
+      "desc": "Yakındaki düşmanlara iniş. Tek hedef patlaması."
+    },
+    "ice_ball": {
+      "name": "Buz Topu",
+      "desc": "Yavaşlatan mermi. Tank ve dalıcıları uzakta tut."
+    },
+    "shadow": {
+      "name": "Gölge",
+      "desc": "Etrafında dönen gölge küreleri. Yakın mesafe sürekli hasar."
+    },
+    "laser": {
+      "name": "Lazer",
+      "desc": "Çizgide delen ışın. Hizalanırsa hat temizler."
+    },
+    "fan_blade": {
+      "name": "Yelpaze Bıçak",
+      "desc": "Geniş yakın fan. Yüzüne yapışan her şeyi doğrar."
+    },
+    "holy_bullet": {
+      "name": "Kutsal Mermi",
+      "desc": "Evrim: ekstra hasar ve zırh kırma."
+    },
+    "toxic_chain": {
+      "name": "Zehirli Zincir",
+      "desc": "Evrim: sıçrarken zehir yayar."
+    },
+    "death_laser": {
+      "name": "Ölüm Lazeri",
+      "desc": "Evrim: her tik kritik, dev menzil."
+    },
+    "blood_boomerang": {
+      "name": "Kan Baltası",
+      "desc": "Evrim: vuruş başına can çalar."
+    },
+    "storm": {
+      "name": "Fırtına",
+      "desc": "Evrim: öldürmede ekstra yıldırım."
+    },
+    "shadow_storm": {
+      "name": "Gölge Fırtınası",
+      "desc": "Evrim: gölge vuruşları yıldırım zinciri tetikleyebilir."
+    },
+    "frost_nova": {
+      "name": "Buz Novası",
+      "desc": "Evrim: vuruşta alan dondurma + yansıtma oyunu."
+    },
+    "ember_fan": {
+      "name": "Kor Yelpazesi",
+      "desc": "Evrim: daha geniş yay ve delici kor parçaları."
+    },
+    "veil_daggers": {
+      "name": "Peçe Hançerleri",
+      "desc": "Evrim: daha çok hedefe hançer, delerek ikinci isabet, biraz daha uzun menzil; Gece Şişesi ile birlikte tamamlanır."
+    },
+    "arc_pulse": {
+      "name": "Arc Ring",
+      "desc": "Donut arc pulse between inner and outer radii; scales with Area."
+    },
+    "arc_surge": {
+      "name": "Arc Surge",
+      "desc": "Evolved arc ring: wider band, faster ticks, higher Might with Field Lens."
+    }
   },
   "item": {
-    "lifesteal": {"name": "Can Çalma", "desc": "Hasar verirken iyileş. Uzun kavgada stabilite."},
-    "armor": {"name": "Zırh", "desc": "Düz hasar azaltma. Seviye at, çip hasarı sil."},
-    "crit": {"name": "Kritik", "desc": "Kritik şans ve çarpan."},
-    "explosion": {"name": "Patlama", "desc": "Öldürmede alan hasarı. Yoğun sürüde kar topu."},
-    "magnet": {"name": "Mıknatıs", "desc": "XP ve altını daha uzağa çeker. Daha az koşu."},
-    "poison": {"name": "Zehir", "desc": "Zamanla hasar. Zincir evrimleriyle uyumlu."},
-    "shield": {"name": "Kalkan", "desc": "Belli aralıkta isabeti bloklar. Küçük hataları affeder."},
-    "speed_charm": {"name": "Hız Tılsımı", "desc": "Daha hızlı hareket. Max’ta Fırtına evrim yolunu açar."},
-    "blood_pool": {"name": "Kan Havuzu", "desc": "Tehlikeli alan bırakır. Kite için bölge kontrolü."},
-    "luck_stone": {"name": "Şans Taşı", "desc": "Nadir seçenek ihtimali ve azıcık altın."},
-    "turbine": {"name": "Türbin", "desc": "Cooldown ve alan build’leriyle sinerji."},
-    "steam_armor": {"name": "Buharlı Zırh", "desc": "Buhar temalı ek savunma."},
-    "energy_cell": {"name": "Enerji Hücresi", "desc": "Sürekli ateş ve cooldown toparlamasına güç verir."},
-    "ember_heart": {"name": "Kor Kalbi", "desc": "Yelpaze evrimleriyle eşleşen kor pasifi."},
-    "night_vial": {"name": "Gece Şişesi", "desc": "Küçük XP ve altın çekim yarıçapı bonusu. Tek başına hafif rahatlık; İkiz Hançer evrimi (Peçe Hançerleri) için eşlik eder."}
+    "lifesteal": {
+      "name": "Can Çalma",
+      "desc": "Hasar verirken iyileş. Uzun kavgada stabilite."
+    },
+    "armor": {
+      "name": "Zırh",
+      "desc": "Düz hasar azaltma. Seviye at, çip hasarı sil."
+    },
+    "crit": {
+      "name": "Kritik",
+      "desc": "Kritik şans ve çarpan."
+    },
+    "explosion": {
+      "name": "Patlama",
+      "desc": "Öldürmede alan hasarı. Yoğun sürüde kar topu."
+    },
+    "magnet": {
+      "name": "Mıknatıs",
+      "desc": "XP ve altını daha uzağa çeker. Daha az koşu."
+    },
+    "poison": {
+      "name": "Zehir",
+      "desc": "Zamanla hasar. Zincir evrimleriyle uyumlu."
+    },
+    "shield": {
+      "name": "Kalkan",
+      "desc": "Belli aralıkta isabeti bloklar. Küçük hataları affeder."
+    },
+    "speed_charm": {
+      "name": "Hız Tılsımı",
+      "desc": "Daha hızlı hareket. Max’ta Fırtına evrim yolunu açar."
+    },
+    "blood_pool": {
+      "name": "Kan Havuzu",
+      "desc": "Tehlikeli alan bırakır. Kite için bölge kontrolü."
+    },
+    "luck_stone": {
+      "name": "Şans Taşı",
+      "desc": "Nadir seçenek ihtimali ve azıcık altın."
+    },
+    "turbine": {
+      "name": "Türbin",
+      "desc": "Cooldown ve alan build’leriyle sinerji."
+    },
+    "steam_armor": {
+      "name": "Buharlı Zırh",
+      "desc": "Buhar temalı ek savunma."
+    },
+    "energy_cell": {
+      "name": "Enerji Hücresi",
+      "desc": "Sürekli ateş ve cooldown toparlamasına güç verir."
+    },
+    "ember_heart": {
+      "name": "Kor Kalbi",
+      "desc": "Yelpaze evrimleriyle eşleşen kor pasifi."
+    },
+    "night_vial": {
+      "name": "Gece Şişesi",
+      "desc": "Küçük XP ve altın çekim yarıçapı bonusu. Tek başına hafif rahatlık; İkiz Hançer evrimi (Peçe Hançerleri) için eşlik eder."
+    },
+    "field_lens": {
+      "name": "Field Lens",
+      "desc": "Adds Area%; pairs with Arc Ring for the Arc Surge evolution."
+    }
   },
   "character": {
-    "warrior": {"name": "Savaşçı", "desc": "Dengeli dövüşçü; +5 düz hasar, +8 köken (muharebe alışkanlığı). İyi başlangıç."},
-    "mage": {"name": "Büyücü", "desc": "Aura ile başlar, ekstra max can. Alan kontrolü oynanışı."},
-    "vampire": {"name": "Vampir", "desc": "Kan içen avcı.\nSilah: chain (Zincir — sıçrayan vuruş)\nEşya: lifesteal (Can Çalma — koşuda toplanır; Zehirli Zincir evrimi)\nEvrim: toxic_chain (Zehirli Zincir)\nAçılış: Savaşçı ile 2 dk hayatta kal → 175 altın; origin: can çalma +%10"},
-    "hunter": {"name": "Avcı", "desc": "Balta ustası; can çalma sinerjisi."},
-    "stormer": {"name": "Fırtına", "desc": "Yıldırım odağı; cooldown bonusları."},
-    "frost": {"name": "Buzcu", "desc": "Yavaşlatma uzmanı; çift süre, buz topu başlangıcı."},
-    "shadow_walker": {"name": "Gölge Yürüyücü", "desc": "Yüksek hızlı suikastçı; gölge küreleri."},
-    "dusk_striker": {"name": "Alacakaranlık Hançeri", "desc": "İkiz hançer suikastçısı; Gölge Yürüyücü ritminde mobilite.\n\nSilah: dagger (İkiz Hançer — yakındaki düşmanlara sırayla ince fırlatma; tabanda iki adet, toplam taban hasar tek mermi vuruşunun altında, bekleme süresi mermiden kısa)\nEşya: night_vial (Gece Şişesi — küçük XP/altın çekim yarıçapı; tek başına hafif rahatlık, başka build’lerde de iş görür)\nEvrim: veil_daggers (Peçe Hançerleri — İkiz Hançer MAX + Gece Şişesi MAX; daha çok hançer, delme, biraz daha uzun menzil)\nAçılış: Gölge Yürüyücü ile Arena’da hedef sürede kazan → kilit açılır → 380 altın; origin_bonus: hız +%22, max can -%18"},
-    "engineer": {"name": "Mühendis", "desc": "Lazer ve alan bonusu; cam topa yakın."},
-    "paladin": {"name": "Paladin", "desc": "Tank kutsal savaşçı; zırh ve Kutsal Mermi."},
-    "blood_prince": {"name": "Kan Prensi", "desc": "XP açgözlüsü; Kan Baltası fantezisi."},
-    "nomad": {"name": "Göçebe", "desc": "Sürgün yakın dövüşçü.\nSilah: fan_blade (Yelpaze Bıçak — geniş yakın fan)\nEşya: ember_heart (Kor Kalbi — kor pasifi; Kor Yelpazesi evrimiyle eşlenir)\nEvrim: ember_fan (Kor Yelpazesi)\nAçılış: 175 düşman öldür → 350 altın; origin: +5 düz hasar"},
-    "sigil_warden": {"name": "Mühür Ustası", "desc": "Mühür ve bağlama.\nSilah: hex_sigil (Altıgön Mühür)\nEşya: glyph_charm (Rün Tılsımı)\nEvrim: binding_circle (Bağlayıcı Halka)\nAçılış: 220 öldürme → 400 altın; origin: alan +%12, hız -%8"},
-    "grav_binder": {"name": "Eğim Bağlayıcı", "desc": "Çekim alanı ustası.\nSilah: gravity_anchor (Çekim Çapası)\nEşya: resonance_stone (Rezonans Taşı)\nEvrim: void_lens (Uçurum Merceği)\nAçılış: 6 dk 30 sn hayatta kal → 430 altın; origin: cooldown -%12, max can -%10"},
-    "ironclad": {"name": "Tam Zırhlı", "desc": "Ön hat siperi.\nSilah: bastion_flail (Kale Gürzü)\nEşya: rampart_plate (Rampa Plakası)\nEvrim: citadel_flail (Hisar Zinciri)\nAçılış: 1 tank öldür → 480 altın; origin: +3 zırh, hız -%10"},
-    "linebreaker": {"name": "Hat Kıran", "desc": "Kalkan hamlesiyle hat yarar.\nSilah: shield_ram (Kalkan Hamlesi — koni darbesi)\nEşya: iron_bulwark (Demir Siper — zırh)\nEvrim: fortress_ram (Kale Sur Koşusu)\nAçılış: 450 sn hayatta kalma → 520 altın; origin: max can +%12, hasar -%6"},
-    "death_knight": {"name": "Ölüm Şövalyesi", "desc": "Gizli: Ölüm Lazeri başlangıcı, dev hasar, sert bedeller."},
-    "chaos": {"name": "Kaos", "desc": "Gizli: rastgele silahlarla başla—saf varyans koşuları."},
-    "omega": {"name": "Omega", "desc": "Gizli: tüm silahlar, 1 can. Uzman ve gösteriş koşuları."}
+    "warrior": {
+      "name": "Savaşçı",
+      "desc": "Dengeli dövüşçü; +5 düz hasar, +8 köken (muharebe alışkanlığı). İyi başlangıç."
+    },
+    "mage": {
+      "name": "Büyücü",
+      "desc": "Aura ile başlar, ekstra max can. Alan kontrolü oynanışı."
+    },
+    "vampire": {
+      "name": "Vampir",
+      "desc": "Kan içen avcı.\nSilah: chain (Zincir — sıçrayan vuruş)\nEşya: lifesteal (Can Çalma — koşuda toplanır; Zehirli Zincir evrimi)\nEvrim: toxic_chain (Zehirli Zincir)\nAçılış: Savaşçı ile 2 dk hayatta kal → 175 altın; origin: can çalma +%10"
+    },
+    "hunter": {
+      "name": "Avcı",
+      "desc": "Balta ustası; can çalma sinerjisi."
+    },
+    "stormer": {
+      "name": "Fırtına",
+      "desc": "Yıldırım odağı; cooldown bonusları."
+    },
+    "frost": {
+      "name": "Buzcu",
+      "desc": "Yavaşlatma uzmanı; çift süre, buz topu başlangıcı."
+    },
+    "shadow_walker": {
+      "name": "Gölge Yürüyücü",
+      "desc": "Yüksek hızlı suikastçı; gölge küreleri."
+    },
+    "dusk_striker": {
+      "name": "Alacakaranlık Hançeri",
+      "desc": "İkiz hançer suikastçısı; Gölge Yürüyücü ritminde mobilite.\n\nSilah: dagger (İkiz Hançer — yakındaki düşmanlara sırayla ince fırlatma; tabanda iki adet, toplam taban hasar tek mermi vuruşunun altında, bekleme süresi mermiden kısa)\nEşya: night_vial (Gece Şişesi — küçük XP/altın çekim yarıçapı; tek başına hafif rahatlık, başka build’lerde de iş görür)\nEvrim: veil_daggers (Peçe Hançerleri — İkiz Hançer MAX + Gece Şişesi MAX; daha çok hançer, delme, biraz daha uzun menzil)\nAçılış: Gölge Yürüyücü ile Arena’da hedef sürede kazan → kilit açılır → 380 altın; origin_bonus: hız +%22, max can -%18"
+    },
+    "engineer": {
+      "name": "Mühendis",
+      "desc": "Lazer ve alan bonusu; cam topa yakın."
+    },
+    "paladin": {
+      "name": "Paladin",
+      "desc": "Tank kutsal savaşçı; zırh ve Kutsal Mermi."
+    },
+    "blood_prince": {
+      "name": "Kan Prensi",
+      "desc": "XP açgözlüsü; Kan Baltası fantezisi."
+    },
+    "nomad": {
+      "name": "Göçebe",
+      "desc": "Sürgün yakın dövüşçü.\nSilah: fan_blade (Yelpaze Bıçak — geniş yakın fan)\nEşya: ember_heart (Kor Kalbi — kor pasifi; Kor Yelpazesi evrimiyle eşlenir)\nEvrim: ember_fan (Kor Yelpazesi)\nAçılış: 175 düşman öldür → 350 altın; origin: +5 düz hasar"
+    },
+    "sigil_warden": {
+      "name": "Mühür Ustası",
+      "desc": "Mühür ve bağlama.\nSilah: hex_sigil (Altıgön Mühür)\nEşya: glyph_charm (Rün Tılsımı)\nEvrim: binding_circle (Bağlayıcı Halka)\nAçılış: 220 öldürme → 400 altın; origin: alan +%12, hız -%8"
+    },
+    "grav_binder": {
+      "name": "Eğim Bağlayıcı",
+      "desc": "Çekim alanı ustası.\nSilah: gravity_anchor (Çekim Çapası)\nEşya: resonance_stone (Rezonans Taşı)\nEvrim: void_lens (Uçurum Merceği)\nAçılış: 6 dk 30 sn hayatta kal → 430 altın; origin: cooldown -%12, max can -%10"
+    },
+    "ironclad": {
+      "name": "Tam Zırhlı",
+      "desc": "Ön hat siperi.\nSilah: bastion_flail (Kale Gürzü)\nEşya: rampart_plate (Rampa Plakası)\nEvrim: citadel_flail (Hisar Zinciri)\nAçılış: 1 tank öldür → 480 altın; origin: +3 zırh, hız -%10"
+    },
+    "linebreaker": {
+      "name": "Hat Kıran",
+      "desc": "Kalkan hamlesiyle hat yarar.\nSilah: shield_ram (Kalkan Hamlesi — koni darbesi)\nEşya: iron_bulwark (Demir Siper — zırh)\nEvrim: fortress_ram (Kale Sur Koşusu)\nAçılış: 450 sn hayatta kalma → 520 altın; origin: max can +%12, hasar -%6"
+    },
+    "death_knight": {
+      "name": "Ölüm Şövalyesi",
+      "desc": "Gizli: Ölüm Lazeri başlangıcı, dev hasar, sert bedeller."
+    },
+    "chaos": {
+      "name": "Kaos",
+      "desc": "Gizli: rastgele silahlarla başla—saf varyans koşuları."
+    },
+    "omega": {
+      "name": "Omega",
+      "desc": "Gizli: tüm silahlar, 1 can. Uzman ve gösteriş koşuları."
+    }
   },
   "map": {
-    "vs_map": {"name": "Düşmüş Krallık", "desc": "Hikâye haritası—açık alan, 30 dk hayatta kalma, zamana bağlı boss’lar."},
-    "map2": {"name": "Harita II", "desc": "Yer ayrıldı. İlerideki güncellemede."},
-    "map3": {"name": "Harita III", "desc": "Yer ayrıldı. İlerideki güncellemede."}
+    "vs_map": {
+      "name": "Düşmüş Krallık",
+      "desc": "Hikâye haritası—açık alan, 30 dk hayatta kalma, zamana bağlı boss’lar."
+    },
+    "map2": {
+      "name": "Harita II",
+      "desc": "Yer ayrıldı. İlerideki güncellemede."
+    },
+    "map3": {
+      "name": "Harita III",
+      "desc": "Yer ayrıldı. İlerideki güncellemede."
+    }
   }
 }
