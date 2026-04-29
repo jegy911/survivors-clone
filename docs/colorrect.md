@@ -98,20 +98,20 @@ Bu tabloda yalnızca **en az bir ✗** kalan satırlar tutulur (ikisi de ✓ olu
 
 | Cisim / sistem | Kart / kodeks ikon | Oyun-içi görsel | Not (kısa) |
 |----------------|-------------------|-----------------|------------|
-| **XP 1× / 3× / 8×** (3 tür) | ✗ | ✓ | `xp.png` / `green_xp.png` / `red_xp.png` |
-| Altın küre | ✗ | ✓ | `gold.png` |
+| **XP 1× / 3× / 8×** (3 tür) | ✓ | ✓ | `xp.png` / `green_xp.png` / `red_xp.png` |
+| Altın küre | ✓ | ✓ | `gold.png` |
 | Sandık | ✗ | ✗ | ColorRect placeholder |
-| Kan yemini (Blood Oath) | ✗ | ✗ | ColorRect placeholder |
-| Dişli parçası (Cog) | ✗ | ✓ | `cog.png` sprite |
-| Zaman dişlisi | ✗ | ✓ | `time_gear_icon.png` sprite |
-| Buhar bombası | ✗ | ✓ | `steam_bomb_icon.png` sprite |
-| Vakum toplayıcı | ✗ | ✗ | runtime cyan kare |
-| Buz fıçısı (freeze) | ✗ | ✓ | `freeze_barrel_icon` + `freeze_burst` |
-| Zehir tuzağı | ✗ | ✗ | kare + alan efekti |
-| Risk sunağı | ✗ | ✗ | kare + `⚠` placeholder |
-| Şeytan sunağı | ✗ | ✗ | kare + `☠` placeholder |
-| Kırılabilir kutu (crate) | ✗ | ✗ | ColorRect placeholder |
-| Enkaz (ruin cache) | ✗ | ✗ | brown/gold rect placeholder |
+| Kan yemini (Blood Oath) | ✓ | ✓ | `blood_oath.png` |
+| Dişli parçası (Cog) | ✓ | ✓ | `cog.png` sprite |
+| Zaman dişlisi | ✓ | ✓ | `time_gear_icon.png` sprite |
+| Buhar bombası | ✓ | ✓ | `steam_bomb_icon.png` sprite |
+| Vakum toplayıcı | ✓ | ✓ | `vacuum_collector.png` |
+| Buz fıçısı (freeze) | ✓ | ✓ | `freeze_barrel_icon` + `freeze_burst` |
+| Zehir tuzağı | ✓ | ✓ | `poison_trap.png` + `poison_burst` |
+| Risk sunağı | ✓ | ✓ | `shrine_risk.png` |
+| Şeytan sunağı | ✓ | ✓ | `shrine_devil.png` |
+| Kırılabilir kutu (crate) | ✓ | ✓ | `destructible_crate_low/high.png` (spawn dönüşümlü) |
+| Enkaz (ruin cache) | ✓ | ✓ | `ruin_cache_low/mid/high.png` (reward tier ile bağlı) |
 | Yüzen hasar metni | ✗ | ✓ | tema + kritik varyantı |
 | Düşman mermileri + oyuncu mermileri | ✗ | ✓ | `projectiles/*.tscn` (kısmi/final karışık) |
 | Pasif eşyalar (dünya) | ✗ | ✗ | çoğu veri/proc, ayrı mesh yok |

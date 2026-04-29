@@ -206,18 +206,18 @@ Bunlar ayrı tscn değil; `effects/xp_orb.tscn` + `enemy_base._spawn_xp_orb_drop
 | Düşen XP küresi | yukarıdaki 3 tür | Üç ayrı tasarım (yukarı) |
 | Altın küresi | `gold_orb` | yukarı |
 | Sandık | `chest` | yukarı |
-| Blood Oath | `blood_oath.tscn` — sadece `ColorRect` | **❌** ayrı sanat |
+| Blood Oath | `blood_oath.tscn` — `Sprite2D` + `assets/effects/blood_oath.png` | **Kısmi** (pickup ışık/patlama polisajı açık) |
 | Cog shard | `cog_shard.tscn` — `Sprite2D` + `assets/effects/cog.png` | **Kısmi** (doku var; parıltı/bırak VFX açık) |
 | Steam bomb / Time gear | `steam_bomb.tscn` / `time_gear.tscn` | `Sprite2D` + `steam_bomb_icon` / `time_gear_icon`; parıltı/bırak açık |
 
 **ORTAM (environment_manager) — programatik, çoğunlukla ColorRect** | Açıklama | Görsel
 |---|---|---
-| Vakum orb | `Node2D` + `Sprite2D` `magnet.png` (mıknatıs pickup), toplamada tüm XP/altın `vacuum_attract` | Yüzen metin **🌀 VAKUM!**; polisaj: ayrı VFX / ses ince ayarı açık |
+| Vakum orb | `Node2D` + `Sprite2D` `vacuum_collector.png` (toplamada tüm XP/altın `vacuum_attract`) | Yüzen metin **🌀 VAKUM!**; polisaj: ayrı VFX / ses ince ayarı açık |
 | Buz fıçısı (freeze) | `freeze_barrel.gd` — varil `freeze_barrel_icon`, patlama `freeze_burst` | **Kısmi** (parçacık / ritüel açık) |
-| Zehir tuzağı (poison) | `poison_trap.gd` — yeşil kare, zehir bulutu | **❌** aynı |
-| Risk / Şeytan sunağı | `shrine_of_risk.gd` — mor/kan kırmızı kare, emoji `⚠` / `☠` | **❌** tütsü / alınlık hiyerarşi vs. ileri sanat |
-| Kırılabilir sandık (crate) | `destructible_crate.gd` — kahverengi + sarı sınır | **❌** ayrı kutu mesh/sprite; içerik: bounce/speed/… floating |
-| Enkaz önbelleği (ruin) | `environment_manager` içinde 28×28 kahverengi+altın glow pulse | **❌** ayrı “hazine”/enkaz cismi; ödül metni floating |
+| Zehir tuzağı (poison) | `poison_trap.gd` — `poison_trap.png` + alan `poison_burst` | **Kısmi** (patlama parçacık/anim açık) |
+| Risk / Şeytan sunağı | `shrine_of_risk.gd` — `shrine_risk.png` / `shrine_devil.png` + ikon etiketi | **Kısmi** (ileri altar katmanı açık) |
+| Kırılabilir sandık (crate) | `destructible_crate.gd` — `destructible_crate_low/high.png` | **Kısmi** (mesh/anim polisajı açık); spawn dönüşümlü low/high, high ödül daha güçlü |
+| Enkaz önbelleği (ruin) | `environment_manager` — `ruin_cache_low/mid/high.png` | **Kısmi** (low/mid/high görsel + reward tier bağlı); ileri VFX açık |
 
 **Eşya yordamları (oyun-içi, pasif sınıf, çoğunlukla veri) — ayrı dünya mesh’i yok:** `item_blood_pool` Alan ColorRect; diğer pasiflerin çoğu sadece istat / proc. Detay: `colorrect.md` eşya satırları.
 

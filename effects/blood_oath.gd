@@ -1,22 +1,20 @@
 extends Area2D
 
+const BLOOD_OATH_TEX := preload("res://assets/effects/blood_oath.png")
+
 var attract_speed = 0.0
 var attracted = false
 
 func _ready():
 	add_to_group("pickups")
-	var body = get_node_or_null("ColorRect")
-	if body:
-		body.color = Color("#8B0000")
-		body.size = Vector2(14, 14)
-		body.position = Vector2(-7, -7)
+	var body = _ensure_visual()
 	z_index = 10
 	# Nabız efekti
-	if get_node_or_null("ColorRect"):
+	if body != null:
 		var tween = create_tween()
 		tween.set_loops()
-		tween.tween_property($ColorRect, "modulate:a", 0.4, 0.5)
-		tween.tween_property($ColorRect, "modulate:a", 1.0, 0.5)
+		tween.tween_property(body, "modulate:a", 0.4, 0.5)
+		tween.tween_property(body, "modulate:a", 1.0, 0.5)
 
 func _process(delta):
 	if not visible:
@@ -92,3 +90,20 @@ func init(pos: Vector2):
 	attract_speed = 0.0
 	global_position = pos
 	show()
+
+
+func _ensure_visual() -> CanvasItem:
+	var old_rect := get_node_or_null("ColorRect")
+	if old_rect != null:
+		old_rect.queue_free()
+	var spr := get_node_or_null("BodySprite") as Sprite2D
+	if spr == null:
+		spr = Sprite2D.new()
+		spr.name = "BodySprite"
+		spr.texture = BLOOD_OATH_TEX
+		spr.centered = true
+		var dim: float = maxf(float(BLOOD_OATH_TEX.get_width()), 1.0)
+		var sc: float = 18.0 / dim
+		spr.scale = Vector2(sc, sc)
+		add_child(spr)
+	return spr

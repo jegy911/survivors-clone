@@ -1,26 +1,32 @@
 extends Node2D
 
+const SHRINE_RISK_TEX := preload("res://assets/effects/shrine_risk.png")
+const SHRINE_DEVIL_TEX := preload("res://assets/effects/shrine_devil.png")
+
 var active = true
-var body_rect: ColorRect
+var body_visual: CanvasItem
 var shrine_type = "risk"
 
 func _ready():
 	shrine_type = "devil" if randf() < 0.3 else "risk"
-	body_rect = ColorRect.new()
-	body_rect.size = Vector2(26, 26)
-	body_rect.position = Vector2(-13, -13)
-	body_rect.color = Color("#8B0000") if shrine_type == "devil" else Color("#9B59B6")
-	add_child(body_rect)
+	var spr := Sprite2D.new()
+	spr.texture = SHRINE_DEVIL_TEX if shrine_type == "devil" else SHRINE_RISK_TEX
+	spr.centered = true
+	var dim: float = maxf(float(spr.texture.get_width()), 1.0)
+	var sc: float = 34.0 / dim
+	spr.scale = Vector2(sc, sc)
+	body_visual = spr
+	add_child(spr)
 	
 	var label = Label.new()
 	label.text = "☠" if shrine_type == "devil" else "⚠"
 	label.position = Vector2(-8, -30)
 	add_child(label)
 	
-	var pulse = body_rect.create_tween()
+	var pulse = body_visual.create_tween()
 	pulse.set_loops()
-	pulse.tween_property(body_rect, "modulate:a", 0.4, 0.4)
-	pulse.tween_property(body_rect, "modulate:a", 1.0, 0.4)
+	pulse.tween_property(body_visual, "modulate:a", 0.4, 0.4)
+	pulse.tween_property(body_visual, "modulate:a", 1.0, 0.4)
 
 func _process(_delta):
 	if not active:
@@ -37,8 +43,8 @@ func _activate(player: Node):
 		_devil_bargain(player)
 	else:
 		_risk_shrine(player)
-	var tween = body_rect.create_tween()
-	tween.tween_property(body_rect, "modulate:a", 0.0, 0.5)
+	var tween = body_visual.create_tween()
+	tween.tween_property(body_visual, "modulate:a", 0.0, 0.5)
 	tween.tween_callback(queue_free)
 
 func _risk_shrine(player: Node):

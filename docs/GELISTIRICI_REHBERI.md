@@ -274,7 +274,7 @@ Mevcut örnekler: **`effects/xp_orb.tscn`**, **`effects/gold_orb.tscn`**. İkisi
 ### Mevcut bağlantılar (referans)
 
 - **Düşürme:** `enemies/enemy_base.gd` — ölüm sonunda **`resolve_death_loot()`**: XP / altın / sandık / nadir pickup için **tek ağırlıklı seçim** (aynı ölümde çoğul bağımsız düşürme yok); **~%1** ile en fazla **iki** ayrı tür. `boss` / `giant` / `exploder` özel sonlar `resolve_death_loot` veya `super._on_death_complete` ile hizalı. `ObjectPool.get_object("res://effects/....tscn")`.
-- **Ortam:** `main/environment_manager.gd` — ağaçta kalan `xp_orbs` / `gold_orbs` grupları üzerinde işlem (ör. temizlik).
+- **Ortam:** `main/environment_manager.gd` — ağaçta kalan `xp_orbs` / `gold_orbs` grupları üzerinde işlem (ör. temizlik). Dünya spawn görselleri `assets/effects/*` ile asset-backed: `vacuum_collector`, `poison_trap`, `shrine_risk/devil`, `destructible_crate_low/high`, `ruin_cache_low/mid/high`, `blood_oath`. `crate` low/high dönüşümlü spawn edilir; `ruin_cache` low/mid/high tier ile spawn edilir ve `high` tier ek upgrade/altın verir.
 - **Havuz boyutu:** `core/ObjectPool.gd` — yol içinde `xp_orb` veya `gold_orb` geçen sahneler için havuz **40** öğe (diğerleri 20).
 
 ### Yeni bir orb (veya pickup) türü eklerken — checklist

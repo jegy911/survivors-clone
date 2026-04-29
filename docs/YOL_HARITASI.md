@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-28 (`ASSET_SIZES: assets geneli 512x512 dışı tarama`)
+**Son güncelleme:** 2026-04-29 (`assets/inbox world spawn görselleri + low/high reward bağlama`)
 
 ---
 
@@ -172,6 +172,7 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-04-29 | **Inbox world/spawn asset dağıtımı + reward tier** — `assets/inbox` içindeki `blood_oath`, `vacuum_collector`, `poison_trap`, `shrine_risk/devil`, `destructible_crate_low/high`, `ruin_cache_low/mid/high`, `night_vial` dosyaları kalıcı klasörlere taşındı; `environment_manager` + ilgili effect scriptleri low/high varyant görseli ve daha iyi drop (high tier) mantığıyla güncellendi. |
 | 2026-04-28 | **`ASSET_SIZES` tam tarama güncellemesi** — `assets/` altındaki görseller (`png/jpg/jpeg/webp/bmp/gif/tga`) yeniden tarandı; kural `512x512 olmayanlar` olarak netleştirildi; tablo tüm `512x512` dışı dosyalarla güncellendi (ör. `assets/effects/xp.png` `677x369`). |
 | 2026-04-28 | **Kodex — World Items sekmesi + Glossary güncellemesi** — `CollectionData` içine `TAB_WORLD_ITEM` + `WORLD_ITEM_ENTRIES` eklendi (kaynak: `docs/colorrect.md` Dünya/spawn cisimleri); `ui.collection_menu` için yeni sekme locale anahtarı açıldı; `codex.world_item.*` açıklamaları ve `ui.glossary` kapsamı oyun statlarının tamamını kapsayacak şekilde genişletildi (`max_hp`, `move_speed`, `lifesteal`, `overheal`, `bounce`, `shrine`, `projectile_count`, `xp_gain`, `gold_gain`, `regen`, `revival`, `weapon_slots`, `item_slots`, `curse` dahil). |
 | 2026-04-28 | **Ayarlar > Dev: Kodeks %100 Aç** — `ui/settings.gd` dev sekmesine `ui.devtools.unlock_codex_full` butonu eklendi; tek tıkla `codex_discovered`/`codex_weapons`/`codex_items`/`codex_maps` + karakter kilitleri açılıyor (`CollectionData` dizileri üzerinden). |
