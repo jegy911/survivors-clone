@@ -65,7 +65,7 @@ func _spawn_vacuum_orb():
 	body.texture = VACUUM_ICON
 	body.centered = true
 	var dim: float = maxf(float(VACUUM_ICON.get_width()), 1.0)
-	body.scale = Vector2.ONE * (26.0 / dim)
+	body.scale = Vector2.ONE * (104.0 / dim)
 	body.name = "Body"
 	orb_node.add_child(body)
 	var area = Area2D.new()
@@ -164,7 +164,7 @@ func _spawn_ruin_cache():
 	body.texture = _ruin_texture_for_tier(reward_tier)
 	body.centered = true
 	var dim: float = maxf(float(body.texture.get_width()), 1.0)
-	body.scale = Vector2.ONE * (34.0 / dim)
+	body.scale = Vector2.ONE * (136.0 / dim)
 	ruin.add_child(body)
 
 	var glow := Sprite2D.new()

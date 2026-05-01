@@ -3,7 +3,7 @@
 Bu dosya **ürün / geliştirme planı**dır: öncelikler, tamamlananlar ve ileride eklenecek fikirler burada toplanır.  
 *(İngilizce projelerde genelde `ROADMAP.md` adı kullanılır.)*
 
-**Son güncelleme:** 2026-04-29 (`assets/inbox world spawn görselleri + low/high reward bağlama`)
+**Son güncelleme:** 2026-05-01 (`ColorRect + ses envanteri güncellendi`)
 
 ---
 
@@ -172,6 +172,14 @@ Aşağıdakiler kod + dokümantasyon ile **teslim edilmiş** kabul edilir; ayrı
 
 | Tarih | Özet |
 |--------|------|
+| 2026-05-01 | **Dokümantasyon senkronu — ColorRect + Ses envanteri** — `docs/colorrect.md` dünya/spawn bölümüne `XP/Gold sabit, diğer objeler 4x` okunabilirlik notu ve güncel sandık akış notu eklendi. `docs/sesler-muzikler-efektler.md` içine run içi sistemler için yeni `SFX durum matrisi (✅/❌)` tablosu eklendi; sesi olmayan olaylar açıkça işaretlendi. |
+| 2026-05-01 | **Run içi world/pickup okunabilirlik pass’i (4x)** — `xp` / `gold` görselleri aynı bırakıldı; diğer yerde spawn olan veya düşen dünya objelerinin sprite ölçekleri `4x` artırıldı (`chest`, `blood_oath`, `vacuum_collector`, `poison_trap`, `freeze_barrel`, `shrine_risk/devil`, `destructible_crate`, `ruin_cache`). |
+| 2026-05-01 | **Sandık drop oranı test sonrası normalleşti** — `enemies/enemy_base.gd` içindeki geçici yüksek chest ağırlıkları geri alındı; ölüm loot seçiminde sandık için tekrar `normal=0.01`, `elite=0.20` kullanılıyor. |
+| 2026-05-01 | **Sandık giriş ekranı tek section + idle sallanma** — `effects/chest.gd`: ayrı `OPEN` section kaldırıldı; opening spritesheet’in ilk karesi aynı panelde başlangıç görünümü oldu. `OPEN` basılmadan önce chest’e kısa dur-kalk sallanma (içeriden zorluyor hissi) eklendi; `OPEN` sonrası aynı sprite animasyona devam ediyor. |
+| 2026-05-01 | **Sandık ödül ekranı birleşik yerleşim polish** — `effects/chest.gd`: reward başlığı sandık kapağı üstüne taşındı; açıklama + `DISCARD/TAKE` satırı sandığın altına alındı, chest üstünde sadece ödül ikonu bırakıldı. Roulette ikon ölçeği ~`%40` büyütüldü (`128 -> 180` hedef), ilk `OPEN` ekranındaki sandık önizleme boyutu artırıldı. |
+| 2026-05-01 | **Sandık açılış tempo revizyonu (v2)** — `effects/chest.gd`: opening spritesheet hızı `40 FPS` yapıldı; açılış tamamlandıktan sonra son kare sabit kalırken roulette başlıyor. Roulette süresi `5.0s`; ilk `3.0s` hızlı, son `2.0s` kademeli yavaş akışa alındı. |
+| 2026-05-01 | **Sandık açılış akışı tempo/polish** — `effects/chest.gd`: açılış animasyonu tamamlanmadan roulette başlamıyor; animasyon bitince son kare sabit kalıyor, ardından `4.5s` roulette akıyor. Roulette geçiş hızı artırıldı, sarı arka plan parlaması geçici olarak kaldırıldı. |
+| 2026-04-29 | **Sandık sistemi görsel/akış güncellemesi** — `assets/inbox` içindeki `chest.png` + `chest_opening_animation.png` `assets/effects/` altına taşındı; `effects/chest.gd` otomatik toplama yerine `E` etkileşimi ile 3 aşamalı akışa geçti: level-up benzeri panel (sol envanter + sağ istatistik), `AnimatedSprite2D` opening spritesheet + item/weapon roulette, final reward kartı `TAKE`/`DISCARD`. |
 | 2026-04-29 | **Inbox world/spawn asset dağıtımı + reward tier** — `assets/inbox` içindeki `blood_oath`, `vacuum_collector`, `poison_trap`, `shrine_risk/devil`, `destructible_crate_low/high`, `ruin_cache_low/mid/high`, `night_vial` dosyaları kalıcı klasörlere taşındı; `environment_manager` + ilgili effect scriptleri low/high varyant görseli ve daha iyi drop (high tier) mantığıyla güncellendi. |
 | 2026-04-28 | **`ASSET_SIZES` tam tarama güncellemesi** — `assets/` altındaki görseller (`png/jpg/jpeg/webp/bmp/gif/tga`) yeniden tarandı; kural `512x512 olmayanlar` olarak netleştirildi; tablo tüm `512x512` dışı dosyalarla güncellendi (ör. `assets/effects/xp.png` `677x369`). |
 | 2026-04-28 | **Kodex — World Items sekmesi + Glossary güncellemesi** — `CollectionData` içine `TAB_WORLD_ITEM` + `WORLD_ITEM_ENTRIES` eklendi (kaynak: `docs/colorrect.md` Dünya/spawn cisimleri); `ui.collection_menu` için yeni sekme locale anahtarı açıldı; `codex.world_item.*` açıklamaları ve `ui.glossary` kapsamı oyun statlarının tamamını kapsayacak şekilde genişletildi (`max_hp`, `move_speed`, `lifesteal`, `overheal`, `bounce`, `shrine`, `projectile_count`, `xp_gain`, `gold_gain`, `regen`, `revival`, `weapon_slots`, `item_slots`, `curse` dahil). |

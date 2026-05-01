@@ -5,7 +5,7 @@ Kod mimarisi ve “nasıl eklenir” adımları: `docs/GELISTIRICI_REHBERI.md`.
 Erişilebilirlik/bağlılık maddelerinin **Var / Kısmi / Yok** teknik durumu: `docs/ERISILEBILIRLIK_VE_BAGLILIK_MATRISI.md`.  
 **Ses / müzik / SFX dosya ve tetik envanteri** (ayrıntılı): `docs/sesler-muzikler-efektler.md`.
 
-**Son güncelleme:** 2026-04-25 (+ `assets/inbox` PNG dağıtımı: ikonlar, pickup sprite’ları, ember/frost/shadow/veil saha görselleri; buhar/zaman/buz fıçısı; patlama pasif VFX)
+**Son güncelleme:** 2026-05-01 (+ run içi world/pickup okunabilirlik pass’i: XP/Gold sabit, diğer dünya objeleri 4x sprite ölçek)
 
 ---
 
@@ -199,7 +199,7 @@ Bunlar ayrı tscn değil; `effects/xp_orb.tscn` + `enemy_base._spawn_xp_orb_drop
 | Kısım | Konum / içerik | Görsel / efekt (şu an) | Tasarım bacağı |
 |--------|----------------|-------------------------|----------------|
 | Altın küre | `effects/gold_orb` | `Sprite2D` + `assets/effects/gold.png` | Ayrı animasyon, parıltı, bırak anı: **Kısmi / ❌** |
-| Sandık | `effects/chest.tscn` | Yalnızca `ColorRect` + açılış `tween` (kod) | Kutu modu, ritüel, ikon, tier: **❌** |
+| Sandık | `effects/chest.tscn` | `chest.png` + `chest_opening_animation.png`; `E` etkileşimi sonrası level-up düzenine benzer panel (sol envanter + sağ istatistik), opening spritesheet + roulette icon roll, final reward kartı (`TAKE`/`DISCARD`) | **Kısmi** (ışık/partikül/ses polisajı açık) |
 
 **Ölümden düşen (enemy_base) — tscn/üretim** | Açıklama | Görsel durum
 |---|---|---
@@ -228,6 +228,8 @@ Bunlar ayrı tscn değil; `effects/xp_orb.tscn` + `enemy_base._spawn_xp_orb_drop
 **Görünmeyen / sadece kod (burada satır açmaya gerek yok):** `effects/combat_projectile_fx.gd`, `effects/lightning_hit_fx.tscn` — isabet/çizim yardımcıları; ayrı “cisim” değil, silah/chain sanatı ile birleşir.
 
 **Kısa not:** Tüm yukarıdakiler, loadout/level-up ekranı ve silah tscn’leri dışındadır. Silah/ikon eksiği: `colorrect.md`. Aynı «dünya / spawn» envanteri, `colorrect.md` sonunda kısa özet tabloda yinelenir.
+
+**Okunabilirlik notu (2026-05-01):** Run içinde yerde görünen dünya/spawn objeleri (`chest`, `blood_oath`, `vacuum_collector`, `poison_trap`, `freeze_barrel`, `shrine`, `destructible_crate`, `ruin_cache`) oyuncu farkındalığı için `4x` büyütüldü; `xp` / `gold` orb boyutları aynı bırakıldı.
 
 ---
 

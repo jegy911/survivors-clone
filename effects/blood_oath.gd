@@ -103,7 +103,7 @@ func _ensure_visual() -> CanvasItem:
 		spr.texture = BLOOD_OATH_TEX
 		spr.centered = true
 		var dim: float = maxf(float(BLOOD_OATH_TEX.get_width()), 1.0)
-		var sc: float = 18.0 / dim
+		var sc: float = 72.0 / dim
 		spr.scale = Vector2(sc, sc)
 		add_child(spr)
 	return spr

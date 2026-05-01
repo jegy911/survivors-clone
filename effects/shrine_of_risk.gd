@@ -13,7 +13,7 @@ func _ready():
 	spr.texture = SHRINE_DEVIL_TEX if shrine_type == "devil" else SHRINE_RISK_TEX
 	spr.centered = true
 	var dim: float = maxf(float(spr.texture.get_width()), 1.0)
-	var sc: float = 34.0 / dim
+	var sc: float = 136.0 / dim
 	spr.scale = Vector2(sc, sc)
 	body_visual = spr
 	add_child(spr)

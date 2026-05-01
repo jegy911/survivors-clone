@@ -12,7 +12,7 @@ func _ready():
 	spr.texture = TRAP_TEX
 	spr.centered = true
 	var dim: float = maxf(float(TRAP_TEX.get_width()), 1.0)
-	var sc: float = 28.0 / dim
+	var sc: float = 112.0 / dim
 	spr.scale = Vector2(sc, sc)
 	body_visual = spr
 	add_child(spr)

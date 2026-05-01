@@ -96,11 +96,13 @@ Bu tabloda yalnızca **en az bir ✗** kalan satırlar tutulur (ikisi de ✓ olu
 
 *(Olasılık, kod ve kapsamın tamamı: `docs/TASARIM.md`. Burada istenen hızlı takip için yalnız görsel sütunları tutulur.)*
 
+**Okunabilirlik notu (2026-05-01):** `XP` ve `Gold` orb boyutları korunur; diğer run içi dünya/spawn objeleri (örn. `chest`, `blood_oath`, `vacuum_collector`, `poison_trap`, `freeze_barrel`, `shrine`, `crate`, `ruin_cache`) saha okunabilirliği için yaklaşık `4x` ölçekle gösterilir.
+
 | Cisim / sistem | Kart / kodeks ikon | Oyun-içi görsel | Not (kısa) |
 |----------------|-------------------|-----------------|------------|
 | **XP 1× / 3× / 8×** (3 tür) | ✓ | ✓ | `xp.png` / `green_xp.png` / `red_xp.png` |
 | Altın küre | ✓ | ✓ | `gold.png` |
-| Sandık | ✗ | ✗ | ColorRect placeholder |
+| Sandık | ✓ | ✓ | `chest.png` + `chest_opening_animation.png`; tek panel akışı (`OPEN` öncesi idle sallanma -> açılış -> roulette -> reward) |
 | Kan yemini (Blood Oath) | ✓ | ✓ | `blood_oath.png` |
 | Dişli parçası (Cog) | ✓ | ✓ | `cog.png` sprite |
 | Zaman dişlisi | ✓ | ✓ | `time_gear_icon.png` sprite |

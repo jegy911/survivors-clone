@@ -78,7 +78,7 @@ func _setup_visual() -> void:
 	spr.texture = CRATE_TEX_HIGH if reward_tier == "high" else CRATE_TEX_LOW
 	spr.centered = true
 	var dim: float = maxf(float(spr.texture.get_width()), 1.0)
-	var sc: float = 34.0 / dim
+	var sc: float = 136.0 / dim
 	spr.scale = Vector2(sc, sc)
 	body_visual = spr
 	add_child(spr)

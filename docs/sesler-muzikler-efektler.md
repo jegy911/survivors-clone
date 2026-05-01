@@ -144,6 +144,34 @@ Pasif eşyalar için **özel ses çağrısı yok** (`items/item_*.gd` içinde `A
 
 ---
 
+## SFX durum matrisi (✅/❌)
+
+Bu tablo, özellikle run içinde görülen sistemlerde ses olup olmadığını hızlıca takip etmek içindir.
+
+| Sistem / olay | SFX var mı? | Dosya / çağrı | Not |
+|---------------|-------------|----------------|-----|
+| XP orb toplama | ✅ | `XP toplama.mp3` / `AudioManager.play_xp()` | Pitch varyasyonlu |
+| Gold orb toplama | ❌ | — | Ayrı altın toplama sesi yok |
+| Chest düşmesi (enemy drop) | ❌ | — | `enemy_base` yalnız spawn eder |
+| Chest `OPEN` öncesi idle sallanma | ❌ | — | Görsel tween var, ses yok |
+| Chest opening animasyonu | ❌ | — | Açılış için özel SFX yok |
+| Chest roulette | ❌ | — | Tick/roll sesi yok |
+| Chest reward `TAKE` / `DISCARD` | ❌ | — | UI/confirm sesi yok |
+| Blood Oath pickup | ❌ | — | Özel pickup SFX yok |
+| Vacuum collector pickup | ❌ | — | Yalnız floating text var |
+| Freeze barrel patlaması | ❌ | — | Alan etkisi var, ses yok |
+| Poison trap patlaması | ❌ | — | Alan etkisi var, ses yok |
+| Shrine (risk/devil) tetiklenmesi | ❌ | — | Özel shrine SFX yok |
+| Destructible crate kırılması | ❌ | — | Kırılma sesi yok |
+| Ruin cache açılması | ❌ | — | Açılma/kırılma sesi yok |
+| Düşman hasar alması | ✅ | `hasar sesi.ogg` / `AudioManager.play_hit()` | Ortak hit sesi |
+| Düşman ölümü | ✅ | `ölümsesi.mp3` / `AudioManager.play_death()` | Ortak death sesi |
+| Oyuncu hasar alması | ✅ | `oyuncu hasar.mp3` / `AudioManager.play_player_hurt()` | Var |
+| Boss spawn | ✅ | `boss spawn.mp3` / `AudioManager.play_boss()` | Spawn stinger |
+| Silah ateşi (desteklenenler) | ✅ | `ateş sesi.mp3` / `AudioManager.play_shoot()` | Şu an paylaşımlı tek ateş sesi |
+
+---
+
 ## İleride eklenecek bölümler (taslak başlıklar)
 
 Aşağıdakiler şimdilik boş başlık; ses işi büyüdükçe alt tablolar açılabilir.
